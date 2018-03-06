@@ -1,0 +1,22 @@
+{
+    "name": "sitecrafting/conifer",
+    "description": "Powerful abstractions for serious WordPress theme development",
+    "type": "wordpress-plugin",
+    "require-dev": {
+        "phpunit/phpunit": "^6.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Coby Tamayo",
+            "email": "ctamayo@sitecrafting.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Conifer\\": "src/"
+        }
+    }
+}
