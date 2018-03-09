@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Conifer\\' => array($baseDir . '/src'),
+    'Conifer\\' => array($baseDir . '/lib'),
 );
