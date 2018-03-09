@@ -4,7 +4,7 @@
 
 Powerful abstractions for serious WordPress development.
 
-[![Work with SiteCrafting on your next web project](./img/foo)](https://www.sitecrafting.com/)
+[![Work with SiteCrafting on your next web project](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/sc-banner.jpg)](https://www.sitecrafting.com/)
 
 ## Quick start guide
 
