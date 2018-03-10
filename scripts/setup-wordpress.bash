@@ -16,9 +16,8 @@ main() {
   if wp_configured ; then
     echo 'WordPress is configured'
   else
-    # TODO get this to work...
-    extra_php=<<'EOF'
-
+    read -d '' extra_php <<'EOF'
+// log all notices, warnings, etc.
 error_reporting(E_ALL);
 
 // enable debug logging
