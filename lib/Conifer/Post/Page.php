@@ -8,6 +8,8 @@
 
 namespace Conifer\Post;
 
+use Timber\Timber;
+
 /**
  * Class to represent WordPress pages.
  *
