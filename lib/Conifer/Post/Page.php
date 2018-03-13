@@ -29,5 +29,31 @@ class Page extends Post {
 	public static function get_blog_page() {
 		return new static( get_option('page_for_posts') );
 	}
+
+  /**
+   * Get a page by its template filename, relative to the theme root.
+   * @param string $template
+   * @return Page the first page found matching the template
+   */
+  public static function get_by_template(string $template) : Page {
+    // query the Page by template
+    $pages = Timber::get_posts([
+      'post_type' => 'page',
+      'post_status' => 'publish',
+      'posts_per_page' => 1,
+      'meta_query' => [
+        [
+          'key' => '_wp_page_template',
+          'value' => $template,
+        ]
+      ]
+    ], static::class);
+
+    // return the first page we find, if it exists
+    if (isset($pages[0])) {
+      return $pages[0];
+    }
+  }
+
 }
 
