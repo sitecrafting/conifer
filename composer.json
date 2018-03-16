@@ -5,7 +5,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:sitecrafting/start-wp-theme-groot.git"
+            "url": "git@github.com:sitecrafting/groot.git"
         },
         {
             "type": "composer",
@@ -29,8 +29,8 @@
         "johnpbloch/wordpress-core-installer": "^1.0",
         "johnpbloch/wordpress-core": "^4.9",
         "mnsami/composer-custom-directory-installer": "^1.1",
-        "wpackagist-plugin/timber-library": "^1.7.0",
-        "sitecrafting/start-wp-theme-groot": "dev-conifer"
+        "wpackagist-plugin/timber-library": "^1.7",
+        "sitecrafting/groot": "dev-master"
     },
     "extra": {
         "wordpress-install-dir": {
@@ -41,7 +41,7 @@
                 "wpackagist-plugin/timber-library"
             ],
             "wp/wp-content/themes/groot": [
-                "sitecrafting/start-wp-theme-groot"
+                "sitecrafting/groot"
             ]
         }
     },
