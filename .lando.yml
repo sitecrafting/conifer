@@ -41,7 +41,7 @@ proxy:
     - conifer.lndo.site
 
   mailhog:
-    - mail.groot.lndo.site
+    - mail.conifer.lndo.site
 
 events:
   post-install:
