@@ -10,7 +10,7 @@ namespace Conifer\Post;
  *
  * @package Conifer
  */
-class FrontPage extends Post {
+class FrontPage extends Page {
   /**
    * Get the FrontPage instance.
    * @return \Conifer\Post\FrontPage a FrontPage object
