@@ -56,7 +56,7 @@ trait SendsEmail {
    * Alias of notify_html
    */
   public function notify(...$args) {
-    $this->notify_html(...$args);
+    return $this->notify_html(...$args);
   }
 
   /**
@@ -91,7 +91,7 @@ trait SendsEmail {
     string $message,
     array $headers = []
   ) : bool {
-    return $this->send_html_message(
+    return $this->send_plaintext_message(
       $this->get_valid_to_address(),
       $subject,
       $message,
