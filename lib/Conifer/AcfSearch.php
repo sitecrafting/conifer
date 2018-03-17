@@ -41,7 +41,7 @@ class AcfSearch {
   * see https://vzurczak.wordpress.com/2013/06/15/extend-the-default-wordpress-search/
   * credits to Vincent Zurczak for the base query structure/spliting tags section
   */
-  public static function advanced_custom_search( $where, &$wp_query ) {
+  public static function advanced_custom_search( $where, $wp_query ) {
     global $wpdb;
 
     if ( empty( $where )) {
