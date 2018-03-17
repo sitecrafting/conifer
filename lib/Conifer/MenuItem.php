@@ -18,8 +18,6 @@ class MenuItem extends TimberMenuItem {
 	const CLASS_CURRENT 					= 'current-menu-item';
 	const CLASS_CURRENT_ANCESTOR 	= 'current-menu-ancestor';
 
-	public $PostClass = '\Conifer\Post\Post';
-
 	/**
 	 * Whether to display this item's children. Typically for use in
 	 * side navigation structures with lots of hierarchy.
