@@ -27,6 +27,7 @@
         "johnpbloch/wordpress-core": "^4.9",
         "mnsami/composer-custom-directory-installer": "^1.1",
         "sitecrafting/groot": "dev-master",
+        "timber/timber": "^1.7",
         "wpackagist-plugin/timber-library": "^1.7"
     },
     "extra": {
