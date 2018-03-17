@@ -8,6 +8,7 @@ namespace Conifer;
 use Timber\Timber;
 use Timber\Site as TimberSite;
 
+use Twig_Environment;
 use Twig_Extension_StringLoader;
 use Twig_Extension_Debug;
 use Twig_SimpleFunction;
@@ -27,6 +28,10 @@ use Conifer\Shortcode\Button;
  * @package Conifer
  */
 class Site extends TimberSite {
+  protected $relative_script_dir;
+
+  protected $relative_style_dir;
+
 	/**
 	 * Assets version timestamp, used for cache-busting
 	 * @var string
@@ -50,13 +55,16 @@ class Site extends TimberSite {
 	 */
 	public function __construct() {
 		parent::__construct();
+
+    $this->relative_script_dir = '/js/';
+    $this->relative_style_dir = '/';
 	}
 
 	/**
 	 * Configure any WordPress hooks and register site-wide components, such as nav menus
 	 * @return Conifer\Site the Site object it was called on
 	 */
-	public function configure() {
+	public function configure() : Site {
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'menus' );
 
@@ -204,7 +212,7 @@ class Site extends TimberSite {
 	 * @param array $context the default context
 	 * @return array the updated context
 	 */
-	public function add_to_context( $context ) {
+	public function add_to_context( array $context ) : array {
 		$context['site'] = $this;
 		$context['primary_menu'] = new Menu( 'primary' );
 		$context['body_classes'] = get_body_class();
@@ -219,7 +227,7 @@ class Site extends TimberSite {
 	 * @param callable $filter a callable that implements the custom filter
 	 * @return Conifer\Site the Site object it was called on
 	 */
-	public function add_twig_filter( $name, callable $filter ) {
+	public function add_twig_filter( string $name, callable $filter ) : Site {
 		$this->twig_filters[$name] = $filter;
 		return $this;
 	}
@@ -231,7 +239,7 @@ class Site extends TimberSite {
 	 * @param callable $function a callable that implements the custom function
 	 * @return Conifer\Site the Site object it was called on
 	 */
-	public function add_twig_function( $name, callable $function ) {
+	public function add_twig_function( string $name, callable $function ) : Site {
 		$this->twig_functions[$name] = $function;
 		return $this;
 	}
@@ -241,7 +249,7 @@ class Site extends TimberSite {
 	 * @param Twig_Environment $twig Timber's internal Twig_Environment instance
 	 * @return Twig_Environment the extended Twig instance
 	 */
-	public function add_to_twig( $twig ) {
+	public function add_to_twig( Twig_Environment $twig ) : Twig_Environment {
 		$twig->addExtension( new Twig_Extension_StringLoader() );
 
 		// Make debugging available through Twig
@@ -267,8 +275,11 @@ class Site extends TimberSite {
 	 * @param string $file the base file name (relative to js/)
 	 * @return the script's full URI
 	 */
-	protected function get_script_uri( $file ) {
-		return get_stylesheet_directory_uri() . '/js/' . $file;
+	public function get_script_uri( string $file ) : string {
+    // TODO don't hard-code relative dir
+    return get_stylesheet_directory_uri()
+      . $this->get_relative_script_dir()
+      . $file;
 	}
 
 	/**
@@ -276,21 +287,50 @@ class Site extends TimberSite {
 	 * @param string $file the base file name (relative to the theme dir URI)
 	 * @return the stylesheet's full URI
 	 */
-	protected function get_stylesheet_uri( $file ) {
-		return get_stylesheet_directory_uri() . '/' . $file;
+	public function get_stylesheet_uri( string $file ) : string {
+    return get_stylesheet_directory_uri()
+      . $this->get_relative_style_dir()
+      . $file;
 	}
 
+  public function get_relative_script_dir(string $subdir = '') : string {
+    return $this->relative_script_dir . $subdir;
+  }
+
+  public function get_relative_style_dir(string $subdir = '') : string {
+    return $this->relative_style_dir . $subdir;
+  }
+
+  public function set_relative_script_dir(string $dir) : string {
+    return $this->relative_script_dir = $dir;
+  }
+
+  public function set_relative_style_dir(string $dir) : string {
+    return $this->relative_style_dir = $dir;
+  }
+
 	/**
-	 * Get the Grunt-generated hash for global assets
+	 * Get the build-tool-generated hash for global assets
 	 * @return the hash for
 	 */
-	protected function get_assets_version() {
-		if( ! $this->assets_version && is_readable(get_stylesheet_directory().'/assets.version') ) {
-			$this->assets_version = trim( file_get_contents(get_stylesheet_directory().'/assets.version') );
+	public function get_assets_version() : string {
+		if(!$this->assets_version && is_readable($this->get_theme_file('assets.version')) ) {
+      $contents = file_get_contents($this->get_theme_file('assets.version'));
+      $this->assets_version = trim($contents);
 		}
 
 		// Cache the version in this object
 		return $this->assets_version;
 	}
 
+  public function get_assets_version_filepath() : string {
+    return $this->get_theme_file('assets.version');
+  }
+
+  public function get_theme_file(string $file) : string {
+    if ($file[0] !== '/') {
+      $file = "/$file";
+    }
+    return get_stylesheet_directory().$file;
+  }
 }
