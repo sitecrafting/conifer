@@ -12,7 +12,7 @@ use Conifer\Post\Image;
 /**
  * High-level behavior for WP Posts, on top of TimberPost class
  */
-class Post extends TimberPost {
+abstract class Post extends TimberPost {
 	use HasTerms;
 
 	/**
@@ -26,6 +26,11 @@ class Post extends TimberPost {
 	 * @var string
 	 */
 	protected static $BLOG_URL;
+
+  /**
+   * Child classes must declare their own post types
+   */
+  abstract public static function post_type() : string;
 
 	/**
 	 * Get all the posts matching the given query (defaults to the current/global WP query constraints)

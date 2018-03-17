@@ -7,6 +7,10 @@ use DateTime;
 class BlogPost extends Post {
   const POST_TYPE = 'post';
 
+  public static function post_type() : string {
+    return static::POST_TYPE;
+  }
+
   public static function build_query_params(array $request) {
     // This is a blog-specific route, so we only care about blog posts here
     $query = [
