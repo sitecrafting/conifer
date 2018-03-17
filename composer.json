@@ -4,10 +4,6 @@
     "type": "wordpress-plugin",
     "repositories": [
         {
-            "type": "vcs",
-            "url": "git@github.com:sitecrafting/groot.git"
-        },
-        {
             "type": "composer",
             "url": "https://wpackagist.org"
         }
@@ -24,13 +20,14 @@
         "php": ">=7.0"
     },
     "require-dev": {
+        "10up/wp_mock": "^0.3",
         "phpunit/phpunit": "^6.0",
         "behat/behat": "^3.4",
         "johnpbloch/wordpress-core-installer": "^1.0",
         "johnpbloch/wordpress-core": "^4.9",
         "mnsami/composer-custom-directory-installer": "^1.1",
-        "wpackagist-plugin/timber-library": "^1.7",
-        "sitecrafting/groot": "dev-master"
+        "sitecrafting/groot": "dev-master",
+        "wpackagist-plugin/timber-library": "^1.7"
     },
     "extra": {
         "wordpress-install-dir": {
@@ -49,5 +46,10 @@
         "psr-4": {
             "Conifer\\": "lib/Conifer/"
         }
+    },
+    "scripts": {
+      "test": [
+        "./vendor/bin/phpunit"
+      ]
     }
 }
