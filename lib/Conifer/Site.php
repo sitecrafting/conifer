@@ -18,7 +18,6 @@ use Twig_SimpleFilter;
 use Conifer\Twig\Filters;
 use Conifer\Twig\Functions;
 
-use Conifer\Post\Image;
 use Conifer\Post\Post;
 use Conifer\Shortcode\Gallery;
 use Conifer\Shortcode\Button;
@@ -70,70 +69,27 @@ class Site extends TimberSite {
 	}
 
 	/**
-	 * Configure any WordPress hooks and register site-wide components, such as nav menus
+   * Configure any WordPress hooks and register site-wide components, such as
+   * nav menus
+   * @param callable $userDefinedConfig a callback for configuring this Site
+   * from theme code.
+   * @param boole $configureDefaults whether to run Conifer's default
+   * configuration code. Defaults to `true`.
 	 * @return Conifer\Site the Site object it was called on
 	 */
-	public function configure(callable $userDefinedConfig = null) : Site {
-    if (is_callable($userDefinedConfig)) {
-      // Set up user-defined configuration
-      $userDefinedConfig->call($this);
-    } else {
+  public function configure(
+    callable $userDefinedConfig = null,
+    bool $configureDefaults = true
+  ) : Site {
+    // unless the user has explicitly disabled the defaults, configure them
+    if ($configureDefaults) {
       $this->configure_defaults();
     }
 
-		add_theme_support( 'post-thumbnails' );
-		add_theme_support( 'menus' );
-
-		add_action( 'wp_enqueue_scripts', [$this, 'enqueue_scripts_and_styles'] );
-
-		add_action( 'init', ['\Conifer\Admin', 'add_theme_settings_page'] );
-
-		add_filter( 'posts_search', ['\Conifer\AcfSearch', 'advanced_custom_search'], 10, 2 );
-
-		// used for Gallery ACF layout option in flexible content
-		Image::add_size( 'gallery', 900, 600, true );
-
-		//USED FOR Image-Row ACF layout option in flexible content
-		Image::add_size( 'image-row-small', 300, 235, true );
-		Image::add_size( 'image-row-medium', 450, 350, true );
-		Image::add_size( 'image-row-large', 900, 450, true );
-
-		// Make certain custom sizes available in the RTE
-		// use this to unset or add image size options for RTE insert
-    /*add_filter( 'image_size_names_choose', function($sizes) {
-
-			//USE THIS TO UNSET DEFAULT VARIABLE SIZES AND SET YOUR OWN CUSOM SIZES
-			//unset( $sizes['large'] );
-			//unset( $sizes['medium'] );
-			//unset( $sizes['small'] );
-
-      return array_merge( $sizes, [
-				'image-row-small' => __( 'Small 300x235' ),
-        'image-row-medium' => __( 'Medium 450x350' ),
-        'image-row-large' => __( 'Large 900x450' )
-      ]);
-    });*/
-
-		//remove_shortcode( 'gallery' );
-		//Gallery::register( 'gallery' );
-		add_filter( 'use_default_gallery_style', '__return_false' );
-
-		// register common nav menus
-		register_nav_menus([
-			'primary' => 'Main Navigation', // main page/nav structure
-			'global' => 'Global Navigation', // for stuff like social icons
-			'footer' => 'Footer Navigation', // footer links
-		]);
-
-		//blog sidebar
-		register_sidebar([
-			'name' => 'Blog Filter Bar',
-			'id' => 'blog-filters',
-			'before_widget' => '<div id="%1$s" class="filter %2$s">',
-			'after_widget'  => "</div>\n",
-			'before_title'  => '<h3 class="filtertitle">',
-			'after_title'   => "</h3>\n"
-		]);
+    if (is_callable($userDefinedConfig)) {
+      // Set up user-defined configuration
+      $userDefinedConfig->call($this);
+    }
 
 		return $this;
 	}
@@ -143,7 +99,9 @@ class Site extends TimberSite {
    * custom image sizes, shortcodes, etc.
    */
   public function configure_defaults() {
-    add_filter( 'timber_context', [$this, 'add_to_context'] );
+    add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts_and_styles']);
+
+    add_filter('timber_context', [$this, 'add_to_context']);
 
     $this->register_twig_filters();
     $this->register_twig_functions();
