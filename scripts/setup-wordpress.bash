@@ -51,8 +51,10 @@ EOF
     read -p "${BOLD}Admin password${NORMAL} (conifer): " ADMIN_PASSWORD
     ADMIN_PASSWORD=${ADMIN_PASSWORD:-'conifer'}
 
-    read -p "${BOLD}Admin email${NORMAL} (conifer@example.com): " ADMIN_EMAIL
-    ADMIN_EMAIL=${ADMIN_EMAIL:-'conifer@example.com'}
+    # Determine the default email to suggest based on git config
+    DEFAULT_EMAIL=$(git config --global user.email)
+    read -p "${BOLD}Admin email${NORMAL} ($DEFAULT_EMAIL): " ADMIN_EMAIL
+    ADMIN_EMAIL=${ADMIN_EMAIL:-"$DEFAULT_EMAIL"}
 
     # install WordPress
     wp --path="$WP_DIR" core install \
