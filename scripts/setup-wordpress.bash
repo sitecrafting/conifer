@@ -65,6 +65,17 @@ EOF
       --admin_email="$ADMIN_EMAIL" \
       --skip-email
   fi
+
+  # TODO check before running somehow?
+  # install/activate plugins and theme
+  wp --path="$WP_DIR" plugin uninstall hello akismet
+  wp --path="$WP_DIR" plugin activate timber-library conifer
+  wp --path="$WP_DIR" theme activate groot
+
+  # uninstall stock themes
+  wp --path="$WP_DIR" theme uninstall twentyten twentyeleven twentytwelve \
+    twentythirteen twentyfourteen twentyfifteen twentysixteen twentyseventeen
+
 }
 
 

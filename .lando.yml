@@ -43,18 +43,3 @@ proxy:
 
   mailhog:
     - mail.conifer.lndo.site
-
-events:
-  post-install:
-    # ensure WordPress is installed and configured
-    - wp --path="$LANDO_MOUNT/wp" plugin uninstall hello akismet
-    - wp --path="$LANDO_MOUNT/wp" plugin activate timber-library conifer
-    - wp --path="$LANDO_MOUNT/wp" theme activate groot
-    - wp --path="$LANDO_MOUNT/wp" theme uninstall twentyten
-    - wp --path="$LANDO_MOUNT/wp" theme uninstall twentyeleven
-    - wp --path="$LANDO_MOUNT/wp" theme uninstall twentytwelve
-    - wp --path="$LANDO_MOUNT/wp" theme uninstall twentythirteen
-    - wp --path="$LANDO_MOUNT/wp" theme uninstall twentyfourteen
-    - wp --path="$LANDO_MOUNT/wp" theme uninstall twentyfifteen
-    - wp --path="$LANDO_MOUNT/wp" theme uninstall twentysixteen
-    - wp --path="$LANDO_MOUNT/wp" theme uninstall twentyseventeen
