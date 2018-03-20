@@ -31,20 +31,6 @@ class Admin {
 	}
 
 	/**
-	 * To be called during the admin_init hook
-	 */
-	public static function init() {
-		if( ! is_plugin_active( static::PLUGIN_ACF_PRO ) ) {
-			static::notify(
-				'Advanced Custom Fields Pro is not activated!
-				Your site may not function properly without it.'
-			);
-		}
-
-		static::check_for_notices();
-	}
-
-	/**
 	 * Check the session for admin notices that might have been thrown before a redirect.
 	 */
 	public static function check_for_notices() {

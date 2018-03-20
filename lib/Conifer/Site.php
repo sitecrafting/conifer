@@ -74,7 +74,6 @@ class Site extends TimberSite {
 
 		add_action( 'wp_enqueue_scripts', [$this, 'enqueue_scripts_and_styles'] );
 
-		add_action( 'admin_init', ['\Conifer\Admin', 'init'] );
 		add_action( 'init', ['\Conifer\Admin', 'add_theme_settings_page'] );
 
 		add_filter( 'posts_search', ['\Conifer\AcfSearch', 'advanced_custom_search'], 10, 2 );
