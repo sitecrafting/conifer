@@ -84,10 +84,6 @@ class Site extends TimberSite {
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'menus' );
 
-		// configure Twig/Timber
-		add_filter( 'timber_context', [$this, 'add_to_context'] );
-		add_filter( 'get_twig', [$this, 'add_to_twig'] );
-
 		add_action( 'wp_enqueue_scripts', [$this, 'enqueue_scripts_and_styles'] );
 
 		add_action( 'init', ['\Conifer\Admin', 'add_theme_settings_page'] );
@@ -147,10 +143,32 @@ class Site extends TimberSite {
    * custom image sizes, shortcodes, etc.
    */
   public function configure_defaults() {
+    add_filter( 'timber_context', [$this, 'add_to_context'] );
+
+    $this->register_twig_filters();
+    $this->register_twig_functions();
+
+    $this->configure_default_twig_extensions();
     $this->configure_default_twig_filters();
     $this->configure_default_twig_functions();
 
     Integrations\YoastIntegration::demote_metabox();
+  }
+
+  /**
+   * Load Twig's String Loader and Debug extensions
+   */
+  public function configure_default_twig_extensions() {
+	  add_filter('get_twig', function(Twig_Environment $twig) {
+      $twig->addExtension( new Twig_Extension_StringLoader() );
+
+      // Make debugging available through Twig
+      // Note: in order for Twig's dump() function to work,
+      // the WP_DEBUG constant must be set to true in wp-config.php
+      $twig->addExtension( new Twig_Extension_Debug() );
+
+      return $twig;
+    });
   }
 
   /**
@@ -315,31 +333,37 @@ class Site extends TimberSite {
 		return $this;
 	}
 
-	/**
-	 * Add your own extenstions/filters/functions to the internal Twig environment.
-	 * @param Twig_Environment $twig Timber's internal Twig_Environment instance
-	 * @return Twig_Environment the extended Twig instance
-	 */
-	public function add_to_twig( Twig_Environment $twig ) : Twig_Environment {
-		$twig->addExtension( new Twig_Extension_StringLoader() );
+  /**
+   * Register Conifer's Twig filters to be added to Twig
+   * @param \Twig_Environment $twig Timber's internal Twig_Environment instance
+   * @return \Twig_Environment the extended Twig instance
+   */
+  public function register_twig_filters() {
+    add_filter('get_twig', function(Twig_Environment $twig) {
+      foreach( $this->twig_filters as $name => $callable ) {
+        $filter = new Twig_SimpleFilter( $name, $callable );
+        $twig->addFilter( $filter );
+      }
 
-		// Make debugging available through Twig
-		// Note: in order for Twig's dump() function to work,
-		// the WP_DEBUG constant must be set to true in wp-config.php
-		$twig->addExtension( new Twig_Extension_Debug() );
-
-		foreach( $this->twig_functions as $name => $callable ) {
-			$function = new Twig_SimpleFunction( $name, $callable );
-			$twig->addFunction( $function );
-		}
-
-		foreach( $this->twig_filters as $name => $callable ) {
-			$filter = new Twig_SimpleFilter( $name, $callable );
-			$twig->addFilter( $filter );
-		}
-
-		return $twig;
+      return $twig;
+    });
 	}
+
+  /**
+   * Register Conifer's Twig functions to be added to Twig
+   * @param \Twig_Environment $twig Timber's internal Twig_Environment instance
+   * @return \Twig_Environment the extended Twig instance
+   */
+  public function register_twig_functions() {
+    add_filter('get_twig', function(Twig_Environment $twig) {
+      foreach( $this->twig_functions as $name => $callable ) {
+        $function = new Twig_SimpleFunction( $name, $callable );
+        $twig->addFunction( $function );
+      }
+
+      return $twig;
+    });
+  }
 
   /**
    * Get the array of directories where Conifer will look for JavaScript files
