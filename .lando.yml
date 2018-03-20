@@ -7,6 +7,7 @@ services:
   appserver:
     build:
       - cd $LANDO_MOUNT && composer install
+      - cd $LANDO_MOUNT && scripts/setup-wordpress.bash
 
   node:
     type: node:6.11
