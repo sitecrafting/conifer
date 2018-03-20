@@ -383,13 +383,12 @@ class Site extends TimberSite {
 	 * Get the full URI for a script file. Returns the URI for the first file
    * it finds in the script directory cascade.
 	 * @param string $file the base file name
-	 * @return the script's full URI
+	 * @return the script's full URI. If $file is not found in any
+   * directory, returns the empty string.
 	 */
 	public function get_script_uri( string $file ) : string {
-    foreach ($this->script_directory_cascade as $dir) {
-      if (file_exists($dir.$file)) {
-        return URLHelper::file_system_to_url($dir.$file);
-      }
+    if ($path = $this->find_file($file, $this->script_directory_cascade)) {
+      return URLHelper::file_system_to_url($path);
     }
 
     return '';
@@ -399,17 +398,34 @@ class Site extends TimberSite {
    * Get the full URI for a stylesheet. Returns the URI for the first file
    * it finds in the style directory cascade.
 	 * @param string $file the base file name
-	 * @return the stylesheet's full URI
+	 * @return the stylesheet's full URI. If $file is not found in any
+   * directory, returns the empty string.
 	 */
 	public function get_stylesheet_uri( string $file ) : string {
-    foreach ($this->style_directory_cascade as $dir) {
-      if (file_exists($dir.$file)) {
-        return URLHelper::file_system_to_url($dir.$file);
-      }
+    if ($path = $this->find_file($file, $this->style_directory_cascade)) {
+      return URLHelper::file_system_to_url($path);
     }
 
     return '';
 	}
+
+  /**
+   * Search an arbitrary list of directories for $file and return the first
+   * existent file path found
+   * @param string $file the filename to search for in $dirs
+   * @param array $dirs an array of directories to search for $file
+   * @return the path of the first file found. If $file is not found in any
+   * directory, returns the empty string.
+   */
+  public function find_file(string $file, array $dirs) : string {
+    foreach ($dirs as $dir) {
+      if (file_exists($dir.$file)) {
+        return $dir.$file;
+      }
+    }
+
+    return '';
+  }
 
 	/**
 	 * Get the build-tool-generated hash for global assets
