@@ -64,7 +64,14 @@ class Site extends TimberSite {
 	 * Configure any WordPress hooks and register site-wide components, such as nav menus
 	 * @return Conifer\Site the Site object it was called on
 	 */
-	public function configure() : Site {
+	public function configure(callable $userDefinedConfig = null) : Site {
+    if (is_callable($userDefinedConfig)) {
+      // Set up user-defined configuration
+      $userDefinedConfig->call($this);
+    } else {
+      $this->configure_defaults();
+    }
+
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'menus' );
 
@@ -77,15 +84,6 @@ class Site extends TimberSite {
 		add_action( 'init', ['\Conifer\Admin', 'add_theme_settings_page'] );
 
 		add_filter( 'posts_search', ['\Conifer\AcfSearch', 'advanced_custom_search'], 10, 2 );
-
-		// Add default Twig filters/functions
-		Filters\Number::add_twig_filters( $this );
-		Filters\TextHelper::add_twig_filters( $this );
-		Filters\TermHelper::add_twig_filters( $this );
-		Filters\Image::add_twig_filters( $this );
-
-		Functions\WordPress::add_twig_functions( $this );
-		Functions\Image::add_twig_functions( $this );
 
 		// used for Gallery ACF layout option in flexible content
 		Image::add_size( 'gallery', 900, 600, true );
@@ -132,29 +130,57 @@ class Site extends TimberSite {
 			'after_title'   => "</h3>\n"
 		]);
 
-		// Banish the Yoast SEO meta box to the bottom of the post edit screen, where it belongs
-		add_filter( 'wpseo_metabox_prio', function() { return 'low';});
-
-
 		return $this;
 	}
+
+  /**
+   * Configure useful defaults for Twig functions/filters,
+   * custom image sizes, shortcodes, etc.
+   */
+  public function configure_defaults() {
+    $this->configure_default_twig_filters();
+    $this->configure_default_twig_functions();
+
+    Integrations\YoastIntegration::demote_metabox();
+  }
+
+  /**
+   * Tell Conifer to add its default Twig functions when loading
+   * the Twig environment, before rendering a view
+   */
+  public function configure_default_twig_functions() {
+		Functions\WordPress::add_twig_functions( $this );
+		Functions\Image::add_twig_functions( $this );
+  }
+
+  /**
+   * Tell Conifer to add its default Twig filters when loading
+   * the Twig environment, before rendering a view
+   */
+  public function configure_default_twig_filters() {
+		// Add default Twig filters/functions
+		Filters\Number::add_twig_filters( $this );
+		Filters\TextHelper::add_twig_filters( $this );
+		Filters\TermHelper::add_twig_filters( $this );
+		Filters\Image::add_twig_filters( $this );
+  }
 
 	/**
 	 * Enqueue custom JS/CSS
 	 */
 	public function enqueue_scripts_and_styles() {
+    // TODO these paths belong in the theme, see https://github.com/sitecrafting/groot/issues/1
+
 		/*
 		 * Enqueue our own project-specific JavaScript, including dependencies.
 		 * If you need to add a script to be enqueued and it's ok to do so site-wide, please consider doing so via Grunt
 		 * instead of here to reduce page load times.
 		 */
-		wp_enqueue_script(
-			'project-common',
-			$this->get_script_uri('project-common.min.js'),
-			$dependencies = ['jquery'],
-			$version = $this->get_assets_version(),
-			$inFooter = true
-		);
+    $this->enqueue_script(
+      'project-common',
+      'project-common.min.js',
+      ['jquery']
+    );
 
 		//modernizr
 		wp_enqueue_script(
@@ -183,6 +209,43 @@ class Site extends TimberSite {
 			'print'
 		);
 	}
+
+  /**
+   * Enqueue a script within the script cascade path. Calls wp_enqueue_script
+   * transparently, except that it defaults to enqueueing in the footer instead
+   * of the header.
+   * @param string $scriptHandle the script handle to register and enqueue
+   * @param string $fileName the file to search for in the script cascade path
+   * @param array $dependencies an array of registered dependency handles
+   * @param string|bool|null $version the version of the script to append to
+   * the URL rendered in the <script> tag. Accepts any valid value of the $ver
+   * argument to `wp_enqueue_script`, plus the literal value `true`, which
+   * tells Conifer to look for an assets version file to use for cache-busting.
+   * Defaults to `true`.
+   * @param bool $inFooter whether to enqueue this script in the footer. Unlike
+   * the same argument to the core `wp_enqueue_script` functions, this defaults
+   * to `true`.
+   */
+  public function enqueue_script(
+    string $scriptName,
+    string $fileName,
+    array $dependencies = [],
+    $version = true,
+    bool $inFooter = true
+  ) {
+    if ($version === true) {
+      // use automatic any automatic cache-busting in the theme build process
+			$version = $this->get_assets_version();
+    }
+
+		wp_enqueue_script(
+      $scriptName,
+			$this->get_script_uri($fileName),
+			$dependencies,
+      $version,
+			$inFooter
+		);
+  }
 
 	/**
 	 * Get the current Timber context, with the "post" index set to $post
