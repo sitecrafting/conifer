@@ -7,6 +7,7 @@ namespace Conifer;
 
 use Timber\Timber;
 use Timber\Site as TimberSite;
+use Timber\URLHelper;
 
 use Twig_Environment;
 use Twig_Extension_StringLoader;
@@ -28,9 +29,17 @@ use Conifer\Shortcode\Button;
  * @package Conifer
  */
 class Site extends TimberSite {
-  protected $relative_script_dir;
+  /**
+   * An array of directories where Conifer will look for JavaScript files
+   * @var array
+   */
+  protected $script_directory_cascade;
 
-  protected $relative_style_dir;
+  /**
+    * An array of directories where Conifer will look for stylesheets
+    * @var array
+   */
+  protected $style_directory_cascade;
 
 	/**
 	 * Assets version timestamp, used for cache-busting
@@ -56,8 +65,8 @@ class Site extends TimberSite {
 	public function __construct() {
 		parent::__construct();
 
-    $this->relative_script_dir = '/js/';
-    $this->relative_style_dir = '/';
+    $this->script_directory_cascade = [get_stylesheet_directory().'/js/'];
+    $this->style_directory_cascade = [get_stylesheet_directory().'/'];
 	}
 
 	/**
@@ -332,44 +341,75 @@ class Site extends TimberSite {
 		return $twig;
 	}
 
+  /**
+   * Get the array of directories where Conifer will look for JavaScript files
+   * when `Site::enqueue_script()` is called.
+   * @return array
+   */
+  public function get_script_directory_cascade() : array {
+    return $this->script_directory_cascade;
+  }
+
+  /**
+   * Get the array of directories where Conifer will look for CSS files
+   * when `Site::enqueue_style()` is called.
+   * @return array
+   */
+  public function get_style_directory_cascade() : array {
+    return $this->style_directory_cascade;
+  }
+
+  /**
+   * Set the array of directories where Conifer will look for CSS files
+   * when `Site::enqueue_style()` is called.
+   * @param array the list of directories to check. Conifer checks directories
+   * in the order declared.
+   */
+  public function set_script_directory_cascade(array $cascade) {
+    $this->script_directory_cascade = $cascade;
+  }
+
+  /**
+   * Set the array of directories where Conifer will look for CSS files
+   * when `Site::enqueue_style()` is called.
+   * @param array the list of directories to check. Conifer checks directories
+   * in the order declared.
+   */
+  public function set_style_directory_cascade(array $cascade) {
+    $this->style_directory_cascade = $cascade;
+  }
+
 	/**
-	 * Get the full URI for a script file
-	 * @param string $file the base file name (relative to js/)
+	 * Get the full URI for a script file. Returns the URI for the first file
+   * it finds in the script directory cascade.
+	 * @param string $file the base file name
 	 * @return the script's full URI
 	 */
 	public function get_script_uri( string $file ) : string {
-    // TODO don't hard-code relative dir
-    return get_stylesheet_directory_uri()
-      . $this->get_relative_script_dir()
-      . $file;
+    foreach ($this->script_directory_cascade as $dir) {
+      if (file_exists($dir.$file)) {
+        return URLHelper::file_system_to_url($dir.$file);
+      }
+    }
+
+    return '';
 	}
 
 	/**
-	 * Get the full URI for a stylesheet
-	 * @param string $file the base file name (relative to the theme dir URI)
+   * Get the full URI for a stylesheet. Returns the URI for the first file
+   * it finds in the style directory cascade.
+	 * @param string $file the base file name
 	 * @return the stylesheet's full URI
 	 */
 	public function get_stylesheet_uri( string $file ) : string {
-    return get_stylesheet_directory_uri()
-      . $this->get_relative_style_dir()
-      . $file;
+    foreach ($this->style_directory_cascade as $dir) {
+      if (file_exists($dir.$file)) {
+        return URLHelper::file_system_to_url($dir.$file);
+      }
+    }
+
+    return '';
 	}
-
-  public function get_relative_script_dir(string $subdir = '') : string {
-    return $this->relative_script_dir . $subdir;
-  }
-
-  public function get_relative_style_dir(string $subdir = '') : string {
-    return $this->relative_style_dir . $subdir;
-  }
-
-  public function set_relative_script_dir(string $dir) : string {
-    return $this->relative_script_dir = $dir;
-  }
-
-  public function set_relative_style_dir(string $dir) : string {
-    return $this->relative_style_dir = $dir;
-  }
 
 	/**
 	 * Get the build-tool-generated hash for global assets
