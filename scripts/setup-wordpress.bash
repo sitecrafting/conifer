@@ -45,14 +45,17 @@ EOF
     read -p "${BOLD}Site Title${NORMAL} (Conifer): " TITLE
     TITLE=${TITLE:-'Conifer'}
 
-    read -p "${BOLD}Admin username${NORMAL} (admin): " ADMIN_USER
-    ADMIN_USER=${ADMIN_USER:-'admin'}
+    # Determine the default username/email to suggest based on git config
+    DEFAULT_EMAIL=$(git config --global user.email)
+    DEFAULT_EMAIL=${DEFAULT_EMAIL:-'admin@example.com'}
+    DEFAULT_USERNAME=$(echo $DEFAULT_EMAIL | sed 's/@.*$//')
+
+    read -p "${BOLD}Admin username${NORMAL} ($DEFAULT_USERNAME): " ADMIN_USER
+    ADMIN_USER=${ADMIN_USER:-"$DEFAULT_USERNAME"}
 
     read -p "${BOLD}Admin password${NORMAL} (conifer): " ADMIN_PASSWORD
     ADMIN_PASSWORD=${ADMIN_PASSWORD:-'conifer'}
 
-    # Determine the default email to suggest based on git config
-    DEFAULT_EMAIL=$(git config --global user.email)
     read -p "${BOLD}Admin email${NORMAL} ($DEFAULT_EMAIL): " ADMIN_EMAIL
     ADMIN_EMAIL=${ADMIN_EMAIL:-"$DEFAULT_EMAIL"}
 
