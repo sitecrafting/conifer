@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "3802414c36ddbb80c0fceb04d83dc40c",
+    "content-hash": "ba58434cd96d1cb9bc9f78be95aef988",
     "packages": [],
     "packages-dev": [
         {
@@ -640,12 +640,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "e5acef8bcb33d610a7ad2c953f8ca877a614cfed"
+                "reference": "55d20ba999f060440234ac388034cf71c3ce2ebd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/e5acef8bcb33d610a7ad2c953f8ca877a614cfed",
-                "reference": "e5acef8bcb33d610a7ad2c953f8ca877a614cfed",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/55d20ba999f060440234ac388034cf71c3ce2ebd",
+                "reference": "55d20ba999f060440234ac388034cf71c3ce2ebd",
                 "shasum": ""
             },
             "require": {
@@ -672,7 +672,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2018-03-16T20:32:19+00:00"
+            "time": "2018-03-18T20:17:18+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -2319,12 +2319,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "ed30f449bb4bafa8d5dd469be820ee6ca220137c"
+                "reference": "84175cbbfbf80f135ba5087bd70f7cf69d10bd78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/ed30f449bb4bafa8d5dd469be820ee6ca220137c",
-                "reference": "ed30f449bb4bafa8d5dd469be820ee6ca220137c",
+                "url": "https://api.github.com/repos/symfony/config/zipball/84175cbbfbf80f135ba5087bd70f7cf69d10bd78",
+                "reference": "84175cbbfbf80f135ba5087bd70f7cf69d10bd78",
                 "shasum": ""
             },
             "require": {
@@ -2373,7 +2373,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2018-02-19T12:10:10+00:00"
+            "time": "2018-03-19T22:45:52+00:00"
         },
         {
             "name": "symfony/console",
@@ -2381,12 +2381,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "cf18b02f10358e5fa67f413b0f4fa634a1d1f999"
+                "reference": "0c95b92bf7c5ca280d28fab91fe9d4f6a9929df2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/cf18b02f10358e5fa67f413b0f4fa634a1d1f999",
-                "reference": "cf18b02f10358e5fa67f413b0f4fa634a1d1f999",
+                "url": "https://api.github.com/repos/symfony/console/zipball/0c95b92bf7c5ca280d28fab91fe9d4f6a9929df2",
+                "reference": "0c95b92bf7c5ca280d28fab91fe9d4f6a9929df2",
                 "shasum": ""
             },
             "require": {
@@ -2441,7 +2441,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-15T16:32:50+00:00"
+            "time": "2018-03-19T22:38:22+00:00"
         },
         {
             "name": "symfony/dependency-injection",
@@ -2449,12 +2449,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "f9b6c95fec82e88dca3e3133c5711e36906a1809"
+                "reference": "e003f18a39f5a313651847fc67ba3da10e1b9daa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/f9b6c95fec82e88dca3e3133c5711e36906a1809",
-                "reference": "f9b6c95fec82e88dca3e3133c5711e36906a1809",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/e003f18a39f5a313651847fc67ba3da10e1b9daa",
+                "reference": "e003f18a39f5a313651847fc67ba3da10e1b9daa",
                 "shasum": ""
             },
             "require": {
@@ -2512,7 +2512,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-05T18:28:38+00:00"
+            "time": "2018-03-19T17:34:12+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -2918,12 +2918,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "57653508ed1bfd94de759fa564c4f4364ba89a5d"
+                "reference": "092871ad2d511b29191f4684bbd6b803e2f80aed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/57653508ed1bfd94de759fa564c4f4364ba89a5d",
-                "reference": "57653508ed1bfd94de759fa564c4f4364ba89a5d",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/092871ad2d511b29191f4684bbd6b803e2f80aed",
+                "reference": "092871ad2d511b29191f4684bbd6b803e2f80aed",
                 "shasum": ""
             },
             "require": {
@@ -2932,8 +2932,8 @@
             },
             "require-dev": {
                 "psr/container": "^1.0",
-                "symfony/debug": "~2.7",
-                "symfony/phpunit-bridge": "~3.3@dev"
+                "symfony/debug": "^2.7",
+                "symfony/phpunit-bridge": "^3.3"
             },
             "type": "library",
             "extra": {
@@ -2976,7 +2976,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-03-14T15:30:56+00:00"
+            "time": "2018-03-20T04:31:47+00:00"
         },
         {
             "name": "upstatement/routes",

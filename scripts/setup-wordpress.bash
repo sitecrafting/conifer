@@ -72,12 +72,15 @@ EOF
   # TODO check before running somehow?
   # install/activate plugins and theme
   wp --path="$WP_DIR" plugin uninstall hello akismet
-  wp --path="$WP_DIR" plugin activate timber-library conifer
+  wp --path="$WP_DIR" plugin install --activate timber-library
+  wp --path="$WP_DIR" plugin activate conifer
   wp --path="$WP_DIR" theme activate groot
 
   # uninstall stock themes
   wp --path="$WP_DIR" theme uninstall twentyten twentyeleven twentytwelve \
     twentythirteen twentyfourteen twentyfifteen twentysixteen twentyseventeen
+
+  # TODO configure rewrite rules
 
 }
 
