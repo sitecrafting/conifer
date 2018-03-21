@@ -78,6 +78,18 @@ class PostTest extends Base {
   }
 
   public function test_get_blog_url() {
-    $this->markTestSkipped();
+    WP_Mock::userFunction('get_option', [
+      'times'   => 1,
+      'args'    => 'page_for_posts',
+      'return'  => 456,
+    ]);
+
+    WP_Mock::userFunction('get_permalink', [
+      'times'   => 1,
+      'args'    => 456,
+      'return'  => 'https://www.sitecrafting.com',
+    ]);
+
+    $this->assertEquals('https://www.sitecrafting.com', Page::get_blog_url());
   }
 }
