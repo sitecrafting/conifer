@@ -80,7 +80,8 @@ EOF
   wp --path="$WP_DIR" theme uninstall twentyten twentyeleven twentytwelve \
     twentythirteen twentyfourteen twentyfifteen twentysixteen twentyseventeen
 
-  # TODO configure rewrite rules
+  wp --path="$WP_DIR" option set permalink_structure '/%postname%/'
+  wp --path="$WP_DIR" rewrite flush
 
 }
 
