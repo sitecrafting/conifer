@@ -35,5 +35,5 @@ class Menu extends TimberMenu {
 	}
 }
 
-?>
+
 

@@ -25,4 +25,4 @@ abstract class AbstractBase {
 	abstract public function render( $atts = [] );
 }
 
-?>
+

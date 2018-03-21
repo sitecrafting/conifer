@@ -24,4 +24,4 @@ abstract class EmailNotifier {
   abstract public function to();
 }
 
-?>
+

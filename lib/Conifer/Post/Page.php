@@ -67,4 +67,4 @@ class Page extends Post {
   }
 }
 
-?>
+

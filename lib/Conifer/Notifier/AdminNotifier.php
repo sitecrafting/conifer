@@ -22,4 +22,4 @@ class AdminNotifier extends EmailNotifier {
   }
 }
 
-?>
+

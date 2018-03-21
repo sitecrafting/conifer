@@ -53,4 +53,4 @@ class SimpleNotifier extends EmailNotifier {
   }
 }
 
-?>
+
