@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ba58434cd96d1cb9bc9f78be95aef988",
+    "content-hash": "a70b20e812336a8d5f1a5fa510a6baa2",
     "packages": [],
     "packages-dev": [
         {
@@ -640,12 +640,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "55d20ba999f060440234ac388034cf71c3ce2ebd"
+                "reference": "544ac72ac141c6af773936003a42d7e9902f8d5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/55d20ba999f060440234ac388034cf71c3ce2ebd",
-                "reference": "55d20ba999f060440234ac388034cf71c3ce2ebd",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/544ac72ac141c6af773936003a42d7e9902f8d5c",
+                "reference": "544ac72ac141c6af773936003a42d7e9902f8d5c",
                 "shasum": ""
             },
             "require": {
@@ -672,7 +672,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2018-03-18T20:17:18+00:00"
+            "time": "2018-03-21T02:32:16+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -2258,6 +2258,57 @@
             "time": "2018-03-17T04:53:40+00:00"
         },
         {
+            "name": "squizlabs/php_codesniffer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "cfe7de3af19a0b1ba2642b21e20ac19720c768c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/cfe7de3af19a0b1ba2642b21e20ac19720c768c2",
+                "reference": "cfe7de3af19a0b1ba2642b21e20ac19720c768c2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-simplexml": "*",
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0 || ^6.0 || ^7.0"
+            },
+            "bin": [
+                "bin/phpcs",
+                "bin/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2018-03-20T22:13:47+00:00"
+        },
+        {
             "name": "symfony/class-loader",
             "version": "dev-master",
             "source": {
@@ -2381,12 +2432,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "0c95b92bf7c5ca280d28fab91fe9d4f6a9929df2"
+                "reference": "851ba3618b9ecce197c225526c05504c6e83ca16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/0c95b92bf7c5ca280d28fab91fe9d4f6a9929df2",
-                "reference": "0c95b92bf7c5ca280d28fab91fe9d4f6a9929df2",
+                "url": "https://api.github.com/repos/symfony/console/zipball/851ba3618b9ecce197c225526c05504c6e83ca16",
+                "reference": "851ba3618b9ecce197c225526c05504c6e83ca16",
                 "shasum": ""
             },
             "require": {
@@ -2441,7 +2492,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-19T22:38:22+00:00"
+            "time": "2018-03-20T14:41:21+00:00"
         },
         {
             "name": "symfony/dependency-injection",
@@ -2449,12 +2500,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "e003f18a39f5a313651847fc67ba3da10e1b9daa"
+                "reference": "530e4c3b0002acbcfec719746af3fb767b5b1e3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/e003f18a39f5a313651847fc67ba3da10e1b9daa",
-                "reference": "e003f18a39f5a313651847fc67ba3da10e1b9daa",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/530e4c3b0002acbcfec719746af3fb767b5b1e3c",
+                "reference": "530e4c3b0002acbcfec719746af3fb767b5b1e3c",
                 "shasum": ""
             },
             "require": {
@@ -2512,7 +2563,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-19T17:34:12+00:00"
+            "time": "2018-03-20T18:23:30+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
