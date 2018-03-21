@@ -12,42 +12,42 @@ namespace Conifer\Post;
  * @package Conifer
  */
 trait HasCustomAdminColumns {
-	/**
-	 * Add a custom column to the admin for the given post type, with content provided
-	 * through a callback.
-	 * @param string   $key      the $columns array key to add
-	 * @param string   $label    label for the column header
-	 * @param string   $postType the post type, for inferring which filters/actions to hook into
-	 * @param callable $getValue a callback to get the value to display in the custom column for
-	 * a given post. Takes a post ID as its sole parameter.
-	 */
-	public static function add_admin_column( $key, $label, $postType, callable $getValue ) {
-		if ($postType == 'page' || $postType == 'post') {
-			// e.g. manage_pages_columns
-			$addHook = "manage_{$postType}s_columns";
+  /**
+   * Add a custom column to the admin for the given post type, with content provided
+   * through a callback.
+   * @param string   $key      the $columns array key to add
+   * @param string   $label    label for the column header
+   * @param string   $postType the post type, for inferring which filters/actions to hook into
+   * @param callable $getValue a callback to get the value to display in the custom column for
+   * a given post. Takes a post ID as its sole parameter.
+   */
+  public static function add_admin_column( $key, $label, $postType, callable $getValue ) {
+    if ($postType == 'page' || $postType == 'post') {
+      // e.g. manage_pages_columns
+      $addHook = "manage_{$postType}s_columns";
 
-			// e.g. manage_pages_custom_column
-			$displayHook = "manage_{$postType}s_custom_column";
+      // e.g. manage_pages_custom_column
+      $displayHook = "manage_{$postType}s_custom_column";
 
-		} else {
-			// e.g. manage_my_post_type_posts_columns
-			$addHook = "manage_{$postType}_posts_columns";
+    } else {
+      // e.g. manage_my_post_type_posts_columns
+      $addHook = "manage_{$postType}_posts_columns";
 
-			// e.g. manage_my_post_type_posts_custom_column
-			$displayHook = "manage_{$postType}_posts_custom_column";
-		}
+      // e.g. manage_my_post_type_posts_custom_column
+      $displayHook = "manage_{$postType}_posts_custom_column";
+    }
 
-		// Add the column to the admin
-		add_filter($addHook, function(array $columns) use($key, $label) {
-			$columns[$key] = $label;
-			return $columns;
-		});
+    // Add the column to the admin
+    add_filter($addHook, function(array $columns) use($key, $label) {
+      $columns[$key] = $label;
+      return $columns;
+    });
 
-		// register a callback to display the value for this column
-		add_action($displayHook, function($column, $id) use($key, $getValue) {
-			if( $column === $key ) {
-				echo $getValue($id);
-			}
-		}, $priority = 10, $numArgs = 2 );
-	}
+    // register a callback to display the value for this column
+    add_action($displayHook, function($column, $id) use($key, $getValue) {
+      if( $column === $key ) {
+        echo $getValue($id);
+      }
+    }, $priority = 10, $numArgs = 2 );
+  }
 }
