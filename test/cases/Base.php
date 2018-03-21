@@ -38,7 +38,10 @@ abstract class Base extends TestCase {
       throw new \InvalidArgumentException('$props["ID"] must be numeric');
     }
 
-    $post = new \stdClass();
+    // allow specifying which class this post will be
+    $post = $this->getMockBuilder($options['class'] ?? \Timber\Post::class)
+      ->disableOriginalConstructor()
+      ->getMock();
 
     foreach ($props as $prop => $value) {
       $post->{$prop} = $value;
