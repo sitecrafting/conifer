@@ -32,7 +32,7 @@ abstract class Post extends TimberPost {
    */
   protected static $BLOG_URL;
 
-  protected $related_by = [];
+  protected $related_by          = [];
   protected $related_post_counts = [];
 
   /**
@@ -76,7 +76,7 @@ abstract class Post extends TimberPost {
     return array_reduce($terms, function(
       array $grouped,
       WP_Term $term
-    ) use($taxonomy) : array {
+    ) use ($taxonomy) : array {
       // compose a query for all posts for $category
       $query = [
         'post_type' => static::POST_TYPE,
@@ -106,7 +106,7 @@ abstract class Post extends TimberPost {
    * @return string the URL
    */
   public static function get_blog_url() {
-    if( ! static::$BLOG_URL ) {
+    if ( ! static::$BLOG_URL ) {
       // haven't fetched the URL yet...go get it
       $page = Page::get_blog_page();
 
@@ -234,7 +234,7 @@ abstract class Post extends TimberPost {
     int $postCount = self::RELATED_POST_COUNT
   ) : array {
     // Get any previously queried related posts
-    $relatedPosts = $this->related_by[$taxonomy] ?? [];
+    $relatedPosts     = $this->related_by[$taxonomy] ?? [];
     $relatedPostCount = $this->related_post_counts[$taxonomy] ?? null;
 
     if (count($relatedPosts) < $postCount && !isset($relatedPostCount)) {

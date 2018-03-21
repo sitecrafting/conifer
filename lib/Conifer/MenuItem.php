@@ -14,9 +14,9 @@ use Timber\MenuItem as TimberMenuItem;
  * @package Conifer
  */
 class MenuItem extends TimberMenuItem {
-  const CLASS_HAS_CHILDREN            = 'menu-item-has-children';
-  const CLASS_CURRENT                     = 'current-menu-item';
-  const CLASS_CURRENT_ANCESTOR    = 'current-menu-ancestor';
+  const CLASS_HAS_CHILDREN     = 'menu-item-has-children';
+  const CLASS_CURRENT          = 'current-menu-item';
+  const CLASS_CURRENT_ANCESTOR = 'current-menu-ancestor';
 
   /**
    * Whether to display this item's children. Typically for use in
@@ -38,8 +38,8 @@ class MenuItem extends TimberMenuItem {
    * @return boolean
    */
   public function points_to_current_post_or_ancestor() {
-    return  in_array( static::CLASS_CURRENT, $this->classes )
-      ||  in_array( static::CLASS_CURRENT_ANCESTOR, $this->classes );
+    return in_array(static::CLASS_CURRENT, $this->classes)
+      ||  in_array(static::CLASS_CURRENT_ANCESTOR, $this->classes);
   }
 
   /**

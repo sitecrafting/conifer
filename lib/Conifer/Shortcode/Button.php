@@ -27,11 +27,11 @@ class Button extends AbstractBase {
    * @return string the modified <a> tag HTML
    */
   public function render( $atts = [], $html = '' ) {
-    if( $html ) {
+    if ( $html ) {
       $dom = new DOMDocument();
       $dom->loadHTML($html);
 
-      if( $link = $dom->getElementsByTagName('a')->item(0) ) {
+      if ($link = $dom->getElementsByTagName('a')->item(0)) {
         $link->setAttribute('class', static::BUTTON_CLASS);
         $html = $dom->saveHTML();
       }

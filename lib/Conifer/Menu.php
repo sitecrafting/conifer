@@ -29,8 +29,8 @@ class Menu extends TimberMenu {
    * @return Conifer\MenuItem the current top-level MenuItem
    */
   public function get_current_top_level_item() {
-    foreach( $this->get_items as $item ) {
-      if( $item->points_to_current_post_or_ancestor() ) {
+    foreach ( $this->get_items as $item ) {
+      if ( $item->points_to_current_post_or_ancestor() ) {
         return $item;
       }
     }

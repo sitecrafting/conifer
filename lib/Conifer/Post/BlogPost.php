@@ -34,9 +34,9 @@ class BlogPost extends Post {
 
     // filter by month/year (YYYY-MM) - all other formats are ignored
     if (isset($request['month']) && $date = DateTime::createFromFormat('Y-m', $request['month'])) {
-      $query['year'] = $date->format('Y');
+      $query['year']     = $date->format('Y');
       $query['monthnum'] = $date->format('m');
-    } elseif(isset($request['year']) && $date = DateTime::createFromFormat('Y', $request['year'])) {
+    } elseif (isset($request['year']) && $date = DateTime::createFromFormat('Y', $request['year'])) {
       $query['year'] = $date->format('Y');
     }
 

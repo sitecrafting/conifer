@@ -22,7 +22,7 @@ trait HasCustomAdminFilters {
    * a given post. Takes a post ID as its sole parameter.
    */
   public static function add_admin_filter( $name, $options, $postType, callable $queryModifier ) {
-    add_action('restrict_manage_posts', function() use($name, $options, $postType) {
+    add_action('restrict_manage_posts', function() use ($name, $options, $postType) {
 
       // only want to render the filter menu if we're on the edit screen for the given post type
       if ( static::allow_custom_filtering($postType) ) {
@@ -40,8 +40,8 @@ trait HasCustomAdminFilters {
       }
     });
 
-    add_action('pre_get_posts', function(\WP_Query $query) use($name, $postType, $queryModifier) {
-      if( static::querying_by_custom_filter($name, $postType, $query) ) {
+    add_action('pre_get_posts', function(\WP_Query $query) use ($name, $postType, $queryModifier) {
+      if ( static::querying_by_custom_filter($name, $postType, $query) ) {
         $queryModifier($query, $_GET[$name]);
       }
     });

@@ -125,8 +125,8 @@ abstract class AbstractBase {
    * Constructor
    */
   public function __construct() {
-    $this->errors = [];
-    $this->fields = [];
+    $this->errors  = [];
+    $this->fields  = [];
     $this->success = false;
   }
 
@@ -308,7 +308,7 @@ abstract class AbstractBase {
    * @return array            an array of error arrays
    */
   public function get_errors_for(string $fieldName) : array {
-    return array_filter( $this->get_errors(), function(array $error) use($fieldName) {
+    return array_filter( $this->get_errors(), function(array $error) use ($fieldName) {
       return $error['field'] === $fieldName;
     });
   }

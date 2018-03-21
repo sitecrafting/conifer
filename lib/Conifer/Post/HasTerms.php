@@ -45,7 +45,7 @@ trait HasTerms {
     return array_reduce(static::get_faculty_categories(), function(
       array $grouped,
       WP_Term $term
-    ) use($taxonomy) : array {
+    ) use ($taxonomy) : array {
       // compose a query for all posts for $category
       $query = [
         'post_type' => static::POST_TYPE,

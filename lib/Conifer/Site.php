@@ -68,7 +68,7 @@ class Site extends TimberSite {
     parent::__construct();
 
     $this->script_directory_cascade = [get_stylesheet_directory() . '/js/'];
-    $this->style_directory_cascade = [get_stylesheet_directory() . '/'];
+    $this->style_directory_cascade  = [get_stylesheet_directory() . '/'];
   }
 
   /**
@@ -176,8 +176,8 @@ class Site extends TimberSite {
       'project-modernizr',
       $this->get_script_uri('modernizr/modernizr.custom.53630.js'),
       $dependencies = [],
-      $version = $this->get_assets_version(),
-      $inFooter = false
+      $version      = $this->get_assets_version(),
+      $inFooter     = false
     );
 
 
@@ -188,13 +188,13 @@ class Site extends TimberSite {
       'project-css',
       $this->get_stylesheet_uri('style.css'),
       $dependencies = [],
-      $version = $this->get_assets_version()
+      $version      = $this->get_assets_version()
     );
     wp_enqueue_style(
       'project-print-css',
       $this->get_stylesheet_uri('print.css'),
       $dependencies = [],
-      $version = $this->get_assets_version(),
+      $version      = $this->get_assets_version(),
       'print'
     );
   }
@@ -244,7 +244,7 @@ class Site extends TimberSite {
    * @return array the Timber context
    */
   public function get_context_with_post( Post $post ) {
-    $context = Timber::get_context();
+    $context         = Timber::get_context();
     $context['post'] = $post;
     return $context;
   }
@@ -256,7 +256,7 @@ class Site extends TimberSite {
    * @return array the Timber context
    */
   public function get_context_with_posts( array $posts ) {
-    $context = Timber::get_context();
+    $context          = Timber::get_context();
     $context['posts'] = $posts;
     return $context;
   }
@@ -268,7 +268,7 @@ class Site extends TimberSite {
    * @return array the updated context
    */
   public function add_to_context( array $context ) : array {
-    $context['site'] = $this;
+    $context['site']         = $this;
     $context['primary_menu'] = new Menu( 'primary' );
     $context['body_classes'] = get_body_class();
     $context['search_query'] = get_search_query();
@@ -309,7 +309,7 @@ class Site extends TimberSite {
    */
   public function register_twig_filters() {
     add_filter('get_twig', function(Twig_Environment $twig) {
-      foreach( $this->twig_filters as $name => $callable ) {
+      foreach ( $this->twig_filters as $name => $callable ) {
         $filter = new Twig_SimpleFilter( $name, $callable );
         $twig->addFilter( $filter );
       }
@@ -326,7 +326,7 @@ class Site extends TimberSite {
    */
   public function register_twig_functions() {
     add_filter('get_twig', function(Twig_Environment $twig) {
-      foreach( $this->twig_functions as $name => $callable ) {
+      foreach ( $this->twig_functions as $name => $callable ) {
         $function = new Twig_SimpleFunction( $name, $callable );
         $twig->addFunction( $function );
       }
@@ -434,8 +434,8 @@ class Site extends TimberSite {
    * @return the hash for
    */
   public function get_assets_version() : string {
-    if(!$this->assets_version && is_readable($this->get_theme_file('assets.version')) ) {
-      $contents = file_get_contents($this->get_theme_file('assets.version'));
+    if (!$this->assets_version && is_readable($this->get_theme_file('assets.version')) ) {
+      $contents             = file_get_contents($this->get_theme_file('assets.version'));
       $this->assets_version = trim($contents);
     }
 

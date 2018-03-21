@@ -28,7 +28,7 @@ abstract class AbstractBase {
    */
   public static function add_twig_functions( Site $site ) {
     $wrapper = new static( $site );
-    foreach( $wrapper->get_functions() as $name => $closure ) {
+    foreach ( $wrapper->get_functions() as $name => $closure ) {
       $site->add_twig_function( $name, $closure );
     }
   }

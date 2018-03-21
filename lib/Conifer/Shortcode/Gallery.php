@@ -22,7 +22,7 @@ class Gallery extends AbstractBase {
   public function render( $atts = [] ) {
     $data = [];
 
-    if( $atts['ids'] ) {
+    if ( $atts['ids'] ) {
       // Get an array of IDs
       $ids = explode( ',', $atts['ids'] );
 

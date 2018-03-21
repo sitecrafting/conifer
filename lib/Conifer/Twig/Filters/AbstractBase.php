@@ -33,7 +33,7 @@ abstract class AbstractBase {
    */
   public static function add_twig_filters( Site $site ) {
     $wrapper = new static( $site );
-    foreach( $wrapper->get_filters() as $name => $closure ) {
+    foreach ( $wrapper->get_filters() as $name => $closure ) {
       $site->add_twig_filter( $name, $closure );
     }
   }

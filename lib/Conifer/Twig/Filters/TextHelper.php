@@ -11,7 +11,7 @@ namespace Conifer\Twig\Filters;
  * @package Conifer
  */
 class TextHelper extends AbstractBase {
-  static protected $PLURALS = [
+  static protected $plurals = [
     'person' => 'people',
   ];
 
@@ -36,8 +36,8 @@ class TextHelper extends AbstractBase {
    */
   public function pluralize( $noun, $n ) {
     if ($n !== 1) {
-      $noun = isset(static::$PLURALS[$noun])
-        ? static::$PLURALS[$noun]
+      $noun = isset(static::$plurals[$noun])
+        ? static::$plurals[$noun]
         : $noun . 's';
     }
 
@@ -52,7 +52,7 @@ class TextHelper extends AbstractBase {
    * @return string
    */
   public function oxford_comma( array $items ) {
-    switch( count($items) ) {
+    switch (count($items)) {
       case 0:
         $list = '';
         break;

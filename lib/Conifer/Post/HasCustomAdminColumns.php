@@ -23,7 +23,7 @@ trait HasCustomAdminColumns {
    * a given post. Takes a post ID as its sole parameter.
    */
   public static function add_admin_column( $key, $label, $postType, callable $getValue ) {
-    if ($postType == 'page' || $postType == 'post') {
+    if ($postType === 'page' || $postType === 'post') {
       // e.g. manage_pages_columns
       $addHook = "manage_{$postType}s_columns";
 
@@ -39,16 +39,16 @@ trait HasCustomAdminColumns {
     }
 
     // Add the column to the admin
-    add_filter($addHook, function(array $columns) use($key, $label) {
+    add_filter($addHook, function(array $columns) use ($key, $label) {
       $columns[$key] = $label;
       return $columns;
     });
 
     // register a callback to display the value for this column
-    add_action($displayHook, function($column, $id) use($key, $getValue) {
-      if( $column === $key ) {
+    add_action($displayHook, function($column, $id) use ($key, $getValue) {
+      if ( $column === $key ) {
         echo $getValue($id);
       }
-    }, $priority = 10, $numArgs = 2 );
+    }, 10, 2);
   }
 }

@@ -9,4 +9,4 @@
  */
 
 // TODO copy what Timber does
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
