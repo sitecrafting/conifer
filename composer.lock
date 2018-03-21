@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a70b20e812336a8d5f1a5fa510a6baa2",
+    "hash": "5a82da580b27d3d277bc1b28a78fb44f",
+    "content-hash": "f93f79c8dc9f7a249aa5325f7e5d9de9",
     "packages": [],
     "packages-dev": [
         {
@@ -46,7 +47,7 @@
                 "GPL-2.0+"
             ],
             "description": "A mocking library to take the pain out of unit testing for WordPress",
-            "time": "2017-12-03T19:28:28+00:00"
+            "time": "2017-12-03 19:28:28"
         },
         {
             "name": "altorouter/altorouter",
@@ -97,7 +98,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2014-04-16T09:44:40+00:00"
+            "time": "2014-04-16 09:44:40"
         },
         {
             "name": "antecedent/patchwork",
@@ -138,7 +139,7 @@
                 "runkit",
                 "testing"
             ],
-            "time": "2018-02-19T18:52:50+00:00"
+            "time": "2018-02-19 18:52:50"
         },
         {
             "name": "asm89/twig-cache-extension",
@@ -192,7 +193,7 @@
                 "extension",
                 "twig"
             ],
-            "time": "2017-01-10T22:04:15+00:00"
+            "time": "2017-01-10 22:04:15"
         },
         {
             "name": "behat/behat",
@@ -275,7 +276,7 @@
                 "symfony",
                 "testing"
             ],
-            "time": "2017-11-27T10:37:56+00:00"
+            "time": "2017-11-27 10:37:56"
         },
         {
             "name": "behat/gherkin",
@@ -334,7 +335,7 @@
                 "gherkin",
                 "parser"
             ],
-            "time": "2017-08-30T11:04:43+00:00"
+            "time": "2017-08-30 11:04:43"
         },
         {
             "name": "behat/transliterator",
@@ -378,7 +379,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2017-04-04T11:38:05+00:00"
+            "time": "2017-04-04 11:38:05"
         },
         {
             "name": "composer/installers",
@@ -498,7 +499,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2017-12-29T09:13:20+00:00"
+            "time": "2017-12-29 09:13:20"
         },
         {
             "name": "container-interop/container-interop",
@@ -529,7 +530,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
-            "time": "2017-02-14T19:40:03+00:00"
+            "time": "2017-02-14 19:40:03"
         },
         {
             "name": "doctrine/instantiator",
@@ -584,7 +585,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2018-03-05T09:41:42+00:00"
+            "time": "2018-03-05 09:41:42"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -632,7 +633,7 @@
             "keywords": [
                 "test"
             ],
-            "time": "2018-02-24T08:30:36+00:00"
+            "time": "2018-02-24 08:30:36"
         },
         {
             "name": "johnpbloch/wordpress-core",
@@ -672,7 +673,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2018-03-21T02:32:16+00:00"
+            "time": "2018-03-21 02:32:16"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -721,7 +722,7 @@
             "keywords": [
                 "wordpress"
             ],
-            "time": "2018-01-29T14:49:29+00:00"
+            "time": "2018-01-29 14:49:29"
         },
         {
             "name": "mnsami/composer-custom-directory-installer",
@@ -773,7 +774,7 @@
                 "composer-installer",
                 "composer-plugin"
             ],
-            "time": "2017-08-14T19:50:19+00:00"
+            "time": "2017-08-14 19:50:19"
         },
         {
             "name": "mockery/mockery",
@@ -839,7 +840,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2018-03-07T06:00:02+00:00"
+            "time": "2018-03-07 06:00:02"
         },
         {
             "name": "myclabs/deep-copy",
@@ -889,7 +890,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-12-18T00:20:24+00:00"
+            "time": "2017-12-18 00:20:24"
         },
         {
             "name": "phar-io/manifest",
@@ -944,7 +945,7 @@
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
-            "time": "2017-04-07T07:07:10+00:00"
+            "time": "2017-04-07 07:07:10"
         },
         {
             "name": "phar-io/version",
@@ -991,7 +992,7 @@
                 }
             ],
             "description": "Library for handling version information and constraints",
-            "time": "2017-03-05T17:38:23+00:00"
+            "time": "2017-03-05 17:38:23"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1045,7 +1046,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2018-02-14T18:58:54+00:00"
+            "time": "2018-02-14 18:58:54"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -1092,7 +1093,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2018-02-14T19:00:58+00:00"
+            "time": "2018-02-14 19:00:58"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -1137,7 +1138,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2018-02-14T18:59:20+00:00"
+            "time": "2018-02-14 18:59:20"
         },
         {
             "name": "phpspec/prophecy",
@@ -1200,7 +1201,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2018-02-19T10:16:54+00:00"
+            "time": "2018-02-19 10:16:54"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1263,7 +1264,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-12-07T10:13:30+00:00"
+            "time": "2017-12-07 10:13:30"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1310,7 +1311,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2017-11-27T13:52:08+00:00"
+            "time": "2017-11-27 13:52:08"
         },
         {
             "name": "phpunit/php-text-template",
@@ -1351,7 +1352,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21T13:50:34+00:00"
+            "time": "2015-06-21 13:50:34"
         },
         {
             "name": "phpunit/php-timer",
@@ -1400,7 +1401,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2018-01-06T05:27:16+00:00"
+            "time": "2018-01-06 05:27:16"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -1449,7 +1450,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-11-27T08:47:38+00:00"
+            "time": "2017-11-27 08:47:38"
         },
         {
             "name": "phpunit/phpunit",
@@ -1533,7 +1534,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-03-15T16:51:04+00:00"
+            "time": "2018-03-15 16:51:04"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1592,7 +1593,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2018-01-07T17:10:51+00:00"
+            "time": "2018-01-07 17:10:51"
         },
         {
             "name": "psr/container",
@@ -1641,7 +1642,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-06-28T15:35:32+00:00"
+            "time": "2017-06-28 15:35:32"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1686,7 +1687,7 @@
             ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
-            "time": "2017-03-04T10:23:55+00:00"
+            "time": "2017-03-04 10:23:55"
         },
         {
             "name": "sebastian/comparator",
@@ -1750,7 +1751,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2018-02-01T13:46:46+00:00"
+            "time": "2018-02-01 13:46:46"
         },
         {
             "name": "sebastian/diff",
@@ -1802,7 +1803,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-12-14T11:32:19+00:00"
+            "time": "2017-12-14 11:32:19"
         },
         {
             "name": "sebastian/environment",
@@ -1853,7 +1854,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2018-03-02T16:25:54+00:00"
+            "time": "2018-03-02 16:25:54"
         },
         {
             "name": "sebastian/exporter",
@@ -1920,7 +1921,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2017-11-16T09:48:09+00:00"
+            "time": "2017-11-16 09:48:09"
         },
         {
             "name": "sebastian/global-state",
@@ -1971,7 +1972,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2017-11-16T09:49:42+00:00"
+            "time": "2017-11-16 09:49:42"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -2018,7 +2019,7 @@
             ],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
-            "time": "2017-11-16T09:50:04+00:00"
+            "time": "2017-11-16 09:50:04"
         },
         {
             "name": "sebastian/object-reflector",
@@ -2063,7 +2064,7 @@
             ],
             "description": "Allows reflection of object attributes, including inherited and non-public ones",
             "homepage": "https://github.com/sebastianbergmann/object-reflector/",
-            "time": "2018-01-07T16:00:13+00:00"
+            "time": "2018-01-07 16:00:13"
         },
         {
             "name": "sebastian/recursion-context",
@@ -2116,7 +2117,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2017-11-16T10:04:08+00:00"
+            "time": "2017-11-16 10:04:08"
         },
         {
             "name": "sebastian/resource-operations",
@@ -2158,7 +2159,7 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
-            "time": "2016-10-03T07:43:09+00:00"
+            "time": "2016-10-03 07:43:09"
         },
         {
             "name": "sebastian/version",
@@ -2201,7 +2202,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2016-10-03T07:35:21+00:00"
+            "time": "2016-10-03 07:35:21"
         },
         {
             "name": "sitecrafting/groot",
@@ -2255,7 +2256,7 @@
                 }
             ],
             "description": "The official SiteCrafting WordPress starter theme",
-            "time": "2018-03-17T04:53:40+00:00"
+            "time": "2018-03-17 04:53:40"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -2263,12 +2264,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "cfe7de3af19a0b1ba2642b21e20ac19720c768c2"
+                "reference": "7da8a3836ccb2aa50b8e530db651b5f5d51727fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/cfe7de3af19a0b1ba2642b21e20ac19720c768c2",
-                "reference": "cfe7de3af19a0b1ba2642b21e20ac19720c768c2",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/7da8a3836ccb2aa50b8e530db651b5f5d51727fb",
+                "reference": "7da8a3836ccb2aa50b8e530db651b5f5d51727fb",
                 "shasum": ""
             },
             "require": {
@@ -2306,7 +2307,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2018-03-20T22:13:47+00:00"
+            "time": "2018-03-21 04:04:05"
         },
         {
             "name": "symfony/class-loader",
@@ -2362,7 +2363,7 @@
             ],
             "description": "Symfony ClassLoader Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-02T06:49:52+00:00"
+            "time": "2017-10-02 06:49:52"
         },
         {
             "name": "symfony/config",
@@ -2424,7 +2425,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-19T22:45:52+00:00"
+            "time": "2018-03-19 22:45:52"
         },
         {
             "name": "symfony/console",
@@ -2492,7 +2493,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-20T14:41:21+00:00"
+            "time": "2018-03-20 14:41:21"
         },
         {
             "name": "symfony/dependency-injection",
@@ -2563,7 +2564,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-20T18:23:30+00:00"
+            "time": "2018-03-20 18:23:30"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -2626,7 +2627,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2018-03-09T17:46:25+00:00"
+            "time": "2018-03-09 17:46:25"
         },
         {
             "name": "symfony/filesystem",
@@ -2675,7 +2676,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2018-02-22T11:40:25+00:00"
+            "time": "2018-02-22 11:40:25"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2734,7 +2735,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2018-01-30T19:27:44+00:00"
+            "time": "2018-01-30 19:27:44"
         },
         {
             "name": "symfony/translation",
@@ -2802,7 +2803,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-02-22T11:40:25+00:00"
+            "time": "2018-02-22 11:40:25"
         },
         {
             "name": "symfony/yaml",
@@ -2860,7 +2861,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-02-22T11:40:25+00:00"
+            "time": "2018-02-22 11:40:25"
         },
         {
             "name": "theseer/tokenizer",
@@ -2900,7 +2901,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2017-04-07T12:08:54+00:00"
+            "time": "2017-04-07 12:08:54"
         },
         {
             "name": "timber/timber",
@@ -2961,7 +2962,7 @@
                 "timber",
                 "twig"
             ],
-            "time": "2018-02-11T03:10:08+00:00"
+            "time": "2018-02-11 03:10:08"
         },
         {
             "name": "twig/twig",
@@ -3027,7 +3028,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2018-03-20T04:31:47+00:00"
+            "time": "2018-03-20 04:31:47"
         },
         {
             "name": "upstatement/routes",
@@ -3078,7 +3079,7 @@
                 "routes",
                 "routing"
             ],
-            "time": "2016-07-06T12:53:24+00:00"
+            "time": "2016-07-06 12:53:24"
         },
         {
             "name": "webmozart/assert",
@@ -3128,7 +3129,47 @@
                 "check",
                 "validate"
             ],
-            "time": "2018-01-29T19:49:41+00:00"
+            "time": "2018-01-29 19:49:41"
+        },
+        {
+            "name": "wp-coding-standards/wpcs",
+            "version": "0.14.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
+                "reference": "cf6b310caad735816caef7573295f8a534374706"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/cf6b310caad735816caef7573295f8a534374706",
+                "reference": "cf6b310caad735816caef7573295f8a534374706",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3",
+                "squizlabs/php_codesniffer": "^2.9.0 || ^3.0.2"
+            },
+            "suggest": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3"
+            },
+            "type": "phpcodesniffer-standard",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/graphs/contributors"
+                }
+            ],
+            "description": "PHP_CodeSniffer rules (sniffs) to enforce WordPress coding conventions",
+            "keywords": [
+                "phpcs",
+                "standards",
+                "wordpress"
+            ],
+            "time": "2018-02-16 01:57:48"
         },
         {
             "name": "wpackagist-plugin/timber-library",
