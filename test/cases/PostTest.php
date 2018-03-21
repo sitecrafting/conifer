@@ -1,7 +1,7 @@
 <?php
-
 /**
  * Test the Conifer\Post class
+ *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
@@ -26,7 +26,7 @@ class PostTest extends Base {
             'array_field'   => ['hey', 'there'],
           ],
           'post_type'   => 'page',
-        ]
+        ],
       ],
       'return'  => 123,
     ]);
@@ -34,11 +34,11 @@ class PostTest extends Base {
     WP_Mock::userFunction('is_wp_error', [
       'times'   => 1,
       'args'    => 123,
-      'return'  => false
+      'return'  => false,
     ]);
 
     // Timber will look for a Post with ID=123
-    // when we call Page's constructor
+    // when we call Page's constructor.
     $this->mockPost(['ID' => 123]);
 
     $result = Page::create([

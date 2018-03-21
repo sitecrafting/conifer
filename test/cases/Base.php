@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Base class for Conifer test cases
  *
@@ -29,8 +28,10 @@ abstract class Base extends TestCase {
 
   /**
    * Mock a call to WordPress's get_post
+   *
    * @param array $props an array of WP_Post object properties
    * must include a valid (that is, a numeric) post ID
+   * @throws \InvalidArgumentException if $props["ID"] is not numeric
    */
   protected function mockPost(array $props, array $options = []) {
     if (empty($props['ID']) || !is_numeric($props['ID'])) {
@@ -43,10 +44,10 @@ abstract class Base extends TestCase {
       $post->{$prop} = $value;
     }
 
-    $options = array_merge(
-      ['times' => 1, 'args' => [$props['ID']]],
-      $options
-    );
+    $options = array_merge([
+      'times' => 1,
+      'args'  => [$props['ID']],
+    ], $options);
 
     WP_Mock::userFunction('get_post', [
       'times'   => 1,
@@ -59,7 +60,7 @@ abstract class Base extends TestCase {
 
   protected function getProtectedProperty($object, $name) {
     $reflection = new \ReflectionClass($object);
-    $property = $reflection->getProperty($name);
+    $property   = $reflection->getProperty($name);
     $property->setAccessible(true);
 
     return $property->getValue($object);
@@ -67,11 +68,9 @@ abstract class Base extends TestCase {
 
   protected function callProtectedMethod($object, $name, $args = []) {
     $reflection = new \ReflectionClass($object);
-    $method = $reflection->getMethod($name);
+    $method     = $reflection->getMethod($name);
     $method->setAccessible(true);
 
     return $method->invokeArgs($object, $args);
   }
 }
-
-?>

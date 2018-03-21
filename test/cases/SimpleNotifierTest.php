@@ -1,7 +1,7 @@
 <?php
-
 /**
  * Test the Conifer\Post class
+ *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
