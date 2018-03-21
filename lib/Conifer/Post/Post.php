@@ -15,7 +15,7 @@ use Conifer\Post\Image;
  */
 abstract class Post extends TimberPost {
   use HasTerms;
-    
+
   const RELATED_POST_COUNT = 3;
 
   /**
@@ -40,15 +40,15 @@ abstract class Post extends TimberPost {
    */
   abstract public static function post_type() : string;
 
-    /**
-     * Get all the posts matching the given query (defaults to the current/global WP query constraints)
-     *
-     * @param  array|string $query any valid Timber query
-     * @return array         an array of all matching post objects
-     */
-    public static function get_all( $query = false ) {
-        return \Timber::get_posts( $query, static::class );
-    }
+  /**
+   * Get all the posts matching the given query (defaults to the current/global WP query constraints)
+   *
+   * @param  array|string $query any valid Timber query
+   * @return array         an array of all matching post objects
+   */
+  public static function get_all( $query = false ) {
+    return \Timber::get_posts( $query, static::class );
+  }
 
   /**
    * Get all published posts of this type, grouped by terms of $taxonomy
@@ -74,58 +74,58 @@ abstract class Post extends TimberPost {
     //  * the term
     //  * the term's corresponding posts
     return array_reduce($terms, function(
-        array $grouped,
-        WP_Term $term
-      ) use($taxonomy) : array {
-        // compose a query for all posts for $category
-        $query = [
-          'post_type' => static::POST_TYPE,
-          'tax_query' => [
-            [
-              'taxonomy' => $taxonomy,
-              'terms'    => $term->term_id,
-            ],
+      array $grouped,
+      WP_Term $term
+    ) use($taxonomy) : array {
+      // compose a query for all posts for $category
+      $query = [
+        'post_type' => static::POST_TYPE,
+        'tax_query' => [
+          [
+            'taxonomy' => $taxonomy,
+            'terms'    => $term->term_id,
           ],
-        ];
+        ],
+      ];
 
-        // group this term with its respective posts
-        $grouped[] = [
-          'term' => $term,
-          'posts'  => static::get_all($query),
-        ];
+      // group this term with its respective posts
+      $grouped[] = [
+        'term' => $term,
+        'posts'  => static::get_all($query),
+      ];
 
-        // return the grouped posts so far
-        return $grouped;
-      }, []);
+      // return the grouped posts so far
+      return $grouped;
+    }, []);
   }
 
-    /**
-     * Get the URL of the blog landing page
-     * (what WP calls the "post archive" page)
-     *
-     * @return string the URL
-     */
-    public static function get_blog_url() {
-        if( ! static::$BLOG_URL ) {
-            // haven't fetched the URL yet...go get it
-            $page = Page::get_blog_page();
+  /**
+   * Get the URL of the blog landing page
+   * (what WP calls the "post archive" page)
+   *
+   * @return string the URL
+   */
+  public static function get_blog_url() {
+    if( ! static::$BLOG_URL ) {
+      // haven't fetched the URL yet...go get it
+      $page = Page::get_blog_page();
 
-            // cache it
-            static::$BLOG_URL = $page->link();
-        }
-
-        return static::$BLOG_URL;
+      // cache it
+      static::$BLOG_URL = $page->link();
     }
 
-    /**
-     * Check whether a post by the given ID exists
-     *
-     * @param  int $id the post ID to check for
-     * @return boolean     true if the post exists, false otherwise
-     */
-    public static function exists( $id ) {
-        return is_string( get_post_status( $id ) );
-    }
+    return static::$BLOG_URL;
+  }
+
+  /**
+   * Check whether a post by the given ID exists
+   *
+   * @param  int $id the post ID to check for
+   * @return boolean     true if the post exists, false otherwise
+   */
+  public static function exists( $id ) {
+    return is_string( get_post_status( $id ) );
+  }
 
   /**
    * Create a new post from an array of data

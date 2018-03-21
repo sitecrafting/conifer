@@ -12,23 +12,23 @@ namespace Conifer\Post;
  * @package Conifer
  */
 trait HasTerms {
-    /**
-     * Get the tags for this Post
-     *
-     * @return array an array of TimberTerm objects
-     */
-    public function get_tags() {
-        return $this->get_terms('tag');
-    }
+  /**
+   * Get the tags for this Post
+   *
+   * @return array an array of TimberTerm objects
+   */
+  public function get_tags() {
+    return $this->get_terms('tag');
+  }
 
-    /**
-     * Get the categories for this Post
-     *
-     * @return array an array of TimberTerm objects
-     */
-    public function get_categories() {
-        return $this->get_terms('category');
-    }
+  /**
+   * Get the categories for this Post
+   *
+   * @return array an array of TimberTerm objects
+   */
+  public function get_categories() {
+    return $this->get_terms('category');
+  }
 
   /**
    * Get all published posts of this type, grouped by terms of $taxonomy

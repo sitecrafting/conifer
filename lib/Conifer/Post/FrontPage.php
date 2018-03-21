@@ -16,8 +16,8 @@ class FrontPage extends Page {
    *
    * @return \Conifer\Post\FrontPage a FrontPage object
    */
-    public static function get() {
-        return new static( get_option('page_on_front') );
-    }
+  public static function get() {
+    return new static(get_option('page_on_front'));
+  }
 }
 
