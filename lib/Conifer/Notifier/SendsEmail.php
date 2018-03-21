@@ -16,6 +16,7 @@ namespace Conifer\Notifier;
 trait SendsEmail {
   /**
    * Send an HTML email
+   *
    * @param array|string $to array or comma-separated list of email addresses
    * to send to
    * @param string $subject the email subject
@@ -36,6 +37,7 @@ trait SendsEmail {
 
   /**
    * Send a plaintext email
+   *
    * @param array|string $to array or comma-separated list of email addresses
    * to send to
    * @param string $subject the email subject
@@ -61,6 +63,7 @@ trait SendsEmail {
 
   /**
    * Send an HTML notification email
+   *
    * @param string $subject the email subject
    * @param string $message the body of the email
    * @param array $headers any additional headers to set
@@ -81,6 +84,7 @@ trait SendsEmail {
 
   /**
    * Send a plaintext notification email
+   *
    * @param string $subject the email subject
    * @param string $message the body of the email
    * @param array $headers any additional headers to set

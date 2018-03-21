@@ -14,31 +14,34 @@ use Conifer\Site;
  * @package Conifer
  */
 abstract class AbstractBase {
-	protected $site;
+    protected $site;
 
-	/**
-	 * Constructor
-	 * @param \Conifer\Site $site the Site object
-	 */
-	public function __construct( Site $site ) {
-		$this->site = $site;
-	}
+    /**
+     * Constructor
+     *
+     * @param \Conifer\Site $site the Site object
+     */
+    public function __construct( Site $site ) {
+        $this->site = $site;
+    }
 
-	/**
-	 * Register the Twig filters this class defines in get_filters()
-	 * on the central Site object
-	 * @param type \Conifer\Site $site the Site object to register filters on
-	 */
-	public static function add_twig_filters( Site $site ) {
-		$wrapper = new static( $site );
-		foreach( $wrapper->get_filters() as $name => $closure ) {
-			$site->add_twig_filter( $name, $closure );
-		}
-	}
+    /**
+     * Register the Twig filters this class defines in get_filters()
+     * on the central Site object
+     *
+     * @param type \Conifer\Site $site the Site object to register filters on
+     */
+    public static function add_twig_filters( Site $site ) {
+        $wrapper = new static( $site );
+        foreach( $wrapper->get_filters() as $name => $closure ) {
+            $site->add_twig_filter( $name, $closure );
+        }
+    }
 
-	/**
-	 * Must return an array of filters
-	 * @return array an associative array of callables, keyed by the filter name
-	 */
-	abstract public function get_filters();
+    /**
+     * Must return an array of filters
+     *
+     * @return array an associative array of callables, keyed by the filter name
+     */
+    abstract public function get_filters();
 }

@@ -32,12 +32,14 @@ namespace Conifer\Notifier;
 class SimpleNotifier extends EmailNotifier {
   /**
    * The email address(es) to send to
+   *
    * @var string|array
    */
   protected $to;
 
   /**
    * Constructor. Pass the to email here.
+   *
    * @param string|array $o the email addresses to send to.
    * Can be a comma-separated string or an array
    */

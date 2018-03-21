@@ -30,53 +30,57 @@ use Conifer\Shortcode\Button;
 class Site extends TimberSite {
   /**
    * An array of directories where Conifer will look for JavaScript files
+   *
    * @var array
    */
   protected $script_directory_cascade;
 
   /**
     * An array of directories where Conifer will look for stylesheets
+   *
     * @var array
    */
   protected $style_directory_cascade;
 
-	/**
-	 * Assets version timestamp, used for cache-busting
-	 * @var string
-	 */
-	protected $assets_version;
+    /**
+     * Assets version timestamp, used for cache-busting
+     *
+     * @var string
+     */
+    protected $assets_version;
 
-	/**
-	 * @var array An associative array of Twig functions.
-	 * Keys are function names and values are closures.
-	 */
-	protected $twig_functions = [];
+    /**
+     * @var array An associative array of Twig functions.
+     * Keys are function names and values are closures.
+     */
+    protected $twig_functions = [];
 
-	/**
-	 * @var array An associative array of Twig filters.
-	 * Keys are function names and values are closures.
-	 */
-	protected $twig_filters = [];
+    /**
+     * @var array An associative array of Twig filters.
+     * Keys are function names and values are closures.
+     */
+    protected $twig_filters = [];
 
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		parent::__construct();
+    /**
+     * Constructor
+     */
+    public function __construct() {
+        parent::__construct();
 
     $this->script_directory_cascade = [get_stylesheet_directory().'/js/'];
     $this->style_directory_cascade = [get_stylesheet_directory().'/'];
-	}
+    }
 
-	/**
+    /**
    * Configure any WordPress hooks and register site-wide components, such as
    * nav menus
+     *
    * @param callable $userDefinedConfig a callback for configuring this Site
    * from theme code.
    * @param boole $configureDefaults whether to run Conifer's default
    * configuration code. Defaults to `true`.
-	 * @return Conifer\Site the Site object it was called on
-	 */
+     * @return Conifer\Site the Site object it was called on
+     */
   public function configure(
     callable $userDefinedConfig = null,
     bool $configureDefaults = true
@@ -91,8 +95,8 @@ class Site extends TimberSite {
       $userDefinedConfig->call($this);
     }
 
-		return $this;
-	}
+        return $this;
+    }
 
   /**
    * Configure useful defaults for Twig functions/filters,
@@ -117,7 +121,7 @@ class Site extends TimberSite {
    * Load Twig's String Loader and Debug extensions
    */
   public function configure_default_twig_extensions() {
-	  add_filter('get_twig', function(Twig_Environment $twig) {
+      add_filter('get_twig', function(Twig_Environment $twig) {
       $twig->addExtension( new Twig_Extension_StringLoader() );
 
       // Make debugging available through Twig
@@ -134,8 +138,8 @@ class Site extends TimberSite {
    * the Twig environment, before rendering a view
    */
   public function configure_default_twig_functions() {
-		Functions\WordPress::add_twig_functions( $this );
-		Functions\Image::add_twig_functions( $this );
+        Functions\WordPress::add_twig_functions( $this );
+        Functions\Image::add_twig_functions( $this );
   }
 
   /**
@@ -143,62 +147,63 @@ class Site extends TimberSite {
    * the Twig environment, before rendering a view
    */
   public function configure_default_twig_filters() {
-		// Add default Twig filters/functions
-		Filters\Number::add_twig_filters( $this );
-		Filters\TextHelper::add_twig_filters( $this );
-		Filters\TermHelper::add_twig_filters( $this );
-		Filters\Image::add_twig_filters( $this );
+        // Add default Twig filters/functions
+        Filters\Number::add_twig_filters( $this );
+        Filters\TextHelper::add_twig_filters( $this );
+        Filters\TermHelper::add_twig_filters( $this );
+        Filters\Image::add_twig_filters( $this );
   }
 
-	/**
-	 * Enqueue custom JS/CSS
-	 */
-	public function enqueue_scripts_and_styles() {
+    /**
+     * Enqueue custom JS/CSS
+     */
+    public function enqueue_scripts_and_styles() {
     // TODO these paths belong in the theme, see https://github.com/sitecrafting/groot/issues/1
 
-		/*
-		 * Enqueue our own project-specific JavaScript, including dependencies.
-		 * If you need to add a script to be enqueued and it's ok to do so site-wide, please consider doing so via Grunt
-		 * instead of here to reduce page load times.
-		 */
+        /*
+         * Enqueue our own project-specific JavaScript, including dependencies.
+         * If you need to add a script to be enqueued and it's ok to do so site-wide, please consider doing so via Grunt
+         * instead of here to reduce page load times.
+         */
     $this->enqueue_script(
       'project-common',
       'project-common.min.js',
       ['jquery']
     );
 
-		//modernizr
-		wp_enqueue_script(
-			'project-modernizr',
-			$this->get_script_uri('modernizr/modernizr.custom.53630.js'),
-			$dependencies = [],
-			$version = $this->get_assets_version(),
-			$inFooter = false
-		);
+        //modernizr
+        wp_enqueue_script(
+            'project-modernizr',
+            $this->get_script_uri('modernizr/modernizr.custom.53630.js'),
+            $dependencies = [],
+            $version = $this->get_assets_version(),
+            $inFooter = false
+        );
 
 
-		// NOTE: If you do need to enqueue additional scripts here, please enqueue them in the footer
-		// unless there's a very good reason not to.
+        // NOTE: If you do need to enqueue additional scripts here, please enqueue them in the footer
+        // unless there's a very good reason not to.
 
-		wp_enqueue_style(
-			'project-css',
-			$this->get_stylesheet_uri('style.css'),
-			$dependencies = [],
-			$version = $this->get_assets_version()
-		);
-		wp_enqueue_style(
-			'project-print-css',
-			$this->get_stylesheet_uri('print.css'),
-			$dependencies = [],
-			$version = $this->get_assets_version(),
-			'print'
-		);
-	}
+        wp_enqueue_style(
+            'project-css',
+            $this->get_stylesheet_uri('style.css'),
+            $dependencies = [],
+            $version = $this->get_assets_version()
+        );
+        wp_enqueue_style(
+            'project-print-css',
+            $this->get_stylesheet_uri('print.css'),
+            $dependencies = [],
+            $version = $this->get_assets_version(),
+            'print'
+        );
+    }
 
   /**
    * Enqueue a script within the script cascade path. Calls wp_enqueue_script
    * transparently, except that it defaults to enqueueing in the footer instead
    * of the header.
+   *
    * @param string $scriptHandle the script handle to register and enqueue
    * @param string $fileName the file to search for in the script cascade path
    * @param array $dependencies an array of registered dependency handles
@@ -220,79 +225,85 @@ class Site extends TimberSite {
   ) {
     if ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
-			$version = $this->get_assets_version();
+            $version = $this->get_assets_version();
     }
 
-		wp_enqueue_script(
+        wp_enqueue_script(
       $scriptName,
-			$this->get_script_uri($fileName),
-			$dependencies,
+            $this->get_script_uri($fileName),
+            $dependencies,
       $version,
-			$inFooter
-		);
+            $inFooter
+        );
   }
 
-	/**
-	 * Get the current Timber context, with the "post" index set to $post
-	 * @param Conifer\Post $post the current Post object
-	 * @return array the Timber context
-	 */
-	public function get_context_with_post( Post $post ) {
-		$context = Timber::get_context();
-		$context['post'] = $post;
-		return $context;
-	}
+    /**
+     * Get the current Timber context, with the "post" index set to $post
+     *
+     * @param Conifer\Post $post the current Post object
+     * @return array the Timber context
+     */
+    public function get_context_with_post( Post $post ) {
+        $context = Timber::get_context();
+        $context['post'] = $post;
+        return $context;
+    }
 
-	/**
-	 * Get the current Timber context, with the "posts" index set to $posts
-	 * @param array $posts an array of Conifer\Post objects
-	 * @return array the Timber context
-	 */
-	public function get_context_with_posts( array $posts ) {
-		$context = Timber::get_context();
-		$context['posts'] = $posts;
-		return $context;
-	}
+    /**
+     * Get the current Timber context, with the "posts" index set to $posts
+     *
+     * @param array $posts an array of Conifer\Post objects
+     * @return array the Timber context
+     */
+    public function get_context_with_posts( array $posts ) {
+        $context = Timber::get_context();
+        $context['posts'] = $posts;
+        return $context;
+    }
 
-	/**
-	 * Add arbitrary data to the site-wide context array
-	 * @param array $context the default context
-	 * @return array the updated context
-	 */
-	public function add_to_context( array $context ) : array {
-		$context['site'] = $this;
-		$context['primary_menu'] = new Menu( 'primary' );
-		$context['body_classes'] = get_body_class();
-		$context['search_query'] = get_search_query();
-		return $context;
-	}
+    /**
+     * Add arbitrary data to the site-wide context array
+     *
+     * @param array $context the default context
+     * @return array the updated context
+     */
+    public function add_to_context( array $context ) : array {
+        $context['site'] = $this;
+        $context['primary_menu'] = new Menu( 'primary' );
+        $context['body_classes'] = get_body_class();
+        $context['search_query'] = get_search_query();
+        return $context;
+    }
 
-	/**
-	 * Register a custom Twig filter to be added at render time via the
-	 * "get_twig" WordPress filter
-	 * @param string $name the name of the filter
-	 * @param callable $filter a callable that implements the custom filter
-	 * @return Conifer\Site the Site object it was called on
-	 */
-	public function add_twig_filter( string $name, callable $filter ) : Site {
-		$this->twig_filters[$name] = $filter;
-		return $this;
-	}
+    /**
+     * Register a custom Twig filter to be added at render time via the
+     * "get_twig" WordPress filter
+     *
+     * @param string $name the name of the filter
+     * @param callable $filter a callable that implements the custom filter
+     * @return Conifer\Site the Site object it was called on
+     */
+    public function add_twig_filter( string $name, callable $filter ) : Site {
+        $this->twig_filters[$name] = $filter;
+        return $this;
+    }
 
-	/**
-	 * Register a custom Twig function to be added at render time via
-	 * the "get_twig" WordPress filter
-	 * @param string $name the name of the function
-	 * @param callable $function a callable that implements the custom function
-	 * @return Conifer\Site the Site object it was called on
-	 */
-	public function add_twig_function( string $name, callable $function ) : Site {
-		$this->twig_functions[$name] = $function;
-		return $this;
-	}
+    /**
+     * Register a custom Twig function to be added at render time via
+     * the "get_twig" WordPress filter
+     *
+     * @param string $name the name of the function
+     * @param callable $function a callable that implements the custom function
+     * @return Conifer\Site the Site object it was called on
+     */
+    public function add_twig_function( string $name, callable $function ) : Site {
+        $this->twig_functions[$name] = $function;
+        return $this;
+    }
 
   /**
    * Register Conifer's Twig filters to be added to Twig
+   *
    * @param \Twig_Environment $twig Timber's internal Twig_Environment instance
    * @return \Twig_Environment the extended Twig instance
    */
@@ -305,10 +316,11 @@ class Site extends TimberSite {
 
       return $twig;
     });
-	}
+    }
 
   /**
    * Register Conifer's Twig functions to be added to Twig
+   *
    * @param \Twig_Environment $twig Timber's internal Twig_Environment instance
    * @return \Twig_Environment the extended Twig instance
    */
@@ -326,6 +338,7 @@ class Site extends TimberSite {
   /**
    * Get the array of directories where Conifer will look for JavaScript files
    * when `Site::enqueue_script()` is called.
+   *
    * @return array
    */
   public function get_script_directory_cascade() : array {
@@ -335,6 +348,7 @@ class Site extends TimberSite {
   /**
    * Get the array of directories where Conifer will look for CSS files
    * when `Site::enqueue_style()` is called.
+   *
    * @return array
    */
   public function get_style_directory_cascade() : array {
@@ -344,6 +358,7 @@ class Site extends TimberSite {
   /**
    * Set the array of directories where Conifer will look for CSS files
    * when `Site::enqueue_style()` is called.
+   *
    * @param array the list of directories to check. Conifer checks directories
    * in the order declared.
    */
@@ -354,6 +369,7 @@ class Site extends TimberSite {
   /**
    * Set the array of directories where Conifer will look for CSS files
    * when `Site::enqueue_style()` is called.
+   *
    * @param array the list of directories to check. Conifer checks directories
    * in the order declared.
    */
@@ -361,39 +377,42 @@ class Site extends TimberSite {
     $this->style_directory_cascade = $cascade;
   }
 
-	/**
-	 * Get the full URI for a script file. Returns the URI for the first file
+    /**
+     * Get the full URI for a script file. Returns the URI for the first file
    * it finds in the script directory cascade.
-	 * @param string $file the base file name
-	 * @return the script's full URI. If $file is not found in any
+     *
+     * @param string $file the base file name
+     * @return the script's full URI. If $file is not found in any
    * directory, returns the empty string.
-	 */
-	public function get_script_uri( string $file ) : string {
+     */
+    public function get_script_uri( string $file ) : string {
     if ($path = $this->find_file($file, $this->script_directory_cascade)) {
       return URLHelper::file_system_to_url($path);
     }
 
     return '';
-	}
+    }
 
-	/**
+    /**
    * Get the full URI for a stylesheet. Returns the URI for the first file
    * it finds in the style directory cascade.
-	 * @param string $file the base file name
-	 * @return the stylesheet's full URI. If $file is not found in any
+     *
+     * @param string $file the base file name
+     * @return the stylesheet's full URI. If $file is not found in any
    * directory, returns the empty string.
-	 */
-	public function get_stylesheet_uri( string $file ) : string {
+     */
+    public function get_stylesheet_uri( string $file ) : string {
     if ($path = $this->find_file($file, $this->style_directory_cascade)) {
       return URLHelper::file_system_to_url($path);
     }
 
     return '';
-	}
+    }
 
   /**
    * Search an arbitrary list of directories for $file and return the first
    * existent file path found
+   *
    * @param string $file the filename to search for in $dirs
    * @param array $dirs an array of directories to search for $file
    * @return the path of the first file found. If $file is not found in any
@@ -409,19 +428,20 @@ class Site extends TimberSite {
     return '';
   }
 
-	/**
-	 * Get the build-tool-generated hash for global assets
-	 * @return the hash for
-	 */
-	public function get_assets_version() : string {
-		if(!$this->assets_version && is_readable($this->get_theme_file('assets.version')) ) {
+    /**
+     * Get the build-tool-generated hash for global assets
+     *
+     * @return the hash for
+     */
+    public function get_assets_version() : string {
+        if(!$this->assets_version && is_readable($this->get_theme_file('assets.version')) ) {
       $contents = file_get_contents($this->get_theme_file('assets.version'));
       $this->assets_version = trim($contents);
-		}
+        }
 
-		// Cache the version in this object
-		return $this->assets_version;
-	}
+        // Cache the version in this object
+        return $this->assets_version;
+    }
 
   public function get_assets_version_filepath() : string {
     return $this->get_theme_file('assets.version');

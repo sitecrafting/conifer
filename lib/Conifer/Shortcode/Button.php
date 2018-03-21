@@ -21,6 +21,7 @@ class Button extends AbstractBase {
 
   /**
    * Get the HTML for rendering the button link
+   *
    * @param  array  $atts key/value attribute pairs specified by the shortcode. Button ignores these.
    * @param  string $html the raw markup between the start/end shortcode tags.
    * @return string the modified <a> tag HTML

@@ -102,18 +102,21 @@ abstract class AbstractBase {
   /**
    * The errors collected while processing this form, as arrays. Each error array
    * should have a "message" and a "field" index.
+   *
    * @var array
    */
   protected $errors;
 
   /**
    * Whether this form submission was processed successfully.
+   *
    * @var boolean
    */
   protected $success;
 
   /**
    * Process the form submission.
+   *
    * @param  array  $request the submitted form data, e.g. $_POST
    */
   abstract public function process(array $request);
@@ -132,6 +135,7 @@ abstract class AbstractBase {
    * and return the hydrated form object. Takes a variable number of arguments,
    * but the first argument MUST be the submitted values, as an associative
    * array. The remaining arguments, if any, are passed to the constructor.
+   *
    * @return \Conifer\Form\AbstractBase the form object
    */
   public static function create_from_submission(...$args) {
@@ -150,6 +154,7 @@ abstract class AbstractBase {
 
   /**
    * Get the fields configured for this form
+   *
    * @return array an array of form fields.
    */
   public function get_fields() : array {
@@ -158,6 +163,7 @@ abstract class AbstractBase {
 
   /**
    * Get a field by its name
+   *
    * @return array|null the field, or null if it doesn't exist
    */
   public function get_field(string $name) {
@@ -166,6 +172,7 @@ abstract class AbstractBase {
 
   /**
    * Get the current value for the given form field.
+   *
    * @param  string $name the name of the form field whose value you want.
    * @return the submitted value, or the existing persisted value if no
    * value has been submitted, or otherwise null.
@@ -176,6 +183,7 @@ abstract class AbstractBase {
 
   /**
    * Get the errors collected while processing this form, if any
+   *
    * @return array
    */
   public function get_errors() : array {
@@ -184,6 +192,7 @@ abstract class AbstractBase {
 
   /**
    * Whether this form has any validation errors
+   *
    * @return bool
    */
   public function has_errors() : bool {
@@ -192,6 +201,7 @@ abstract class AbstractBase {
 
   /**
    * Whether this form has been processed without errors
+   *
    * @return boolean
    */
   public function processed_successfully() : bool {
@@ -201,6 +211,7 @@ abstract class AbstractBase {
   /**
    * Get all unique error messages as a flat array,
    * e.g. for displaying in a list at the top of the <form> element
+   *
    * @return array
    */
   public function get_unique_error_messages() : array {
@@ -213,6 +224,7 @@ abstract class AbstractBase {
    * Add an error message to a specific field. You can also add errors
    * to the form globally or to some aspect of the form, as long as you use the same
    * $fieldName to refer to it at render time using get_errors_for().
+   *
    * @param string $fieldName the name of the field this error is associated with
    */
   public function add_error(string $fieldName, string $message) {
@@ -227,6 +239,7 @@ abstract class AbstractBase {
    * returning whether all validations pass.
    * NOTE: This doesn't add any errors explicitly; specific validators are
    * responsible for that.
+   *
    * @param  array  $submission the submitted fields as key/value pairs
    * @throws LogicException if validators are configured incorrectly
    * @return boolean            whether the submission is valid
@@ -270,6 +283,7 @@ abstract class AbstractBase {
   /**
    * Check whether a value was submitted for the given field,
    * adding an error if not.
+   *
    * @param  array $field the field array itself
    * @param  string $value the submitted value
    * @return boolean
@@ -289,6 +303,7 @@ abstract class AbstractBase {
 
   /**
    * Get errors for a specific field
+   *
    * @param  string $fieldName the name of the field to get errors for
    * @return array            an array of error arrays
    */
@@ -300,6 +315,7 @@ abstract class AbstractBase {
 
   /**
    * Get error messages for a specific field
+   *
    * @param  string $fieldName the name of the field to get errors for
    * @return array            an array of error message strings
    */
@@ -312,6 +328,7 @@ abstract class AbstractBase {
 
   /**
    * Get error messages for a specific field
+   *
    * @param  string $fieldName the name of the field to get errors for
    * @return array            an array of error message strings
    */
@@ -323,6 +340,7 @@ abstract class AbstractBase {
 
   /**
    * Hydrate this form object with the submitted values
+   *
    * @return \Conifer\Form\AbstractBase this form instance
    */
   public function hydrate(array $submission) : AbstractBase {
@@ -335,6 +353,7 @@ abstract class AbstractBase {
   /**
    * Get the submitted values, filtered down to only fields decared in the
    * constructor
+   *
    * @param array $submission the submitted fields
    * @return array the whitelisted fields
    */

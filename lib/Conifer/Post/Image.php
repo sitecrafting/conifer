@@ -16,6 +16,7 @@ use Timber\Image as TimberImage;
 class Image extends TimberImage {
   /**
    * Image sizes declared to WordPress, including default ones
+   *
    * @var array
    */
   protected static $declared_sizes = [];
@@ -23,6 +24,7 @@ class Image extends TimberImage {
   /**
    * Thin wrapper around add_image_size(). Remembers arguments so that the newly declared size
    * can be looked up later using get_sizes().
+   *
    * @link https://developer.wordpress.org/reference/functions/add_image_size/ WordPress Codec: add_image_size
    * @param string  $name   the name of the custom size to declare
    * @param int  $width  the width to declare for this size
@@ -41,6 +43,7 @@ class Image extends TimberImage {
 
   /**
    * Get all images sizes, including default ones
+   *
    * @return array
    */
   public static function get_sizes() {
@@ -77,6 +80,7 @@ class Image extends TimberImage {
 
   /**
    * Get dimension info for the custom image size $size
+   *
    * @param  array $size an array containing at least: "name", "width", and "height".
    * @return array
    */
@@ -90,6 +94,7 @@ class Image extends TimberImage {
 
   /**
    * Get the aspect ratio of the underlying image file.
+   *
    * @return mixed image aspect ratio as a float, or null if the image does not exist
    */
   public function aspect() {
@@ -100,6 +105,7 @@ class Image extends TimberImage {
 
   /**
    * Get the declared width of this image, optionally specific to the image size $size
+   *
    * @param  string $customSize if specified
    * @return int
    */
@@ -115,6 +121,7 @@ class Image extends TimberImage {
 
   /**
    * Get the declared height of this image, optionally specific to the image size $size
+   *
    * @param  string $customSize if specified
    * @return int
    */

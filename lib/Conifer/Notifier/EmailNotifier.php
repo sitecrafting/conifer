@@ -18,6 +18,7 @@ abstract class EmailNotifier {
 
   /**
    * Get the destination email address(es)
+   *
    * @return mixed the email(s) to send to, as a comma-separated string
    * or array
    */

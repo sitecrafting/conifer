@@ -25,6 +25,7 @@ class Page extends Post {
   /**
    * Get the top-level title to display from the nav structure, fall back
    * on this Page object's title it it's outside the nav hierarchy.
+   *
    * @param \Conifer\Post\Menu $menu the menu to look at to determine the title
    * @return string the title to display
    */
@@ -35,6 +36,7 @@ class Page extends Post {
 
   /**
    * Get the Blog Landing Page.
+   *
    * @return \Conifer\Post\Page
    */
   public static function get_blog_page() : Page {
@@ -43,6 +45,7 @@ class Page extends Post {
 
   /**
    * Get a page by its template filename, relative to the theme root.
+   *
    * @param string $template
    * @return Page the first page found matching the template
    */

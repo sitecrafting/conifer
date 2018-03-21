@@ -72,6 +72,7 @@ _SQL_;
 
   /**
    * Get related posts of the same type
+   *
    * @param  int $numPosts the number of posts to fetch.
    * @return array         an array of Conifer\Post\Post objects
    */

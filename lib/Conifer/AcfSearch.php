@@ -7,6 +7,7 @@ class AcfSearch {
 
   /**
    * list_searcheable_acf list all the custom fields we want to include in our search query
+   *
    * @return array list of custom fields
    */
   public static function list_searcheable_acf(){
@@ -35,6 +36,7 @@ class AcfSearch {
 
   /**
   * advanced_custom_search search that encompasses ACF/advanced custom fields and taxonomies and split expression before request
+   *
   * @param  query-part/string      $where    the initial "where" part of the search query
   * @param  object                 $wp_query
   * @return query-part/string      $where    the "where" part of the search query as we customized
@@ -75,6 +77,7 @@ class AcfSearch {
 
   /**
    * buildWhereClause build the where string to include in our search query
+   *
    * @param  array      $list_searcheable_acf       the list of searchable acf fields
    * @param  string     $tag                        the search value
    * @return string     $where                      where clause
@@ -131,6 +134,7 @@ class AcfSearch {
 
   /**
    * Build the WHERE clause for each ACF field to include in our search query
+   *
    * @param  string     $searchTerm             the search value
    * @param  array      $list_searcheable_acf   the list of searchable acf fields
    * @return string     $where                  part of the where clause

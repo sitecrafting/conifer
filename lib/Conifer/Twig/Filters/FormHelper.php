@@ -17,6 +17,7 @@ use Conifer\Form\AbstractBase as Form;
 class FormHelper extends AbstractBase {
   /**
    * Get the Twig functions to register
+   *
    * @return  array an associative array of callback functions, keyed by name
    */
   public function get_filters() {
@@ -28,6 +29,7 @@ class FormHelper extends AbstractBase {
 
   /**
    * Get the class to render for the form field, based on its error state
+   *
    * @param  \Conifer\Form\AbstractBase $form a form object
    * @param  string $fieldName the name of the field being rendered
    * @return string            the HTML class(es) to render

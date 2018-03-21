@@ -15,17 +15,19 @@ use Conifer\Post\Image;
  */
 abstract class Post extends TimberPost {
   use HasTerms;
-	
+    
   const RELATED_POST_COUNT = 3;
 
   /**
    * When instantiating TimberImages, create instances of this class
+   *
    * @var string
    */
   public $ImageClass = '\Conifer\Post\Image';
 
   /**
    * The default blog landing page URL
+   *
    * @var string
    */
   protected static $BLOG_URL;
@@ -38,17 +40,19 @@ abstract class Post extends TimberPost {
    */
   abstract public static function post_type() : string;
 
-	/**
-	 * Get all the posts matching the given query (defaults to the current/global WP query constraints)
-	 * @param  array|string $query any valid Timber query
-	 * @return array         an array of all matching post objects
-	 */
-	public static function get_all( $query = false ) {
-		return \Timber::get_posts( $query, static::class );
-	}
+    /**
+     * Get all the posts matching the given query (defaults to the current/global WP query constraints)
+     *
+     * @param  array|string $query any valid Timber query
+     * @return array         an array of all matching post objects
+     */
+    public static function get_all( $query = false ) {
+        return \Timber::get_posts( $query, static::class );
+    }
 
   /**
    * Get all published posts of this type, grouped by terms of $taxonomy
+   *
    * @param string $taxonomy the name of the taxonomy to group by,
    * e.g. "category"
    * @param array $terms The list of specific terms to filter by.
@@ -95,34 +99,37 @@ abstract class Post extends TimberPost {
       }, []);
   }
 
-	/**
-	 * Get the URL of the blog landing page
-	 * (what WP calls the "post archive" page)
-	 * @return string the URL
-	 */
-	public static function get_blog_url() {
-		if( ! static::$BLOG_URL ) {
-			// haven't fetched the URL yet...go get it
-			$page = Page::get_blog_page();
+    /**
+     * Get the URL of the blog landing page
+     * (what WP calls the "post archive" page)
+     *
+     * @return string the URL
+     */
+    public static function get_blog_url() {
+        if( ! static::$BLOG_URL ) {
+            // haven't fetched the URL yet...go get it
+            $page = Page::get_blog_page();
 
-			// cache it
-			static::$BLOG_URL = $page->link();
-		}
+            // cache it
+            static::$BLOG_URL = $page->link();
+        }
 
-		return static::$BLOG_URL;
-	}
+        return static::$BLOG_URL;
+    }
 
-	/**
-	 * Check whether a post by the given ID exists
-	 * @param  int $id the post ID to check for
-	 * @return boolean     true if the post exists, false otherwise
-	 */
-	public static function exists( $id ) {
-		return is_string( get_post_status( $id ) );
-	}
+    /**
+     * Check whether a post by the given ID exists
+     *
+     * @param  int $id the post ID to check for
+     * @return boolean     true if the post exists, false otherwise
+     */
+    public static function exists( $id ) {
+        return is_string( get_post_status( $id ) );
+    }
 
   /**
    * Create a new post from an array of data
+   *
    * @param array $data key/value pairs to populate the post and post meta
    * tables. The following keys are special, and their corresponding values
    * will end up in the wp_posts table:
@@ -217,6 +224,7 @@ abstract class Post extends TimberPost {
   /**
    * Get related Posts of the same post type, who share terms in $taxonomy with
    * this Post.
+   *
    * @param string $taxonomy the taxonomy to associate with, e.g. "category"
    * @param int $postCount Optional. The number of posts to get. Defaults to 3.
    * @return Post[] an array of Post objects
@@ -263,6 +271,7 @@ abstract class Post extends TimberPost {
   /**
    * Get related Posts of the same post type, who share categories with
    * this Post.
+   *
    * @param int $postCount Optional. The number of posts to get. Defaults to 3.
    * @return Post[] an array of Post objects
    */
@@ -275,6 +284,7 @@ abstract class Post extends TimberPost {
   /**
    * Get related Posts of the same post type, who share tags with
    * this Post.
+   *
    * @param int $postCount Optional. The number of posts to get. Defaults to 3.
    * @return Post[] an array of Post objects
    */

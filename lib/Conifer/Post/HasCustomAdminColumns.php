@@ -15,6 +15,7 @@ trait HasCustomAdminColumns {
   /**
    * Add a custom column to the admin for the given post type, with content provided
    * through a callback.
+   *
    * @param string   $key      the $columns array key to add
    * @param string   $label    label for the column header
    * @param string   $postType the post type, for inferring which filters/actions to hook into

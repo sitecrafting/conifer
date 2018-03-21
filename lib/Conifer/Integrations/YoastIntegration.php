@@ -7,6 +7,7 @@ namespace Conifer\Integrations;
 
 /**
  * General-purpose wrapper for Yoast WordPress SEO plugin
+ *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
