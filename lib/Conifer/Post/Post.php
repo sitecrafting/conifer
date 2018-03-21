@@ -44,7 +44,7 @@ abstract class Post extends TimberPost {
 	 * @return array         an array of all matching post objects
 	 */
 	public static function get_all( $query = false ) {
-		return \Timber::get_posts( $query, __CLASS__ );
+		return \Timber::get_posts( $query, static::class );
 	}
 
   /**
