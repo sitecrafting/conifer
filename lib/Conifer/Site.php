@@ -67,8 +67,8 @@ class Site extends TimberSite {
   public function __construct() {
     parent::__construct();
 
-    $this->script_directory_cascade = [get_stylesheet_directory().'/js/'];
-    $this->style_directory_cascade = [get_stylesheet_directory().'/'];
+    $this->script_directory_cascade = [get_stylesheet_directory() . '/js/'];
+    $this->style_directory_cascade = [get_stylesheet_directory() . '/'];
   }
 
   /**
@@ -420,8 +420,8 @@ class Site extends TimberSite {
    */
   public function find_file(string $file, array $dirs) : string {
     foreach ($dirs as $dir) {
-      if (file_exists($dir.$file)) {
-        return $dir.$file;
+      if (file_exists($dir . $file)) {
+        return $dir . $file;
       }
     }
 
@@ -451,6 +451,6 @@ class Site extends TimberSite {
     if ($file[0] !== '/') {
       $file = "/$file";
     }
-    return get_stylesheet_directory().$file;
+    return get_stylesheet_directory() . $file;
   }
 }

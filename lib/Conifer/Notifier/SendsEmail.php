@@ -113,7 +113,7 @@ trait SendsEmail {
     // Warn the (dev) user extending this class that they're doing it wrong
     if (!is_string($to) && !is_array($to)) {
       throw new \LogicException(
-        static::class.'::get_admin_email() must return a string or array'
+        static::class . '::get_admin_email() must return a string or array'
       );
     }
 

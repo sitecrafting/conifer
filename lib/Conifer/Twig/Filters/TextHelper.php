@@ -38,7 +38,7 @@ class TextHelper extends AbstractBase {
     if ($n !== 1) {
       $noun = isset(static::$PLURALS[$noun])
         ? static::$PLURALS[$noun]
-        : $noun.'s';
+        : $noun . 's';
     }
 
     return $noun;
@@ -62,12 +62,12 @@ class TextHelper extends AbstractBase {
         break;
 
       case 2:
-        $list = $items[0].' and '.$items[1];
+        $list = $items[0] . ' and ' . $items[1];
         break;
 
       default:
         $last = array_splice($items, -1)[0];
-        $list = implode(', ', $items).', and '.$last;
+        $list = implode(', ', $items) . ', and ' . $last;
     }
 
     return $list;
