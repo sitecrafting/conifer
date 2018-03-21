@@ -35,7 +35,7 @@
         <!-- Do not check for proper WordPress file names. -->
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
 
-        <exclude name="PEAR.Functions.FunctionCallSignature.Indent" />
+        <exclude name="PEAR.Functions.FunctionCallSignature" />
 
         <exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpen" />
