@@ -51,7 +51,7 @@
         "./vendor/bin/phpunit"
       ],
       "sniff": [
-        "./vendor/bin/phpcs --standard=./phpcs.xml test"
+        "./vendor/bin/phpcs --standard=./phpcs.xml conifer.php test lib"
       ]
     }
 }
