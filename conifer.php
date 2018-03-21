@@ -1,7 +1,8 @@
 <?php
 /**
  * Plugin Name: Conifer
- * Description: Powerful, object-oriented abstractions for WordPress theme development
+ * Description: Powerful, object-oriented abstractions for serious
+ * WordPress development
  * Plugin URL: https://www.sitecrafting.com
  * Author: Coby Tamayo, Reena Hensley, SiteCrafting Inc.
  * Version: 0.1.0
