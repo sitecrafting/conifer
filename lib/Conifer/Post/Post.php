@@ -7,6 +7,7 @@ namespace Conifer\Post;
 
 use Timber\Post as TimberPost;
 use Timber\Term;
+use Timber\Timber;
 
 use Conifer\Post\Image;
 
@@ -47,7 +48,7 @@ abstract class Post extends TimberPost {
    * @return array         an array of all matching post objects
    */
   public static function get_all( $query = false ) {
-    return \Timber::get_posts( $query, static::class );
+    return Timber::get_posts( $query, static::class );
   }
 
   /**
