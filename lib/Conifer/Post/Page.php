@@ -59,8 +59,8 @@ class Page extends Post {
         [
           'key' => '_wp_page_template',
           'value' => $template,
-        ]
-      ]
+        ],
+      ],
     ], static::class);
 
     // return the first page we find, if it exists

@@ -251,8 +251,8 @@ abstract class Post extends TimberPost {
           [
             'taxonomy'   => $taxonomy,
             'terms'      => $termIds,
-          ]
-        ]
+          ],
+        ],
       ]);
 
       if (

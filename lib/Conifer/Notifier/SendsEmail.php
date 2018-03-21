@@ -31,7 +31,7 @@ trait SendsEmail {
     array $headers = []
   ) : bool {
     return wp_mail($to, utf8_encode($subject), $message, array_merge([
-      'Content-Type: text/html; charset=UTF=8'
+      'Content-Type: text/html; charset=UTF=8',
     ], $headers));
   }
 

@@ -15,7 +15,7 @@ class BlogPost extends Post {
     // This is a blog-specific route, so we only care about blog posts here
     $query = [
       'post_type' => static::POST_TYPE,
-      'tax_query' => []
+      'tax_query' => [],
     ];
 
     // let AJAX request specify the specific offset for lazy-loading pagination
@@ -95,8 +95,8 @@ _SQL_;
           [
             'taxonomy' => 'category',
             'terms' => $categoryIds,
-          ]
-        ]
+          ],
+        ],
       ]);
     }
 
