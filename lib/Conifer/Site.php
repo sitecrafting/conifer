@@ -238,6 +238,43 @@ class Site extends TimberSite {
   }
 
   /**
+   * Enqueue a stylesheet within the style cascade path. Calls
+   * `wp_enqueue_style` transparently.
+   *
+   * @param string $stylesheetHandle the style handle to register and enqueue
+   * @param string $fileName the file to search for in the style cascade path
+   * @param array $dependencies an array of registered dependency handles
+   * @param string|bool|null $version the version of the style to append to
+   * the URL rendered in the <link> tag. Accepts any valid value of the $ver
+   * argument to `wp_enqueue_style`, plus the literal value `true`, which
+   * tells Conifer to look for an assets version file to use for cache-busting.
+   * Defaults to `true`.
+   * @param bool $media the media for which this stylesheet has been defined;
+   * passed transparently to `wp_enqueue_style`. Defaults to "all" (as does
+   * `wp_enqueue_style` itself).
+   */
+  public function enqueue_style(
+    string $stylesheetName,
+    string $fileName,
+    array $dependencies = [],
+    $version = true,
+    string $media = 'all'
+  ) {
+    if ($version === true) {
+      // use automatic any automatic cache-busting in the theme build process
+      $version = $this->get_assets_version();
+    }
+
+    wp_enqueue_style(
+      $stylesheetName,
+      $this->get_stylesheet_uri($fileName),
+      $dependencies,
+      $version,
+      $media
+    );
+  }
+
+  /**
    * Get the current Timber context, with the "post" index set to $post
    *
    * @param Conifer\Post $post the current Post object
