@@ -172,27 +172,27 @@ class Site extends TimberSite {
     );
 
     //modernizr
-    wp_enqueue_script(
+    $this->enqueue_script(
       'project-modernizr',
-      $this->get_script_uri('modernizr/modernizr.custom.53630.js'),
-      $dependencies = [],
-      $version      = $this->get_assets_version(),
-      $inFooter     = false
+      'modernizr/modernizr.custom.53630.js',
+      [],
+      true,
+      false
     );
 
 
     // NOTE: If you do need to enqueue additional scripts here, please enqueue them in the footer
     // unless there's a very good reason not to.
 
-    wp_enqueue_style(
+    $this->enqueue_style(
       'project-css',
-      $this->get_stylesheet_uri('style.css'),
+      'style.css',
       $dependencies = [],
       $version      = $this->get_assets_version()
     );
-    wp_enqueue_style(
+    $this->enqueue_style(
       'project-print-css',
-      $this->get_stylesheet_uri('print.css'),
+      'print.css',
       $dependencies = [],
       $version      = $this->get_assets_version(),
       'print'
