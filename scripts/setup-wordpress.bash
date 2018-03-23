@@ -1,5 +1,33 @@
 #!/bin/bash
 
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -n|--non-interactive)
+    INTERACTIVE=NO
+    shift # past argument
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
+if [[ $CI ]] ; then
+	# are we in a CI environment?
+	echo 'detected $CI envvar; forcing non-interactive mode'
+	echo "CI=$CI"
+	INTERACTIVE='NO'
+else
+	# not in a CI environment, default to interactive mode
+	INTERACTIVE=${INTERACTIVE:-'YES'}
+fi
+
 # Install and configure WordPress if we haven't already
 main() {
   BOLD=$(tput bold)
@@ -39,25 +67,46 @@ EOF
   if wp_installed ; then
     echo 'WordPress is installed'
   else
-    read -p "${BOLD}Site URL${NORMAL} (https://conifer.lndo.site): " URL
-    URL=${URL:-'https://conifer.lndo.site'}
+    if [[ $INTERACTIVE = 'YES' ]] ; then
 
-    read -p "${BOLD}Site Title${NORMAL} (Conifer): " TITLE
-    TITLE=${TITLE:-'Conifer'}
+      #
+      # Normal/default interactive mode: prompt the user for WP settings
+      #
 
-    # Determine the default username/email to suggest based on git config
-    DEFAULT_EMAIL=$(git config --global user.email)
-    DEFAULT_EMAIL=${DEFAULT_EMAIL:-'admin@example.com'}
-    DEFAULT_USERNAME=$(echo $DEFAULT_EMAIL | sed 's/@.*$//')
+      read -p "${BOLD}Site URL${NORMAL} (https://conifer.lndo.site): " URL
+      URL=${URL:-'https://conifer.lndo.site'}
 
-    read -p "${BOLD}Admin username${NORMAL} ($DEFAULT_USERNAME): " ADMIN_USER
-    ADMIN_USER=${ADMIN_USER:-"$DEFAULT_USERNAME"}
+      read -p "${BOLD}Site Title${NORMAL} (Conifer): " TITLE
+      TITLE=${TITLE:-'Conifer'}
 
-    read -p "${BOLD}Admin password${NORMAL} (conifer): " ADMIN_PASSWORD
-    ADMIN_PASSWORD=${ADMIN_PASSWORD:-'conifer'}
+      # Determine the default username/email to suggest based on git config
+      DEFAULT_EMAIL=$(git config --global user.email)
+      DEFAULT_EMAIL=${DEFAULT_EMAIL:-'admin@example.com'}
+      DEFAULT_USERNAME=$(echo $DEFAULT_EMAIL | sed 's/@.*$//')
 
-    read -p "${BOLD}Admin email${NORMAL} ($DEFAULT_EMAIL): " ADMIN_EMAIL
-    ADMIN_EMAIL=${ADMIN_EMAIL:-"$DEFAULT_EMAIL"}
+      read -p "${BOLD}Admin username${NORMAL} ($DEFAULT_USERNAME): " ADMIN_USER
+      ADMIN_USER=${ADMIN_USER:-"$DEFAULT_USERNAME"}
+
+      read -p "${BOLD}Admin password${NORMAL} (conifer): " ADMIN_PASSWORD
+      ADMIN_PASSWORD=${ADMIN_PASSWORD:-'conifer'}
+
+      read -p "${BOLD}Admin email${NORMAL} ($DEFAULT_EMAIL): " ADMIN_EMAIL
+      ADMIN_EMAIL=${ADMIN_EMAIL:-"$DEFAULT_EMAIL"}
+
+    else
+
+      #
+      # NON-INTERACTIVE MODE
+      # ONE DOES NOT SIMPLY PROMPT TRAVIS CI FOR USER PREFERENCES
+      #
+
+      URL='http://conifer.lndo.site'
+      TITLE='Conifer'
+      ADMIN_USER='conifer'
+      ADMIN_PASSWORD='conifer'
+      ADMIN_EMAIL='conifer+travisci@sitecrafting.com'
+
+    fi
 
     # install WordPress
     wp --path="$WP_DIR" core install \
