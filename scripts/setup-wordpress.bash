@@ -7,7 +7,7 @@ main() {
 
   WP_DIR="$LANDO_MOUNT/wp"
 
-  if ! [[ -f "$WP_DIR"/wp-content/plugins/conifer ]] ; then
+  if ! [[ -d "$WP_DIR"/wp-content/plugins/conifer ]] ; then
     echo 'Linking conifer plugin directory...'
     ln -s "../../../" "$WP_DIR"/wp-content/plugins/conifer
   fi
