@@ -17,7 +17,6 @@ To get started hacking on Conifer itself, just do:
 ```
 git clone git@github.com:/sitecrafting/conifer && cd conifer
 lando start
-lando install
 ```
 
 Follow the prompts and you should have a local WordPress site running Conifer
