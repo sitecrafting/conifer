@@ -2,6 +2,9 @@
 
 /**
  * SendsEmail trait for mailer classes to consume
+ *
+ * @copyright 2018 SiteCrafting, Inc.
+ * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 
 namespace Conifer\Notifier;
@@ -106,6 +109,8 @@ trait SendsEmail {
   /**
    * Call the user-defined to() method, and throw an exception if returned
    * value is invalid
+   *
+   * @throws \LogicException if to() returns the wrong type
    */
   protected function get_valid_to_address() {
     $to = $this->to();
@@ -113,7 +118,7 @@ trait SendsEmail {
     // Warn the (dev) user extending this class that they're doing it wrong
     if (!is_string($to) && !is_array($to)) {
       throw new \LogicException(
-        static::class . '::get_admin_email() must return a string or array'
+        static::class . '::to() must return a string or array'
       );
     }
 

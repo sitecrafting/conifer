@@ -14,8 +14,18 @@ use Conifer\Site;
  * @package Conifer
  */
 abstract class AbstractBase {
+  /**
+   * The Site object responsible for adding Twig functions to the environment
+   *
+   * @var a Site object
+   */
   protected $site;
 
+  /**
+   * Constructor
+   *
+   * @param Site $site the Site object
+   */
   public function __construct( Site $site ) {
     $this->site = $site;
   }

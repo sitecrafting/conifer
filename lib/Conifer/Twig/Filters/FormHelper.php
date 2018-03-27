@@ -34,14 +34,22 @@ class FormHelper extends AbstractBase {
    * @param  string $fieldName the name of the field being rendered
    * @return string            the HTML class(es) to render
    */
-  public function get_field_class(Form $form, $fieldName) {
-    return $form->getErrorsFor($fieldName)
+  public function get_field_class(Form $form, $fieldName) : string {
+    return $form->get_errors_for($fieldName)
       ? 'error'
       : '';
   }
 
-  public function get_error_messages_for(Form $form, $fieldName) {
-    return implode('; ', $form->getErrorMessagesFor($fieldName));
+  /**
+   * Get the error messages for a specific field only, as a
+   * semicolon-separated string
+   *
+   * @param Form $form the Form being processed
+   * @param string $fieldName the name of the field whose error messages we want
+   * @return string
+   */
+  public function get_error_messages_for(Form $form, $fieldName) : array {
+    return implode('; ', $form->get_error_message_for($fieldName));
   }
 }
 

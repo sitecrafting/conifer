@@ -31,8 +31,12 @@ class Button extends AbstractBase {
       $dom = new DOMDocument();
       $dom->loadHTML($html);
 
-      if ($link = $dom->getElementsByTagName('a')->item(0)) {
+      // get the first <a> in the markup
+      $link = $dom->getElementsByTagName('a')->item(0);
+
+      if ($link) {
         $link->setAttribute('class', static::BUTTON_CLASS);
+        // update markup
         $html = $dom->saveHTML();
       }
     }

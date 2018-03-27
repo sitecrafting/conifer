@@ -11,6 +11,12 @@ namespace Conifer\Twig\Filters;
  * @package Conifer
  */
 class TextHelper extends AbstractBase {
+  /**
+   * Plural inflections for English words
+   * TODO public static function add_plurals(array $plurals)
+   *
+   * @var array
+   */
   static protected $plurals = [
     'person' => 'people',
   ];
