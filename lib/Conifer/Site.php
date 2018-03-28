@@ -50,14 +50,16 @@ class Site extends TimberSite {
   protected $assets_version;
 
   /**
-   * @var array An associative array of Twig functions.
    * Keys are function names and values are closures.
+   *
+   * @var array An associative array of Twig functions.
    */
   protected $twig_functions = [];
 
   /**
-   * @var array An associative array of Twig filters.
    * Keys are function names and values are closures.
+   *
+   * @var array An associative array of Twig filters.
    */
   protected $twig_filters = [];
 
@@ -376,7 +378,8 @@ class Site extends TimberSite {
    * directory, returns the empty string.
    */
   public function get_script_uri( string $file ) : string {
-    if ($path = $this->find_file($file, $this->script_directory_cascade)) {
+    $path = $this->find_file($file, $this->script_directory_cascade);
+    if ($path) {
       return URLHelper::file_system_to_url($path);
     }
 
@@ -392,7 +395,8 @@ class Site extends TimberSite {
    * directory, returns the empty string.
    */
   public function get_stylesheet_uri( string $file ) : string {
-    if ($path = $this->find_file($file, $this->style_directory_cascade)) {
+    $path = $this->find_file($file, $this->style_directory_cascade);
+    if ($path) {
       return URLHelper::file_system_to_url($path);
     }
 
@@ -425,6 +429,7 @@ class Site extends TimberSite {
    */
   public function get_assets_version() : string {
     if (!$this->assets_version && is_readable($this->get_theme_file('assets.version')) ) {
+      // phpcs:ignore WordPress.WP.AlternativeFunctions
       $contents             = file_get_contents($this->get_theme_file('assets.version'));
       $this->assets_version = trim($contents);
     }
@@ -433,11 +438,22 @@ class Site extends TimberSite {
     return $this->assets_version;
   }
 
+  /**
+   * Get the filepath to the assets version file
+   *
+   * @return string the absolute path to the assets version file
+   */
   public function get_assets_version_filepath() : string {
     return $this->get_theme_file('assets.version');
   }
 
+  /**
+   * Get an arbitrary file, relative to the theme directory
+   *
+   * @return string the absolute path to the file
+   */
   public function get_theme_file(string $file) : string {
+    // ensure leading slash
     if ($file[0] !== '/') {
       $file = "/$file";
     }
