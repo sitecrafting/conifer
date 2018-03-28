@@ -2,6 +2,7 @@ name: conifer
 recipe: wordpress
 config:
   webroot: wp
+  php: '7.0'
 
 services:
   appserver:
