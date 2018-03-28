@@ -1,12 +1,22 @@
 <?php
+/**
+ * Conifer\Form\AbstractBase class
+ *
+ * @copyright 2018 SiteCrafting, Inc.
+ * @author    Coby Tamayo <ctamayo@sitecrafting.com>
+ */
 
 namespace Conifer\Form;
 
+/**
+ * Abstract form base class, encapsulating the Conifer Form API
+ */
 abstract class AbstractBase {
   const MESSAGE_FIELD_REQUIRED = '%s is required';
 
   /**
    * The fields configured for this form as an array of arrays.
+   *
    * Each key in the top-level array is the name of a field; each field is
    * represented simply as an array. Validations are declarative, in that each
    * field tells this class exactly how to validate it
@@ -136,6 +146,7 @@ abstract class AbstractBase {
    * but the first argument MUST be the submitted values, as an associative
    * array. The remaining arguments, if any, are passed to the constructor.
    *
+   * @throws \InvalidArgumentException if the first argument is not an array
    * @return \Conifer\Form\AbstractBase the form object
    */
   public static function create_from_submission(...$args) {
@@ -143,7 +154,7 @@ abstract class AbstractBase {
 
     if (!is_array($submission)) {
       throw new \InvalidArgumentException(
-        'last argument to create_from_submission()'
+        'First argument to create_from_submission()'
           . ' must be an array of submitted values'
       );
     }
@@ -241,7 +252,7 @@ abstract class AbstractBase {
    * responsible for that.
    *
    * @param  array  $submission the submitted fields as key/value pairs
-   * @throws LogicException if validators are configured incorrectly
+   * @throws \LogicException if validators are configured incorrectly
    * @return boolean            whether the submission is valid
    */
   public function validate(array $submission) : bool {
@@ -263,7 +274,7 @@ abstract class AbstractBase {
       // call each validator for this field
       foreach ($validators as $validator) {
         if (!is_callable($validator)) {
-          throw new \RuntimeException("$name field validator must be defined as a callable!");
+          throw new \LogicException("$name field validator must be defined as a callable!");
         }
 
         // get the submitted value for this field, defaulting to empty string
@@ -323,19 +334,6 @@ abstract class AbstractBase {
     return array_map(function(array $field) {
       return $field['message'];
     }, $this->get_errors_for($fieldName));
-  }
-
-
-  /**
-   * Get error messages for a specific field
-   *
-   * @param  string $fieldName the name of the field to get errors for
-   * @return array            an array of error message strings
-   */
-  public function getErrorMessagesFor($fieldName) {
-    return array_map( function(array $field) {
-      return $field['message'];
-    }, $this->getErrorsFor($fieldName));
   }
 
   /**

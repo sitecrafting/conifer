@@ -28,9 +28,10 @@ trait HasCustomAdminFilters {
       if ( static::allow_custom_filtering($postType) ) {
 
         // default to blank string, which should mean "any"
-        $value = isset( $_GET[$name] )
-          ? $_GET[$name]
-          : '';
+        // NOTE: WordPress already verifies the nonce in this context;
+        // no need to do so again
+        // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+        $value = $_GET[$name] ?? '';
 
         static::render_custom_filter_select([
           'name' => $name,
@@ -42,6 +43,7 @@ trait HasCustomAdminFilters {
 
     add_action('pre_get_posts', function(\WP_Query $query) use ($name, $postType, $queryModifier) {
       if ( static::querying_by_custom_filter($name, $postType, $query) ) {
+        // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
         $queryModifier($query, $_GET[$name]);
       }
     });
@@ -76,7 +78,8 @@ trait HasCustomAdminFilters {
    */
   protected static function querying_by_custom_filter( $name, $postType, \WP_Query $query ) {
     return static::allow_custom_filtering( $postType )
-      and $query->query_vars['post_type'] === $postType
-      and !empty( $_GET[$name] );
+      && $query->query_vars['post_type'] === $postType
+      // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+      && !empty( $_GET[$name] );
   }
 }

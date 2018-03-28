@@ -38,8 +38,8 @@ class MenuItem extends TimberMenuItem {
    * @return boolean
    */
   public function points_to_current_post_or_ancestor() {
-    return in_array(static::CLASS_CURRENT, $this->classes)
-      ||  in_array(static::CLASS_CURRENT_ANCESTOR, $this->classes);
+    return in_array(static::CLASS_CURRENT, $this->classes, true)
+      || in_array(static::CLASS_CURRENT_ANCESTOR, $this->classes, true);
   }
 
   /**
@@ -48,6 +48,6 @@ class MenuItem extends TimberMenuItem {
    * @return boolean true if this MenuItem has children.
    */
   public function has_children() {
-    return in_array( static::CLASS_HAS_CHILDREN, $this->classes );
+    return in_array(static::CLASS_HAS_CHILDREN, $this->classes, true);
   }
 }
