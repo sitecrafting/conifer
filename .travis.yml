@@ -7,10 +7,6 @@ php:
 install:
   - composer install
 
-cache:
-  directories:
-    - $HOME/.composer/cache
-
 script:
   - composer test
   - composer sniff
