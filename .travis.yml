@@ -5,7 +5,11 @@ php:
   - '7.2'
 
 install:
-  - composer install
+  - composer install --prefer-dist
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 script:
   - composer test
