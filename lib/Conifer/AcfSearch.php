@@ -1,6 +1,6 @@
 <?php
 
-// TODO move to Conifer\Post
+/* @codingStandardsIgnoreFile */
 namespace Conifer;
 
 class AcfSearch {
