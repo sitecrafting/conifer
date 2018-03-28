@@ -16,14 +16,14 @@ use Timber\Menu as TimberMenu;
  */
 class Menu extends TimberMenu {
   /**
-   * When instantiating MenuItems that belong to this Menu, create instances of this class.
+   * When instantiating MenuItems that belong to this Menu,
+   * create instances of this class.
    *
    * @var string
    * @codingStandardsIgnoreStart
    */
   public $MenuItemClass = '\Conifer\MenuItem';
-  // ignore non-standard var name case, needed by Timber
-  // @codingStandardsIgnoreEnd
+  /* @codingStandardsIgnoreEnd non-standard var case, needed by Timber */
 
   /**
    * Get the top-level nav item that points, or whose ancestor points,
