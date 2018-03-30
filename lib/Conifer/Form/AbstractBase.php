@@ -188,7 +188,7 @@ abstract class AbstractBase {
    * @return the submitted value, or the existing persisted value if no
    * value has been submitted, or otherwise null.
    */
-  public function get($name) {
+  public function get($field) {
     return $this->{$field} ?? null;
   }
 
