@@ -15,12 +15,12 @@ use Twig_Extension_Debug;
 use Twig_SimpleFunction;
 use Twig_SimpleFilter;
 
-use Conifer\Twig\Filters;
-use Conifer\Twig\Functions;
-
+use Conifer\Navigation\Menu;
 use Conifer\Post\Post;
 use Conifer\Shortcode\Gallery;
 use Conifer\Shortcode\Button;
+use Conifer\Twig\Filters;
+use Conifer\Twig\Functions;
 
 /**
  * Wrapper for any and all theme-specific behavior.

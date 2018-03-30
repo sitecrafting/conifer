@@ -3,8 +3,7 @@
  * Custom Menu class extending TimberMenu.
  */
 
-// TODO move to Conifer\Menu
-namespace Conifer;
+namespace Conifer\Navigation;
 
 use Timber\Menu as TimberMenu;
 
@@ -22,7 +21,7 @@ class Menu extends TimberMenu {
    * @var string
    * @codingStandardsIgnoreStart
    */
-  public $MenuItemClass = '\Conifer\MenuItem';
+  public $MenuItemClass = MenuItem::class;
   /* @codingStandardsIgnoreEnd non-standard var case, needed by Timber */
 
   /**

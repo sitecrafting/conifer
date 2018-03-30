@@ -3,7 +3,7 @@
  * Custom MenuItem class
  */
 
-namespace Conifer;
+namespace Conifer\Navigation;
 
 use Timber\MenuItem as TimberMenuItem;
 
