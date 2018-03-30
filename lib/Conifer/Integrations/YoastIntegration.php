@@ -17,7 +17,9 @@ class YoastIntegration {
    */
   public static function demote_metabox() {
     if (is_admin()) {
-      add_filter('wpseo_metabox_prio', function() { return 'low'; });
+      add_filter('wpseo_metabox_prio', function() {
+        return 'low';
+      });
     }
   }
 }

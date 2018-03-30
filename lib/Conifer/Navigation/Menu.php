@@ -3,8 +3,7 @@
  * Custom Menu class extending TimberMenu.
  */
 
-// TODO move to Conifer\Menu
-namespace Conifer;
+namespace Conifer\Navigation;
 
 use Timber\Menu as TimberMenu;
 
@@ -16,11 +15,14 @@ use Timber\Menu as TimberMenu;
  */
 class Menu extends TimberMenu {
   /**
-   * When instantiating MenuItems that belong to this Menu, create instances of this class.
+   * When instantiating MenuItems that belong to this Menu,
+   * create instances of this class.
    *
    * @var string
+   * @codingStandardsIgnoreStart
    */
-  public $MenuItemClass = '\Conifer\MenuItem';
+  public $MenuItemClass = MenuItem::class;
+  /* @codingStandardsIgnoreEnd non-standard var case, needed by Timber */
 
   /**
    * Get the top-level nav item that points, or whose ancestor points,

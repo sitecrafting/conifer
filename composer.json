@@ -50,6 +50,9 @@
       "test": [
         "./vendor/bin/phpunit"
       ],
+      "sniff-summary": [
+        "./vendor/bin/phpcs --report=summary --standard=./phpcs.xml conifer.php test lib"
+      ],
       "sniff": [
         "./vendor/bin/phpcs --standard=./phpcs.xml conifer.php test lib"
       ]

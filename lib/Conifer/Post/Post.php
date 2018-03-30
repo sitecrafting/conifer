@@ -23,17 +23,30 @@ abstract class Post extends TimberPost {
    * When instantiating TimberImages, create instances of this class
    *
    * @var string
+   * @codingStandardsIgnoreStart
    */
   public $ImageClass = '\Conifer\Post\Image';
+  /* @codingStandardsIgnoreEnd non-standard var case, needed by Timber */
 
   /**
    * The default blog landing page URL
    *
    * @var string
    */
-  protected static $BLOG_URL;
+  protected static $blog_url;
 
-  protected $related_by          = [];
+  /**
+   * The collection of related posts, via arbitrary taxonomies
+   *
+   * @var array
+   */
+  protected $related_by = [];
+
+  /**
+   * Related post counts, via arbitrary taxonomies
+   *
+   * @var array
+   */
   protected $related_post_counts = [];
 
   /**
@@ -52,70 +65,21 @@ abstract class Post extends TimberPost {
   }
 
   /**
-   * Get all published posts of this type, grouped by terms of $taxonomy
-   *
-   * @param string $taxonomy the name of the taxonomy to group by,
-   * e.g. "category"
-   * @param array $terms The list of specific terms to filter by.
-   * Defaults to all terms within $taxonomy.
-   * @return an array like:
-   * [
-   *   [ 'term' => { Category 1 WP_Term object }, 'posts' => [...],
-   *   [ 'term' => { Category 2 WP_Term object }, 'posts' => [...],
-   * ]
-   */
-  public static function get_all_grouped_by_term(
-    string $taxonomy,
-    array $terms = []
-  ) : array {
-    // ensure we have a list of taxonomy terms
-    $terms = $terms ?: get_terms(['taxonomy' => $taxonomy]);
-
-    // reduce each term in $taxonomy to an array containing:
-    //  * the term
-    //  * the term's corresponding posts
-    return array_reduce($terms, function(
-      array $grouped,
-      WP_Term $term
-    ) use ($taxonomy) : array {
-      // compose a query for all posts for $category
-      $query = [
-        'post_type' => static::POST_TYPE,
-        'tax_query' => [
-          [
-            'taxonomy' => $taxonomy,
-            'terms'    => $term->term_id,
-          ],
-        ],
-      ];
-
-      // group this term with its respective posts
-      $grouped[] = [
-        'term' => $term,
-        'posts'  => static::get_all($query),
-      ];
-
-      // return the grouped posts so far
-      return $grouped;
-    }, []);
-  }
-
-  /**
    * Get the URL of the blog landing page
    * (what WP calls the "post archive" page)
    *
    * @return string the URL
    */
   public static function get_blog_url() {
-    if ( ! static::$BLOG_URL ) {
+    if ( ! static::$blog_url ) {
       // haven't fetched the URL yet...go get it
       $page = Page::get_blog_page();
 
       // cache it
-      static::$BLOG_URL = $page->link();
+      static::$blog_url = $page->link();
     }
 
-    return static::$BLOG_URL;
+    return static::$blog_url;
   }
 
   /**
@@ -256,9 +220,8 @@ abstract class Post extends TimberPost {
         ],
       ]);
 
-      if (
-        ($newCount = count($this->related_by[$taxonomy])) < $relatedPostCount
-      ) {
+      $newCount = count($this->related_by[$taxonomy]);
+      if ($newCount < $relatedPostCount) {
         // Our query fewer than $postCount posts, so we know this is the
         // exact number of related posts for this taxonomy. Save this count
         // for future calls.

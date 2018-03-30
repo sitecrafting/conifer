@@ -35,7 +35,7 @@ class Number extends AbstractBase {
     preg_match( '/^1?(\d\d\d)(\d\d\d)(\d\d\d\d)$/', $phone, $matches );
 
     // If we have the correct number of digits, format it out...
-    if ( count($matches) == 4 ) {
+    if ( count($matches) === 4 ) {
       $phone = "({$matches[1]}) {$matches[2]}-{$matches[3]}";
     }
 

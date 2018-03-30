@@ -47,6 +47,8 @@ trait HasCustomAdminColumns {
     // register a callback to display the value for this column
     add_action($displayHook, function($column, $id) use ($key, $getValue) {
       if ( $column === $key ) {
+        // NOTE: THE USER IS RESPONSIBLE FOR ESCAPING USER INPUT AS NECESSARY
+        // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
         echo $getValue($id);
       }
     }, 10, 2);

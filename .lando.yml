@@ -2,12 +2,20 @@ name: conifer
 recipe: wordpress
 config:
   webroot: wp
+  php: '7.0'
 
 services:
   appserver:
     build:
       - cd $LANDO_MOUNT && composer install
       - cd $LANDO_MOUNT && scripts/setup-wordpress.bash
+
+    overrides:
+      services:
+        environment:
+          # Pass any non-empty CI envvar from the host into Lando
+          # This is so we can force non-interactive mode setting up WP
+          CI: ${CI:-''}
 
   node:
     type: node:6.11

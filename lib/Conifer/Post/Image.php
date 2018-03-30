@@ -109,14 +109,14 @@ class Image extends TimberImage {
    * @param  string $customSize if specified
    * @return int
    */
-  public function width( $customSize = false ) {
+  public function width( $customSize = false ) : int {
     if ($customSize && static::get_size($customSize)) {
       $width = static::get_size($customSize)['width'];
     } else {
       $width = parent::width();
     }
 
-    return $width;
+    return (int) $width;
   }
 
   /**
@@ -130,15 +130,15 @@ class Image extends TimberImage {
       return null;
     }
 
-    $originalWidth = parent::width();
+    $originalWidth = (int) parent::width();
     $width         = $this->width($customSize);
 
-    if ($width != $originalWidth) {
+    if ($width !== $originalWidth) {
       // distinct custom dimensions; calculate new based on aspect ratio
       $height = floor( $width / $this->aspect() );
     } else {
       // not a custom size; just return the original height
-      $height = parent::height();
+      $height = (int) parent::height();
     }
 
     return $height;

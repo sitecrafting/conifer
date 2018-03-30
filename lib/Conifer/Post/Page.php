@@ -18,6 +18,11 @@ use Timber\Timber;
 class Page extends Post {
   const POST_TYPE = 'page';
 
+  /**
+   * Get the post type that this class represents.
+   *
+   * @return string the post type
+   */
   public static function post_type() : string {
     return static::POST_TYPE;
   }

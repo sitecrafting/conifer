@@ -22,7 +22,11 @@ abstract class AbstractBase {
     add_shortcode( $tag, [new static(), 'render'] );
   }
 
-
+  /**
+   * Output the result of this shortcode
+   *
+   * @param array $atts the standard WP shortcode attributes
+   */
   abstract public function render( $atts = [] );
 }
 

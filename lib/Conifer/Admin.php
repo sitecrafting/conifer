@@ -70,6 +70,8 @@ class Admin {
    */
   public static function notify( $message, $class = 'error' ) {
     add_action( 'admin_notices', function() use ($message, $class) {
+      // NOTE: THE USER IS RESPONSIBLE FOR ESCAPING USER INPUT AS NECESSARY
+      // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
       echo "<div class=\"{$class}\"><p>{$message}</p></div>";
     });
   }

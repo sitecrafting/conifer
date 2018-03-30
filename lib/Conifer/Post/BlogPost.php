@@ -1,49 +1,36 @@
 <?php
+/**
+ * BlogPost class
+ *
+ * @copyright 2018 SiteCrafting, Inc.
+ * @author    Coby Tamayo <ctamayo@sitecrafting.com>
+ */
 
 namespace Conifer\Post;
 
 use DateTime;
 
+/**
+ * Class for encapsulating WP posts of type "post"
+ */
 class BlogPost extends Post {
   const POST_TYPE = 'post';
 
+  /**
+   * Get the post type that this class represents
+   *
+   * @return string
+   */
   public static function post_type() : string {
     return static::POST_TYPE;
   }
 
-  public static function build_query_params(array $request) {
-    // This is a blog-specific route, so we only care about blog posts here
-    $query = [
-      'post_type' => static::POST_TYPE,
-      'tax_query' => [],
-    ];
-
-    // let AJAX request specify the specific offset for lazy-loading pagination
-    if (isset($request['offset'])) {
-      $query['offset'] = intval($request['offset']);
-    }
-
-    // filter by category slug
-    if (isset($request['category'])) {
-      $query['tax_query'][] = [
-        'taxonomy' => 'category',
-        'field' => 'slug',
-        'terms' => [$request['category']],
-      ];
-    }
-
-    // filter by month/year (YYYY-MM) - all other formats are ignored
-    if (isset($request['month']) && $date = DateTime::createFromFormat('Y-m', $request['month'])) {
-      $query['year']     = $date->format('Y');
-      $query['monthnum'] = $date->format('m');
-    } elseif (isset($request['year']) && $date = DateTime::createFromFormat('Y', $request['year'])) {
-      $query['year'] = $date->format('Y');
-    }
-
-    return $query;
-  }
-
-  public static function get_all_published_months() {
+  /**
+   * Get all months for which a published blog post exists
+   *
+   * @return array an array of formatted month strings
+   */
+  public static function get_all_published_months() : array {
     global $wpdb;
 
     $sql = <<<_SQL_
@@ -55,10 +42,16 @@ FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status = 'publish'
 ORDER BY post_date DESC
 _SQL_;
 
+    // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
     return $wpdb->get_results( $sql, ARRAY_A );
   }
 
-  public static function get_all_published_years() {
+  /**
+   * Get all years for which a published blog post exists
+   *
+   * @return array an array of formatted year strings
+   */
+  public static function get_all_published_years() : array {
     global $wpdb;
 
     $sql = <<<_SQL_
@@ -67,7 +60,8 @@ FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status = 'publish'
 ORDER BY post_date DESC
 _SQL_;
 
-    return $wpdb->get_col( $sql, ARRAY_A );
+    // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
+    return $wpdb->get_col( $prepared, ARRAY_A );
   }
 
   /**

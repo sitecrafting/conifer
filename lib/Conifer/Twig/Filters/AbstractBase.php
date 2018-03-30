@@ -14,6 +14,11 @@ use Conifer\Site;
  * @package Conifer
  */
 abstract class AbstractBase {
+  /**
+   * The Site object responsible for adding Twig filters to the environment
+   *
+   * @var a Site object
+   */
   protected $site;
 
   /**
