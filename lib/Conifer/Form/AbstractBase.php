@@ -10,6 +10,93 @@ namespace Conifer\Form;
 
 /**
  * Abstract form base class, encapsulating the Conifer Form API
+ *
+ * Example usage:
+ *
+ * ```php
+ * use Conifer\Form\AbstractBase;
+ *
+ * class EmployeeForm extends AbstractBase {
+ *   public function __construct() {
+ *     $this->fields = [
+ *       'user_login' => [
+ *         'label' => 'Username',
+ *         'validators' => [
+ *           [$this, 'validate_required_field'],
+ *           [$this, 'validate_login']
+ *         ],
+ *       ],
+ *       'user_email' => [
+ *         'label' => 'Email',
+ *         'validators' => [[$this, 'validate_email']],
+ *       ],
+ *       'first_name' => [
+ *         'label' => 'First Name',
+ *         'validators' => [
+ *           [$this, 'validate_required_field'],
+ *           [$this, 'validate_name']
+ *         ],
+ *       ],
+ *       'last_name' => [
+ *         'label' => 'Last Name',
+ *         'validators' => [
+ *           [$this, 'validate_required_field'],
+ *           [$this, 'validate_name']
+ *         ],
+ *       ],
+ *     ];
+ *   }
+ *
+ *   public function validate_email(array $emailField, string $email) {
+ *     // We can call other pre-defined validators here
+ *     $valid = $this->validate_required_field($emailField, $email);
+ *
+ *     if ($valid) {
+ *       // End-user specified an email, but is it valid?
+ *       $valid = !empty(filter_var($email, FILTER_VALIDATE_EMAIL));
+ *       if (!$valid) {
+ *         // NOPE.
+ *         $this->add_error($emailField, 'invalid email!');
+ *       }
+ *     }
+ *
+ *     return $valid;
+ *   }
+ *
+ *   public function validate_name(array $nameField, string $name) {
+ *     // We can get as simple as we want to!
+ *     // Here we're just checking that $name matches a certain value.
+ *     $valid = $name === 'Bob';
+ *     if (!$valid) {
+ *       $this->add_error($nameField, 'only people name Bob are worthy');
+ *     }
+ *     return $valid;
+ *   }
+ *
+ *   public function validate_login(array $loginField, string $login, array $submission) {
+ *     // The validate() method passes all submitted data to each validator.
+ *     // So, if you need to, you can look at other fields:
+ *     $leet = $login === $submission['name'].'_x1337x';
+ *
+ *     // Check if the login is cool enough.
+ *     if (!$leet) {
+ *       $this->add_error(
+ *         $loginField,
+ *         'You login is not cool enough. It must be your name plus the string "_x1337x".'
+ *       );
+ *     }
+ *
+ *     return $leet;
+ *   }
+ * }
+ * ```
+ *
+ * Note that for a given field, "validators" is a list of callbacks.
+ * Validators define their own error messaging; that is, if a validator
+ * method finds that a field is invalid for some reason, it is responsible
+ * for adding an error message for that field. While this is a little more
+ * work, it allows for fine-grained control over the order in which fields
+ * are validated, and the messages that are displayed for specific reasons.
  */
 abstract class AbstractBase {
   const MESSAGE_FIELD_REQUIRED = '%s is required';
@@ -19,91 +106,7 @@ abstract class AbstractBase {
    *
    * Each key in the top-level array is the name of a field; each field is
    * represented simply as an array. Validations are declarative, in that each
-   * field tells this class exactly how to validate it
-   * For example, you might set up an EmployeeForm in this way:
-   *
-   * use Conifer\Form\AbstractBase;
-   *
-   * class EmployeeForm extends AbstractBase {
-   *   public function __construct() {
-   *     $this->fields = [
-   *       'user_login' => [
-   *         'label' => 'Username',
-   *         'validators' => [
-   *           [$this, 'validate_required_field'],
-   *           [$this, 'validate_login']
-   *         ],
-   *       ],
-   *       'user_email' => [
-   *         'label' => 'Email',
-   *         'validators' => [[$this, 'validate_email']],
-   *       ],
-   *       'first_name' => [
-   *         'label' => 'First Name',
-   *         'validators' => [
-   *           [$this, 'validate_required_field'],
-   *           [$this, 'validate_name']
-   *         ],
-   *       ],
-   *       'last_name' => [
-   *         'label' => 'Last Name',
-   *         'validators' => [
-   *           [$this, 'validate_required_field'],
-   *           [$this, 'validate_name']
-   *         ],
-   *       ],
-   *     ];
-   *   }
-   *
-   *   public function validate_email(array $emailField, string $email) {
-   *     // We can call other pre-defined validators here
-   *     $valid = $this->validate_required_field($emailField, $email);
-   *
-   *     if ($valid) {
-   *       // End-user specified an email, but is it valid?
-   *       $valid = !empty(filter_var($email, FILTER_VALIDATE_EMAIL));
-   *       if (!$valid) {
-   *         // NOPE.
-   *         $this->add_error($emailField, 'invalid email!');
-   *       }
-   *     }
-   *
-   *     return $valid;
-   *   }
-   *
-   *   public function validate_name(array $nameField, string $name) {
-   *     // We can get as simple as we want to!
-   *     // Here we're just checking that $name matches a certain value.
-   *     $valid = $name === 'Bob';
-   *     if (!$valid) {
-   *       $this->add_error($nameField, 'only people name Bob are worthy');
-   *     }
-   *     return $valid;
-   *   }
-   *
-   *   public function validate_login(array $loginField, string $login, array $submission) {
-   *     // The validate() method passes all submitted data to each validator.
-   *     // So, if you need to, you can look at other fields:
-   *     $leet = $login === $submission['name'].'_x1337x';
-   *
-   *     // Check if the login is cool enough.
-   *     if (!$leet) {
-   *       $this->add_error(
-   *         $loginField,
-   *         'You login is not cool enough. It must be your name plus the string "_x1337x".'
-   *       );
-   *     }
-   *
-   *     return $leet;
-   *   }
-   * }
-   *
-   * Note that for a given field, "validators" is a list of callbacks.
-   * Validators define their own error messaging; that is, if a validator
-   * method finds that a field is invalid for some reason, it is responsible
-   * for adding an error message for that field. While this is a little more
-   * work, it allows for fine-grained control over the order in which fields
-   * are validated, and the messages that are displayed for specific reasons.
+   * field tells this class exactly how to validate it.
    *
    * @var array
    */
