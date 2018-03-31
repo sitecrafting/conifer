@@ -4,7 +4,8 @@ namespace Conifer\AjaxHandler;
 
 use LogicException;
 use ReflectionClass;
-use Psr\Log\LoggerInterface;
+
+// TODO: Need to address logging for AJAX requests. Stripped logging out for now. See #25
 
 /**
  * Class to encapsulate handling AJAX calls. Handling a WP AJAX action
@@ -78,7 +79,6 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractBase {
   protected $request;
   protected $cookie;
-  protected $logger;
   protected $action;
   protected $action_methods;  
   
@@ -95,11 +95,11 @@ abstract class AbstractBase {
    * @param array $request the HTTP request params.
    * Defaults to the $_REQUEST superglobal.
    */
-  public static function handle(array $request = null) {
-    $reqest = $request ?: $_REQUEST;
-    $handler = new static($request, apply_filters('get_logger', false));
+  public static function handle(array $request = []) {
+    $request = $request ?: $_REQUEST;
+    $handler = new static($request);
     $handler->set_cookie($_COOKIE);
-    $handler->send_json_response($handler->execute());
+    $handler->send_json_response($handler->execute($request));
   }
 
   /**
@@ -125,9 +125,8 @@ abstract class AbstractBase {
    * Constructor.
    * TODO decide whether to require Monolog??
    * @param array $request the raw request params, i.e. GET/POST
-   * @param \Psr\Log\LoggerInterface $logger a PSR-3-compliant logger object
    */
-  public function __construct(array $request, LoggerInterface $logger) {
+  public function __construct(array $request) {
     if (empty($request['action'])) {
       throw new LogicException(
         'Trying to handle an AJAX call without an action! The "action" request parameter is required.'
@@ -136,7 +135,6 @@ abstract class AbstractBase {
 
     $this->action = $request['action'];
     $this->request = $request;
-    $this->logger = $logger;
     $this->action_methods = [];
   }
 
@@ -145,9 +143,7 @@ abstract class AbstractBase {
    * @param array $response the response to be converted to JSON
    */
   protected function send_json_response(array $response) {
-    header('content-type: application/json');
-    echo json_encode($response);
-    wp_die();
+    wp_send_json($response);
   }
 
   /**
