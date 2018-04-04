@@ -196,6 +196,26 @@ abstract class AbstractBase {
   }
 
   /**
+   * Whether or not `$field` was checked in the submission, optionally
+   * matching on `$value` (e.g. for radio buttons).
+   *
+   * @param string $field the `name` of the field
+   * @param string $value (optional) the value to check against. This is
+   * necessary e.g. for radio inputs, where there's more than one possible
+   * value.
+   * @return bool true if the field was checked
+   */
+  public function checked($field, $value = null) : bool {
+    $fieldValue = $this->get($field);
+
+    // at the very least, the field is present in the submission...
+    return isset($fieldValue)
+      // ...AND, either the caller specified no value to match against,
+      // or the submitted value matches the caller's value exactly.
+      && (!isset($value) || $fieldValue === $value);
+  }
+
+  /**
    * Get the errors collected while processing this form, if any
    *
    * @return array
@@ -214,12 +234,22 @@ abstract class AbstractBase {
   }
 
   /**
+   * Whether the field `$fieldName` has any validation errors
+   *
+   * @param string $fieldName the name of the field to check
+   * @return bool
+   */
+  public function has_errors_for(string $fieldName) : bool {
+    return !empty($this->get_errors_for($fieldName));
+  }
+
+  /**
    * Whether this form has been processed without errors
    *
    * @return boolean
    */
   public function processed_successfully() : bool {
-    return $this->success;
+    return !!$this->success;
   }
 
   /**
@@ -308,7 +338,7 @@ abstract class AbstractBase {
     if (!$valid) {
       $this->add_error($field['name'], sprintf(
         static::MESSAGE_FIELD_REQUIRED,
-        $field['label']
+        $field['label'] ?? $field['name']
       ));
     }
 
