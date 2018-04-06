@@ -30,7 +30,7 @@ class AjaxHandlerTest extends Base {
       ->expects($this->any())
       ->method('execute')
       ->willReturn(['best_band' => self::BEST_BAND]);
-    
+
     // Save for later use in test function(s)
     $this->handler = $ajaxHanderStub;
   }
@@ -38,7 +38,7 @@ class AjaxHandlerTest extends Base {
   public function test_send_json_response() {
     // Tell PHPUnit to expect the following string to be
     // output, proclaiming what should be obvious to all
-    $this->expectOutputString('{"best_band":"'.self::BEST_BAND.'"}');
+    $this->expectOutputString('{"best_band":"' . self::BEST_BAND . '"}');
 
     // Call the mocked abstract execute method to get the
     // raw response array of the AJAX handler function
@@ -53,8 +53,8 @@ class AjaxHandlerTest extends Base {
     // version of the response from above
     WP_Mock::userFunction('wp_send_json', [
       'times' => 1,
-      'return' => function($response){
-        echo json_encode($response);
+      'return' => function($response) {
+        echo json_encode($response); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
       },
     ]);
 
@@ -67,7 +67,7 @@ class AjaxHandlerTest extends Base {
     );
   }
 
-  private function get_request_array(){
+  private function get_request_array() {
     // AJAX handler classes require an action to be included
     // with each request to be considered valid
     return ['action' => 'best_band'];
