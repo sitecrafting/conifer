@@ -8,6 +8,8 @@
 
 namespace Conifer\Form;
 
+use Closure;
+
 /**
  * Abstract form base class, encapsulating the Conifer Form API
  *
@@ -315,6 +317,13 @@ abstract class AbstractBase {
 
       // call each validator for this field
       foreach ($validators as $validator) {
+        // get user-defined args to validator callback
+        $additionalArgs = [];
+        if (is_array($validator)) {
+          // splice validator into callback, saving args for later
+          $additionalArgs = array_splice($validator, 2);
+        }
+
         if (!is_callable($validator)) {
           throw new \LogicException("$name field validator must be defined as a callable!");
         }
@@ -322,10 +331,16 @@ abstract class AbstractBase {
         // get the submitted value for this field, defaulting to empty string
         $fieldValue = $submission[$name] ?? '';
 
-        // validate this field
-        $valid = call_user_func_array(
+        // compile args
+        $validatorArgs = array_merge(
+          [$field, $fieldValue, $submission],
+          $additionalArgs
+        );
+
+        // validate this field, making sure invalid results carry forward
+        $valid = $this->execute_validator(
           $validator,
-          [$field, $fieldValue, $submission]
+          $validatorArgs
         ) && $valid;
       }
     }
@@ -415,5 +430,16 @@ abstract class AbstractBase {
       $submission,
       array_flip(array_keys($this->fields))
     );
+  }
+
+
+  protected function execute_validator(callable $validator, $args) {
+    if ($validator instanceof Closure) {
+      $valid = $validator->call($this, ...$args);
+    } else {
+      $valid = call_user_func_array($validator, $args);
+    }
+
+    return $valid;
   }
 }
