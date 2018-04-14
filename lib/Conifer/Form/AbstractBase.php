@@ -322,10 +322,13 @@ abstract class AbstractBase {
     $valid = !empty($value);
 
     if (!$valid) {
-      $this->add_error($field['name'], sprintf(
+      // use field-defined message, or fallback on crunching message ourselves
+      $message = $field['required_message'] ?: sprintf(
         static::MESSAGE_FIELD_REQUIRED,
         $field['label'] ?? $field['name']
-      ));
+      );
+
+      $this->add_error($field['name'], $message);
     }
 
     return $valid;
@@ -423,8 +426,8 @@ abstract class AbstractBase {
 
   protected function execute_validator(
     $validator,
-    $field,
-    $submission
+    array $field,
+    array $submission
   ) {
     // get user-defined args to validator callback
     $additionalArgs = [];

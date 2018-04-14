@@ -24,6 +24,13 @@ class FormTest extends Base {
     'nationality'     => 'British',
   ];
 
+  const INVALID_SUBMISSION = [
+    'first_name'      => '',
+    'last_name'       => '',
+    'favorite_things' => ['dog bites'],
+    'nationality'     => 'MURCAN',
+  ];
+
   public function setUp() {
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);
 
@@ -41,10 +48,12 @@ class FormTest extends Base {
 
     $this->setProtectedProperty($this->form, 'fields', [
       'first_name'      => [
-        'validators'    => [[$this->form, 'require']],
+        'validators'        => [[$this->form, 'require']],
+        'required_message'  => 'Kindly tell us your first name.',
       ],
       'last_name'       => [
-        'validators'    => [[$this->form, 'require']],
+        'validators'        => [[$this->form, 'require']],
+        'required_message'  => 'Kindly tell us your last name.',
       ],
       'yes_or_no'       => [
         'options'       => ['yes', 'no'],
@@ -114,5 +123,29 @@ class FormTest extends Base {
   public function test_validate_valid_submission() {
     $this->assertTrue($this->form->validate(self::VALID_SUBMISSION));
     $this->assertEmpty($this->form->get_errors());
+  }
+
+  public function test_require_with_empty_value() {
+    $bestBand = [
+      'name' => 'best_band',
+      'required_message' => 'You have to put somethin here broh.',
+      'validators' => [[$this->form, 'require']],
+    ];
+
+    $this->assertFalse($this->form->require($bestBand, ''));
+    $this->assertEquals(
+      ['You have to put somethin here broh.'],
+      $this->form->get_error_messages_for('best_band')
+    );
+  }
+
+  public function test_require_with_value() {
+    $bestBand = [
+      'name' => 'best_band',
+      'validators' => [[$this->form, 'require']],
+    ];
+
+    $this->assertTrue($this->form->require($bestBand, 'Creed'));
+    $this->assertEmpty($this->form->get_error_messages_for('best_band'));
   }
 }
