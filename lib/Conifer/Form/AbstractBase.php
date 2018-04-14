@@ -208,11 +208,20 @@ abstract class AbstractBase {
   public function checked($field, $value = null) : bool {
     $fieldValue = $this->get($field);
 
-    // at the very least, the field is present in the submission...
-    return isset($fieldValue)
-      // ...AND, either the caller specified no value to match against,
-      // or the submitted value matches the caller's value exactly.
-      && (!isset($value) || $fieldValue === $value);
+    // at the very least, check that the field is present in the submission...
+    if (!isset($fieldValue)) {
+      return false;
+    }
+
+    if (is_array($fieldValue)) {
+      // array field, e.g. multiple checkboxes or multiselect.
+      return in_array($value, $fieldValue, true);
+    }
+
+    // Single value.
+    // EITHER the caller specified no value to match against,
+    // OR the submitted value matches the caller's value exactly.
+    return (!isset($value) || $fieldValue === $value);
   }
 
   /**
@@ -343,6 +352,17 @@ abstract class AbstractBase {
     }
 
     return $valid;
+  }
+
+  /**
+   * Alias of validate_required_field
+   *
+   * @param  array $field the field array itself
+   * @param  string $value the submitted value
+   * @return boolean
+   */
+  public function require(array $field, string $value) : bool {
+    return $this->validate_required_field($field, $value);
   }
 
   /**
