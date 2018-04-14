@@ -69,6 +69,14 @@ abstract class Base extends TestCase {
     return $property->getValue($object);
   }
 
+  protected function setProtectedProperty($object, $name, $value) {
+    $reflection = new \ReflectionClass($object);
+    $property   = $reflection->getProperty($name);
+    $property->setAccessible(true);
+
+    return $property->setValue($object, $value);
+  }
+
   protected function callProtectedMethod($object, $name, $args = []) {
     $reflection = new \ReflectionClass($object);
     $method     = $reflection->getMethod($name);
