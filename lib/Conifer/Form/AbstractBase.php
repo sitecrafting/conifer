@@ -303,27 +303,8 @@ abstract class AbstractBase {
     $valid = true;
 
     foreach ($this->get_fields() as $name => $field) {
-      if (!is_array($field)) {
-        throw new \LogicException("$name field must be defined as an array!");
-      }
-
-      // check the validators for this field
-      $validators = $field['validators'] ?? [];
-      if (!is_array($validators)) {
-        throw new \LogicException("$name validators must be defined as an array!");
-      }
-
       $field['name'] = $name;
-
-      // call each validator for this field
-      foreach ($validators as $validator) {
-        // validate this field, making sure invalid results carry forward
-        $valid = $this->execute_validator(
-          $validator,
-          $field,
-          $submission
-        ) && $valid;
-      }
+      $valid = $this->validate_field($field, $submission) && $valid;
     }
 
     return $valid;
@@ -413,6 +394,32 @@ abstract class AbstractBase {
     );
   }
 
+
+  protected function validate_field(array $field, array $submission) {
+    $valid = true;
+
+    if (!is_array($field)) {
+      throw new \LogicException("$name field must be defined as an array!");
+    }
+
+    // check the validators for this field
+    $validators = $field['validators'] ?? [];
+    if (!is_array($validators)) {
+      throw new \LogicException("$name validators must be defined as an array!");
+    }
+
+    // call each validator for this field
+    foreach ($validators as $validator) {
+      // validate this field, making sure invalid results carry forward
+      $valid = $this->execute_validator(
+        $validator,
+        $field,
+        $submission
+      ) && $valid;
+    }
+
+    return $valid;
+  }
 
   protected function execute_validator(
     $validator,
