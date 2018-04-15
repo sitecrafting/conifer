@@ -67,6 +67,14 @@ class FormTest extends Base {
       'nationality'     => [
         'validators'    => [$worldlyXenophobe],
       ],
+      'adjective'       => [
+        // TODO implement defaults
+        'default'       => 'supercalifragilisticexpialidocious',
+      ],
+      'activity'        => [
+        // TODO implement filters
+        'filter'        => function() {},
+      ],
     ]);
   }
 
@@ -147,5 +155,13 @@ class FormTest extends Base {
 
     $this->assertTrue($this->form->require($bestBand, 'Creed'));
     $this->assertEmpty($this->form->get_error_messages_for('best_band'));
+  }
+
+  public function test_get_with_default() {
+    $this->markTestSkipped();
+  }
+
+  public function test_get_with_filter() {
+    $this->markTestSkipped();
   }
 }
