@@ -37,7 +37,11 @@ class FormTest extends Base {
     // Let's pretend our form subscribes to a weird type of xenophobia
     $worldlyXenophobe = function($field, $value) {
       // ONLY ALLOW THESE THREE NATIONALITIES
-      $valid = in_array(strtolower($value), ['british', 'canadian', 'australian']);
+      $valid = in_array(
+        strtolower($value),
+        ['british', 'canadian', 'australian'],
+        true
+      );
 
       if (!$valid) {
         $this->add_error('nationality', 'wrong nationality, go away');
@@ -112,10 +116,12 @@ class FormTest extends Base {
     $this->form->add_error('favorite_things', 'WELL WHAT ARE THEY');
     $this->form->add_error('nationality', 'INVALID NATIONALITY');
 
-    $this->assertEquals(
-      [['field' => 'nationality', 'message' => 'INVALID NATIONALITY']],
-      array_values($this->form->get_errors_for('nationality'))
-    );
+    $this->assertEquals([
+      [
+        'field' => 'nationality',
+        'message' => 'INVALID NATIONALITY',
+      ],
+    ], array_values($this->form->get_errors_for('nationality')));
   }
 
   public function test_get_error_messages_for() {

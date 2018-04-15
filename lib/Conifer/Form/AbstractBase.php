@@ -304,7 +304,7 @@ abstract class AbstractBase {
 
     foreach ($this->get_fields() as $name => $field) {
       $field['name'] = $name;
-      $valid = $this->validate_field($field, $submission) && $valid;
+      $valid         = $this->validate_field($field, $submission) && $valid;
     }
 
     return $valid;
@@ -398,12 +398,17 @@ abstract class AbstractBase {
   }
 
 
-  protected function validate_field(array $field, array $submission) {
+  /**
+   * Validate a single field
+   *
+   * @param array $field the field to validate.
+   * MUST include at least a `name` index.
+   * @param array $submission the data submitted.
+   * @throws \LogicException if validators are not defined as an array
+   * @return boolean
+   */
+  protected function validate_field(array $field, array $submission) : bool {
     $valid = true;
-
-    if (!is_array($field)) {
-      throw new \LogicException("$name field must be defined as an array!");
-    }
 
     // check the validators for this field
     $validators = $field['validators'] ?? [];
@@ -424,11 +429,21 @@ abstract class AbstractBase {
     return $valid;
   }
 
+  /**
+   * Execute a single field validator
+   *
+   * @param mixed $validator the callback to execute, responsible for adding
+   * any errors raised
+   * @param array $field the field to validate
+   * @param array $submission the submitted data
+   * @throws \LogicException if validator is not callable
+   * @return boolean
+   */
   protected function execute_validator(
     $validator,
     array $field,
     array $submission
-  ) {
+  ) : bool {
     // get user-defined args to validator callback
     $additionalArgs = [];
     if (is_array($validator)) {
