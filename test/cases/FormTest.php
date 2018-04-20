@@ -33,55 +33,10 @@ class FormTest extends Base {
 
   public function setUp() {
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);
-
-    // Let's pretend our form subscribes to a weird type of xenophobia
-    $worldlyXenophobe = function($field, $value) {
-      // ONLY ALLOW THESE THREE NATIONALITIES
-      $valid = in_array(
-        strtolower($value),
-        ['british', 'canadian', 'australian'],
-        true
-      );
-
-      if (!$valid) {
-        $this->add_error('nationality', 'wrong nationality, go away');
-      }
-
-      return $valid;
-    };
-
-    $this->setFields([
-      'first_name'      => [
-        'validators'        => [[$this->form, 'require']],
-        'required_message'  => 'Kindly tell us your first name.',
-      ],
-      'last_name'       => [
-        'validators'        => [[$this->form, 'require']],
-        'required_message'  => 'Kindly tell us your last name.',
-      ],
-      'yes_or_no'       => [
-        'options'       => ['yes', 'no'],
-      ],
-      'highest_award'   => [],
-      'favorite_things' => [
-        'options'       => ['raindrops', 'whiskers', 'kettles', 'mittens'],
-        // TODO validate at_least
-      ],
-      'nationality'     => [
-        'validators'    => [$worldlyXenophobe],
-      ],
-      'adjective'       => [
-        'default'       => 'supercalifragilisticexpialidocious',
-      ],
-      'activity'        => [
-        'filter'        => function($val) {
-          return "FILTERED->$val<-FILTERED";
-        },
-      ],
-    ]);
   }
 
   public function test_hydrate() {
+    $this->setFields($this->getDefaultFields());
     $this->form->hydrate(self::VALID_SUBMISSION);
 
     $this->assertEquals('Julie', $this->form->get('first_name'));
@@ -90,11 +45,11 @@ class FormTest extends Base {
       ['kettles', 'mittens'],
       $this->form->get('favorite_things')
     );
-    // TODO default values
     $this->assertNull($this->form->get('yes_or_no'));
   }
 
   public function test_checked() {
+    $this->setFields($this->getDefaultFields());
     $this->form->hydrate(self::VALID_SUBMISSION);
 
     $this->assertFalse($this->form->checked('favorite_things', 'raindrops'));
@@ -161,6 +116,14 @@ class FormTest extends Base {
   }
 
   public function test_get_whitelisted_fields_with_filter() {
+    $this->setFields([
+      'activity'        => [
+        'filter'        => function($val) {
+          return "FILTERED->$val<-FILTERED";
+        },
+      ],
+    ]);
+
     $whitelist = $this->form->get_whitelisted_fields([
       'activity' => 'anything really',
     ]);
@@ -172,6 +135,12 @@ class FormTest extends Base {
   }
 
   public function test_get_whitelisted_fields_with_default() {
+    $this->setFields([
+      'adjective'       => [
+        'default'       => 'supercalifragilisticexpialidocious',
+      ],
+    ]);
+
     $whitelist = $this->form->get_whitelisted_fields(self::VALID_SUBMISSION);
 
     $this->assertEquals(
@@ -183,5 +152,26 @@ class FormTest extends Base {
 
   protected function setFields(array $fields) {
     $this->setProtectedProperty($this->form, 'fields', $fields);
+  }
+
+  protected function getDefaultFields() {
+    return [
+      'first_name'      => [
+        'validators'        => [[$this->form, 'require']],
+        'required_message'  => 'Kindly tell us your first name.',
+      ],
+      'last_name'       => [
+        'validators'        => [[$this->form, 'require']],
+        'required_message'  => 'Kindly tell us your last name.',
+      ],
+      'yes_or_no'       => [
+        'options'       => ['yes', 'no'],
+      ],
+      'highest_award'   => [],
+      'favorite_things' => [
+        'options'       => ['raindrops', 'whiskers', 'kettles', 'mittens'],
+        // TODO validate at_least
+      ],
+    ];
   }
 }
