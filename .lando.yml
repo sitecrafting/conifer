@@ -17,6 +17,9 @@ services:
           # This is so we can force non-interactive mode setting up WP
           CI: ${CI:-''}
 
+  database:
+    type: mysql:5.7
+
   node:
     type: node:6.11
 
