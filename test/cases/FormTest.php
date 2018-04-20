@@ -73,6 +73,31 @@ class FormTest extends Base {
     $this->assertFalse($this->form->checked('nonsense'));
   }
 
+  public function test_selected_with_single_option() {
+    $this->setFields([
+      'favorite_thing' => [],
+    ]);
+    $this->form->hydrate([
+      'favorite_thing' => 'raindrops',
+    ]);
+
+    $this->assertTrue($this->form->selected('favorite_thing', 'raindrops'));
+    $this->assertFalse($this->form->selected('favorite_thing', 'kittens'));
+  }
+
+  public function test_selected_with_multiple_options() {
+    $this->setFields([
+      'favorite_thing' => [],
+    ]);
+    $this->form->hydrate([
+      'favorite_thing' => ['raindrops', 'mittens'],
+    ]);
+
+    $this->assertTrue($this->form->selected('favorite_thing', 'raindrops'));
+    $this->assertTrue($this->form->selected('favorite_thing', 'mittens'));
+    $this->assertFalse($this->form->selected('favorite_thing', 'kittens'));
+  }
+
   public function test_get_errors_for() {
     $this->form->add_error('nationality', 'INVALID NATIONALITY');
 

@@ -227,6 +227,36 @@ abstract class AbstractBase {
   }
 
   /**
+   * Whether `$field` was selected with the value `$optionValue`.
+   *
+   * ```php
+   * if ($form->selected('company_to_contact', 'acme')) {
+   *   $acmeClient = new AcmeClient();
+   *   $acmeClient->sendMessage('Someone chose you!');
+   * }
+   * ```
+   *
+   * @param string $field the name of the field to check
+   * @param mixed $optionValue the value of the option to check against the
+   * actual submitted value
+   * @return bool
+   */
+  public function selected(string $field, $optionValue) : bool {
+    $fieldValue = $this->get($field);
+
+    // at the very least, check that the field is present in the submission...
+    if (!isset($fieldValue)) {
+      return false;
+    }
+
+    if (is_array($fieldValue)) {
+      return in_array($optionValue, $fieldValue, true);
+    }
+
+    return $fieldValue === $optionValue;
+  }
+
+  /**
    * Get the errors collected while processing this form, if any
    *
    * @return array
