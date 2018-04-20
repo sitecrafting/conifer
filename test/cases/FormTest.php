@@ -15,29 +15,21 @@ use Conifer\Form\AbstractBase;
 class FormTest extends Base {
   protected $form;
 
-  const VALID_SUBMISSION = [
-    'first_name'      => 'Julie',
-    'last_name'       => 'Andrews',
-    'yes_or_no'       => null,
-    'highest_award'   => 'Academy Award',
-    'favorite_things' => ['kettles', 'mittens'],
-    'nationality'     => 'British',
-  ];
-
-  const INVALID_SUBMISSION = [
-    'first_name'      => '',
-    'last_name'       => '',
-    'favorite_things' => ['dog bites'],
-    'nationality'     => 'MURCAN',
-  ];
-
   public function setUp() {
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);
   }
 
   public function test_hydrate() {
-    $this->setFields($this->getDefaultFields());
-    $this->form->hydrate(self::VALID_SUBMISSION);
+    $this->setFields([
+      'first_name'  => [],
+      'last_name'   => [],
+      'favorite_things' => [],
+    ]);
+    $this->form->hydrate([
+      'first_name'      => 'Julie',
+      'last_name'       => 'Andrews',
+      'favorite_things' => ['kettles', 'mittens'],
+    ]);
 
     $this->assertEquals('Julie', $this->form->get('first_name'));
     $this->assertEquals('Andrews', $this->form->get('last_name'));
@@ -48,20 +40,35 @@ class FormTest extends Base {
     $this->assertNull($this->form->get('yes_or_no'));
   }
 
-  public function test_checked() {
-    $this->setFields($this->getDefaultFields());
-    $this->form->hydrate(self::VALID_SUBMISSION);
+  public function test_checked_with_single_value() {
+    $this->setFields([
+      'highest_award' => [],
+    ]);
+    $this->form->hydrate([
+      'highest_award' => 'Academy Award',
+    ]);
+
+    $this->assertTrue($this->form->checked('highest_award', 'Academy Award'));
+    $this->assertFalse($this->form->checked('highest_award', 'a blue ribbon'));
+  }
+
+  public function test_checked_with_multiple_values() {
+    $this->setFields([
+      'favorite_things' => [],
+    ]);
+    $this->form->hydrate([
+      'favorite_things' => ['kettles', 'mittens'],
+    ]);
 
     $this->assertFalse($this->form->checked('favorite_things', 'raindrops'));
     $this->assertFalse($this->form->checked('favorite_things', 'whiskers'));
     $this->assertTrue($this->form->checked('favorite_things', 'kettles'));
     $this->assertTrue($this->form->checked('favorite_things', 'mittens'));
+  }
 
-    // TODO default values
-    $this->assertFalse($this->form->checked('yes_or_no'));
-
-    $this->assertTrue($this->form->checked('highest_award', 'Academy Award'));
-    $this->assertFalse($this->form->checked('highest_award', 'a blue ribbon'));
+  public function test_checked_with_nonsense() {
+    $this->setFields([]);
+    $this->form->hydrate([]);
 
     $this->assertFalse($this->form->checked('nonsense'));
   }
@@ -87,7 +94,22 @@ class FormTest extends Base {
   }
 
   public function test_validate_valid_submission() {
-    $this->assertTrue($this->form->validate(self::VALID_SUBMISSION));
+    $isMaryPoppins = function(array $_, string $value) {
+      return $value === 'Mary Poppins';
+    };
+
+    $this->setFields([
+      'nanny' => [
+        'validators' => [[$this->form, 'require'], $isMaryPoppins],
+      ],
+      'field_without_validator' => [],
+      'spanish_inquisition' => [], // don't expect this field at all...
+    ]);
+
+    $this->assertTrue($this->form->validate([
+      'nanny' => 'Mary Poppins',
+      'field_without_validator',
+    ]));
     $this->assertEmpty($this->form->get_errors());
   }
 
@@ -140,8 +162,7 @@ class FormTest extends Base {
         'default'       => 'supercalifragilisticexpialidocious',
       ],
     ]);
-
-    $whitelist = $this->form->get_whitelisted_fields(self::VALID_SUBMISSION);
+    $whitelist = $this->form->get_whitelisted_fields(['adjective' => '']);
 
     $this->assertEquals(
       'supercalifragilisticexpialidocious',
