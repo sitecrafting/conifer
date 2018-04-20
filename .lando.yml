@@ -22,6 +22,7 @@ services:
 
     globals:
       newman: "1.3.2"
+      yarn: "1.5.1"
 
   phpmyadmin:
     type: phpmyadmin:4.7
@@ -38,6 +39,9 @@ tooling:
     description: 'Install and configure WordPress for custom plugin dev'
 
   newman:
+    service: node
+
+  yarn:
     service: node
 
   debug:
