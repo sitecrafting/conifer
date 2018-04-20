@@ -259,7 +259,7 @@ abstract class AbstractBase {
    *
    * @return boolean
    */
-  public function processed_successfully() : bool {
+  public function succeeded() {
     return !!$this->success;
   }
 
