@@ -112,7 +112,6 @@ class FormTest extends Base {
   }
 
   public function test_get_errors_for() {
-    $this->form->add_error('favorite_things', 'WELL WHAT ARE THEY');
     $this->form->add_error('nationality', 'INVALID NATIONALITY');
 
     $this->assertEquals([
@@ -124,7 +123,6 @@ class FormTest extends Base {
   }
 
   public function test_get_error_messages_for() {
-    $this->form->add_error('favorite_things', 'WELL WHAT ARE THEY');
     $this->form->add_error('nationality', 'INVALID NATIONALITY');
 
     $this->assertEquals(
