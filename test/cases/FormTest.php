@@ -72,12 +72,12 @@ class FormTest extends Base {
         'validators'    => [$worldlyXenophobe],
       ],
       'adjective'       => [
-        // TODO implement defaults
         'default'       => 'supercalifragilisticexpialidocious',
       ],
       'activity'        => [
-        // TODO implement filters
-        'filter'        => function() {},
+        'filter'        => function($val) {
+          return "FILTERED->$val<-FILTERED";
+        },
       ],
     ]);
   }
@@ -163,8 +163,15 @@ class FormTest extends Base {
     $this->assertEmpty($this->form->get_error_messages_for('best_band'));
   }
 
-  public function test_get_with_default() {
-    $this->markTestSkipped();
+  public function test_get_whitelisted_fields_with_filter() {
+    $whitelist = $this->form->get_whitelisted_fields([
+      'activity' => 'anything really',
+    ]);
+
+    $this->assertEquals(
+      'FILTERED->anything really<-FILTERED',
+      $whitelist['activity']
+    );
   }
 
   public function test_get_with_filter() {

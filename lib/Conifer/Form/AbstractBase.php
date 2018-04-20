@@ -389,14 +389,40 @@ abstract class AbstractBase {
    * @return array the whitelisted fields
    */
   public function get_whitelisted_fields(array $submission) {
-    // get only the submitted fields that have a key in common
-    // with the fields we declared
-    return array_intersect_key(
-      $submission,
-      array_flip(array_keys($this->fields))
-    );
+    return array_reduce(array_keys($this->fields), function(
+      array $whitelist,
+      string $fieldName
+    ) use ($submission) {
+      // we don't always want to return a value for a field, e.g.
+      // for checkbox where null vs. empty string matters
+      if (isset($submission[$fieldName])) {
+        $whitelist[$fieldName] = $this->filter_field(
+          $this->fields[$fieldName],
+          $submission[$fieldName]
+        );
+      }
+
+      return $whitelist;
+    }, []);
   }
 
+
+  /**
+   * Filter a submitted field value using the field's declared filter logic,
+   * if any.
+   *
+   * @param array $field the field definition
+   * @param mixed $value the submitted field value
+   * @return mixed the filtered value
+   */
+  protected function filter_field(array $field, $value) {
+    $filter = $field['filter'] ?? null;
+    if (is_callable($filter)) {
+      $value = $filter($value);
+    }
+
+    return $value;
+  }
 
   /**
    * Validate a single field
