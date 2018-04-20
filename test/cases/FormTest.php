@@ -61,7 +61,6 @@ class FormTest extends Base {
       ],
       'yes_or_no'       => [
         'options'       => ['yes', 'no'],
-        'default'       => 'yes', // TODO default values
       ],
       'highest_award'   => [],
       'favorite_things' => [
