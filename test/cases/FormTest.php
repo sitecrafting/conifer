@@ -173,7 +173,12 @@ class FormTest extends Base {
     );
   }
 
-  public function test_get_with_filter() {
-    $this->markTestSkipped();
+  public function test_get_whitelisted_fields_with_default() {
+    $whitelist = $this->form->get_whitelisted_fields(self::VALID_SUBMISSION);
+
+    $this->assertEquals(
+      'supercalifragilisticexpialidocious',
+      $whitelist['adjective']
+    );
   }
 }

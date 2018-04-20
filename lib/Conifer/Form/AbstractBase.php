@@ -395,12 +395,10 @@ abstract class AbstractBase {
     ) use ($submission) {
       // we don't always want to return a value for a field, e.g.
       // for checkbox where null vs. empty string matters
-      if (isset($submission[$fieldName])) {
-        $whitelist[$fieldName] = $this->filter_field(
-          $this->fields[$fieldName],
-          $submission[$fieldName]
-        );
-      }
+      $whitelist[$fieldName] = $this->filter_field(
+        $this->fields[$fieldName],
+        $submission[$fieldName] ?? null
+      );
 
       return $whitelist;
     }, []);
@@ -409,7 +407,8 @@ abstract class AbstractBase {
 
   /**
    * Filter a submitted field value using the field's declared filter logic,
-   * if any.
+   * if any. If a field default is provided, the default is applied *after*
+   * the filter (that is, to the result of the filter callback).
    *
    * @param array $field the field definition
    * @param mixed $value the submitted field value
@@ -418,8 +417,12 @@ abstract class AbstractBase {
   protected function filter_field(array $field, $value) {
     $filter = $field['filter'] ?? null;
     if (is_callable($filter)) {
-      $value = $filter($value);
+      // apply the filter
+      $value = $filter($value) ?? null;
     }
+
+    // fallback on configured default, if any
+    $value = $value ?: $field['default'] ?? null;
 
     return $value;
   }
