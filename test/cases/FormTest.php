@@ -50,7 +50,7 @@ class FormTest extends Base {
       return $valid;
     };
 
-    $this->setProtectedProperty($this->form, 'fields', [
+    $this->setFields([
       'first_name'      => [
         'validators'        => [[$this->form, 'require']],
         'required_message'  => 'Kindly tell us your first name.',
@@ -180,5 +180,10 @@ class FormTest extends Base {
       'supercalifragilisticexpialidocious',
       $whitelist['adjective']
     );
+  }
+
+
+  protected function setFields(array $fields) {
+    $this->setProtectedProperty($this->form, 'fields', $fields);
   }
 }
