@@ -24,6 +24,7 @@ install:
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/docker
 
 script:
   - composer test
