@@ -65,6 +65,11 @@ tooling:
     cmd: 'cd /app/wp/wp-content && tail -f debug.log'
     description: 'Get real-time debug log output'
 
+  e2e:
+    service: node
+    cmd: 'yarn cypress run'
+    description: 'Run end-to-end tests'
+
 proxy:
   appserver:
     - conifer.lndo.site
