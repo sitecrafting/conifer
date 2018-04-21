@@ -20,6 +20,7 @@ before_install:
 install:
   - composer install --prefer-dist
   - lando start
+  - lando yarn install
 
 cache:
   directories:
