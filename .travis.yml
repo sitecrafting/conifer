@@ -25,6 +25,8 @@ install:
 cache:
   directories:
     - $HOME/.composer/cache
+    - vendor
+    - node_modules
 
 script:
   - composer test
