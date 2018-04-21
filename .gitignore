@@ -2,3 +2,10 @@
 /wp/
 /wp-content/
 /node_modules/
+
+# cypress test artifacts
+/cypress/videos
+.Trash*
+
+# yarn artifacts, or "yartifacts"
+yarn-error.log
