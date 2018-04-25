@@ -1,6 +1,6 @@
 <?php
 /**
- * Test the Conifer\Post class
+ * Test the Conifer\Notifier\SimpleNofitier class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
@@ -15,7 +15,7 @@ use Conifer\Notifier\SimpleNotifier;
 class SimpleNotifierTest extends Base {
   const TO_ADDRESS = 'you@example.com';
 
-  const HTML_HEADERS = ['Content-Type: text/html; charset=UTF=8'];
+  const HTML_HEADERS = ['Content-Type: text/html; charset=UTF-8'];
 
   protected $notifier;
 
