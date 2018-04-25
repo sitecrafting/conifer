@@ -4,20 +4,20 @@
  * SimpleNotifier class
  *
  * Useful for use-cases where you have destination email addresses ready,
- * and just want to compose and send a message
+ * and just want to compose and send a message:
  *
- * Example usage:
+ * ```php
+ * // get the email contact info
+ * $email = $_POST['signup_email'];
+ * $name = $_POST['signup_name'];
  *
- *   // get the email contact info
- *   $email = $_POST['signup_email'];
- *   $name = $_POST['signup_name'];
+ * // compose the message
+ * $message = "Hi $name, thanks for signing up!";
  *
- *   // compose the message
- *   $message = "Hi $name, thanks for signing up!";
- *
- *   // send it
- *   $notifier = new Conifer\Notifier\SimpleNotifier($email);
- *   $notifier->notify('you signed up!', $message);
+ * // send it
+ * $notifier = new Conifer\Notifier\SimpleNotifier($email);
+ * $notifier->notify('you signed up!', $message);
+ * ```
  */
 
 namespace Conifer\Notifier;
