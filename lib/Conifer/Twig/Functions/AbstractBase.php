@@ -14,7 +14,7 @@ use Conifer\Site;
  * @package Conifer
  */
 abstract class AbstractBase {
- /**
+  /**
    * Register the Twig functions this class defines in get_functions()
    * on the central Site object
    *

@@ -14,7 +14,7 @@ use Conifer\Site;
  * @package Conifer
  */
 abstract class AbstractBase {
- /**
+  /**
    * Register the Twig filters this class defines in get_filters()
    * on the central Site object
    *
