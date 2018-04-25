@@ -140,6 +140,7 @@ class Site extends TimberSite {
   public function configure_default_twig_functions() {
     Functions\WordPress::add_twig_functions( $this );
     Functions\Image::add_twig_functions( $this );
+    // TODO refactor to not require Filter\AbstractBase to know about Site
   }
 
   /**
@@ -152,6 +153,7 @@ class Site extends TimberSite {
     Filters\TextHelper::add_twig_filters( $this );
     Filters\TermHelper::add_twig_filters( $this );
     Filters\Image::add_twig_filters( $this );
+    // TODO refactor to not require Filter\AbstractBase to know about Site
   }
 
   /**

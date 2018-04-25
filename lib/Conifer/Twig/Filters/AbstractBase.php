@@ -14,30 +14,14 @@ use Conifer\Site;
  * @package Conifer
  */
 abstract class AbstractBase {
-  /**
-   * The Site object responsible for adding Twig filters to the environment
-   *
-   * @var a Site object
-   */
-  protected $site;
-
-  /**
-   * Constructor
-   *
-   * @param \Conifer\Site $site the Site object
-   */
-  public function __construct( Site $site ) {
-    $this->site = $site;
-  }
-
-  /**
+ /**
    * Register the Twig filters this class defines in get_filters()
    * on the central Site object
    *
    * @param type \Conifer\Site $site the Site object to register filters on
    */
   public static function add_twig_filters( Site $site ) {
-    $wrapper = new static( $site );
+    $wrapper = new static();
     foreach ( $wrapper->get_filters() as $name => $closure ) {
       $site->add_twig_filter( $name, $closure );
     }

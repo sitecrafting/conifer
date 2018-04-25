@@ -14,30 +14,14 @@ use Conifer\Site;
  * @package Conifer
  */
 abstract class AbstractBase {
-  /**
-   * The Site object responsible for adding Twig functions to the environment
-   *
-   * @var a Site object
-   */
-  protected $site;
-
-  /**
-   * Constructor
-   *
-   * @param Site $site the Site object
-   */
-  public function __construct( Site $site ) {
-    $this->site = $site;
-  }
-
-  /**
+ /**
    * Register the Twig functions this class defines in get_functions()
    * on the central Site object
    *
    * @param type \Conifer\Site $site the Site object to register functions on
    */
   public static function add_twig_functions( Site $site ) {
-    $wrapper = new static( $site );
+    $wrapper = new static();
     foreach ( $wrapper->get_functions() as $name => $closure ) {
       $site->add_twig_function( $name, $closure );
     }
