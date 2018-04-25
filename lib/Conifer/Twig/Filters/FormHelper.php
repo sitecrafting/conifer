@@ -32,11 +32,16 @@ class FormHelper extends AbstractBase {
    *
    * @param  \Conifer\Form\AbstractBase $form a form object
    * @param  string $fieldName the name of the field being rendered
+   * @param  string $errorClass the class to give this field if it has errors
    * @return string            the HTML class(es) to render
    */
-  public function get_field_class(Form $form, $fieldName) : string {
+  public function get_field_class(
+    Form $form,
+    string $fieldName,
+    string $errorClass = 'error'
+  ) : string {
     return $form->get_errors_for($fieldName)
-      ? 'error'
+      ? $errorClass
       : '';
   }
 

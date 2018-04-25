@@ -15,7 +15,7 @@ class FormHelperTest extends Base {
     $this->wrapper = new FormHelper();
   }
 
-  public function test_field_class_default() {
+  public function test_field_class() {
     // mock up some form errors
     $form = new DummyForm();
     $form->add_error('foo', 'error message for foo');
@@ -23,6 +23,11 @@ class FormHelperTest extends Base {
     $this->assertEquals(
       'error',
       $this->wrapper->get_field_class($form, 'foo')
+    );
+
+    $this->assertEquals(
+      'my-error-class',
+      $this->wrapper->get_field_class($form, 'foo', 'my-error-class')
     );
   }
 
