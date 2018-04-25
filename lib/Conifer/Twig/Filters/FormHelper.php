@@ -10,9 +10,8 @@ use Conifer\Form\AbstractBase as Form;
 /**
  * Twig Wrapper for helpful linguistic filters, such as pluralize
  *
- * @copyright 2015 SiteCrafting, Inc.
+ * @copyright 2018 SiteCrafting, Inc.
  * @author Coby Tamayo
- * @package  Groot
  */
 class FormHelper extends AbstractBase {
   /**
@@ -22,8 +21,9 @@ class FormHelper extends AbstractBase {
    */
   public function get_filters() {
     return [
-      'field_class' => [$this, 'get_field_class'],
+      'field_class'        => [$this, 'get_field_class'],
       'error_messages_for' => [$this, 'get_error_messages_for'],
+      'err'                => [$this, 'get_error_messages_for'],
     ];
   }
 
