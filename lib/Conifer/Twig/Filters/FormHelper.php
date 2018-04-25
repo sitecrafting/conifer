@@ -48,8 +48,8 @@ class FormHelper extends AbstractBase {
    * @param string $fieldName the name of the field whose error messages we want
    * @return string
    */
-  public function get_error_messages_for(Form $form, $fieldName) : array {
-    return implode('; ', $form->get_error_message_for($fieldName));
+  public function get_error_messages_for(Form $form, $fieldName) : string {
+    return implode('<br>', $form->get_error_messages_for($fieldName));
   }
 }
 
