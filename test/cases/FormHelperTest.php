@@ -40,5 +40,10 @@ class FormHelperTest extends Base {
       'error message for foo<br>another error for foo',
       $this->wrapper->get_error_messages_for($form, 'foo')
     );
+
+    $this->assertEquals(
+      'error message for foo; another error for foo',
+      $this->wrapper->get_error_messages_for($form, 'foo', '; ')
+    );
   }
 }

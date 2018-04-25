@@ -46,15 +46,20 @@ class FormHelper extends AbstractBase {
   }
 
   /**
-   * Get the error messages for a specific field only, as a
-   * semicolon-separated string
+   * Get the error messages for a specific field only, as a concatenated string
+   * with line breaks between by default
    *
    * @param Form $form the Form being processed
    * @param string $fieldName the name of the field whose error messages we want
+   * @param string $separator the separator to place between multiple errors
    * @return string
    */
-  public function get_error_messages_for(Form $form, $fieldName) : string {
-    return implode('<br>', $form->get_error_messages_for($fieldName));
+  public function get_error_messages_for(
+    Form $form,
+    string $fieldName,
+    string $separator = '<br>'
+  ) : string {
+    return implode($separator, $form->get_error_messages_for($fieldName));
   }
 }
 
