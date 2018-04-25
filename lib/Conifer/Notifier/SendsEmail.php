@@ -18,6 +18,13 @@ namespace Conifer\Notifier;
  */
 trait SendsEmail {
   /**
+   * MUST return the destination email address(es)
+   *
+   * @return string|array
+   */
+  abstract public function to();
+
+  /**
    * Send an HTML email
    *
    * @param array|string $to array or comma-separated list of email addresses

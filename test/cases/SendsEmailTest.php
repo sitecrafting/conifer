@@ -1,6 +1,6 @@
 <?php
 /**
- * Test the Conifer\Notifier\SimpleNofitier class
+ * Test the Conifer\Notifier\SendsEmail trait
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
@@ -10,9 +10,9 @@ namespace ConiferTest;
 
 use WP_Mock;
 
-use Conifer\Notifier\SimpleNotifier;
+use Conifer\Notifier\SendsEmail;
 
-class SimpleNotifierTest extends Base {
+class SendsEmailTest extends Base {
   const TO_ADDRESS = 'you@example.com';
 
   const HTML_HEADERS = ['Content-Type: text/html; charset=UTF-8'];
@@ -22,7 +22,13 @@ class SimpleNotifierTest extends Base {
   public function setUp() {
     parent::setUp();
 
-    $this->notifier = new SimpleNotifier(self::TO_ADDRESS);
+    $this->notifier = $this->getMockForTrait(SendsEmail::class);
+
+    // mock the abstract to() method
+    $this->notifier
+      ->expects($this->any())
+      ->method('to')
+      ->will($this->returnValue(self::TO_ADDRESS));
   }
 
   public function test_notify_html() {
