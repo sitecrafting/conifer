@@ -31,6 +31,26 @@ class SendsEmailTest extends Base {
       ->will($this->returnValue(self::TO_ADDRESS));
   }
 
+  public function test_html_message() {
+    $expectedHeaders   = self::HTML_HEADERS;
+    $expectedHeaders[] = 'x-can-haz-cheezburger: yas';
+
+    // assert that it adds in the correct header
+    WP_Mock::userFunction('wp_mail', [
+      'times'  => 1,
+      'args'   => [self::TO_ADDRESS, 'hi', 'lorem ipsum', $expectedHeaders],
+      'return' => true,
+    ]);
+
+    // pass custom headers
+    $this->assertTrue($this->notifier->send_html_message(
+      self::TO_ADDRESS,
+      'hi',
+      'lorem ipsum',
+      ['x-can-haz-cheezburger: yas']
+    ));
+  }
+
   public function test_notify_html() {
     WP_Mock::userFunction('wp_mail', [
       'times' => 1,
