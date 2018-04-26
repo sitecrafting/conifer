@@ -29,6 +29,6 @@ cache:
     - node_modules
 
 script:
-  - composer test
-  - composer sniff
+  - lando unit
+  - lando sniff
   - lando e2e

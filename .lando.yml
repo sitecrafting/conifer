@@ -64,6 +64,16 @@ tooling:
     cmd: 'yarn cypress run'
     description: 'Run end-to-end tests'
 
+  unit:
+    service: appserver
+    cmd: 'composer test'
+    description: 'Run unit tests'
+
+  sniff:
+    service: appserver
+    cmd: 'composer sniff'
+    description: 'Run phpcs code sniffer'
+
 proxy:
   appserver:
     - conifer.lndo.site
