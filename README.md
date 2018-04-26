@@ -4,7 +4,8 @@
 
 Powerful abstractions for serious WordPress development.
 
-[![Build Status](https://travis-ci.org/sitecrafting/conifer.svg?branch=master)](https://travis-ci.org/sitecrafting/conifer)
+[![Build Status](https://img.shields.io/travis/sitecrafting/conifer.svg)](https://travis-ci.org/sitecrafting/conifer)
+[![Build Status](https://img.shields.io/packagist/v/sitecrafting/conifer.svg)](https://packagist.org/packages/sitecrafting/conifer)
 
 [![Work with SiteCrafting on your next web project](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/sc-banner.jpg)](https://www.sitecrafting.com/)
 
