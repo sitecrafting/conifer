@@ -32,6 +32,8 @@ class Button extends AbstractBase {
   public function render( $atts = [], $html = '' ) {
     if ( $html ) {
       $dom = new DOMDocument();
+
+      // prevent doctype, html/body tags from being added
       $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
       // get the first <a> in the markup
@@ -47,6 +49,6 @@ class Button extends AbstractBase {
       }
     }
 
-    return $html;
+    return trim($html);
   }
 }

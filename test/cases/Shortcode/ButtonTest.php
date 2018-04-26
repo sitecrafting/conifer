@@ -23,23 +23,23 @@ class ButtonTest extends Base {
   public function test_render_with_link() {
     $this->assertEquals(
       '<a href="/link" class="btn">A Link</a>',
-      trim($this->button->render([], '<a href="/link">A Link</a>'))
+      $this->button->render([], '<a href="/link">A Link</a>')
     );
   }
 
   public function test_render_with_wrapped_link() {
     $this->assertEquals(
       '<span><a href="/link" class="btn">A Link</a></span>',
-      trim($this->button->render([], '<span><a href="/link">A Link</a></span>'))
+      $this->button->render([], '<span><a href="/link">A Link</a></span>')
     );
   }
 
   public function test_render_with_custom_class() {
     $this->assertEquals(
       '<a href="/link" class="my-button-class">A Link</a>',
-      trim($this->button->render(
+      $this->button->render(
         ['class' => 'my-button-class'],
         '<a href="/link">A Link</a>'
-      )));
+      ));
   }
 }
