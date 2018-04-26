@@ -29,7 +29,7 @@ class Button extends AbstractBase {
   public function render( $atts = [], $html = '' ) {
     if ( $html ) {
       $dom = new DOMDocument();
-      $dom->loadHTML($html);
+      $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
       // get the first <a> in the markup
       $link = $dom->getElementsByTagName('a')->item(0);
