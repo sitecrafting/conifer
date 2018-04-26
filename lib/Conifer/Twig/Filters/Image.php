@@ -1,6 +1,9 @@
 <?php
 /**
  * Custom Twig filters for dealing with images
+ *
+ * @copyright 2018 SiteCrafting, Inc.
+ * @author Coby Tamayo
  */
 
 namespace Conifer\Twig\Filters;
@@ -18,9 +21,18 @@ class Image extends AbstractBase {
    */
   public function get_filters() {
     return [
-      'src_to_retina' => function( $src ) {
-        return preg_replace('~(\.[a-z]+)$~i', '@2x$1', $src);
-      },
+      'src_to_retina' => [$this, 'src_to_retina'],
     ];
+  }
+
+  /**
+   * Convert the image URL `$src` to its retina equivalent
+   *
+   * @param `$src` the original src URL
+   * @return string the retina version of `$src`
+   */
+  public function src_to_retina(string $src) : string {
+    // greedily find the last dot
+    return preg_replace('~(\.[a-z]+)$~i', '@2x$1', $src);
   }
 }
