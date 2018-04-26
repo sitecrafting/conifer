@@ -8,6 +8,7 @@
 
 namespace ConiferTest;
 
+use Conifer\Form\AbstractBase as Form;
 use Conifer\Twig\Filters\FormHelper;
 
 class FormHelperTest extends Base {
@@ -17,7 +18,7 @@ class FormHelperTest extends Base {
 
   public function test_field_class() {
     // mock up some form errors
-    $form = new DummyForm();
+    $form = $this->getMockForAbstractClass(Form::class);
     $form->add_error('foo', 'error message for foo');
 
     $this->assertEquals(
@@ -32,7 +33,7 @@ class FormHelperTest extends Base {
   }
 
   public function test_get_error_messages_for() {
-    $form = new DummyForm();
+    $form = $this->getMockForAbstractClass(Form::class);
     $form->add_error('foo', 'error message for foo');
     $form->add_error('foo', 'another error for foo');
 
