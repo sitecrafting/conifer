@@ -138,6 +138,19 @@ class FormTest extends Base {
     $this->assertEmpty($this->form->get_errors());
   }
 
+  public function test_validate_shorthand() {
+    $this->setFields([
+      'best_band' => [
+        'validators' => ['require'],
+      ],
+    ]);
+
+    $this->assertFalse($this->form->validate([
+      'best_band' => '',
+    ]));
+    $this->assertEquals(1, count($this->form->get_errors()));
+  }
+
   public function test_require_with_empty_value() {
     $bestBand = [
       'name' => 'best_band',

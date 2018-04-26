@@ -353,7 +353,7 @@ abstract class AbstractBase {
 
     if (!$valid) {
       // use field-defined message, or fallback on crunching message ourselves
-      $message = $field['required_message'] ?: sprintf(
+      $message = $field['required_message'] ?? sprintf(
         static::MESSAGE_FIELD_REQUIRED,
         $field['label'] ?? $field['name']
       );
@@ -508,10 +508,15 @@ abstract class AbstractBase {
     if (is_array($validator)) {
       // splice validator into callback, saving args for later
       $additionalArgs = array_splice($validator, 2);
+    } elseif (is_string($validator) && is_callable([$this, $validator])) {
+      $validator = [$this, $validator];
     }
 
     if (!is_callable($validator)) {
-      throw new \LogicException("$name field validator must be defined as a callable!");
+      throw new \LogicException(
+        "{$field['name']} field validator must be defined as a callable,"
+          . ' or else must be the name of an instance method.'
+      );
     }
 
     // get the submitted value for this field, defaulting to empty string
