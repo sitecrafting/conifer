@@ -71,6 +71,12 @@ class Site extends TimberSite {
 
     $this->script_directory_cascade = [get_stylesheet_directory() . '/js/'];
     $this->style_directory_cascade  = [get_stylesheet_directory() . '/'];
+
+    // check theme for view files, then plugin
+    $this->view_directory_cascade = [
+      get_stylesheet_directory() . '/views/',
+      realpath(__DIR__ . '/../../views/'),
+    ];
   }
 
   /**
@@ -110,11 +116,24 @@ class Site extends TimberSite {
     $this->register_twig_filters();
     $this->register_twig_functions();
 
+    $this->configure_twig_view_cascade();
     $this->configure_default_twig_extensions();
     $this->configure_default_twig_filters();
     $this->configure_default_twig_functions();
 
     Integrations\YoastIntegration::demote_metabox();
+  }
+
+  /**
+   * Tell Twig to ask Conifer which directories to look in for view files.
+   *
+   * @see set_view_directory_cascade
+   */
+  public function configure_twig_view_cascade() {
+    add_filter('get_twig', function(Twig_Environment $twig) {
+      $twig->getLoader()->setPaths($this->get_view_directory_cascade());
+      return $twig;
+    });
   }
 
   /**
@@ -330,6 +349,15 @@ class Site extends TimberSite {
   }
 
   /**
+   * Get the array of directories where Twig should look for view files.
+   *
+   * @return array
+   */
+  public function get_view_directory_cascade() : array {
+    return $this->view_directory_cascade;
+  }
+
+  /**
    * Get the array of directories where Conifer will look for JavaScript files
    * when `Site::enqueue_script()` is called.
    *
@@ -347,6 +375,19 @@ class Site extends TimberSite {
    */
   public function get_style_directory_cascade() : array {
     return $this->style_directory_cascade;
+  }
+
+  /**
+   * Set the array of directories where Twig should look for view files
+   * when `render` or `compile` is called.
+   *
+   * *NOTE: This will have no effect without also running
+   * `configure_twig_view_cascade`, or equivalent.*
+   *
+   * @param array the list of directories to check.
+   */
+  public function set_view_directory_cascade(array $cascade) {
+    $this->view_directory_cascade = $cascade;
   }
 
   /**
