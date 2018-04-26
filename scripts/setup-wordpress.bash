@@ -117,16 +117,22 @@ EOF
       --skip-email
   fi
 
-  # TODO check before running somehow?
-  # install/activate plugins and theme
-  wp --path="$WP_DIR" plugin uninstall hello akismet
-  wp --path="$WP_DIR" plugin install --activate timber-library
-  wp --path="$WP_DIR" plugin activate conifer
-  wp --path="$WP_DIR" theme activate groot
+  # configure plugins and theme
+  uninstall_plugins hello akismet
+  wp --path="$WP_DIR" --quiet plugin install --activate timber-library
+  wp --path="$WP_DIR" --quiet plugin activate conifer
+  wp --path="$WP_DIR" --quiet theme activate groot
 
   # uninstall stock themes
-  wp --path="$WP_DIR" theme uninstall twentyten twentyeleven twentytwelve \
-    twentythirteen twentyfourteen twentyfifteen twentysixteen twentyseventeen
+  wp --path="$WP_DIR" --quiet theme uninstall \
+    twentyten \
+    twentyeleven \
+    twentytwelve \
+    twentythirteen \
+    twentyfourteen \
+    twentyfifteen \
+    twentysixteen \
+    twentyseventeen
 
   wp --path="$WP_DIR" option set permalink_structure '/%postname%/'
   wp --path="$WP_DIR" rewrite flush
@@ -142,9 +148,18 @@ wp_configured() {
 
 # Detect whether WP is installed
 wp_installed() {
-  wp --path=$WP_DIR core is-installed 2>/dev/null
+  wp --path=$WP_DIR --quiet core is-installed
   [[ $? = '0' ]] && return
   false
+}
+
+uninstall_plugins() {
+  for plugin in $1 ; do
+    wp --path="$WP_DIR" plugin is-installed $plugin 2>/dev/null
+    if [[ "$?" = "0" ]] ; then
+      wp --path="$WP_DIR" plugin uninstall $plugin
+    fi
+  done
 }
 
 
