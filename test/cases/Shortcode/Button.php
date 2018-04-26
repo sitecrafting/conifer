@@ -33,4 +33,13 @@ class ButtonTest extends Base {
       trim($this->button->render([], '<span><a href="/link">A Link</a></span>'))
     );
   }
+
+  public function test_render_with_custom_class() {
+    $this->assertEquals(
+      '<a href="/link" class="my-button-class">A Link</a>',
+      trim($this->button->render(
+        ['class' => 'my-button-class'],
+        '<a href="/link">A Link</a>'
+      )));
+  }
 }

@@ -17,12 +17,15 @@ use DOMElement;
  * @package  Groot
  */
 class Button extends AbstractBase {
-  const BUTTON_CLASS = 'btn';
+  const DEFAULT_BUTTON_CLASS = 'btn';
 
   /**
    * Get the HTML for rendering the button link
    *
-   * @param  array  $atts key/value attribute pairs specified by the shortcode. Button ignores these.
+   * @param  array  $atts key/value attribute pairs specified by the shortcode.
+   * Acceptable params:
+   *
+   * * `class`: the class to add to the `<a>` tag (default is `"btn"`)
    * @param  string $html the raw markup between the start/end shortcode tags.
    * @return string the modified <a> tag HTML
    */
@@ -35,7 +38,10 @@ class Button extends AbstractBase {
       $link = $dom->getElementsByTagName('a')->item(0);
 
       if ($link) {
-        $link->setAttribute('class', static::BUTTON_CLASS);
+        $link->setAttribute(
+          'class',
+          $atts['class'] ?? static::DEFAULT_BUTTON_CLASS
+        );
         // update markup
         $html = $dom->saveHTML();
       }
