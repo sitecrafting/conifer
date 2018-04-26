@@ -6,7 +6,7 @@ config:
 
 services:
   appserver:
-    build:
+    run:
       - cd $LANDO_MOUNT && composer install
       - cd $LANDO_MOUNT && scripts/setup-wordpress.bash
 
