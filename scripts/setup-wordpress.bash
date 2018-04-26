@@ -142,7 +142,8 @@ wp_configured() {
 
 # Detect whether WP is installed
 wp_installed() {
-  [[ $(wp --path=$WP_DIR core is-installed 2>/dev/null) ]] && return
+  wp --path=$WP_DIR core is-installed 2>/dev/null
+  [[ $? = '0' ]] && return
   false
 }
 
