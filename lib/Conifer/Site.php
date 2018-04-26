@@ -113,13 +113,9 @@ class Site extends TimberSite {
   public function configure_defaults() {
     add_filter('timber_context', [$this, 'add_to_context']);
 
-    $this->register_twig_filters();
-    $this->register_twig_functions();
-
     $this->configure_twig_view_cascade();
     $this->configure_default_twig_extensions();
-    $this->configure_default_twig_filters();
-    $this->configure_default_twig_functions();
+    $this->add_default_twig_helpers();
 
     Integrations\YoastIntegration::demote_metabox();
   }
@@ -156,23 +152,29 @@ class Site extends TimberSite {
    * Tell Conifer to add its default Twig functions when loading
    * the Twig environment, before rendering a view
    */
-  public function configure_default_twig_functions() {
+  public function add_default_twig_helpers() {
     Functions\WordPress::add_twig_functions( $this );
     Functions\Image::add_twig_functions( $this );
-    // TODO refactor to not require Filter\AbstractBase to know about Site
-  }
-
-  /**
-   * Tell Conifer to add its default Twig filters when loading
-   * the Twig environment, before rendering a view
-   */
-  public function configure_default_twig_filters() {
-    // Add default Twig filters/functions
     Filters\Number::add_twig_filters( $this );
     Filters\TextHelper::add_twig_filters( $this );
     Filters\TermHelper::add_twig_filters( $this );
     Filters\Image::add_twig_filters( $this );
-    // TODO refactor to not require Filter\AbstractBase to know about Site
+
+    add_filter('get_twig', function(Twig_Environment $twig) {
+      // add Twig filters
+      foreach ( $this->twig_filters as $name => $callable ) {
+        $filter = new Twig_SimpleFilter( $name, $callable );
+        $twig->addFilter( $filter );
+      }
+
+      // add Twig functions
+      foreach ( $this->twig_functions as $name => $callable ) {
+        $function = new Twig_SimpleFunction( $name, $callable );
+        $twig->addFunction( $function );
+      }
+
+      return $twig;
+    });
   }
 
   /**
@@ -312,40 +314,6 @@ class Site extends TimberSite {
   public function add_twig_function( string $name, callable $function ) : Site {
     $this->twig_functions[$name] = $function;
     return $this;
-  }
-
-  /**
-   * Register Conifer's Twig filters to be added to Twig
-   *
-   * @param \Twig_Environment $twig Timber's internal Twig_Environment instance
-   * @return \Twig_Environment the extended Twig instance
-   */
-  public function register_twig_filters() {
-    add_filter('get_twig', function(Twig_Environment $twig) {
-      foreach ( $this->twig_filters as $name => $callable ) {
-        $filter = new Twig_SimpleFilter( $name, $callable );
-        $twig->addFilter( $filter );
-      }
-
-      return $twig;
-    });
-  }
-
-  /**
-   * Register Conifer's Twig functions to be added to Twig
-   *
-   * @param \Twig_Environment $twig Timber's internal Twig_Environment instance
-   * @return \Twig_Environment the extended Twig instance
-   */
-  public function register_twig_functions() {
-    add_filter('get_twig', function(Twig_Environment $twig) {
-      foreach ( $this->twig_functions as $name => $callable ) {
-        $function = new Twig_SimpleFunction( $name, $callable );
-        $twig->addFunction( $function );
-      }
-
-      return $twig;
-    });
   }
 
   /**
