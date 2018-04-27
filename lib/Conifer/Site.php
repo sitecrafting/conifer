@@ -119,62 +119,6 @@ class Site extends TimberSite {
     Integrations\YoastIntegration::demote_metabox();
   }
 
-  /**
-   * Tell Twig to ask Conifer which directories to look in for view files.
-   *
-   * @see set_view_directory_cascade
-   */
-  public function configure_twig_view_cascade() {
-    add_filter('get_twig', function(Twig_Environment $twig) {
-      $twig->getLoader()->setPaths($this->get_view_directory_cascade());
-      return $twig;
-    });
-  }
-
-  /**
-   * Load Twig's String Loader and Debug extensions
-   */
-  public function configure_default_twig_extensions() {
-    add_filter('get_twig', function(Twig_Environment $twig) {
-      $twig->addExtension( new Twig_Extension_StringLoader() );
-
-      // Make debugging available through Twig
-      // Note: in order for Twig's dump() function to work,
-      // the WP_DEBUG constant must be set to true in wp-config.php
-      $twig->addExtension( new Twig_Extension_Debug() );
-
-      return $twig;
-    });
-  }
-
-  /**
-   * Tell Conifer to add its default Twig functions when loading
-   * the Twig environment, before rendering a view
-   */
-  public function add_default_twig_helpers() {
-    $this->add_twig_helper(new Twig\WordPressHelper());
-    $this->add_twig_helper(new Twig\ImageHelper());
-    $this->add_twig_helper(new Twig\NumberHelper());
-    $this->add_twig_helper(new Twig\TextHelper());
-    $this->add_twig_helper(new Twig\TermHelper());
-    $this->add_twig_helper(new Twig\ImageHelper());
-
-    add_filter('get_twig', function(Twig_Environment $twig) {
-      // add Twig filters
-      foreach ( $this->twig_filters as $name => $callable ) {
-        $filter = new Twig_SimpleFilter( $name, $callable );
-        $twig->addFilter( $filter );
-      }
-
-      // add Twig functions
-      foreach ( $this->twig_functions as $name => $callable ) {
-        $function = new Twig_SimpleFunction( $name, $callable );
-        $twig->addFunction( $function );
-      }
-
-      return $twig;
-    });
-  }
 
   /**
    * Enqueue a script within the script cascade path. Calls wp_enqueue_script
@@ -289,6 +233,12 @@ class Site extends TimberSite {
     return $context;
   }
 
+
+
+  /*
+   * Twig Helper Methods
+   */
+
   /**
    * Add a Twig helper that implements Twig filters and/or functions to the
    * Twig environment that Timber uses to render views.
@@ -331,30 +281,64 @@ class Site extends TimberSite {
   }
 
   /**
-   * Register a custom Twig filter to be added at render time via the
-   * "get_twig" WordPress filter
+   * Tell Twig to ask Conifer which directories to look in for view files.
    *
-   * @param string $name the name of the filter
-   * @param callable $filter a callable that implements the custom filter
-   * @return Conifer\Site the Site object it was called on
+   * @see set_view_directory_cascade
    */
-  public function add_twig_filter( string $name, callable $filter ) : Site {
-    $this->twig_filters[$name] = $filter;
-    return $this;
+  public function configure_twig_view_cascade() {
+    add_filter('get_twig', function(Twig_Environment $twig) {
+      $twig->getLoader()->setPaths($this->get_view_directory_cascade());
+      return $twig;
+    });
   }
 
   /**
-   * Register a custom Twig function to be added at render time via
-   * the "get_twig" WordPress filter
-   *
-   * @param string $name the name of the function
-   * @param callable $function a callable that implements the custom function
-   * @return Conifer\Site the Site object it was called on
+   * Load Twig's String Loader and Debug extensions
    */
-  public function add_twig_function( string $name, callable $function ) : Site {
-    $this->twig_functions[$name] = $function;
-    return $this;
+  public function configure_default_twig_extensions() {
+    add_filter('get_twig', function(Twig_Environment $twig) {
+      $twig->addExtension( new Twig_Extension_StringLoader() );
+
+      // Make debugging available through Twig
+      // Note: in order for Twig's dump() function to work,
+      // the WP_DEBUG constant must be set to true in wp-config.php
+      $twig->addExtension( new Twig_Extension_Debug() );
+
+      return $twig;
+    });
   }
+
+  /**
+   * Tell Conifer to add its default Twig functions when loading
+   * the Twig environment, before rendering a view
+   */
+  public function add_default_twig_helpers() {
+    $this->add_twig_helper(new Twig\WordPressHelper());
+    $this->add_twig_helper(new Twig\ImageHelper());
+    $this->add_twig_helper(new Twig\NumberHelper());
+    $this->add_twig_helper(new Twig\TextHelper());
+    $this->add_twig_helper(new Twig\TermHelper());
+    $this->add_twig_helper(new Twig\ImageHelper());
+
+    add_filter('get_twig', function(Twig_Environment $twig) {
+      // add Twig filters
+      foreach ( $this->twig_filters as $name => $callable ) {
+        $filter = new Twig_SimpleFilter( $name, $callable );
+        $twig->addFilter( $filter );
+      }
+
+      // add Twig functions
+      foreach ( $this->twig_functions as $name => $callable ) {
+        $function = new Twig_SimpleFunction( $name, $callable );
+        $twig->addFunction( $function );
+      }
+
+      return $twig;
+    });
+  }
+
+
+
 
   /**
    * Get the array of directories where Twig should look for view files.
