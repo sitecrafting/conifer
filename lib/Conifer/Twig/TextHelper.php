@@ -3,14 +3,14 @@
  * Custom Twig filters for manipulating text
  */
 
-namespace Conifer\Twig\Filters;
+namespace Conifer\Twig;
 
 /**
  * Twig Wrapper for helpful linguistic filters, such as pluralize
  *
  * @package Conifer
  */
-class TextHelper extends AbstractBase {
+class TextHelper implements HelperInterface {
   /**
    * Plural inflections for English words
    * TODO public static function add_plurals(array $plurals)
@@ -26,11 +26,20 @@ class TextHelper extends AbstractBase {
    *
    * @return  array an associative array of callback functions, keyed by name
    */
-  public function get_filters() {
+  public function get_filters() : array {
     return [
       'oxford_comma' => [$this, 'oxford_comma'],
       'pluralize' => [$this, 'pluralize'],
     ];
+  }
+
+  /**
+   * Does not supply any additional Twig functions.
+   *
+   * @return  array
+   */
+  public function get_functions() : array {
+    return [];
   }
 
   /**

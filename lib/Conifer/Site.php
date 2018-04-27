@@ -19,9 +19,7 @@ use Conifer\Navigation\Menu;
 use Conifer\Post\Post;
 use Conifer\Shortcode\Gallery;
 use Conifer\Shortcode\Button;
-use Conifer\Twig\HelperInterface;
-use Conifer\Twig\Filters;
-use Conifer\Twig\Functions;
+use Conifer\Twig;
 
 /**
  * Wrapper for any and all theme-specific behavior.
@@ -154,12 +152,12 @@ class Site extends TimberSite {
    * the Twig environment, before rendering a view
    */
   public function add_default_twig_helpers() {
-    Functions\WordPress::add_twig_functions( $this );
-    Functions\Image::add_twig_functions( $this );
-    Filters\Number::add_twig_filters( $this );
-    Filters\TextHelper::add_twig_filters( $this );
-    Filters\TermHelper::add_twig_filters( $this );
-    Filters\Image::add_twig_filters( $this );
+    $this->add_twig_helper(new Twig\WordPressHelper());
+    $this->add_twig_helper(new Twig\ImageHelper());
+    $this->add_twig_helper(new Twig\NumberHelper());
+    $this->add_twig_helper(new Twig\TextHelper());
+    $this->add_twig_helper(new Twig\TermHelper());
+    $this->add_twig_helper(new Twig\ImageHelper());
 
     add_filter('get_twig', function(Twig_Environment $twig) {
       // add Twig filters
@@ -295,10 +293,10 @@ class Site extends TimberSite {
    * Add a Twig helper that implements Twig filters and/or functions to the
    * Twig environment that Timber uses to render views.
    *
-   * @param HelperInterface $helper any instance of a HelperInterface that
-   * implements the functions/filters to add
+   * @param Twig\HelperInterface $helper any instance of a
+   * Twig\HelperInterface that implements the functions/filters to add
    */
-  public function add_twig_helper(HelperInterface $helper) {
+  public function add_twig_helper(Twig\HelperInterface $helper) {
     add_filter('get_twig', function(Twig_Environment $twig) use ($helper) {
       return $this->get_twig_with_helper($twig, $helper);
     });
@@ -309,13 +307,13 @@ class Site extends TimberSite {
    * `$twig`.
    *
    * @param Twig_Environment $twig the Twig environment to add to
-   * @param HelperInterface $helper the helper instance that implements the
+   * @param Twig\HelperInterface $helper the helper instance that implements the
    * filters/functions to add
    * @return Twig_Environment
    */
   public function get_twig_with_helper(
     Twig_Environment $twig,
-    HelperInterface $helper
+    Twig\HelperInterface $helper
   ) : Twig_Environment {
     // add Twig filters
     foreach ( $helper->get_filters() as $name => $callable ) {

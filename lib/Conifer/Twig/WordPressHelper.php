@@ -3,7 +3,7 @@
  * General-purpose WordPress functions in Twig
  */
 
-namespace Conifer\Twig\Functions;
+namespace Conifer\Twig;
 
 use Timber\Timber;
 
@@ -13,13 +13,13 @@ use Timber\Timber;
  *
  * @package Conifer
  */
-class WordPress extends AbstractBase {
+class WordPressHelper implements HelperInterface {
   /**
    * Get the Twig functions to register
    *
    * @return  array an associative array of callback functions, keyed by name
    */
-  public function get_functions() {
+  public function get_functions() : array {
     return [
       'get_search_form' => function() {
         return get_search_form( false );
@@ -55,5 +55,14 @@ class WordPress extends AbstractBase {
         return Timber::get_widgets($name);
       },
     ];
+  }
+
+  /**
+   * Does not supply any additional Twig filters.
+   *
+   * @return  array
+   */
+  public function get_filters() : array {
+    return [];
   }
 }

@@ -3,7 +3,7 @@
  * Twig filters for WP terms
  */
 
-namespace Conifer\Twig\Filters;
+namespace Conifer\Twig;
 
 use Timber\Term;
 use Timber\CoreInterface as TimberCoreInterface;
@@ -13,16 +13,25 @@ use Timber\CoreInterface as TimberCoreInterface;
  *
  * @package Conifer
  */
-class TermHelper extends AbstractBase {
+class TermHelper implements HelperInterface {
   /**
    * Get the Twig functions to register
    *
    * @return  array an associative array of callback functions, keyed by name
    */
-  public function get_filters() {
+  public function get_filters() : array {
     return [
       'term_item_class' => [$this, 'term_item_class'],
     ];
+  }
+
+  /**
+   * Does not supply any additional Twig functions.
+   *
+   * @return  array
+   */
+  public function get_functions() : array {
+    return [];
   }
 
   /**

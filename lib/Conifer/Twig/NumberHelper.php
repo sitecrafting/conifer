@@ -3,23 +3,32 @@
  * Custom Twig filters for formatting numbers
  */
 
-namespace Conifer\Twig\Filters;
+namespace Conifer\Twig;
 
 /**
  * Twig Wrapper around generic filters for numbers
  *
  * @package Conifer
  */
-class Number extends AbstractBase {
+class NumberHelper implements HelperInterface {
   /**
    * Get the Twig functions to register
    *
    * @return  array an associative array of callback functions, keyed by name
    */
-  public function get_filters() {
+  public function get_filters() : array {
     return [
       'us_phone' => [$this, 'us_phone'],
     ];
+  }
+
+  /**
+   * Does not supply any additional Twig functions.
+   *
+   * @return  array
+   */
+  public function get_functions() : array {
+    return [];
   }
 
   /**

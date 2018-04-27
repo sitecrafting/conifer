@@ -3,7 +3,7 @@
  * Custom Twig filters for front-end forms
  */
 
-namespace Conifer\Twig\Filters;
+namespace Conifer\Twig;
 
 use Conifer\Form\AbstractBase as Form;
 
@@ -13,18 +13,27 @@ use Conifer\Form\AbstractBase as Form;
  * @copyright 2018 SiteCrafting, Inc.
  * @author Coby Tamayo
  */
-class FormHelper extends AbstractBase {
+class FormHelper implements HelperInterface {
   /**
    * Get the Twig functions to register
    *
    * @return  array an associative array of callback functions, keyed by name
    */
-  public function get_filters() {
+  public function get_filters() : array {
     return [
       'field_class'        => [$this, 'get_field_class'],
       'error_messages_for' => [$this, 'get_error_messages_for'],
       'err'                => [$this, 'get_error_messages_for'],
     ];
+  }
+
+  /**
+   * Does not supply any additional Twig functions.
+   *
+   * @return  array
+   */
+  public function get_functions() : array {
+    return [];
   }
 
   /**

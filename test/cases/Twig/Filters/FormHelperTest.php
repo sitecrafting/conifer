@@ -9,7 +9,7 @@
 namespace ConiferTest;
 
 use Conifer\Form\AbstractBase as Form;
-use Conifer\Twig\Filters\FormHelper;
+use Conifer\Twig\FormHelper;
 
 class FormHelperTest extends Base {
   public function setUp() {
