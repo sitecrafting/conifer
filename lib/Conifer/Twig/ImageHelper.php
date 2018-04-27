@@ -15,19 +15,12 @@ use TimberImage;
  */
 class ImageHelper implements HelperInterface {
   /**
-   * Get the Twig functions to register
+   * Does not supply any additional Twig functions.
    *
    * @return  array an associative array of callback functions, keyed by name
    */
   public function get_functions() : array {
-    return [
-      'img_from_id' => function( $id, $size, $attibutes = [] ) {
-        return Timber::compile('partials/shared/img.twig', [
-          'image' => new TimberImage($id),
-          'size'  => $size,
-        ]);
-      },
-    ];
+    return [];
   }
 
   /**
