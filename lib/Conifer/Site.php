@@ -19,6 +19,7 @@ use Conifer\Navigation\Menu;
 use Conifer\Post\Post;
 use Conifer\Shortcode\Gallery;
 use Conifer\Shortcode\Button;
+use Conifer\Twig\HelperInterface;
 use Conifer\Twig\Filters;
 use Conifer\Twig\Functions;
 
@@ -288,6 +289,47 @@ class Site extends TimberSite {
     $context['body_classes'] = get_body_class();
     $context['search_query'] = get_search_query();
     return $context;
+  }
+
+  /**
+   * Add a Twig helper that implements Twig filters and/or functions to the
+   * Twig environment that Timber uses to render views.
+   *
+   * @param HelperInterface $helper any instance of a HelperInterface that
+   * implements the functions/filters to add
+   */
+  public function add_twig_helper(HelperInterface $helper) {
+    add_filter('get_twig', function(Twig_Environment $twig) use ($helper) {
+      return $this->get_twig_with_helper($twig, $helper);
+    });
+  }
+
+  /**
+   * Add any filters/functions implemented by `$helper` to the Twig instance
+   * `$twig`.
+   *
+   * @param Twig_Environment $twig the Twig environment to add to
+   * @param HelperInterface $helper the helper instance that implements the
+   * filters/functions to add
+   * @return Twig_Environment
+   */
+  public function get_twig_with_helper(
+    Twig_Environment $twig,
+    HelperInterface $helper
+  ) : Twig_Environment {
+    // add Twig filters
+    foreach ( $helper->get_filters() as $name => $callable ) {
+      $filter = new Twig_SimpleFilter( $name, $callable );
+      $twig->addFilter( $filter );
+    }
+
+    // add Twig functions
+    foreach ( $helper->get_functions() as $name => $callable ) {
+      $function = new Twig_SimpleFunction( $name, $callable );
+      $twig->addFunction( $function );
+    }
+
+    return $twig;
   }
 
   /**
