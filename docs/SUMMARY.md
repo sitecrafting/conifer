@@ -11,5 +11,5 @@
 
 ## Development
 
-* [Getting ](/installation.md#from-source)
+* [Getting Started](/installation.md#from-source)
 * [Testing](/testing.md)
