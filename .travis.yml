@@ -31,4 +31,4 @@ cache:
 script:
   - lando unit
   - lando sniff
-  - lando e2e
+  - lando e2e -- -vvv
