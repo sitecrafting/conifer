@@ -14,6 +14,8 @@ use Conifer\Site;
 use Conifer\Twig\HelperInterface;
 
 class SiteTest extends Base {
+  const THEME_DIRECTORY = 'wp-content/themes/foo';
+
   public function setUp() {
     WP_Mock::setUp();
 
@@ -48,7 +50,7 @@ class SiteTest extends Base {
       'return' => $theme,
     ]);
     WP_Mock::userFunction('get_stylesheet_directory', [
-      'return' => $theme,
+      'return' => self::THEME_DIRECTORY,
     ]);
   }
 
@@ -64,8 +66,23 @@ class SiteTest extends Base {
     $this->markTestSkipped();
   }
 
-  public function test_theme_file() {
-    $this->markTestSkipped();
+  public function test_get_theme_file() {
+    $site = new Site();
+
+    WP_Mock::userFunction('get_stylesheet_directory', [
+      'return' => 'wp-content/themes/foo',
+    ]);
+
+    // method should add a leading slash to the filename if necessary
+    $this->assertEquals(
+      self::THEME_DIRECTORY . '/bar.txt',
+      $site->get_theme_file('bar.txt')
+    );
+    // a leading slash should be preserved
+    $this->assertEquals(
+      self::THEME_DIRECTORY . '/bar.txt',
+      $site->get_theme_file('/bar.txt')
+    );
   }
 
   public function test_add_twig_helper() {
