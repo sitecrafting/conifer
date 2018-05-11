@@ -1,11 +1,10 @@
 # What is Conifer?
 
 Conifer is a library plugin for WordPress that provides
-simple but powerful abstractions for many common tasks in
-WordPress development. It is built on top of the amazing
-[Timber](https://www.upstatement.com/timber) plugin.
+simple but powerful abstractions many common tasks in
+WordPress development.
 
-It helps with tasks like:
+These tasks include:
 
 * Implementing custom post types
 * Building advanced post queries
@@ -51,7 +50,7 @@ to them. Out of this, Conifer was born.
 
 We believe that WordPress development can
 (and often should) be done largely in the object-oriented style.
-This contrasts with the way a lot of
+This stands in contrast to the way much (probably most)
 WordPress development is done: relying heavily on global
 state and defining public API functions in the global
 namespace.
@@ -110,7 +109,7 @@ Why would you use Conifer, rather than just Timber (or vanilla WordPress)? Why a
 
 First, Conifer aims to be even _more_ opinionated. It requires PHP 7.0+. It leverages PHP's new type-hinting features extensively. It takes the philosophy of Timber as a _premise_ and builds on it.
 
-Second, Conifer aims to be _bigger_. Compared to Conifer, Timber aims to be a fairly thin, OO wrapper around core WordPress functionality. Conifer is a bit beefier, capturing abstractions across a wider range of functionality. For example, Timber introduces a convenient mechanism for adding Twig functions and filters to the view layer, along with a few choice implementations like the `Image` function. Conifer in turn provides a wealth of different functions and filters out of the box, and a more streamlined interface for adding your own.
+Second, Conifer aims to be _bigger_. Compared to Conifer, Timber aims to be a fairly thin, OO wrapper around core WordPress functionality. Conifer is a bit beefier, capturing abstractions across a wider range of functionality. For example, Timber introduces a convenient mechanism for adding Twig functions and filters to the view layer, along with a few choice implementations like the `Image` function. Conifer in turn provides a wealth of different functions and filters out of the box.
 
 While we feel that Timber and Conifer's philosophies are extremely compatible, they are not identical. We didn't feel it would be appropriate or effective to impose our design decisions on the wider Timber community, and we didn't want to bloat the Timber codebase with more stuff than it needs in order to be the great foundation it already is.
 

@@ -33,10 +33,11 @@ Our guidelines for how and what to test are:
 * When in doubt about _what_ to test, test a class's _public interface_.
   Protected and private methods are implementation details and may change,
   but public interfaces should, by definition, remain consistent.
-* Building on the previous guideline, tests should not care about
-  implementation details. Specifically, this means you should avoid making
-  assertions about internal state (e.g. protected properties). This helps avoid
-  brittle tests that might break because of changing implentations, even as the
+* Don't test implementation details. In other words, don't make
+  assertions about internal state, such as protected properties. This helps avoid
+  brittle tests that might break because of changing implementations, even as the
   public interface they're testing stays the same.
+* Use [WP_Mock](https://github.com/10up/wp_mock) for mocking core WP calls. In other scenarios, avoid using mocks when possible: use real objects instead. If you have to mock several different things just to make an assertion about a single method, that indicates you may need to redesign your code.
 * Pull requests that include new library code but no tests will be treated as
   low-priority. We may ask you to add tests before accepting.
+* Exceptions to these guidelines are OK given reasonable justification.
