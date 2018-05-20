@@ -12,6 +12,8 @@ use PHPUnit\Framework\TestCase;
 
 use WP_Mock;
 
+use Timber\User;
+
 /**
  * Base test class for the plugin. Declared abstract so that PHPUnit doesn't
  * complain about a lack of tests defined here.
@@ -83,5 +85,37 @@ abstract class Base extends TestCase {
     $method->setAccessible(true);
 
     return $method->invokeArgs($object, $args);
+  }
+
+  protected function mockCurrentUser($id, $data = [], $meta = []) {
+    $this->mockCurrentUserId($id);
+    $this->mockCurrentUserData($data);
+
+    if ($meta) {
+      foreach ($meta as $key => $value) {
+        WP_Mock::userFunction('get_user_meta', [
+          'args' => ['*', $key, WP_Mock\Functions::type('bool')],
+          'return' => $value,
+        ]);
+      }
+    }
+
+    WP_Mock::userFunction('get_avatar_url', [
+      'return' => 'https://example.com/avatar.gif',
+    ]);
+
+    return new User($id);
+  }
+
+  protected function mockCurrentUserId($id) {
+    WP_Mock::userFunction('get_current_user_id', [
+      'return' => $id,
+    ]);
+  }
+
+  protected function mockCurrentUserData($data = []) {
+    WP_Mock::userFunction('get_userdata', [
+      'return' => $data,
+    ]);
   }
 }
