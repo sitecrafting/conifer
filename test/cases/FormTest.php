@@ -208,9 +208,129 @@ class FormTest extends Base {
     );
   }
 
+  public function test_get_file() {
+    $this->setFiles($this->getDefaultFiles());
+
+    $this->assertNotEmpty($this->form->get_file('favoriteThings'));
+  }
+
+  public function test_required_file_missing() {
+    $this->setFiles($this->getDefaultFiles());
+
+    $this->setFields([
+      'leastFavoriteThings' => [
+        'validators' => [[$this->form, 'require_file']],
+      ],
+    ]);
+
+    $this->assertFalse($this->form->validate([]));
+    $this->assertNotEmpty($this->form->get_error_messages_for('leastFavoriteThings'));
+  }
+
+  public function test_file_mime_type_valid() {
+    $this->setFiles($this->getDefaultFiles());
+
+    $this->setFields([
+      'favoriteThings' => [
+        'validators' => [[$this->form, 'validate_file_mime_type', ['text/plain']]],
+      ],
+    ]);
+
+    $this->assertTrue($this->form->validate([]));
+    $this->assertEmpty($this->form->get_errors());
+  }
+
+  public function test_file_mime_type_invalid() {
+    $this->setFiles($this->getDefaultFiles());
+
+    $this->setFields([
+      'favoriteThings' => [
+        'validators' => [[$this->form, 'validate_file_mime_type', ['application/pdf']]],
+      ],
+    ]);
+
+    $this->assertFalse($this->form->validate([]));
+    $this->assertNotEmpty($this->form->get_error_messages_for('favoriteThings'));
+    $this->assertEquals(
+      [sprintf($this->form::MESSAGE_INVALID_MIME_TYPE, 'favoriteThings')],
+      $this->form->get_error_messages_for('favoriteThings')
+    );
+  }
+
+  public function test_file_upload_error_ini_size() {
+    $this->setFiles($this->getDefaultFiles());
+
+    $this->setFields([
+      'uploadErrorSizeIni' => [
+        'validators' => [[$this->form, 'require_file']],
+      ],
+    ]);
+
+    $this->assertFalse($this->form->validate([]));
+    $this->assertNotEmpty($this->form->get_error_messages_for('uploadErrorSizeIni'));
+    $this->assertEquals(
+      [sprintf($this->form::MESSAGE_FILE_SIZE, 'uploadErrorSizeIni')],
+      $this->form->get_error_messages_for('uploadErrorSizeIni')
+    );
+  }
+
+  public function test_file_upload_error_form_size() {
+    $this->setFiles($this->getDefaultFiles());
+
+    $this->setFields([
+      'uploadErrorSizeForm' => [
+        'validators' => [[$this->form, 'require_file']],
+      ],
+    ]);
+
+    $this->assertFalse($this->form->validate([]));
+    $this->assertNotEmpty($this->form->get_error_messages_for('uploadErrorSizeForm'));
+    $this->assertEquals(
+      [sprintf($this->form::MESSAGE_FILE_SIZE, 'uploadErrorSizeForm')],
+      $this->form->get_error_messages_for('uploadErrorSizeForm')
+    );
+  }
+
+  public function test_file_upload_error_partial() {
+    $this->setFiles($this->getDefaultFiles());
+
+    $this->setFields([
+      'uploadErrorPartialFile' => [
+        'validators' => [[$this->form, 'require_file']],
+      ],
+    ]);
+
+    $this->assertFalse($this->form->validate([]));
+    $this->assertNotEmpty($this->form->get_error_messages_for('uploadErrorPartialFile'));
+    $this->assertEquals(
+      [sprintf($this->form::MESSAGE_UPLOAD_ERROR, 'uploadErrorPartialFile')],
+      $this->form->get_error_messages_for('uploadErrorPartialFile')
+    );
+  }
+
+  public function test_file_upload_error_no_file() {
+    $this->setFiles($this->getDefaultFiles());
+
+    $this->setFields([
+      'austrianAbbeyMembership' => [
+        'validators' => [[$this->form, 'require_file']],
+      ],
+    ]);
+
+    $this->assertFalse($this->form->validate([]));
+    $this->assertNotEmpty($this->form->get_error_messages_for('austrianAbbeyMembership'));
+    $this->assertEquals(
+      [sprintf($this->form::MESSAGE_FIELD_REQUIRED, 'austrianAbbeyMembership')],
+      $this->form->get_error_messages_for('austrianAbbeyMembership')
+    );
+  }
 
   protected function setFields(array $fields) {
     $this->setProtectedProperty($this->form, 'fields', $fields);
+  }
+
+  protected function setFiles(array $files) {
+    $_FILES = $files;
   }
 
   protected function getDefaultFields() {
@@ -230,6 +350,46 @@ class FormTest extends Base {
       'favorite_things' => [
         'options'       => ['raindrops', 'whiskers', 'kettles', 'mittens'],
         // TODO validate at_least
+      ],
+    ];
+  }
+
+  protected function getDefaultFiles() {
+    return [
+      'favoriteThings' => [
+        'name' => 'My%20Favorite%20Things.txt',
+        'type' => 'text/plain',
+        'tmp_name' => '/tmp/php/somethingarbitrary',
+        'error' => UPLOAD_ERR_OK,
+        'size' => 16.99,
+      ],
+      'uploadErrorSizeIni' => [
+        'name' => 'My%20Favorite%20Things.txt',
+        'type' => 'text/plain',
+        'tmp_name' => '/tmp/php/somethingarbitrary',
+        'error' => UPLOAD_ERR_INI_SIZE,
+        'size' => 17,
+      ],
+      'uploadErrorSizeForm' => [
+        'name' => 'My%20Favorite%20Things.txt',
+        'type' => 'text/plain',
+        'tmp_name' => '/tmp/php/somethingarbitrary',
+        'error' => UPLOAD_ERR_FORM_SIZE,
+        'size' => 17,
+      ],
+      'uploadErrorPartialFile' => [
+        'name' => 'My%20Favorite%20Things.txt',
+        'type' => 'text/plain',
+        'tmp_name' => '/tmp/php/somethingarbitrary',
+        'error' => UPLOAD_ERR_PARTIAL,
+        'size' => 16.99,
+      ],
+      'austrianAbbeyMembership' => [
+        'name' => 'Nonnberg_Abbey_Nun_ID.jpg',
+        'type' => 'image/jpeg',
+        'tmp_name' => '/tmp/php/somethingarbitrary',
+        'error' => UPLOAD_ERR_NO_FILE,
+        'size' => 16.99,
       ],
     ];
   }

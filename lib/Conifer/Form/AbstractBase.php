@@ -103,6 +103,8 @@ use Closure;
 abstract class AbstractBase {
   const MESSAGE_FIELD_REQUIRED    = '%s is required';
   const MESSAGE_INVALID_MIME_TYPE = 'Wrong file type for %s';
+  const MESSAGE_FILE_SIZE         = 'The uploaded file for %s exceeds the maximum allowed size';
+  const MESSAGE_UPLOAD_ERROR      = 'An error occurred with the upload for %s';
 
   /**
    * The fields configured for this form as an array of arrays.
@@ -405,10 +407,11 @@ abstract class AbstractBase {
     $valid = isset($_FILES[$field['name']]);
     // The file isn't set in the global array, add an error
     if (!$valid) {
-      $this->add_error($field['name'], sprintf(
+      $message = $field['required_message'] ?? sprintf(
         static::MESSAGE_FIELD_REQUIRED,
         $field['label'] ?? $field['name']
-      ));
+      );
+      $this->add_error($field['name'], $message);
     } else {
       // The file exists, but let's make sure it uploaded without any errors
       $valid = $valid && $this->validate_file_upload($field);
@@ -554,13 +557,13 @@ abstract class AbstractBase {
     switch ($errorCode) {
       case UPLOAD_ERR_INI_SIZE:
       case UPLOAD_ERR_FORM_SIZE:
-        $errorMessage = 'The uploaded file for %s exceeds the maximum allowed size';
+        $errorMessage = static::MESSAGE_FILE_SIZE;
         break;
       case UPLOAD_ERR_NO_FILE:
         $errorMessage = static::MESSAGE_FIELD_REQUIRED;
         break;
       default:
-        $errorMessage = 'An error occurred with the upload for %s';
+        $errorMessage = static::MESSAGE_UPLOAD_ERROR;
         break;
     }
     return sprintf($errorMessage, $field['name']);
