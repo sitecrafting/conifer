@@ -209,7 +209,7 @@ abstract class AbstractBase {
     $file = $_FILES[$field] ?? [];
 
     // Return an empty array if an upload error occurred
-    if ($file && $file['error'] === UPLOAD_ERR_NO_FILE) {
+    if ($file && $file['error'] !== UPLOAD_ERR_OK) {
       $file = [];
     }
 
