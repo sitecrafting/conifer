@@ -122,7 +122,6 @@ namespace MyProject;
 
 use Conifer\Post\Post;
 use Conifer\Post\HasCustomAdminColumns;
-
 use MyProject\Location;
 
 class Company extends Post {
@@ -134,6 +133,7 @@ class Company extends Post {
     static::add_admin_column(
       'location', // column key
       'Location', // column label
+      // content to display in the column:
       function($companyId) {
         $company = new static($companyId);
         return $company->get_location()->title();
