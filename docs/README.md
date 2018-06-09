@@ -114,6 +114,8 @@ class EmployeeForm extends AbstractBase {
 
 ### Custom admin columns and filters
 
+Easily add custom admin columns and filters to your admin screens, without having to remember all the arguments to the `manage_*_columns` hooks.
+
 ```php
 <?php
 use Conifer\Post\Post;
@@ -136,7 +138,7 @@ class Company extends Post {
   }
 
   public function get_location() {
-    // ...
+    return new Location($this->location_id);
   }
 }
 
