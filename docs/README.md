@@ -10,6 +10,20 @@ Conifer is a library plugin for creating WordPress plugins and themes using an o
 
 [Read more about Conifer and its goals](/what-is-conifer.md).
 
+## Why would I use Conifer?
+
+- You want to build custom behavior for a WordPress theme or plugin in DRY, object-oriented code.
+- You like the power of WordPress, but prefer to interact with a higher-level API.
+- You are already a power user of Timber, and want to push your codebase even further.
+
+Conifer shares several of Timber's [stated goals](https://github.com/timber/timber#mission-statement):
+
+> * **Intuitive**: The API is written to be user-centric around a programmer's expectations.
+> * **Consistent**: WordPress objects can be accessed through common polymorphic properties like slug, ID and name.
+> * **Accessible**: No black boxes. Every effort is made so the developer has access to 100% of their HTML.
+
+We make every effort to stay out of your way in this regard, to add to and not take away from Timber's powerful features.
+
 ## More Helpers
 
 Simplify your theme with a wealth of utility functions and helpers.

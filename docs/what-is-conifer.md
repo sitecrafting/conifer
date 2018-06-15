@@ -1,7 +1,7 @@
 # What is Conifer?
 
 Conifer is a library plugin for WordPress that provides
-simple but powerful abstractions many common tasks in
+simple but powerful abstractions for many common tasks in
 WordPress development.
 
 These tasks include:
@@ -19,12 +19,9 @@ These tasks include:
 
 ## Goals
 
-Rather than aiming to be The One True Way to Do WordPress,
-Conifer leans more toward The Way We Like to Do WordPress.
-Like its authors, Conifer is opinionated. 
-We hold certain values at the center our philosophy as
-developers, designers, and creators. If you share these
-values, we think you'll benefit from Conifer.
+Rather than aiming to be The One True Way to Do WordPress, Conifer leans more toward The Way We Like to Do WordPress. Like its authors, Conifer is opinionated.
+
+We hold certain values at the center our philosophy as developers, designers, and creators. If you share these values, we think you'll benefit from Conifer.
 
 ### Abstractions for a WordPress architecture
 
