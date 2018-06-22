@@ -233,7 +233,7 @@ abstract class Page {
    * @return Page returns this Page object
    */
   public function set_menu_title(string $menuTitle) : Page {
-    $this->menu_title = $menu_title;
+    $this->menu_title = $menuTitle;
     return $this;
   }
 
