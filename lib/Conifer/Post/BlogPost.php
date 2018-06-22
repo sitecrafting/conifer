@@ -17,15 +17,6 @@ class BlogPost extends Post {
   const POST_TYPE = 'post';
 
   /**
-   * Get the post type that this class represents
-   *
-   * @return string
-   */
-  public static function post_type() : string {
-    return static::POST_TYPE;
-  }
-
-  /**
    * Get all months for which a published blog post exists
    *
    * @return array an array of formatted month strings

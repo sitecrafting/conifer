@@ -17,6 +17,8 @@ use Conifer\Post\Image;
 abstract class Post extends TimberPost {
   use HasTerms;
 
+  const POST_TYPE = '';
+
   const RELATED_POST_COUNT = 3;
 
   /**
@@ -52,10 +54,28 @@ abstract class Post extends TimberPost {
   /**
    * Child classes must declare their own post types
    */
-  abstract public static function post_type() : string;
+  protected static function _post_type() : string {
+    if (empty(static::POST_TYPE)) {
+      throw new \RuntimeException(
+        'For some static methods to work correctly, you must define the '
+        . static::class . '::POST_TYPE constant'
+      );
+    }
+
+    return static::POST_TYPE;
+  }
 
   /**
-   * Get all the posts matching the given query (defaults to the current/global WP query constraints)
+   * Place tighter restrictions on post types than Timber,
+   * forcing all concrete subclasses to implement this method.
+   */
+  public function type() : string {
+    return static::_post_type();
+  }
+
+  /**
+   * Get all the posts matching the given query
+   * (defaults to the current/global WP query constraints)
    *
    * @param  array|string $query any valid Timber query
    * @return array         an array of all matching post objects
@@ -125,7 +145,7 @@ abstract class Post extends TimberPost {
    *
    * The keys "ID" and "post_type" are blacklisted and will be ignored.
    * The value for "ID" is generated on post creation by WordPress/MySQL;
-   * The value for "post_type" will always come from $this->post_type().
+   * The value for "post_type" will always come from $this->get_post_type().
    *
    * All others key/value pairs are considered metadata and end up in wp_postmeta.
    * @return \Project\Post
@@ -174,7 +194,7 @@ abstract class Post extends TimberPost {
 
     // merge the metadata and post type in with any post "proper" data
     $id = wp_insert_post(array_merge($postData, [
-      'post_type' => static::post_type(),
+      'post_type' => static::_post_type(),
       'meta_input' => $data,
     ]));
 
@@ -209,7 +229,7 @@ abstract class Post extends TimberPost {
       }, $this->terms($taxonomy));
 
       $this->related_by[$taxonomy] = static::get_all([
-        'post_type'     => static::post_type(),
+        'post_type'     => $this->get_post_type(),
         'post__not_in'  => [$this->ID],
         'numberposts'   => $postCount,
         'tax_query'     => [
