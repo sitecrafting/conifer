@@ -281,14 +281,13 @@ class Site extends TimberSite {
   }
 
   /**
-   * Tell Twig to ask Conifer which directories to look in for view files.
+   * Tell Timber/Twig which directories to look in for Twig view files.
    *
    * @see set_view_directory_cascade
    */
   public function configure_twig_view_cascade() {
-    add_filter('get_twig', function(Twig_Environment $twig) {
-      $twig->getLoader()->setPaths($this->get_view_directory_cascade());
-      return $twig;
+    add_filter('timber/loader/paths', function() {
+      return $this->get_view_directory_cascade();
     });
   }
 
