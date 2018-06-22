@@ -45,6 +45,7 @@ class AdminSubPageTest extends Base {
       $page,
       'Hello Again',
     ]);
-    $subPage->do_add();
+    // assert fluent interface
+    $this->assertEquals($subPage, $subPage->do_add());
   }
 }
