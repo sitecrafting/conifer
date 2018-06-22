@@ -11,6 +11,36 @@ namespace Conifer\Admin;
 
 /**
  * Class for abstracting WP Admin pages
+ *
+ * @example
+ * ```php
+ * use Conifer\Admin\Page as AdminPage;
+ * use Conifer\Admin\SubPage;
+ *
+ * class MySettingsPage extends AdminPage {
+ *   public function render() : string {
+ *     return '<h1>This is the top-level settings page</h1>';
+ *   }
+ * }
+ *
+ * class MoreSettingsPage extends SubPage {
+ *   public function render() : string {
+ *     return '<h1>This is a second-tier settings page</h1>';
+ *   }
+ * }
+ *
+ * $page = new MySettingsPage('My Theme Settings');
+ *
+ * // add your pages like this...
+ * $page
+ *   ->add()
+ *   ->add_sub_page(MoreSettingsPage::class, 'More Theme Settings');
+ *
+ * // ...or like this:
+ * $page->add();
+ * $subPage = new MoreSettingsPage($page, 'More Theme Settings');
+ * $subPage->add();
+ * ```
  */
 abstract class SubPage extends Page {
   /**

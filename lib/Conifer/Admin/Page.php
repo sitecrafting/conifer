@@ -11,6 +11,20 @@ namespace Conifer\Admin;
 
 /**
  * Class for abstracting WP Admin pages
+ *
+ * @example
+ * ```php
+ * use Conifer\Admin\Page as AdminPage;
+ *
+ * class MySettingsPage extends AdminPage {
+ *   public function render() : string {
+ *     return '<h1>ALL THE SETTINGS</h1> ...';
+ *   }
+ * }
+ *
+ * $settingsPage = new MySettingsPage('My Theme Settings');
+ * $settingsPage->add();
+ * ```
  */
 abstract class Page {
   /**
