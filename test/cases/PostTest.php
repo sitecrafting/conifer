@@ -8,6 +8,8 @@
 
 namespace ConiferTest;
 
+use WP_Term;
+
 use WP_Mock;
 
 use Conifer\Post\Page;
@@ -91,5 +93,39 @@ class PostTest extends Base {
     ]);
 
     $this->assertEquals('https://www.sitecrafting.com', Page::get_blog_url());
+  }
+
+  public function test_get_related_by_taxonomy() {
+    $post = $this->getMockForAbstractClass(
+      Post::class,
+      [],
+      'MyPostClass',
+      false
+    );
+
+    $post->ID = 123;
+
+    $related = ['mock', 'related', 'post', 'data'];
+    WP_Mock::userFunction('get_posts', [
+      'times'   => 1,
+      'return'  => $related,
+    ]);
+    $term = $this->mockTerm([
+      'term_id' => 456,
+      'taxonomy' => 'category',
+    ]);
+    WP_Mock::userFunction('wp_get_post_terms', [
+      'times'   => 1,
+      'args'    => [
+        123,
+        'category',
+      ],
+      'return'  => [$term],
+    ]);
+
+    $this->assertEquals($related, $post->get_related_by_taxonomy(
+      'category',
+      13
+    ));
   }
 }

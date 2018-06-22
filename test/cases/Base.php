@@ -9,10 +9,9 @@
 namespace ConiferTest;
 
 use PHPUnit\Framework\TestCase;
-
-use WP_Mock;
-
 use Timber\User;
+use WP_Mock;
+use WP_Term;
 
 /**
  * Base test class for the plugin. Declared abstract so that PHPUnit doesn't
@@ -61,6 +60,46 @@ abstract class Base extends TestCase {
     ]);
 
     return $post;
+  }
+
+  /**
+   * Mock a call to WordPress's get_term
+   *
+   * @param array $props an array of WP_Term object properties
+   * must include a valid (that is, a numeric) term_id, and a taxonomy string,
+   * e.g.:
+   *
+   * ```
+   * $props = ['term_id' => 123, 'taxonomy' => 'yeah-im-the-taxmaaaan'];
+   * ```
+   * @param additional WP_Mock::userFunction objects to merge in.
+   * @throws \InvalidArgumentException if $props["ID"] is not numeric
+   */
+  protected function mockTerm(array $props, array $options = []) {
+    if (empty($props['term_id']) || !is_numeric($props['term_id'])) {
+      throw new \InvalidArgumentException('$props["term_id"] must be numeric');
+    }
+    if (empty($props['taxonomy']) || !is_string($props['taxonomy'])) {
+      throw new \InvalidArgumentException(
+        '$props["taxonomy"] must be a string'
+      );
+    }
+
+    $term = $this->getMockBuilder(WP_Term::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    foreach ($props as $prop => $value) {
+      $term->{$prop} = $value;
+    }
+
+    WP_Mock::userFunction('get_term', array_merge([
+      'times'   => 1,
+      'args'    => [$props['term_id'], $props['taxonomy']],
+      'return'  => $term,
+    ], $options));
+
+    return $term;
   }
 
   protected function getProtectedProperty($object, $name) {
