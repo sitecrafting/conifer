@@ -28,10 +28,9 @@ trait HasCustomAdminFilters {
   public static function add_admin_filter(
     string $name,
     array $options,
-    string $postType,
     callable $queryModifier
   ) {
-    add_action('restrict_manage_posts', function() use ($name, $options, $postType) {
+    add_action('restrict_manage_posts', function() use ($name, $options) {
 
       // we only want to render the filter menu if we're on the
       // edit screen for the given post type
