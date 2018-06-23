@@ -61,7 +61,7 @@ tooling:
 
   e2e:
     service: node
-    cmd: 'yarn cypress run && curl --upload-file /app/cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer-travis.mp4'
+    cmd: 'yarn cypress run'
     description: 'Run end-to-end tests'
 
   unit:

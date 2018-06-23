@@ -9,8 +9,14 @@ matrix:
 
     - language: node_js
       node_js: 6.11
+      before_install:
+				- sudo apt-get -y update
+				- sudo apt-get -y install cgroup-bin curl
+				- curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-beta.39/lando-v3.0.0-beta.39.deb
+				- sudo dpkg -i /tmp/lando-latest.deb
+				- lando version
       install:
         - yarn install
       script:
-        - yarn cypress run
+        - lando e2e
 
