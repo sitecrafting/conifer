@@ -53,8 +53,13 @@ abstract class Post extends TimberPost {
 
   /**
    * Child classes must declare their own post types
+   *
+   * @throws \RuntimeException if the POST_TYPE class constant is empty
+   * @return string
+   * @codingStandardsIgnoreStart PSR2.Methods.MethodDeclaration.Underscore
    */
   protected static function _post_type() : string {
+    // @codingStandardsIgnoreEnd
     if (empty(static::POST_TYPE)) {
       throw new \RuntimeException(
         'For some static methods to work correctly, you must define the '
