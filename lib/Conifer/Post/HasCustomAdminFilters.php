@@ -15,16 +15,21 @@ use Timber\Timber;
  */
 trait HasCustomAdminFilters {
   /**
-   * Add a custom column to the admin for the given post type, with content provided
-   * through a callback.
+   * Add a custom filter to the admin for the given post type, with custom
+   * query behavior provided through a callback.
    *
-   * @param string   $key      the $columns array key to add
-   * @param string   $label    label for the column header
-   * @param string   $postType the post type, for inferring which filters/actions to hook into
-   * @param callable $getValue a callback to get the value to display in the custom column for
+   * @param string $name the form input name for the filter
+   * @param array $options the options to display in the filter dropdown
+   * @param callable $queryModifier a callback to mutate the WP_Query object
+   * at query time
    * a given post. Takes a post ID as its sole parameter.
    */
-  public static function add_admin_filter( $name, $options, $postType, callable $queryModifier ) {
+  public static function add_admin_filter(
+    string $name,
+    array $options,
+    string $postType,
+    callable $queryModifier
+  ) {
     add_action('restrict_manage_posts', function() use ($name, $options, $postType) {
 
       // only want to render the filter menu if we're on the edit screen for the given post type
@@ -37,8 +42,8 @@ trait HasCustomAdminFilters {
         $value = $_GET[$name] ?? '';
 
         static::render_custom_filter_select([
-          'name' => $name,
-          'options' => $options,
+          'name'           => $name,
+          'options'        => $options,
           'filtered_value' => $value,
         ]);
       }
