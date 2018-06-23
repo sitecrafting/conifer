@@ -22,13 +22,20 @@ trait HasCustomAdminFilters {
    * @param string $name the form input name for the filter
    * @param array $options the options to display in the filter dropdown
    * @param callable $queryModifier a callback to mutate the WP_Query object
-   * at query time
-   * a given post. Takes a post ID as its sole parameter.
+   * at query time.
+   *
+   * Callback params:
+   *
+   * * `WP_Query` `$query` the query being executed
+   * * `string` `$value` the filter value selected by the admin user
+   *
+   * The `$queryModifier` param is optional for cases such as querying by
+   * taxonomy term, in which case WP adds the term to the query automatically.
    */
   public static function add_admin_filter(
     string $name,
     array $options,
-    callable $queryModifier
+    callable $queryModifier = null
   ) {
     // safelist $name as a query_var
     add_filter('query_vars', function(array $vars) use($name) {
@@ -49,15 +56,20 @@ trait HasCustomAdminFilters {
       }
     });
 
-    add_action('pre_get_posts', function(WP_Query $query) use (
-      $name,
-      $queryModifier
-    ) {
-      if ( static::querying_by_custom_filter($name, $query) ) {
-        // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-        $queryModifier($query, get_query_var($name));
-      }
-    });
+    // in some cases, such as querying by custom taxonomies that already
+    // appear in post queries automatically, we don't need to hook into
+    // `pre_get_posts` at all, and as such don't need a custom $queryModifier
+    if (is_callable($queryModifier)) {
+      add_action('pre_get_posts', function(WP_Query $query) use (
+        $name,
+        $queryModifier
+      ) {
+        if (static::querying_by_custom_filter($name, $query, $queryModifier)) {
+          // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+          $queryModifier($query, get_query_var($name));
+        }
+      });
+    }
   }
 
   /**
