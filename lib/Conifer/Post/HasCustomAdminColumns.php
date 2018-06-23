@@ -1,6 +1,9 @@
 <?php
 /**
  * Powerful utility trait for adding custom columns in the WP Admin
+ *
+ * @copyright 2018 SiteCrafting, Inc.
+ * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 
 namespace Conifer\Post;
@@ -8,8 +11,6 @@ namespace Conifer\Post;
 /**
  * This Trait adds a powerful abstraction to post type classes:
  * the ability to declaratively add custom admin columns.
- *
- * @package Conifer
  */
 trait HasCustomAdminColumns {
   /**

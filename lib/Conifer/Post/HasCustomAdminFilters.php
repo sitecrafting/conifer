@@ -1,6 +1,9 @@
 <?php
 /**
  * Powerful utility trait for adding custom filters in the WP Admin
+ *
+ * @copyright 2018 SiteCrafting, Inc.
+ * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 
 namespace Conifer\Post;
