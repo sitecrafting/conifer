@@ -30,22 +30,21 @@ trait HasCustomAdminFilters {
     array $options,
     callable $queryModifier
   ) {
+    // safelist $name as a query_var
+    add_filter('query_vars', function(array $vars) use($name) {
+      return array_merge($vars, [$name]);
+    });
+
     add_action('restrict_manage_posts', function() use ($name, $options) {
 
       // we only want to render the filter menu if we're on the
       // edit screen for the given post type
       if ( static::allow_custom_filtering() ) {
 
-        // default to blank string, which should mean "any"
-        // NOTE: WordPress already verifies the nonce in this context;
-        // no need to do so again
-        // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-        $value = $_GET[$name] ?? '';
-
         static::render_custom_filter_select([
           'name'           => $name,
           'options'        => $options,
-          'filtered_value' => $value,
+          'filtered_value' => get_query_var($name),
         ]);
       }
     });
@@ -56,7 +55,7 @@ trait HasCustomAdminFilters {
     ) {
       if ( static::querying_by_custom_filter($name, $query) ) {
         // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-        $queryModifier($query, $_GET[$name]);
+        $queryModifier($query, get_query_var($name));
       }
     });
   }
@@ -95,6 +94,6 @@ trait HasCustomAdminFilters {
     return static::allow_custom_filtering()
       && ($query->query_vars['post_type'] ?? null) === static::_post_type()
       // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-      && !empty( $_GET[$name] );
+      && !empty(get_query_var($name));
   }
 }
