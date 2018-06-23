@@ -32,8 +32,9 @@ trait HasCustomAdminFilters {
   ) {
     add_action('restrict_manage_posts', function() use ($name, $options, $postType) {
 
-      // only want to render the filter menu if we're on the edit screen for the given post type
-      if ( static::allow_custom_filtering($postType) ) {
+      // we only want to render the filter menu if we're on the
+      // edit screen for the given post type
+      if ( static::allow_custom_filtering() ) {
 
         // default to blank string, which should mean "any"
         // NOTE: WordPress already verifies the nonce in this context;
@@ -69,11 +70,10 @@ trait HasCustomAdminFilters {
 
   /**
    * Whether to show the custom filter on the edit screen for the given post type.
-   *
-   * @param string $postType the post type to which the custom filter applies.
    */
-  protected static function allow_custom_filtering( $postType ) {
-    return $GLOBALS['post_type'] === $postType && $GLOBALS['pagenow'] === 'edit.php';
+  protected static function allow_custom_filtering() : bool {
+    return ($GLOBALS['post_type'] ?? null) === static::_post_type()
+      && ($GLOBALS['pagenow'] ?? null) === 'edit.php';
   }
 
   /**
