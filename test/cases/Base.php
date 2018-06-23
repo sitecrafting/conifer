@@ -48,16 +48,11 @@ abstract class Base extends TestCase {
       $post->{$prop} = $value;
     }
 
-    $options = array_merge([
-      'times' => 1,
-      'args'  => [$props['ID']],
-    ], $options);
-
-    WP_Mock::userFunction('get_post', [
+    WP_Mock::userFunction('get_post', array_merge([
       'times'   => 1,
-      'args'    => 123,
+      'args'  => [$props['ID']],
       'return'  => $post,
-    ]);
+    ]));
 
     return $post;
   }
