@@ -96,6 +96,8 @@ class PostTest extends Base {
     // in QueryIterator::__construct(), so skipping for now...
     return $this->markTestSkipped();
 
+    /* @codingStandardsIgnoreStart
+
     $this->mockPost(['ID' => 123]);
     $post = new Page(123);
 
@@ -121,5 +123,7 @@ class PostTest extends Base {
       'category',
       13
     ));
+
+    @codingStandardsIgnoreEnd */
   }
 }
