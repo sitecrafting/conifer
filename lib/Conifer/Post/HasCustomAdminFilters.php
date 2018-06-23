@@ -8,6 +8,7 @@
 
 namespace Conifer\Post;
 
+use WP_Query;
 use Timber\Timber;
 
 /**
@@ -50,8 +51,11 @@ trait HasCustomAdminFilters {
       }
     });
 
-    add_action('pre_get_posts', function(\WP_Query $query) use ($name, $postType, $queryModifier) {
-      if ( static::querying_by_custom_filter($name, $postType, $query) ) {
+    add_action('pre_get_posts', function(WP_Query $query) use (
+      $name,
+      $queryModifier
+    ) {
+      if ( static::querying_by_custom_filter($name, $query) ) {
         // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
         $queryModifier($query, $_GET[$name]);
       }
@@ -77,16 +81,20 @@ trait HasCustomAdminFilters {
   }
 
   /**
-   * Whether the user is currently trying to query by the custom filter, according to GET params
-   * and the current post type; determines whether the current WP_Query needs to be modified.
+   * Whether the user is currently trying to query by the custom filter,
+   * according to GET params and the current post type; determines whether
+   * the current WP_Query needs to be modified.
    *
-   * @param string $name the filter name, i.e. the <input> element's "name" attribute
-   * @param string $postType the post type to which the custom filter applies
+   * @param string $name the filter name, i.e. the <select> element's
+   * `name` attribute
    * @param WP_Query $query the current WP_Query object
    */
-  protected static function querying_by_custom_filter( $name, $postType, \WP_Query $query ) {
-    return static::allow_custom_filtering( $postType )
-      && $query->query_vars['post_type'] === $postType
+  protected static function querying_by_custom_filter(
+    string $name,
+    WP_Query $query
+  ) : bool {
+    return static::allow_custom_filtering()
+      && ($query->query_vars['post_type'] ?? null) === static::_post_type()
       // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
       && !empty( $_GET[$name] );
   }
