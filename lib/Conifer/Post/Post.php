@@ -114,7 +114,14 @@ abstract class Post extends TimberPost {
    * @return boolean     true if the post exists, false otherwise
    */
   public static function exists( $id ) {
-    return is_string( get_post_status( $id ) );
+    $post = get_post($id);
+
+    // support calling Post::exists() directly (not on subclasses)
+    if (static::class === self::class) {
+      return !empty($post);
+    }
+
+    return $post && $post->post_type === static::_post_type();
   }
 
   /**

@@ -56,17 +56,13 @@ class PostTest extends Base {
   }
 
   public function test_exists_on_existent_post() {
-    WP_Mock::userFunction('get_post_status', [
-      'times'   => 1,
-      'args'    => 3,
-      'return'  => 'draft',
-    ]);
+    $this->mockPost(['ID' => 3]);
 
     $this->assertTrue(Post::exists(3));
   }
 
   public function test_exists_on_nonexistent_post() {
-    WP_Mock::userFunction('get_post_status', [
+    WP_Mock::userFunction('get_post', [
       'times'   => 1,
       'args'    => 3,
       'return'  => false,
