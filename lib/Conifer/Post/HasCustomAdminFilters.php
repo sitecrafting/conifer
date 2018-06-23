@@ -9,6 +9,7 @@
 namespace Conifer\Post;
 
 use WP_Query;
+use WP_Term;
 use Timber\Timber;
 
 /**
@@ -38,7 +39,7 @@ trait HasCustomAdminFilters {
     callable $queryModifier = null
   ) {
     // safelist $name as a query_var
-    add_filter('query_vars', function(array $vars) use($name) {
+    add_filter('query_vars', function(array $vars) use ($name) {
       return array_merge($vars, [$name]);
     });
 
@@ -70,6 +71,27 @@ trait HasCustomAdminFilters {
         }
       });
     }
+  }
+
+  /**
+   * Add a custom admin filter for a taxonomy.
+   *
+   * @param string $tax the taxonomy name to filter by
+   */
+  public static function add_taxonomy_admin_filter(
+    string $tax
+  ) {
+    $taxLabel       = static::get_taxonomy_label($tax);
+    $initialOptions = ['' => "Any {$taxLabel}"];
+
+    $options = array_reduce(get_terms($tax), function(
+      array $_options,
+      WP_Term $term
+    ) : array {
+      return array_merge($_options, [$term->slug => $term->name]);
+    }, $initialOptions);
+
+    static::add_admin_filter($tax, $options);
   }
 
   /**
@@ -105,7 +127,16 @@ trait HasCustomAdminFilters {
   ) : bool {
     return static::allow_custom_filtering()
       && ($query->query_vars['post_type'] ?? null) === static::_post_type()
-      // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
       && !empty(get_query_var($name));
+  }
+
+  /**
+   * Get the `singular_name` label for a taxonomy
+   *
+   * @param string $tax the taxonomy whose label you want
+   * @return string the singular label
+   */
+  protected static function get_taxonomy_label(string $tax) : string {
+    return get_taxonomy_labels(get_taxonomy($tax))->singular_name ?? '';
   }
 }
