@@ -1,34 +1,16 @@
-language: php
-php:
-  - '7.0'
-  - '7.1'
-  - '7.2'
+matrix:
+  include:
+    - language: php
+      php: 7.1
+      install:
+        - composer install --prefer-dist
+      script:
+        - vendor/bin/phpunit
 
+    - language: node_js
+      node_js: 6.11
+      install:
+        - yarn install
+      script:
+        - yarn cypress run
 
-# This part is required!!!
-services:
-  - docker
-
-# Install all the lando magic and do a sanity check to verify its working
-before_install:
-  - sudo apt-get -y update
-  - sudo apt-get -y install cgroup-bin curl
-  - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-beta.39/lando-v3.0.0-beta.39.deb
-  - sudo dpkg -i /tmp/lando-latest.deb
-  - lando version
-
-install:
-  - composer install --prefer-dist
-  - lando start
-  - lando yarn install
-
-cache:
-  directories:
-    - $HOME/.composer/cache
-    - vendor
-    - node_modules
-
-script:
-  - lando unit
-  - lando sniff
-  - lando e2e -- -vvv
