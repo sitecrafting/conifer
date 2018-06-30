@@ -59,14 +59,54 @@ This approach keeps the behavior of the `Robot` class/post type encapsulated and
 
 ## Checking for the existence of a post ID
 
-You can check whether a post exists with a given ID *and an appropriate post_type* using the `Post::exists()` method:
+You can check whether a post exists with a given ID *and an appropriate post_type* using the `Post::exists()` method. It uses [late static binding](https://secure.php.net/manual/en/language.oop5.late-static-bindings.php) on the `POST_TYPE` class constant to check the `post_type` of any posts it finds. That is, the `exists()` method will only return `true` when the `post_type` matches up with the `POST_TYPE` constant.
+
+For example, let's say we have a `page` in the database:
 
 ```php
-$badPostId = 999999;
-Post::exists($badPostId); // -> false
+$pageId = wp_insert_post(['post_type' => 'page']);
+\Conifer\Post\Page::exists($pageId); // -> true
+\Conifer\Post\BlogPost::exists($pageId); // -> false
 ```
 
-This not only 
+Of course, it'll also return `false` if we call it with an `ID` that does not exist at all, regardless of `post_type`:
+
+```\Conifer\Post\BlogPost::exists($badId); // -&gt; false
+$badId = 9001;
+get_post($badId); // -> null
+\Conifer\Post\BlogPost::exists($badId); // -> false
+\Conifer\Post\Page::exists($badId); // -> false
+\Conifer\Post\Post::exists($badId); // -> false
+```
+
+### Checking for any type of post
+
+You can call `exists()` on the abstract `Post` class to skip the `post_type` check and look for a post of *any* `post_type`:
+
+```php
+$pageId = wp_insert_post(['post_type' => 'page']);
+$postId = wp_insert_post(['post_type' => 'post']);
+
+\Conifer\Post\Post::exists($pageId); // -> true
+\Conifer\Post\Post::exists($postId); // -> true
+
+$badId = 9001;
+get_post($badId); // -> null
+\Conifer\Post\Post::exists($badId); // -> false
+```
+
+### Checking for custom posts
+
+This works for custom posts, too, as long as your custom post class defines its own `POST_TYPE` contant:
+
+```php
+echo Robot::POST_TYPE; // -> outputs "robot"
+$robot = Robot::create(['post_title' => 'Some robot or other']);
+Robot::exists($robot->id); // -> true
+
+$postId = wp_insert_post(['post_type' => 'post']);
+Robot::exists($postId); // -> false
+```
 
 ## Saving New Posts
 
