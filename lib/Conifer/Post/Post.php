@@ -16,6 +16,8 @@ use Conifer\Post\Image;
  */
 abstract class Post extends TimberPost {
   use HasTerms;
+  use HasCustomAdminColumns;
+  use HasCustomAdminFilters;
 
   const POST_TYPE = '';
 
