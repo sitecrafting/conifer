@@ -135,12 +135,8 @@ Easily add custom admin columns and filters to your admin screens, without havin
 namespace MyProject;  
 
 use Conifer\Post\Post;
-use Conifer\Post\HasCustomAdminColumns;
-use MyProject\Location;
 
 class Company extends Post {
-  use HasCustomAdminColumns;
-
   public static function register {
     register_post_type(...);
 
@@ -155,6 +151,9 @@ class Company extends Post {
     );
   }
 
+  /**
+   * Get the associated MyProject\Location instance for this Company
+   */
   public function get_location() {
     return new Location($this->location_id);
   }
