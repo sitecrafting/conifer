@@ -21,7 +21,10 @@ trait HasCustomAdminFilters {
    * query behavior provided through a callback.
    *
    * @param string $name the form input name for the filter
-   * @param array $options the options to display in the filter dropdown
+   * @param array $options the options to display in the filter dropdown.
+   * Optional for defining taxonomy filters. If `$name` is a taxonomy,
+   * `$options` defaults to all non-empty terms in the taxonomy, plus an
+   * "Any $name" option.
    * @param callable $queryModifier a callback to mutate the WP_Query object
    * at query time.
    *
@@ -35,7 +38,7 @@ trait HasCustomAdminFilters {
    */
   public static function add_admin_filter(
     string $name,
-    array $options,
+    array $options = [],
     callable $queryModifier = null
   ) {
     // safelist $name as a query_var
@@ -44,6 +47,21 @@ trait HasCustomAdminFilters {
     });
 
     add_action('restrict_manage_posts', function() use ($name, $options) {
+
+      if (empty($options) && taxonomy_exists($name)) {
+        // no options specified, but this is a taxonomy filter,
+        // so just use all the terms
+        $label          = static::get_taxonomy_label($name);
+        $initialOptions = ['' => "Any {$label}"];
+
+        $terms   = get_terms(['taxonomy' => $name]);
+        $options = array_reduce($terms, function(
+          array $options,
+          WP_Term $term
+        ) {
+          return array_merge($options, [$term->slug => $term->name]);
+        }, $initialOptions);
+      }
 
       // we only want to render the filter menu if we're on the
       // edit screen for the given post type
