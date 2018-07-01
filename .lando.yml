@@ -56,7 +56,7 @@ tooling:
 
   debug:
     service: appserver
-    cmd: 'cd /app/wp/wp-content && tail -f debug.log'
+    cmd: 'tail -f /app/wp/wp-content/debug.log'
     description: 'Get real-time debug log output'
 
   e2e:
