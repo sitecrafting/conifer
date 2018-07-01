@@ -5,6 +5,7 @@
 
 # cypress test artifacts
 /cypress/videos
+/cypress/screenshots
 .Trash*
 
 # yarn artifacts, or "yartifacts"
