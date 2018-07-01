@@ -19,11 +19,14 @@ trait HasCustomAdminColumns {
    *
    * @param string   $key      the $columns array key to add
    * @param string   $label    label for the column header
-   * @param string   $postType the post type, for inferring which filters/actions to hook into
-   * @param callable $getValue a callback to get the value to display in the custom column for
+   * @param callable $getValue (Optional) a callback to get the value to
+   * display in the custom column for. If not given, the column will
+   * display the value of the `meta` field whose `meta_key` is equal to `$key`.
    * a given post. Takes a post ID as its sole parameter.
    */
-  public static function add_admin_column( $key, $label, $postType, callable $getValue ) {
+  public static function add_admin_column($key, $label, callable $getValue = null) {
+    $postType = static::_post_type();
+
     if ($postType === 'page' || $postType === 'post') {
       // e.g. manage_pages_columns
       $addHook = "manage_{$postType}s_columns";
