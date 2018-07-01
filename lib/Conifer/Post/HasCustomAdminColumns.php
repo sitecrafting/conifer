@@ -48,6 +48,12 @@ trait HasCustomAdminColumns {
       return $columns;
     });
 
+    // If no callback is given, look for a meta_key of $key on each post
+    $getValue = $getValue ?? function($id) use ($key) {
+      $post = new static($id);
+      return $post->meta($key);
+    };
+
     // register a callback to display the value for this column
     add_action($displayHook, function($column, $id) use ($key, $getValue) {
       if ( $column === $key ) {
