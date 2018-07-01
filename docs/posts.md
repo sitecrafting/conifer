@@ -21,7 +21,7 @@ use Conifer\Post\Post;
 
 class Robot extends Post {
   const POST_TYPE = 'robot';
-    
+
   // ...
 }
 ```
@@ -39,7 +39,7 @@ use Conifer\Post\Post;
 
 class Robot extends Post {
   const POST_TYPE = 'robot';
-  
+
   public static function register() {
     register_post_type('robot', ['label' => 'Robots']);
   }
@@ -185,3 +185,125 @@ $relatedPosts = $post->get_related_posts_by_category();
 $relatedPostsByTag = $post->get_related_posts_by_tag();
 ```
 
+## Customizing Post Admin Columns
+
+Conifer lets you easily add custom admin columns to your WP Admin post listing screen:
+
+```php
+use Conifer\Post\Post;
+
+class Robot extends Post {
+  const POST_TYPE = 'robot';
+
+  public static function register() {
+    register_post_type('robot', ['label' => 'Robots']);
+    static::add_admin_column('disposition', 'Disposition');
+  }
+}
+```
+
+This adds a new **Disposition** column to the listing screen for Robot posts that displays each Robot's `disposition` from its meta data.
+
+### Specifying the column value
+
+If you want to display something more involved than a simple `meta_value`, you can specify a callback parameter to the `add_admin_column` method. Let's say you have some meta column called `beeps` but you don't care about the actual values - you just want to know how many `beeps` each Robot has:
+
+```php
+    static::add_admin_column('beep_count', 'Beep Count', function($id) {
+      // count the beeps for this Robot.
+      $robot = new static($id);
+      $beeps = $robot->meta('beeps') ?: [];
+      return count($beeps) ? 'None';
+    });
+```
+
+This code tells Conifer to grab the `beeps` for each Robot, count them, and display the count (or "None" if the count is zero, or if no `beeps` value exists for any given Robot).
+
+## Customizing Post Admin Filters
+
+As with columns, Conifer lets you easily add custom *filters* to your WP Admin post listing screen. Say we want to extend the WP Admin to be able to filter Robots by the custom taxonomy `eeriness_level`:
+
+```php
+use Conifer\Post\Post;
+
+class Robot extends Post {
+  const POST_TYPE = 'robot';
+
+  public static function register() {
+    register_post_type('robot', ['label' => 'Robots']);
+    register_taxonomy('eeriness_level', 'robot', [
+      'labels' => ['name' => 'Eeriness Levels', 'singular_name' => 'Eeriness Level'],
+    ]);
+
+    static::add_admin_filter('eeriness_level');
+  }
+}
+```
+
+Conifer recognizes that `eeriness_level` is a taxonomy and queries its terms automatically, displaying them as options (along with an "Any Eeriness Level" option at the top, of course) in a new admin filter dropdown.
+
+### Defining advanced filters
+
+If you want to filter by some aspect of your posts that isn't a taxonomy, you can specify your own options and a callback for modifying the `WP_Query` instance in some way. Say you have a `beeps` meta field that has zero or more rows in the database:
+
+```php
+// ensure post ID=4 has zero beeps
+delete_post_meta(4, 'beeps');
+// add some beeps for post ID=3
+add_post_meta(3, 'beeps', 'BEEP');
+add_post_meta(3, 'beeps', 'BEEP!');
+add_post_meta(3, 'beeps', 'BEEEEP!');
+```
+
+You can define an admin filter that queries by the presence of absence of `beeps` in the meta table, just by specifying how you want to modify the query when you look for it:
+
+```php
+    $options = [
+      ''    => 'Beeps or not',
+      'yes' => 'With beeps',
+      'no'  => 'Without beeps',
+    ];
+
+    static::add_admin_filter('has_beeps', $options, function(
+      WP_Query $query,
+      string $beepsFilterValue
+    ) {
+      if ($beepsFilterValue === '') {
+        // don't filter
+        return;
+      }
+
+      $comparison = $beepsFilterValue === 'yes' ? 'EXISTS' : 'NOT EXISTS';
+
+      $query->query_vars['meta_query'] = [
+        [
+          'key' => 'beeps',
+          'compare' => $comparison,
+        ],
+      ];
+    });
+```
+
+This displays a dropdown with the options **Beeps or not**, **With beeps**, and **Without beeps**. The callback passed as the third parameter runs when WordPress fires the `pre_get_posts` filter, and takes the current `WP_Query` object and the user-specified filter value as arguments. You can, of course, put any code you want in here, modifying `$query` in whatever way you choose.
+
+## Custom columns/filters for existing post types
+
+The static `register` method is just a Conifer convention for a place to put stuff about your post types. You don't *need* to define it any more than you need to define custom post types in the first place!
+
+The custom admin column/filter functionality is defined in the `Conifer\Post\HasCustomAdminColumns` and `Conifer\Post\HasCustomAdminFilters` traits, respectively. **Both traits are included in the `Conifer\Post\Post` base class**. This means you can define custom columns and filters for existing post types, for example using Conifer's `Page` class:
+
+```php
+use Conifer\Post\Page;
+
+register_taxonomy('specialty', 'page', [
+  'labels' => ['name' => 'Specialties', 'singular_name' => 'Specialty'],
+]);
+
+Page::add_admin_column('specialties', 'Specialties', function($id) {
+  $page = new Page($id);
+  return implode(', ', $page->get_terms('specialty'));
+});
+Page::add_admin_filter('specialty');
+```
+
+Note that the `get_terms()` instance method returns `Timber\Term` objects, which implement their own `__toString()` method. That is, we don't even have to loop through the result of `get_terms()` to get each term's name because Timber does that for us. Thanks, Timber!
