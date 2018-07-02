@@ -74,6 +74,11 @@ tooling:
     cmd: 'composer sniff'
     description: 'Run phpcs code sniffer'
 
+  release:
+    service: appserver
+    cmd: '/app/scripts/build-release.sh'
+    description: 'Build a downloadable release of the Conifer WordPress plugin'
+
 proxy:
   appserver:
     - conifer.lndo.site

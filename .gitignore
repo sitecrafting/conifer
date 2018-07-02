@@ -3,6 +3,9 @@
 /wp-content/
 /node_modules/
 
+# build artifacts
+/conifer-*.tar.gz
+
 # cypress test artifacts
 /cypress/videos
 /cypress/screenshots
