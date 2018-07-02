@@ -29,6 +29,15 @@ function main() {
     fail 'Error: no release number specified'
   fi
 
+  # prompt for the letter "v"
+  first_char="${RELEASE:0:1}"
+  if ! [[ "$first_char" = 'v' ]] ; then
+    read -p "Prepend a 'v' (v${RELEASE})? (y/N) " prepend
+    if [[ "$prepend" = "y" ]] ; then
+      RELEASE="v${RELEASE}"
+    fi
+  fi
+
   # check tag
   git rev-parse --verify "$RELEASE"
   if ! [[ "$?" -eq 0 ]] ; then
@@ -38,15 +47,6 @@ function main() {
     if ! [[ "$create" = "y" ]] ; then
       echo 'aborted.'
       exit
-    fi
-
-    # prompt for the letter "v"
-    first_char="${RELEASE:0:1}"
-    if ! [[ "$first_char" = 'v' ]] ; then
-      read -p "Prepend a 'v' (v${RELEASE})? (y/N) " prepend
-      if [[ "$prepend" = "y" ]] ; then
-        RELEASE="v${RELEASE}"
-      fi
     fi
 
     # prompt for annotation
