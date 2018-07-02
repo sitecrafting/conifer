@@ -39,7 +39,7 @@ function main() {
   fi
 
   # check tag
-  git rev-parse --verify "$RELEASE"
+  git rev-parse --verify "$RELEASE" 2>/dev/null
   if ! [[ "$?" -eq 0 ]] ; then
 
     # prompt for creating a tag
