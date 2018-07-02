@@ -71,7 +71,7 @@ $pageId = wp_insert_post(['post_type' => 'page']);
 
 Of course, it'll also return `false` if we call it with an `ID` that does not exist at all, regardless of `post_type`:
 
-```\Conifer\Post\BlogPost::exists($badId); // -&gt; false
+```php
 $badId = 9001;
 get_post($badId); // -> null
 \Conifer\Post\BlogPost::exists($badId); // -> false
