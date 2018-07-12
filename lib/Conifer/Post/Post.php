@@ -88,7 +88,17 @@ abstract class Post extends TimberPost {
    * @return array         an array of all matching post objects
    */
   public static function get_all( $query = false ) {
-    return Timber::get_posts( $query, static::class );
+    $class = static::class;
+
+    // Avoid instantiating this (abstract) class, causing a Fatal Error.
+    // TODO figure out a more elegant way to do this??
+    // Might have to rework this at the Timber level
+    // @see https://github.com/timber/timber/pull/1218
+    if ($class === self::class) {
+      $class = TimberPost::class;
+    }
+
+    return Timber::get_posts( $query, $class );
   }
 
   /**
