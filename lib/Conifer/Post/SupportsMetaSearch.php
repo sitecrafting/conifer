@@ -1,7 +1,7 @@
 <?php
 
 /* @codingStandardsIgnoreFile */
-namespace Conifer;
+namespace Conifer\Post;
 
 trait SupportsMetaSearch {
 
