@@ -16,6 +16,10 @@ matrix:
 
     - language: node_js
       node_js: 6.11
+      cache:
+        directories:
+          - ~/.npm
+          - ~/.cache
       before_install:
         - sudo apt-get -y update
         - sudo apt-get -y install cgroup-bin curl
@@ -24,9 +28,9 @@ matrix:
         - lando version
       install:
         - lando start
-        - lando cypress version
+        - npm install cypress --save-dev
       script:
-        - lando e2e
+        - cypress run
 
   allow_failures:
     - language: node_js
