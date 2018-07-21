@@ -61,21 +61,10 @@ trait HasTerms {
       array $grouped,
       Term $term
     ) use ($taxonomy, $postQueryArgs) : array {
-      // compose a query for all posts for $category
-      $query = array_merge($postQueryArgs, [
-        'post_type' => static::_post_type(),
-        'tax_query' => [
-          [
-            'taxonomy' => $taxonomy,
-            'terms'    => $term->term_id,
-          ],
-        ],
-      ]);
-
-      // honor additional tax_queries
-      $query['tax_query'] = array_merge(
-        $query['tax_query'],
-        $postQueryArgs['tax_query'] ?? []
+      $query = static::build_term_posts_query(
+        $term->term_id,
+        $taxonomy,
+        $postQueryArgs
       );
 
       // group this term with its respective posts
@@ -87,6 +76,31 @@ trait HasTerms {
       // return the grouped posts so far
       return $grouped;
     }, []);
+  }
+
+  private static function build_term_posts_query(
+    int $termId,
+    string $taxonomy,
+    array $extraQueryArgs
+  ) : array {
+    // compose a query for all posts for $category
+    $query = array_merge($extraQueryArgs, [
+      'post_type' => static::_post_type(),
+      'tax_query' => [
+        [
+          'taxonomy' => $taxonomy,
+          'terms'    => $termId,
+        ],
+      ],
+    ]);
+
+    // honor additional tax_queries
+    $query['tax_query'] = array_merge(
+      $query['tax_query'],
+      $extraQueryArgs['tax_query'] ?? []
+    );
+
+    return $query;
   }
 }
 
