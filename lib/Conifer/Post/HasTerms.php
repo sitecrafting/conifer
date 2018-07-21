@@ -50,8 +50,11 @@ trait HasTerms {
 
     // convert each term ID/slug/obj to a Timber\Term
     $timberTerms = array_map(function($termIdent) {
-      $isTimberTerm = $termIdent instanceof Term;
-      return $isTimberTerm ? $termIdent : new Term($termIdent);
+      // Pass through already-instantiated Timber\Term objects.
+      // This allows for a polymorphic list of terms! ✨
+      return is_a($termIdent, Term::class)
+        ? $termIdent
+        : new Term($termIdent);
     }, $terms);
 
     // reduce each term in $taxonomy to an array containing:
