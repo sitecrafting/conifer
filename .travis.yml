@@ -41,6 +41,3 @@ matrix:
       after_failure:
         - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
 
-  allow_failures:
-    - language: node_js
-
