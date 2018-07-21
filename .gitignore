@@ -2,6 +2,7 @@
 /wp/
 /wp-content/
 /node_modules/
+/log/
 
 # build artifacts
 /conifer-*.tar.gz
