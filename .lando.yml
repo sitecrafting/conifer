@@ -29,6 +29,7 @@ services:
 
     run:
       - cd $LANDO_MOUNT && yarn
+      - cd $LANDO_MOUNT && yarn cypress install
 
     overrides:
       services:
