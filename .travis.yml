@@ -24,6 +24,7 @@ matrix:
         - lando version
       install:
         - lando start
+        - lando cypress version
       script:
         - lando e2e
 
