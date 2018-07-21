@@ -20,3 +20,6 @@ matrix:
       script:
         - lando e2e
 
+  allow_failures:
+    - language: node_js
+
