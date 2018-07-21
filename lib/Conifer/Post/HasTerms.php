@@ -5,6 +5,9 @@
 
 namespace Conifer\Post;
 
+use Timber\Term;
+use Timber\Timber;
+
 /**
  * Trait that can be used from any post type class to get
  * tags and categories.
@@ -13,30 +16,19 @@ namespace Conifer\Post;
  */
 trait HasTerms {
   /**
-   * Get the tags for this Post
-   *
-   * @return array an array of TimberTerm objects
-   */
-  public function get_tags() {
-    return $this->get_terms('tag');
-  }
-
-  /**
-   * Get the categories for this Post
-   *
-   * @return array an array of TimberTerm objects
-   */
-  public function get_categories() {
-    return $this->get_terms('category');
-  }
-
-  /**
    * Get all published posts of this type, grouped by terms of $taxonomy
    *
    * @param string $taxonomy the name of the taxonomy to group by,
    * e.g. `"category"`
-   * @param array $terms The list of specific terms to filter by.
+   * @param array $terms The list of specific terms to filter by. Each item
+   * in the array can be any of the following:
+   * * a term ID (int or numeric string)
+   * * a term slug (string)
+   * * a WP_Term object
+   * * a Timber\Term object
    * Defaults to all terms within $taxonomy.
+   * @param array $postQueryArgs additional query filters to merge into the
+   * array passed to `get_all()`. Defaults to an empty array.
    * @return array an array like:
    * ```php
    * [
@@ -47,28 +39,44 @@ trait HasTerms {
    */
   public static function get_all_grouped_by_term(
     string $taxonomy,
-    array $terms = []
+    array $terms = [],
+    array $postQueryArgs = []
   ) : array {
     // ensure we have a list of taxonomy terms
-    $terms = $terms ?: get_terms(['taxonomy' => $taxonomy]);
+    $terms = $terms ?: Timber::get_terms([
+      'taxonomy'   => $taxonomy,
+      'hide_empty' => true,
+    ]);
+
+    // convert each term ID/slug/obj to a Timber\Term
+    $timberTerms = array_map(function($termIdent) {
+      $isTimberTerm = $termIdent instanceof Term;
+      return $isTimberTerm ? $termIdent : new Term($termIdent);
+    }, $terms);
 
     // reduce each term in $taxonomy to an array containing:
     //  * the term
     //  * the term's corresponding posts
-    return array_reduce($terms, function(
+    return array_reduce($timberTerms, function(
       array $grouped,
-      WP_Term $term
-    ) use ($taxonomy) : array {
+      Term $term
+    ) use ($taxonomy, $postQueryArgs) : array {
       // compose a query for all posts for $category
-      $query = [
-        'post_type' => static::POST_TYPE,
+      $query = array_merge($postQueryArgs, [
+        'post_type' => static::_post_type(),
         'tax_query' => [
           [
             'taxonomy' => $taxonomy,
             'terms'    => $term->term_id,
           ],
         ],
-      ];
+      ]);
+
+      // honor additional tax_queries
+      $query['tax_query'] = array_merge(
+        $query['tax_query'],
+        $postQueryArgs['tax_query'] ?? []
+      );
 
       // group this term with its respective posts
       $grouped[] = [
