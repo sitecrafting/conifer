@@ -16,6 +16,9 @@ matrix:
 
     - language: node_js
       node_js: 6.11
+      cache:
+        - ~/.lando
+        - ~/.cache
       before_install:
         - sudo apt-get -y update
         - sudo apt-get -y install cgroup-bin curl
