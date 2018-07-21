@@ -81,6 +81,15 @@ trait HasTerms {
     }, []);
   }
 
+  /**
+   * Build up the wp_posts query based on term, taxonomy, and any additional
+   * query args specified by the user
+   *
+   * @param int $termId the term_id to limit posts by
+   * @param string $taxonomy the name of the taxonomy to query
+   * @param array $extraQueryArgs extra post query args, if any
+   * @return array the query params to pass to `get_all()`
+   */
   private static function build_term_posts_query(
     int $termId,
     string $taxonomy,
