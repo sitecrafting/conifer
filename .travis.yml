@@ -36,6 +36,7 @@ matrix:
         - lando start
         - lando install
         - yarn install --frozen-lockfile
+        - cypress install
       script:
         - cypress run --config 'baseUrl=http://conifer.lndo.site'
       after_failure:
