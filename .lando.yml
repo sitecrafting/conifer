@@ -28,7 +28,7 @@ services:
       yarn: "1.6.0"
 
     run:
-      - cd $LANDO_MOUNT && yarn install
+      - cd $LANDO_MOUNT && yarn
 
     overrides:
       services:
