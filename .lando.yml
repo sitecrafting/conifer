@@ -60,6 +60,11 @@ tooling:
     cmd: 'tail -f /app/wp/wp-content/debug.log'
     description: 'Get real-time WP debug log output'
 
+  cypress:
+    service: node
+    cmd: 'yarn cypress'
+    description: 'Run arbitrary cypress commands'
+
   e2e:
     service: node
     cmd: 'yarn cypress run'
