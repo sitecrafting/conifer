@@ -91,3 +91,6 @@ proxy:
 
   mailhog:
     - mail.conifer.lndo.site
+
+  phpmyadmin:
+    - phpmyadmin.conifer.lndo.site
