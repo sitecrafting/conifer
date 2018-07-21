@@ -80,6 +80,11 @@ tooling:
     cmd: 'composer sniff'
     description: 'Run phpcs code sniffer'
 
+  sniff-summary:
+    service: appserver
+    cmd: 'composer sniff-summary'
+    description: 'Summarize phpcs results'
+
   release:
     service: appserver
     cmd: '/app/scripts/build-release.sh'
