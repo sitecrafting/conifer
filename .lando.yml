@@ -8,7 +8,7 @@ services:
   appserver:
     run:
       - cd $LANDO_MOUNT && composer install
-      - cd $LANDO_MOUNT && scripts/setup-wordpress.bash
+      - cd $LANDO_MOUNT && scripts/setup-wordpress.sh
 
     overrides:
       services:
@@ -46,7 +46,7 @@ services:
 tooling:
   install:
     service: appserver
-    cmd: '/app/scripts/setup-wordpress.bash'
+    cmd: '/app/scripts/setup-wordpress.sh'
     description: 'Install and configure WordPress for custom plugin dev'
 
   newman:
