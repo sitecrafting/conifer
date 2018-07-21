@@ -16,10 +16,6 @@ matrix:
 
     - language: node_js
       node_js: 6.11
-      cache:
-        directories:
-          - ~/.npm
-          - ~/.cache
       before_install:
         - sudo apt-get -y update
         - sudo apt-get -y install cgroup-bin curl
@@ -28,9 +24,9 @@ matrix:
         - lando version
       install:
         - lando start
-        - npm install cypress --save-dev
+        - yarn install --frozen-lockfile
       script:
-        - cypress run --config 'baseUrl=https://conifer.lndo.site'
+        - yarn cypress run --config 'baseUrl=https://conifer.lndo.site'
 
   allow_failures:
     - language: node_js
