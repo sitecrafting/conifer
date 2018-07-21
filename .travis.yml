@@ -34,7 +34,6 @@ matrix:
         - lando version
       install:
         - lando start
-        - lando install
         - yarn install --frozen-lockfile
         - cypress install
       script:
