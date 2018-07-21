@@ -15,15 +15,3 @@ if [[ -z $(which newman) ]] ; then
   npm install -g newman
 fi
 
-
-# install cypress binary if not already installed
-if ! [[ -d "~/.cache/Cypress" ]] ; then
-  echo 'Installing Cypress...'
-
-  sudo mkdir -p ~/.cache/Cypress
-  sudo chmod 777 -R ~/.cache/
-  sudo chmod 777 -R ~/.npm/
-  sudo chmod 777 -R /usr/lib/node_modules
-
-  CYPRESS_INSTALL_BINARY=0 sudo npm install -g cypress
-fi
