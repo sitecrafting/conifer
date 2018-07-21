@@ -1,9 +1,14 @@
 matrix:
   include:
     - language: php
-      php:
-        - 7.1
-        - 7.2
+      php: 7.1
+      install:
+        - composer install --prefer-dist
+      script:
+        - vendor/bin/phpunit
+
+    - language: php
+      php: 7.2
       install:
         - composer install --prefer-dist
       script:
