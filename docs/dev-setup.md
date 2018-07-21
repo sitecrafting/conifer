@@ -69,3 +69,48 @@ Conifer's Lando environment also includes:
 * a [Mailhog](https://github.com/mailhog/MailHog) instance for catching and managing outgoing mail at https://mailhog.conifer.lndo.site or similar
 
 These URLs may be different depending on which ports are already take on your computer. Tun `lando info` to see the actual URLs.
+
+## Using Varying Vagrant Vagrants (VVV)
+
+**NOTE: We are happy to support Vagrant as a secondary/backup environment if for some reason you can't run Lando/Docker on your machine. However, please do us a favor and try the Lando setup first. It is drastically simpler to maintain and the tooling is much more tightly integrated.**
+
+### Pre-requisite: setup VVV
+
+You will obviously want to have VVV configured before you start. If you run into trouble with this, check your system against the [VVV requirements](https://varyingvagrantvagrants.org/docs/en-US/installation/software-requirements/), or take a look at the [troubleshooting guide](https://varyingvagrantvagrants.org/docs/en-US/troubleshooting/).
+
+**Non-standard VVV setups are not supported. GitHub issues about custom VVV configurations will be closed immediately. You have been warned.**
+
+### Add the `xvfb` core utility
+
+[Cypress](https://www.cypress.io/), the CLI tool used for Conifer end-to-end tests, requires [xvfb](https://www.x.org/releases/X11R7.7/doc/man/man1/Xvfb.1.xhtml) for running its headless browser. Tell VVV to install it by adding it as a core utility in `vvv-custom.yml`:
+
+```yaml
+# the core utilities install tools such as phpmyadmin
+utilities:
+  core:
+    # ...existing utils...
+    - xvfb
+```
+
+### Provision the dev site
+
+Add this to your `sites` block in `vvv-custom.yml`:
+
+```yaml
+  conifer:
+    repo: https://github.com/sitecrafting/conifer.git
+      - conifer.wordpress.test
+```
+
+Run `vagrant reload --provision` per usual.
+
+The provisioning scripts within Conifer will install composer dependencies.
+
+### Install front-end tooling
+
+Front-end tooling for VVV is a work in progress and is currently **low-priority**. For now, you can run:
+
+```bash
+sudo npm install -g yarn newman
+```
+
