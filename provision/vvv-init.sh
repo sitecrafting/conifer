@@ -57,11 +57,11 @@ echo 'Symlinking conifer plugin directory...'
 ln -sf "${VVV_PATH_TO_SITE}" "${VVV_PATH_TO_SITE}/wp/wp-content/plugins/conifer"
 
 echo 'Setting up Conifer & Groot (starter theme)'
-noroot wp plugin install --activate timber-library
-noroot wp plugin activate conifer
-noroot wp theme activate groot
+noroot wp --quiet plugin install --activate timber-library
+noroot wp --quiet plugin activate conifer
+noroot wp --quiet theme activate groot
 
-noroot wp theme uninstall \
+noroot wp --quiet theme uninstall \
   twentyten \
   twentyeleven \
   twentytwelve \
@@ -71,6 +71,10 @@ noroot wp theme uninstall \
   twentysixteen \
   twentyseventeen
 
-noroot wp option set permalink_structure '/%postname%/'
-noroot wp rewrite flush
+noroot wp --quiet option set permalink_structure '/%postname%/'
+noroot wp --quiet rewrite flush
 
+echo 'Cleaning up...'
+if [[ -d "${VVV_PATH_TO_SITE}/conifer" ]] ; then
+  rm -rf "${VVV_PATH_TO_SITE}/conifer"
+fi
