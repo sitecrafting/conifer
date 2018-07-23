@@ -76,7 +76,7 @@ These URLs may be different depending on which ports are already take on your co
 
 ### Pre-requisite: setup VVV
 
-You will obviously want to have VVV configured before you start. If you run into trouble with this, check your system against the [VVV requirements](https://varyingvagrantvagrants.org/docs/en-US/installation/software-requirements/), or take a look at the [troubleshooting guide](https://varyingvagrantvagrants.org/docs/en-US/troubleshooting/).
+You will obviously want to have [VVV installed and configured](https://varyingvagrantvagrants.org/docs/en-US/installation/) before you start. If you run into trouble with this, check your system against the [VVV requirements](https://varyingvagrantvagrants.org/docs/en-US/installation/software-requirements/), or take a look at the [troubleshooting guide](https://varyingvagrantvagrants.org/docs/en-US/troubleshooting/).
 
 **Non-standard VVV setups are not supported. GitHub issues about custom VVV configurations will be closed immediately. You have been warned.**
 
@@ -114,3 +114,4 @@ Front-end tooling for VVV is a work in progress and is currently **low-priority*
 sudo npm install -g yarn newman
 ```
 
+Cypress tests are currently unsupported in VVV. If you are willing and able to fix this, please submit a PR against [this issue](https://github.com/sitecrafting/conifer/issues/41). Thanks!
