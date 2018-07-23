@@ -26,6 +26,7 @@ cache: vendor
 matrix:
   include:
     - stage: warm cache
+      php: 7.1
       script: true
 
     - stage: test
@@ -62,7 +63,8 @@ matrix:
       node_js: 8.11
       cache:
         - ~/.cache
-      install:
+      install: true
+      script:
         - vvv-utilities/provision.sh
 
   allow_failures:
