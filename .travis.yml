@@ -19,18 +19,11 @@ script:
   - vendor/bin/phpunit
   - vendor/bin/phpcs
 
-cache: vendor
-
 
 # Test Conifer against PHP 7.x and run end-to-end tests
 matrix:
   include:
-    - stage: warm cache
-      php: 7.1
-      script: true
-
-    - stage: test
-      name: '7.0 unit tests'
+    - name: '7.0 unit tests'
       php: 7.0
     - name: '7.1 unit tests'
       php: 7.1
