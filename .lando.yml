@@ -8,7 +8,7 @@ services:
   appserver:
     run:
       - cd $LANDO_MOUNT && composer install
-      - cd $LANDO_MOUNT && scripts/setup-wordpress.bash
+      - cd $LANDO_MOUNT && scripts/setup-wordpress.sh
 
     overrides:
       services:
@@ -28,7 +28,8 @@ services:
       yarn: "1.6.0"
 
     run:
-      - cd $LANDO_MOUNT && yarn install
+      - cd $LANDO_MOUNT && yarn
+      - cd $LANDO_MOUNT && yarn cypress install
 
     overrides:
       services:
@@ -45,7 +46,7 @@ services:
 tooling:
   install:
     service: appserver
-    cmd: '/app/scripts/setup-wordpress.bash'
+    cmd: '/app/scripts/setup-wordpress.sh'
     description: 'Install and configure WordPress for custom plugin dev'
 
   newman:
@@ -56,8 +57,13 @@ tooling:
 
   debug:
     service: appserver
-    cmd: 'cd /app/wp/wp-content && tail -f debug.log'
-    description: 'Get real-time debug log output'
+    cmd: 'tail -f /app/wp/wp-content/debug.log'
+    description: 'Get real-time WP debug log output'
+
+  cypress:
+    service: node
+    cmd: 'yarn cypress'
+    description: 'Run arbitrary cypress commands'
 
   e2e:
     service: node
@@ -74,9 +80,22 @@ tooling:
     cmd: 'composer sniff'
     description: 'Run phpcs code sniffer'
 
+  sniff-summary:
+    service: appserver
+    cmd: 'composer sniff-summary'
+    description: 'Summarize phpcs results'
+
+  release:
+    service: appserver
+    cmd: '/app/scripts/build-release.sh'
+    description: 'Build a downloadable release of the Conifer WordPress plugin'
+
 proxy:
   appserver:
     - conifer.lndo.site
 
   mailhog:
     - mail.conifer.lndo.site
+
+  phpmyadmin:
+    - phpmyadmin.conifer.lndo.site

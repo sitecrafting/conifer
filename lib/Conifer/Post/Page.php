@@ -19,15 +19,6 @@ class Page extends Post {
   const POST_TYPE = 'page';
 
   /**
-   * Get the post type that this class represents.
-   *
-   * @return string the post type
-   */
-  public static function post_type() : string {
-    return static::POST_TYPE;
-  }
-
-  /**
    * Get the top-level title to display from the nav structure, fall back
    * on this Page object's title it it's outside the nav hierarchy.
    *

@@ -1,6 +1,9 @@
 <?php
 /**
  * Powerful utility trait for adding custom columns in the WP Admin
+ *
+ * @copyright 2018 SiteCrafting, Inc.
+ * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 
 namespace Conifer\Post;
@@ -8,8 +11,6 @@ namespace Conifer\Post;
 /**
  * This Trait adds a powerful abstraction to post type classes:
  * the ability to declaratively add custom admin columns.
- *
- * @package Conifer
  */
 trait HasCustomAdminColumns {
   /**
@@ -18,11 +19,14 @@ trait HasCustomAdminColumns {
    *
    * @param string   $key      the $columns array key to add
    * @param string   $label    label for the column header
-   * @param string   $postType the post type, for inferring which filters/actions to hook into
-   * @param callable $getValue a callback to get the value to display in the custom column for
+   * @param callable $getValue (Optional) a callback to get the value to
+   * display in the custom column for. If not given, the column will
+   * display the value of the `meta` field whose `meta_key` is equal to `$key`.
    * a given post. Takes a post ID as its sole parameter.
    */
-  public static function add_admin_column( $key, $label, $postType, callable $getValue ) {
+  public static function add_admin_column($key, $label, callable $getValue = null) {
+    $postType = static::_post_type();
+
     if ($postType === 'page' || $postType === 'post') {
       // e.g. manage_pages_columns
       $addHook = "manage_{$postType}s_columns";
@@ -43,6 +47,12 @@ trait HasCustomAdminColumns {
       $columns[$key] = $label;
       return $columns;
     });
+
+    // If no callback is given, look for a meta_key of $key on each post
+    $getValue = $getValue ?? function($id) use ($key) {
+      $post = new static($id);
+      return $post->meta($key);
+    };
 
     // register a callback to display the value for this column
     add_action($displayHook, function($column, $id) use ($key, $getValue) {

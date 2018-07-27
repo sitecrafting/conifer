@@ -1,6 +1,7 @@
 ## Getting Started
 
 * [What is Conifer?](/what-is-conifer.md)
+* [Requirements](/requirements.md)
 * [Installation](/installation.md)
 * [Getting Started](/getting-started.md)
 
@@ -11,5 +12,6 @@
 
 ## Development
 
-* [Getting Started](/installation.md#from-source)
+* [Development Setup](/dev-setup.md)
 * [Testing](/testing.md)
+

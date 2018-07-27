@@ -8,6 +8,8 @@
 
 namespace ConiferTest;
 
+use WP_Term;
+
 use WP_Mock;
 
 use Conifer\Post\Page;
@@ -54,17 +56,13 @@ class PostTest extends Base {
   }
 
   public function test_exists_on_existent_post() {
-    WP_Mock::userFunction('get_post_status', [
-      'times'   => 1,
-      'args'    => 3,
-      'return'  => 'draft',
-    ]);
+    $this->mockPost(['ID' => 3]);
 
     $this->assertTrue(Post::exists(3));
   }
 
   public function test_exists_on_nonexistent_post() {
-    WP_Mock::userFunction('get_post_status', [
+    WP_Mock::userFunction('get_post', [
       'times'   => 1,
       'args'    => 3,
       'return'  => false,
@@ -91,5 +89,41 @@ class PostTest extends Base {
     ]);
 
     $this->assertEquals('https://www.sitecrafting.com', Page::get_blog_url());
+  }
+
+  public function test_get_related_by_taxonomy() {
+    // Not sure how we can mock Timber's hard-coded `new \WP_Query()`
+    // in QueryIterator::__construct(), so skipping for now...
+    return $this->markTestSkipped();
+
+    /* @codingStandardsIgnoreStart
+
+    $this->mockPost(['ID' => 123]);
+    $post = new Page(123);
+
+    $related = ['mock', 'related', 'post', 'data'];
+    WP_Mock::userFunction('get_posts', [
+      'times'   => 1,
+      'return'  => $related,
+    ]);
+    $term = $this->mockTerm([
+      'term_id' => 456,
+      'taxonomy' => 'category',
+    ]);
+    WP_Mock::userFunction('wp_get_post_terms', [
+      'times'   => 1,
+      'args'    => [
+        123,
+        'category',
+      ],
+      'return'  => [$term],
+    ]);
+
+    $this->assertEquals($related, $post->get_related_by_taxonomy(
+      'category',
+      13
+    ));
+
+    @codingStandardsIgnoreEnd */
   }
 }

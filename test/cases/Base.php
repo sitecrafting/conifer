@@ -9,8 +9,9 @@
 namespace ConiferTest;
 
 use PHPUnit\Framework\TestCase;
-
+use Timber\User;
 use WP_Mock;
+use WP_Term;
 
 /**
  * Base test class for the plugin. Declared abstract so that PHPUnit doesn't
@@ -47,18 +48,53 @@ abstract class Base extends TestCase {
       $post->{$prop} = $value;
     }
 
-    $options = array_merge([
-      'times' => 1,
-      'args'  => [$props['ID']],
-    ], $options);
-
-    WP_Mock::userFunction('get_post', [
+    WP_Mock::userFunction('get_post', array_merge([
       'times'   => 1,
-      'args'    => 123,
+      'args'  => [$props['ID']],
       'return'  => $post,
-    ]);
+    ]));
 
     return $post;
+  }
+
+  /**
+   * Mock a call to WordPress's get_term
+   *
+   * @param array $props an array of WP_Term object properties
+   * must include a valid (that is, a numeric) term_id, and a taxonomy string,
+   * e.g.:
+   *
+   * ```
+   * $props = ['term_id' => 123, 'taxonomy' => 'yeah-im-the-taxmaaaan'];
+   * ```
+   * @param additional WP_Mock::userFunction objects to merge in.
+   * @throws \InvalidArgumentException if $props["ID"] is not numeric
+   */
+  protected function mockTerm(array $props, array $options = []) {
+    if (empty($props['term_id']) || !is_numeric($props['term_id'])) {
+      throw new \InvalidArgumentException('$props["term_id"] must be numeric');
+    }
+    if (empty($props['taxonomy']) || !is_string($props['taxonomy'])) {
+      throw new \InvalidArgumentException(
+        '$props["taxonomy"] must be a string'
+      );
+    }
+
+    $term = $this->getMockBuilder(WP_Term::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    foreach ($props as $prop => $value) {
+      $term->{$prop} = $value;
+    }
+
+    WP_Mock::userFunction('get_term', array_merge([
+      'times'   => 1,
+      'args'    => [$props['term_id'], $props['taxonomy']],
+      'return'  => $term,
+    ], $options));
+
+    return $term;
   }
 
   protected function getProtectedProperty($object, $name) {
@@ -83,5 +119,37 @@ abstract class Base extends TestCase {
     $method->setAccessible(true);
 
     return $method->invokeArgs($object, $args);
+  }
+
+  protected function mockCurrentUser($id, $data = [], $meta = []) {
+    $this->mockCurrentUserId($id);
+    $this->mockCurrentUserData($data);
+
+    if ($meta) {
+      foreach ($meta as $key => $value) {
+        WP_Mock::userFunction('get_user_meta', [
+          'args' => ['*', $key, WP_Mock\Functions::type('bool')],
+          'return' => $value,
+        ]);
+      }
+    }
+
+    WP_Mock::userFunction('get_avatar_url', [
+      'return' => 'https://example.com/avatar.gif',
+    ]);
+
+    return new User($id);
+  }
+
+  protected function mockCurrentUserId($id) {
+    WP_Mock::userFunction('get_current_user_id', [
+      'return' => $id,
+    ]);
+  }
+
+  protected function mockCurrentUserData($data = []) {
+    WP_Mock::userFunction('get_userdata', [
+      'return' => $data,
+    ]);
   }
 }

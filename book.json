@@ -1,4 +1,9 @@
 {
   "title": "Conifer Documentation",
-  "root": "./docs"
+  "root": "./docs",
+  "gitbook": "3.2.2",
+  "language": "en",
+  "plugins": [
+    "anchors"
+  ]
 }

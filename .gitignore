@@ -2,10 +2,18 @@
 /wp/
 /wp-content/
 /node_modules/
+/log/
+
+# build artifacts
+/conifer-*.tar.gz
 
 # cypress test artifacts
 /cypress/videos
+/cypress/screenshots
 .Trash*
 
 # yarn artifacts, or "yartifacts"
 yarn-error.log
+
+# local configs
+wp-cli.local.yml

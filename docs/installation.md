@@ -31,5 +31,9 @@ automatically, we recommend [composer-custom-directory-installer](https://github
 ## From source
 
 ```
-git clone https://github.com/sitecrafting/conifer wp-content/plugins/conifer
+git clone https://github.com/sitecrafting/conifer /path/to/wp-content/plugins/conifer
+cd /path/to/wp-content/plugins/conifer
+composer install
 ```
+
+**Note:** If you are installing in production, you can safely specify the `--no-dev` argument to `composer`. **If you use this process, Conifer assumes you have set up your [system requirements](/requirements.md) manually.** Running `composer install --no-dev` only creates the Conifer library autoloader, and nothing else.
