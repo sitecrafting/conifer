@@ -17,6 +17,8 @@ class FormTest extends Base {
 
   public function setUp() {
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);
+    // Set the uploaded files for this form to our mocked $_FILES superglobal
+    $this->setFiles($this->getDefaultFiles());
   }
 
   public function test_hydrate() {
@@ -209,14 +211,10 @@ class FormTest extends Base {
   }
 
   public function test_get_file() {
-    $this->setFiles($this->getDefaultFiles());
-
     $this->assertNotEmpty($this->form->get_file('favoriteThings'));
   }
 
   public function test_required_file_missing() {
-    $this->setFiles($this->getDefaultFiles());
-
     $this->setFields([
       'leastFavoriteThings' => [
         'validators' => [[$this->form, 'require_file']],
@@ -228,8 +226,6 @@ class FormTest extends Base {
   }
 
   public function test_file_mime_type_valid() {
-    $this->setFiles($this->getDefaultFiles());
-
     $this->setFields([
       'favoriteThings' => [
         'validators' => [[$this->form, 'validate_file_mime_type', ['text/plain']]],
@@ -241,8 +237,6 @@ class FormTest extends Base {
   }
 
   public function test_file_mime_type_invalid() {
-    $this->setFiles($this->getDefaultFiles());
-
     $this->setFields([
       'favoriteThings' => [
         'validators' => [[$this->form, 'validate_file_mime_type', ['application/pdf']]],
@@ -258,8 +252,6 @@ class FormTest extends Base {
   }
 
   public function test_file_upload_error_ini_size() {
-    $this->setFiles($this->getDefaultFiles());
-
     $this->setFields([
       'uploadErrorSizeIni' => [
         'validators' => [[$this->form, 'require_file']],
@@ -275,8 +267,6 @@ class FormTest extends Base {
   }
 
   public function test_file_upload_error_form_size() {
-    $this->setFiles($this->getDefaultFiles());
-
     $this->setFields([
       'uploadErrorSizeForm' => [
         'validators' => [[$this->form, 'require_file']],
@@ -292,8 +282,6 @@ class FormTest extends Base {
   }
 
   public function test_file_upload_error_partial() {
-    $this->setFiles($this->getDefaultFiles());
-
     $this->setFields([
       'uploadErrorPartialFile' => [
         'validators' => [[$this->form, 'require_file']],
@@ -309,8 +297,6 @@ class FormTest extends Base {
   }
 
   public function test_file_upload_error_no_file() {
-    $this->setFiles($this->getDefaultFiles());
-
     $this->setFields([
       'austrianAbbeyMembership' => [
         'validators' => [[$this->form, 'require_file']],
@@ -325,12 +311,39 @@ class FormTest extends Base {
     );
   }
 
+  public function test_no_files_exception_get_files() {
+    $this->setFiles(null);
+    $this->expectException(\LogicException::class);
+
+    $this->form->get_files();
+  }
+
+  public function test_no_files_exception_get_file() {
+    $this->setFiles(null);
+    $this->expectException(\LogicException::class);
+
+    $this->form->get_file('favoriteThings');
+  }
+
+  public function test_no_files_exception_require_file() {
+    $this->setFiles(null);
+    $this->setFields([
+      'austrianAbbeyMembership' => [
+        'validators' => [[$this->form, 'require_file']],
+      ],
+    ]);
+
+    $this->expectException(\LogicException::class);
+
+    $this->form->validate([]);
+  }
+
   protected function setFields(array $fields) {
     $this->setProtectedProperty($this->form, 'fields', $fields);
   }
 
-  protected function setFiles(array $files) {
-    $_FILES = $files;
+  protected function setFiles(array $files = null) {
+    $this->setProtectedProperty($this->form, 'files', $files);
   }
 
   protected function getDefaultFields() {
