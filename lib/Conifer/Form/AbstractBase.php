@@ -101,7 +101,10 @@ use Closure;
  * are validated, and the messages that are displayed for specific reasons.
  */
 abstract class AbstractBase {
-  const MESSAGE_FIELD_REQUIRED = '%s is required';
+  const MESSAGE_FIELD_REQUIRED    = '%s is required';
+  const MESSAGE_INVALID_MIME_TYPE = 'Wrong file type for %s';
+  const MESSAGE_FILE_SIZE         = 'The uploaded file for %s exceeds the maximum allowed size';
+  const MESSAGE_UPLOAD_ERROR      = 'An error occurred with the upload for %s';
 
   /**
    * The fields configured for this form as an array of arrays.
@@ -113,6 +116,15 @@ abstract class AbstractBase {
    * @var array
    */
   protected $fields;
+
+  /**
+   * The files uploaded to this form as an array of arrays. This will generally
+   * be the contents of the $_FILES superglobal.
+   *
+   * @see http://php.net/manual/en/reserved.variables.files.php
+   * @var array
+   */
+  protected $files;
 
   /**
    * The errors collected while processing this form, as arrays. Each error array
@@ -138,10 +150,13 @@ abstract class AbstractBase {
 
   /**
    * Constructor
+   *
+   * @var array Uploaded files for this form, e.g. $_FILES
    */
-  public function __construct() {
+  public function __construct(array $files = null) {
     $this->errors  = [];
     $this->fields  = [];
+    $this->files   = $files;
     $this->success = false;
   }
 
@@ -195,6 +210,46 @@ abstract class AbstractBase {
    */
   public function get($field) {
     return $this->{$field} ?? null;
+  }
+
+  /**
+   * Get the files configured uploaded to this form
+   *
+   * @return array an array of uploaded files.
+   */
+  public function get_files() : array {
+    $this->throw_files_exception_if_not_set();
+    return $this->files;
+  }
+
+  /**
+   * Set the uploaded files for this form, generally to
+   * the contents of the $_FILES superglobal.
+   *
+   * @return \Conifer\Form\AbstractBase This form instance
+   */
+  public function set_files(array $files = null) : AbstractBase {
+    $this->files = $files;
+    return $this;
+  }
+
+  /**
+   * Get an uploaded file by field name
+   *
+   * @param string $field The name of the form field used to upload the file you want
+   * @return array An array of data for the given file upload. Will be empty if the
+   * field doesn't exist or an error occurred during upload.
+   */
+  public function get_file(string $field) : array {
+    $this->throw_files_exception_if_not_set();
+    $file = $this->files[$field] ?? [];
+
+    // Return an empty array if an upload error occurred
+    if ($file && $file['error'] !== UPLOAD_ERR_OK) {
+      $file = [];
+    }
+
+    return $file;
   }
 
   /**
@@ -376,6 +431,98 @@ abstract class AbstractBase {
   }
 
   /**
+   * Check whether a required file upload was submitted,
+   * adding an error if not.
+   *
+   * @param array $field The file upload field array itself
+   * @return boolean
+   */
+  public function validate_required_file(array $field) : bool {
+    $this->throw_files_exception_if_not_set();
+    $valid = isset($this->files[$field['name']]);
+    // The file isn't set in the global array, add an error
+    if (!$valid) {
+      $message = $field['required_message'] ?? sprintf(
+        static::MESSAGE_FIELD_REQUIRED,
+        $field['label'] ?? $field['name']
+      );
+      $this->add_error($field['name'], $message);
+    } else {
+      // The file exists, but let's make sure it uploaded without any errors
+      $valid = $valid && $this->validate_file_upload($field);
+    }
+    return $valid;
+  }
+
+  /**
+   * Alias of validate_required_file
+   *
+   * @param array $field The file upload field array itself
+   * @return boolean
+   */
+  public function require_file(array $field) : bool {
+    return $this->validate_required_file($field);
+  }
+
+  /**
+   * Check whether the specified file field has an upload error,
+   * adding an error if so.
+   *
+   * @param array $field The file upload field array itself
+   * @return boolean
+   */
+  public function validate_file_upload(array $field) : bool {
+    $this->throw_files_exception_if_not_set();
+    $file  = $this->files[$field['name']] ?? [];
+    $valid = $file && $file['error'] === UPLOAD_ERR_OK;
+    // Something has gone wrong, add the appropriate error message
+    if (!$valid) {
+      $this->add_error(
+        $field['name'],
+        $this->get_file_upload_error_message(
+          $field,
+          $file['error']
+        )
+      );
+    }
+    return $valid;
+  }
+
+  /**
+   * Check if the specified file upload field submission matches
+   * an array of whitelisted mime types
+   *
+   * @param array $field The file upload field array itself
+   * @param string $value The submitted value
+   * @param array $submission The submitted fields as key/value pairs
+   * @param array $validTypes Whitelisted MIME types for the specified field
+   * @return boolean
+   */
+  public function validate_file_mime_type(
+    array $field,
+    string $value,
+    array $submission,
+    array $validTypes = []
+  ) : bool {
+    $fileArr = $this->get_file($field['name']);
+    if (empty($fileArr)) {
+      // if this is a required field, assume the user has specified
+      // validate_required_file
+      return true;
+    }
+
+    $valid = in_array($fileArr['type'], $validTypes, true);
+    if (!$valid) {
+      $this->add_error($field['name'], sprintf(
+        static::MESSAGE_INVALID_MIME_TYPE,
+        $field['label'] ?? $field['name']
+      ));
+    }
+
+    return $valid;
+  }
+
+  /**
    * Get errors for a specific field
    *
    * @param  string $fieldName the name of the field to get errors for
@@ -434,6 +581,29 @@ abstract class AbstractBase {
     }, []);
   }
 
+  /**
+   * Returns an error message for a given file upload field,
+   * based on the provided PHP upload error code.
+   *
+   * @param array $field The file upload field array itself
+   * @param integer $errorCode The error code specified by PHP for the file upload
+   * @return string The error message, based on the specified upload error code
+   */
+  public function get_file_upload_error_message(array $field, int $errorCode) {
+    switch ($errorCode) {
+      case UPLOAD_ERR_INI_SIZE:
+      case UPLOAD_ERR_FORM_SIZE:
+        $errorMessage = static::MESSAGE_FILE_SIZE;
+        break;
+      case UPLOAD_ERR_NO_FILE:
+        $errorMessage = static::MESSAGE_FIELD_REQUIRED;
+        break;
+      default:
+        $errorMessage = static::MESSAGE_UPLOAD_ERROR;
+        break;
+    }
+    return sprintf($errorMessage, $field['name']);
+  }
 
   /**
    * Filter a submitted field value using the field's declared filter logic,
@@ -535,5 +705,18 @@ abstract class AbstractBase {
     }
 
     return $valid;
+  }
+
+  /**
+   * Throws an exception if the files property is null
+   *
+   * @throws \LogicException If no files were set for this form
+   *
+   * @return void
+   */
+  protected function throw_files_exception_if_not_set() {
+    if (is_null($this->files)) {
+      throw new \LogicException('The files property must be set in order to use file-related functions.');
+    }
   }
 }
