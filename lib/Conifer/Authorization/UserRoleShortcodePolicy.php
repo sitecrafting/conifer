@@ -33,7 +33,12 @@ class UserRoleShortcodePolicy extends ShortcodePolicy {
     // WP returns user roles in an idiosyncratic way: role names are keys and
     // `true` values means the user has that role. We just want to flatten
     // this to a simple array of role/capability strings
-    $userRoles = array_keys(array_filter($user->meta('wp_capabilities')));
+    //If the user is not logged in and has no roles the users wp_capabilities returns false and we want an empty array 
+    if($user->meta('wp_capabilities') === false){
+      $userRoles = [];
+    }else{
+      $userRoles = array_keys(array_filter($user->meta('wp_capabilities')));
+    }
 
     // Make sure the user has at least one authorized role
     return !empty(array_intersect($authorizedRoles, $userRoles));

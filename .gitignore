@@ -16,3 +16,4 @@ yarn-error.log
 
 # local configs
 wp-cli.local.yml
+/nbproject/private/
