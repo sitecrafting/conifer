@@ -1,6 +1,6 @@
 # Timber
 
-Timber is a thing that does stuff.
+Timber is a thing that does stuff for people.
 
 > #### Warning::Lasers
 >
