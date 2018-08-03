@@ -17,7 +17,7 @@ class SiteTest extends Base {
   const THEME_DIRECTORY = 'wp-content/themes/foo';
 
   public function setUp() {
-    WP_Mock::setUp();
+    parent::setUp();
 
     // do a terrible amount of boilerplate to workaround Timber's decision
     // to put a ton of stuff in the constructor
