@@ -4,6 +4,7 @@
   "gitbook": "3.2.2",
   "language": "en",
   "plugins": [
-    "anchors"
+    "anchors",
+    "callouts"
   ]
 }
