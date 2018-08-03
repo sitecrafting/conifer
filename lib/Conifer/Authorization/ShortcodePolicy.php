@@ -15,6 +15,17 @@ use Timber\User;
  * content according to custom authorization logic
  */
 abstract class ShortcodePolicy extends AbstractPolicy {
+  
+  protected $tag;
+  /**
+   * Sets the shortcode tag for the new shortcode policy
+   *
+   * @param string $tag
+   */
+  public function __construct(string $tag = 'protected')
+  {
+      $this->tag = $tag;
+  }
   /**
    * Filter the shortcode content based on the implementation of the `decide`
    * method.
@@ -32,6 +43,7 @@ abstract class ShortcodePolicy extends AbstractPolicy {
     return $this;
   }
 
+
   /**
    * Determine whether the user has access to content based on shortcode
    * attributes, user data, and possibly the content itself.
@@ -46,6 +58,16 @@ abstract class ShortcodePolicy extends AbstractPolicy {
     string $content,
     User $user
   ) : bool;
+
+  /**
+   * Get the shortcode tag to be declared
+   *
+   * @see https://codex.wordpress.org/Function_Reference/add_shortcode
+   * @return string the shortcode tag to declare
+   */
+  protected function tag() : string {
+    return $this->tag;
+  }
 
   /**
    * Filter the shortcode content based on the current user's data
@@ -65,13 +87,6 @@ abstract class ShortcodePolicy extends AbstractPolicy {
       : $this->filter_unauthorized($content);
   }
 
-  /**
-   * Get the shortcode tag to be declared
-   *
-   * @see https://codex.wordpress.org/Function_Reference/add_shortcode
-   * @return string the shortcode tag to declare
-   */
-  abstract protected function tag() : string;
 
   /**
    * Get the user to check against shortcode attributes.

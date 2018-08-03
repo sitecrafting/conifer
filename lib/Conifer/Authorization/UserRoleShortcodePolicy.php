@@ -44,12 +44,4 @@ class UserRoleShortcodePolicy extends ShortcodePolicy {
     return !empty(array_intersect($authorizedRoles, $userRoles));
   }
 
-  /**
-   * Get the shortcode tag to be declared
-   *
-   * @inheritdoc
-   */
-  protected function tag() : string {
-    return 'check_role';
-  }
 }
