@@ -5,7 +5,13 @@ To leverage the power of Conifer, extend the `Conifer\Post\Post` class rather th
 Conifer comes with a few built-in post classes that extend `Conifer\Post\Post`. These are:
 
 * `BlogPost` for representing WP posts of type `post`
-* `FrontPage` for representing the homepage of the site
+
+* `FrontPage` for repres
+
+  
+
+  enting the homepage of the site
+
 * `Page` for representing WP posts of type `page`
 
 ## Getting started with Custom Post Types
@@ -307,3 +313,86 @@ Page::add_admin_filter('specialty');
 ```
 
 Note that the `get_terms()` instance method returns `Timber\Term` objects, which implement their own `__toString()` method. That is, we don't even have to loop through the result of `get_terms()` to get each term's name because Timber does that for us. Thanks, Timber!
+
+## Grouping by Term
+
+The `Conifer\Post\HasTerms` trait, included in `Conifer\Post\Post`, defines the `get_all_grouped_by_term()` helper, for getting `Timber\Term` instances and their respective posts. Say we have our `Robot` class from previous examples, plus the `eeriness_level` taxonomy declared for the `robot` custom post type, and we want to list the different eeriness levels and their corresponding robots:
+
+```php
+// page-robots-by-eeriness-level.php
+
+// set up Timber context with the current page
+$data = $site->get_context_with_post(new Page());
+
+$data['robots_by_eeriness_level'] = Robot::get_all_grouped_by_term('eeriness_level');
+
+Timber::render('robots-by-eeriness-level.twig', $data);
+```
+
+This will query all non-empty `eeriness_level` terms and grab all the posts of type `robot` inside them, so that we can do something like this in our Twig template:
+
+```twig
+{# robots-by-eeriness-level.twig #}
+
+<div class="eeriness-levels">
+  {% for level in robots_by_eeriness_level %}
+    <div>
+      <h3>{{ level.term }}</h3>
+      <ul>
+        {% for robot in level.posts %}
+          <li>
+            <a href="{{ robot.link }}">{{ robot.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endfor %}
+</div>
+```
+
+The `term` object inside each `level` in the returned array is an instance of `Timber\Term`.
+
+### Overriding the list of terms
+
+Say we only want to know about the Robots at the extremes: those at the `cute` and `eerie-af` levels. By default, Conifer will query all non-empty terms in the taxonomy. But we can specify a second argument as a list of terms:
+
+```php
+$data['robots_by_eeriness_level'] = Robot::get_all_grouped_by_term(
+  'eeriness_level',
+  ['cute', 'eerie-af']
+);
+```
+
+This will filter the Terms queried to just those with the specified slugs. Alternatively, each item in the array can be a `term_id`, an instance of `Timber\Term` (or any subclass thereof), or a native `WP_Term` object.
+
+We can even mix and match types:
+
+```php
+$terms = [
+  'cute',
+  new Timber\Term('eerie-af'),
+  get_term(123), // WP_Term object
+  456 // hard-code term_id
+];
+
+$data['robots_by_eeriness_level'] = Robot::get_all_grouped_by_term(
+  'eeriness_level',
+  $terms
+);
+```
+
+### Filtering the posts in each group
+
+Say you're curating the premiere website for Robot enthusiasts, and you need to review user submissions. You have so many submissions, you need to conquer and divide: you're the expert on cute robots, and your intrepid co-founder covers eerie ones. You can group robots just fine, but how do you filter down to just those that pending review?
+
+You can specify a *third* argument, an array that specifies additional query parameters for the post query:
+
+```php
+$data['robots_by_eeriness_level'] = Robot::get_all_grouped_by_term(
+  'eeriness_level',
+  ['cute', 'eerie-af'],
+  ['post_status' => 'pending']
+);
+```
+
+Each time posts for a given term are queried, Conifer will merge the `pending` status constraint into the query. This third argument can be any valid [arguments to `WP_Query`](https://codex.wordpress.org/Class_Reference/WP_Query#Parameters) , with the exception of `post_type`, which is locked down.

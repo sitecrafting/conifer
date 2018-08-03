@@ -12,14 +12,6 @@ namespace Conifer;
  */
 class Admin {
   /**
-   * We rely on ACF Pro being activated for much of our functionality;
-   * this is the plugin file/string to check
-   *
-   * @var  string
-   */
-  const PLUGIN_ACF_PRO = 'advanced-custom-fields-pro/acf.php';
-
-  /**
    * Register a theme settings page in the WP Admin.
    */
   public static function add_theme_settings_page() {

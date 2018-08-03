@@ -1,34 +1,65 @@
+#
+# Conifer build process for Travis CI
+#
+
+
+#
+# !!! IMPORTANT !!!
+#
+# "without the top-level `env`, no job will be allowed to fail."
+# https://docs.travis-ci.com/user/customizing-the-build/
+env:
+
+
 language: php
-php:
-  - '7.0'
-  - '7.1'
-  - '7.2'
 
-
-# This part is required!!!
-services:
-  - docker
-
-# Install all the lando magic and do a sanity check to verify its working
-before_install:
-  - sudo apt-get -y update
-  - sudo apt-get -y install cgroup-bin curl
-  - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-beta.39/lando-v3.0.0-beta.39.deb
-  - sudo dpkg -i /tmp/lando-latest.deb
-  - lando version
-
-install:
-  - composer install --prefer-dist
-  - lando start
-  - lando yarn install
-
-cache:
-  directories:
-    - $HOME/.composer/cache
-    - vendor
-    - node_modules
+install: composer install --prefer-dist
 
 script:
-  - lando unit
-  - lando sniff
-  - lando e2e -- -vvv
+  - vendor/bin/phpunit
+  - vendor/bin/phpcs
+
+
+# Test Conifer against PHP 7.x and run end-to-end tests
+matrix:
+  include:
+    - name: '7.0 unit tests'
+      php: 7.0
+    - name: '7.1 unit tests'
+      php: 7.1
+    - name: '7.2 unit tests'
+      php: 7.2
+
+    - name: 'End-to-end tests with Lando/Cypress'
+      language: node_js
+      node_js: 6.11
+      cache:
+        - ~/.lando
+        - ~/.cache
+      before_install:
+        - sudo apt-get -y update
+        - sudo apt-get -y install cgroup-bin curl
+        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-beta.47/lando-v3.0.0-beta.47.deb
+        - sudo dpkg -i /tmp/lando-latest.deb
+        - lando version
+      install:
+        - lando start
+        - yarn install --frozen-lockfile
+        - cypress install
+      script:
+        - cypress run --config 'baseUrl=http://conifer.lndo.site'
+      after_failure:
+        - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
+
+    - name: 'Test VVV provisioning'
+      language: node_js
+      node_js: 8.11
+      cache:
+        - ~/.cache
+      install: true
+      script:
+        - vvv-utilities/provision.sh
+
+  allow_failures:
+    - name: 'Test VVV provisioning'
+
