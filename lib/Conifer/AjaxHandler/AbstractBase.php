@@ -18,7 +18,7 @@
  *
  * #### Simple usage, for ad-hoc/standalone handlers:
  *
- *   use Conifer\Form\AbstractBase;
+ *   use Conifer\AjaxHandler\AbstractBase;
  *
  *   class MySimpleAjaxHandler extends AbstractBase {
  *     protected function execute() {
@@ -33,7 +33,7 @@
  *
  * #### Advanced usage, for grouping shared behavior in a single handler class:
  *
- *   use Conifer\Form\AbstractBase;
+ *   use Conifer\AjaxHandler\AbstractBase;
  *
  *   class MyAjaxHandler extends AbstractBase {
  *     // must implement this
