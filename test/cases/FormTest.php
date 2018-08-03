@@ -16,6 +16,7 @@ class FormTest extends Base {
   protected $form;
 
   public function setUp() {
+    parent::setUp();
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);
   }
 
