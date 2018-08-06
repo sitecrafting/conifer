@@ -1,5 +1,6 @@
 {
   "devDependencies": {
-    "cypress": "^3.0.2"
+    "cypress": "^3.0.2",
+    "gitbook-cli": "^2.3.2"
   }
 }

@@ -2,7 +2,7 @@ name: conifer
 recipe: wordpress
 config:
   webroot: wp
-  php: '7.0'
+  php: '7.2'
 
 services:
   appserver:
@@ -89,6 +89,11 @@ tooling:
     service: appserver
     cmd: '/app/scripts/build-release.sh'
     description: 'Build a downloadable release of the Conifer WordPress plugin'
+
+  docs:
+    service: node
+    cmd: '/app/scripts/build-docs.sh'
+    description: 'Build documentation in _book folder using Gitbook'
 
 proxy:
   appserver:
