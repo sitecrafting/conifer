@@ -15,11 +15,16 @@ use WP_Mock\Functions;
 use Conifer\Admin\Notice;
 
 class AdminNoticeTest extends Base {
-  public function test_display() {
-    $notice = new Notice('hello');
-    $notice->display();
+  public function setUp() {
+    parent::setUp();
+    Notice::clear_flash_notices();
+    Notice::enable_flash_notices();
+  }
 
-    $this->expect_admin_notices_action_added();
+  public function tearDown() {
+    parent::tearDown();
+    Notice::disable_flash_notices();
+    Notice::clear_flash_notices();
   }
 
   public function test_success() {
@@ -94,10 +99,44 @@ class AdminNoticeTest extends Base {
     );
   }
 
-  public function test_flash() {
-    $this->markTestSkipped();
+  public function test_get_flash_notices() {
+    $_SESSION['conifer_admin_notices'] = [
+      [
+        'class'   => 'notice notice-success',
+        'message' => 'all your base',
+      ],
+      [
+        'class'   => 'notice notice-error',
+        'message' => 'are belong to us',
+      ],
+    ];
+
+    $this->expect_admin_notices_action_added();
+
+    $notices = Notice::get_flash_notices();
+    $this->assertEquals(
+      '<div class="notice notice-success"><p>all your base</p></div>',
+      $notices[0]->html()
+    );
+    $this->assertEquals(
+      '<div class="notice notice-error"><p>are belong to us</p></div>',
+      $notices[1]->html()
+    );
   }
 
+  public function test_get_flash_notices_invalid() {
+    $_SESSION['conifer_admin_notices'] = [
+      false,
+      'foobar',
+      ['message' => ''],
+      [
+        'message' => 'valid message, bad class',
+        'class' => 123,
+      ],
+    ];
+
+    $this->assertEquals([], Notice::get_flash_notices());
+  }
 
   protected function expect_admin_notices_action_added() {
     WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));

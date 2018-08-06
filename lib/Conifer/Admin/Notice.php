@@ -13,6 +13,20 @@ namespace Conifer\Admin;
  */
 class Notice {
   /**
+   * The session array key where flash notice data is stored
+   *
+   * @var string
+   */
+  const FLASH_SESSION_KEY = 'conifer_admin_notices';
+
+  /**
+   * Whether flash notices are enabled. Default: false
+   *
+   * @var bool
+   */
+  private static $flash_enabled = false;
+
+  /**
    * Classes to put on the notice <div>
    *
    * @var string
@@ -33,7 +47,79 @@ class Notice {
     // clean up classes and convert to an array
     $classes = array_map('trim', array_filter(explode(' ', $extraClasses)));
 
-    $this->classes = array_merge(['notice'], $classes);
+    $this->classes = array_unique(array_merge(['notice'], $classes));
+  }
+
+  /**
+   * Clear all flash notices in session
+   */
+  public static function clear_flash_notices() {
+    $_SESSION[static::FLASH_SESSION_KEY] = [];
+  }
+
+  /**
+   * Enable flash notices to be stored in the `$_SESSION` superglobal
+   */
+  public static function enable_flash_notices() {
+    self::$flash_enabled = true;
+
+    add_action('admin_init', [static::class, 'display_flash_notices']);
+  }
+
+  /**
+   * Disable flash notices
+   */
+  public static function disable_flash_notices() {
+    self::$flash_enabled = false;
+  }
+
+  /**
+   * Whether flash notices are enabled
+   *
+   * @return bool
+   */
+  public static function flash_notices_enabled() : bool {
+    return self::$flash_enabled;
+  }
+
+  /**
+   * Display any flash notices stored in session during the admin_notices hook
+   */
+  public static function display_flash_notices() {
+    if (!static::flash_notices_enabled()) {
+      return;
+    }
+
+    foreach (static::get_flash_notices() as $notice) {
+      $notice->display();
+    }
+
+    static::clear_flash_notices();
+  }
+
+  /**
+   * Get the flash notices to be displayed based on session data
+   *
+   * @return Notice[] an array of Notice instances
+   */
+  public static function get_flash_notices() : array {
+    if (!static::flash_notices_enabled()) {
+      return [];
+    }
+
+    $sessionNotices = $_SESSION[static::FLASH_SESSION_KEY] ?? [];
+    if (empty($sessionNotices) || !is_array($sessionNotices)) {
+      return [];
+    }
+
+    // filter out invalid notice data
+    $sessionNotices = array_filter($sessionNotices, function($notice, $idx) {
+      return static::valid_session_notice($notice);
+    }, ARRAY_FILTER_USE_BOTH);
+
+    return array_map(function(array $notice) : self {
+      return new static($notice['message'], $notice['class'] ?? '');
+    }, $sessionNotices);
   }
 
   /**
@@ -81,6 +167,55 @@ class Notice {
   public function success() {
     $this->add_class('notice-success');
     $this->display();
+  }
+
+  /**
+   * Display this notice as an error message on the next page load
+   */
+  public function flash_error() {
+    $this->add_class('notice-error');
+    $this->flash();
+  }
+
+  /**
+   * Display this notice as a warning on the next page load
+   */
+  public function flash_warning() {
+    $this->add_class('notice-warning');
+    $this->flash();
+  }
+
+  /**
+   * Display this notice as an info message on the next page load
+   */
+  public function flash_info() {
+    $this->add_class('notice-info');
+    $this->flash();
+  }
+
+  /**
+   * Display this notice as a success message on the next page load
+   */
+  public function flash_success() {
+    $this->add_class('notice-success');
+    $this->flash();
+  }
+
+  /**
+   * Display this notice on the next page load
+   */
+  public function flash() {
+    // set up a handler for the admin_notices action, to ensure that any
+    // flash notices are added AFTER displaying notices for this request
+    add_action('admin_notices', function() {
+      $_SESSION[static::FLASH_SESSION_KEY]
+        = $_SESSION[static::FLASH_SESSION_KEY] ?? [];
+
+      $_SESSION[static::FLASH_SESSION_KEY][] = [
+        'class'   => $this->get_class(),
+        'message' => $this->message,
+      ];
+    });
   }
 
   /**
@@ -156,5 +291,18 @@ class Notice {
    */
   public function has_class(string $class) : bool {
     return in_array($class, $this->classes, true);
+  }
+
+
+  /**
+   * Validate a session notice array
+   *
+   * @return bool
+   */
+  protected static function valid_session_notice($notice) : bool {
+    return is_array($notice)
+      && !empty($notice['message'])
+      && is_string($notice['message'])
+      && (empty($notice['class']) || is_string($notice['class']));
   }
 }

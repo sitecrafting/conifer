@@ -19,7 +19,7 @@ This will display an error message in the admin:
 <div class="notice notice-error"><p>all your base are belong to us</p></div>
 ```
 
-## Notice styles
+### Notice styles
 
 You can call any of the following methods to get a different style notice:
 
@@ -28,7 +28,7 @@ You can call any of the following methods to get a different style notice:
 * `$notice->warning()` renders a warning message (yellowish orange bar)
 * `$notice->error()` renders an error message (red bar)
 
-## Dismissable Notices
+### Dismissable Notices
 
 WordPress supports dismissable notices: when a notice `<div>` has a special class, WordPress renders a close button that the user can click to make it go away. You can add this to any notice by calling `dismissable()`:
 
@@ -42,7 +42,7 @@ $notice->dismissable()
 
 The `dismissable()` method returns the `Notice` object itself, for a "fluent" interface.
 
-## Adding classes
+### Adding classes
 
 For customizing notice front-end behavior/styles, you can specify optional extra classes to put on the `<div>` by with `add_class()`:
 
