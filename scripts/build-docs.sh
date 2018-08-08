@@ -2,5 +2,5 @@
 
 echo "Building documentation..."
 
-gitbook install
-gitbook build
+yarn gitbook install
+yarn gitbook build

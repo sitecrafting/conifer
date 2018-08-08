@@ -29,6 +29,7 @@ services:
     run:
       - cd $LANDO_MOUNT && yarn
       - cd $LANDO_MOUNT && yarn cypress install
+      - $LANDO_MOUNT/scripts/build-docs.sh
 
     overrides:
       services:
@@ -100,6 +101,11 @@ tooling:
     service: node
     cmd: '/app/scripts/build-docs.sh'
     description: 'Build documentation in _book folder using Gitbook'
+
+  gitbook:
+    service: node
+    cmd: 'yarn gitbook'
+    description: 'Run arbitrary gitbook commands'
 
 proxy:
   appserver:
