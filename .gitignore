@@ -2,7 +2,6 @@
 /wp/
 /wp-content/
 /node_modules/
-/log/
 
 # build artifacts
 /conifer-*.tar.gz
@@ -17,3 +16,4 @@ yarn-error.log
 
 # local configs
 wp-cli.local.yml
+/nbproject/private/
