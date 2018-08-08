@@ -43,6 +43,11 @@ services:
     hogfrom:
       - appserver
 
+  docs:
+    type: nginx:1.13
+    ssl: true
+    webroot: _book
+
 tooling:
   install:
     service: appserver
@@ -104,3 +109,6 @@ proxy:
 
   phpmyadmin:
     - phpmyadmin.conifer.lndo.site
+
+  docs:
+    - docs.conifer.lndo.site
