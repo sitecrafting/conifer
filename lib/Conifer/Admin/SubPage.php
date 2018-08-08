@@ -61,6 +61,7 @@ abstract class SubPage extends Page {
    * @param string $menuTitle the title to display for this SubPage in the
    * admin menu.
    * @param string $capability the WP capability required to view this SubPage.
+   * Defaults to the capabaility set on the parent AdminPage.
    * @param string $slug the `menu_slug` for this SubPage.
    */
   public function __construct(

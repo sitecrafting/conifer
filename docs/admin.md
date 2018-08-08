@@ -102,8 +102,80 @@ Flash notices have an almost identical API as regular notices:
 
 ## Admin Pages
 
-TODO
+The `AdminPage` class is a simple abstraction around the `add_menu_page()` function. Simply implement the abstract `render` method...
+
+```php
+use Conifer\Admin\Page;
+
+class HelloPage extends Page {
+  public function render() : string {
+    return 'HELLO';
+  }
+}
+```
+
+...and add the page:
+
+```php
+$page = new HelloPage('Hello');
+$page->add();
+```
+
+Or, you can specify individual parameters using a fluent interface:
+
+```php
+$page = new HelloPage('Hello');
+$page
+  ->set_title('WHY HELLO THERE')
+  ->set_menu_title('O HAI')
+  ->set_slug('hai')
+  ->set_capability
+  ->add();
+```
+
+Conifer provides sane defaults for individual parameters. Just make sure to check existing menu slugs to avoid overriding them.
 
 ## Sub-Pages
 
-TODO
+Adding sub-pages is just as easy. Again, just implement `render`...
+
+```php
+use Conifer\Admin\SubPage;
+
+class HelloAgainPage extends SubPage {
+  public function render() : string {
+    return 'HELLO AGAIN';
+  }
+}
+```
+
+...and add the sub-page to its parent:
+
+```php
+$parent = new HelloPage('Hello');
+$parent->add();
+
+// instantiate the sub-page and add it...
+$child = new HelloAgainPage('Hello Again', $parent);
+$child->add();
+```
+
+You can also add a sub-page using `Admin\Page`'s fluent interface. This is equivalent to the example above:
+
+```php
+$parent = new HelloPage('Hello');
+$parent->add()
+  ->add_sub_page(HelloAgainPage::class, 'Hello Again');
+```
+
+Of course, this means you can also add a whole slew of sub-pages in one fell swoop:
+
+```php
+$parent = new HelloPage('Hello');
+$parent->add()
+  ->add_sub_page(HelloAgainPage::class, 'Hello Again')
+  ->add_sub_page(GoodbyePage::class, 'Goodbye')
+  ->add_sub_page(GoodbyeForRealzPage::class, 'Goodbye for Realz');
+```
+
+`SubPage` is a subclass of `AdminPage` and therefore inherits the same fluent interface. Instances of `SubPage` inherit their required capability from their parent page.
