@@ -59,6 +59,9 @@
       ],
       "sniff": [
         "./vendor/bin/phpcs --standard=./phpcs.xml conifer.php test lib"
+      ],
+      "sniff-fix": [
+        "./vendor/bin/phpcbf --standard=./phpcs.xml conifer.php test lib"
       ]
   }
 }

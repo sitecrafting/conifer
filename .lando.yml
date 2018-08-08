@@ -85,6 +85,11 @@ tooling:
     cmd: 'composer sniff-summary'
     description: 'Summarize phpcs results'
 
+  sniff-fix:
+    service: appserver
+    cmd: 'composer sniff-fix'
+    description: 'Fix coding standards issues that are automatically fixable'
+
   release:
     service: appserver
     cmd: '/app/scripts/build-release.sh'
