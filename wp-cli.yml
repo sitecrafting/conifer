@@ -1,3 +1,6 @@
 ---
 path: wp
+
+require:
+  - ./vendor/acobster/wp-cli-yaml-fixtures/yaml-fixtures.php
 ...
