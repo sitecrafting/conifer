@@ -61,20 +61,31 @@ function main() {
 
   backup_vendor
 
-  archive_name="conifer-${RELEASE}.tar.gz"
+  tar_name="conifer-${RELEASE}.tar.gz"
+  zip_name="conifer-${RELEASE}.zip"
   composer install --no-dev --prefer-dist
 
-  tar -cvzf "$archive_name" \
-    conifer.php \
-    lib \
-    vendor \
-    views \
-    LICENSE.txt \
-    README.md
+  # archive plugins distro files inside a top-level conifer/ dir
+  tar -cvzf "$tar_name" \
+    ../conifer.php \
+    ../lib \
+    ../vendor \
+    ../views \
+    ../LICENSE.txt \
+    ../README.md
+
+  # ditto for zip
+  zip -r "${zip_name}" \
+    ../conifer.php \
+    ../lib \
+    ../vendor \
+    ../views \
+    ../LICENSE.txt \
+    ../README.md
 
   restore_vendor
 
-  echo "Created ${archive_name}"
+  echo "Created ${tar_name}, ${zip_name}"
 }
 
 function backup_vendor() {
