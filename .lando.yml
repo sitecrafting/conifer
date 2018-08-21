@@ -6,6 +6,10 @@ config:
 
 services:
   appserver:
+    run_as_root:
+      - apt-get update
+      - apt-get install zip
+
     run:
       - cd $LANDO_MOUNT && composer install
       - cd $LANDO_MOUNT && scripts/setup-wordpress.sh
