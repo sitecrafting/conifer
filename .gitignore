@@ -3,9 +3,12 @@
 /wp-content/
 /node_modules/
 /_book/
+/database-backups/
+/conifer/
 
 # build artifacts
 /conifer-*.tar.gz
+/conifer-*.zip
 
 # cypress test artifacts
 /cypress/videos

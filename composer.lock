@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "541383e26831ef8835a8ed9e6369bd65",
+    "content-hash": "fcb80f7e8185964f96d4d005fe8ba6e8",
     "packages": [],
     "packages-dev": [
         {
@@ -68,6 +68,51 @@
                 "source": "https://github.com/sitecrafting/wp_mock/tree/dev"
             },
             "time": "2018-04-27T00:34:24+00:00"
+        },
+        {
+            "name": "acobster/wp-cli-yaml-fixtures",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/acobster/wp-yaml-fixtures.git",
+                "reference": "ac469a05888c71fa181548a9a346e3b95c47f01a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/ac469a05888c71fa181548a9a346e3b95c47f01a",
+                "reference": "ac469a05888c71fa181548a9a346e3b95c47f01a",
+                "shasum": ""
+            },
+            "require": {
+                "ircmaxell/random-lib": "^1.1@dev",
+                "php": ">=7.0",
+                "symfony/yaml": "^3.4"
+            },
+            "require-dev": {
+                "10up/wp_mock": "^0.3",
+                "behat/behat": "^3.4",
+                "phpunit/phpunit": "^6.5",
+                "squizlabs/php_codesniffer": "3.*",
+                "wp-coding-standards/wpcs": "^0.14"
+            },
+            "type": "wp-cli-command",
+            "autoload": {
+                "psr-4": {
+                    "YamlFixtures\\": "src/YamlFixtures"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Coby Tamayo",
+                    "email": "ctamayo@sitecrafting.com"
+                }
+            ],
+            "description": "Define WordPress database snapshots as simple YAML files",
+            "time": "2018-08-20T21:44:04+00:00"
         },
         {
             "name": "altorouter/altorouter",
@@ -653,6 +698,107 @@
                 "test"
             ],
             "time": "2018-02-24T08:30:36+00:00"
+        },
+        {
+            "name": "ircmaxell/random-lib",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/RandomLib.git",
+                "reference": "e9e0204f40e49fa4419946c677eccd3fa25b8cf4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/RandomLib/zipball/e9e0204f40e49fa4419946c677eccd3fa25b8cf4",
+                "reference": "e9e0204f40e49fa4419946c677eccd3fa25b8cf4",
+                "shasum": ""
+            },
+            "require": {
+                "ircmaxell/security-lib": "^1.1",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^1.11",
+                "mikey179/vfsstream": "^1.6",
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "RandomLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Library For Generating Secure Random Numbers",
+            "homepage": "https://github.com/ircmaxell/RandomLib",
+            "keywords": [
+                "cryptography",
+                "random",
+                "random-numbers",
+                "random-strings"
+            ],
+            "time": "2016-09-07T15:52:06+00:00"
+        },
+        {
+            "name": "ircmaxell/security-lib",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ircmaxell/SecurityLib.git",
+                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ircmaxell/SecurityLib/zipball/f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
+                "reference": "f3db6de12c20c9bcd1aa3db4353a1bbe0e44e1b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "1.1.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "SecurityLib": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthony Ferrara",
+                    "email": "ircmaxell@ircmaxell.com",
+                    "homepage": "http://blog.ircmaxell.com"
+                }
+            ],
+            "description": "A Base Security Library",
+            "homepage": "https://github.com/ircmaxell/SecurityLib",
+            "time": "2015-03-20T14:31:23+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core",
@@ -3300,7 +3446,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "10up/wp_mock": 20,
-        "sitecrafting/groot": 20
+        "sitecrafting/groot": 20,
+        "acobster/wp-cli-yaml-fixtures": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
