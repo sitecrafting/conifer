@@ -4,7 +4,7 @@
 /node_modules/
 /_book/
 /database-backups/
-/conifer/
+/conifer
 
 # build artifacts
 /conifer-*.tar.gz
