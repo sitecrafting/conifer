@@ -8,10 +8,13 @@
 ## Features
 
 * [Posts and Post Types](/posts.md)
-* [Admin Helper](/admin.md)
+* [Admin Helpers](/admin.md)
 
 ## Development
 
 * [Development Setup](/dev-setup.md)
 * [Testing](/testing.md)
+* [Team](/team.md)
+* [Governance](/governance.md)
+* [Code of Conduct](/code-of-conduct.md)
 

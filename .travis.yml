@@ -11,31 +11,27 @@
 env:
 
 
+language: php
+
+install: composer install --prefer-dist
+
+script:
+  - vendor/bin/phpunit
+  - vendor/bin/phpcs
+
+
 # Test Conifer against PHP 7.x and run end-to-end tests
 matrix:
   include:
-    - language: php
+    - name: '7.0 unit tests'
       php: 7.0
-      install:
-        - composer install --prefer-dist
-      script:
-        - vendor/bin/phpunit
-
-    - language: php
+    - name: '7.1 unit tests'
       php: 7.1
-      install:
-        - composer install --prefer-dist
-      script:
-        - vendor/bin/phpunit
-
-    - language: php
+    - name: '7.2 unit tests'
       php: 7.2
-      install:
-        - composer install --prefer-dist
-      script:
-        - vendor/bin/phpunit
 
-    - language: node_js
+    - name: 'End-to-end tests with Lando/Cypress'
+      language: node_js
       node_js: 6.11
       cache:
         - ~/.lando
@@ -55,16 +51,15 @@ matrix:
       after_failure:
         - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
 
-    # test VVV provisioning
-    - language: node_js
+    - name: 'Test VVV provisioning'
+      language: node_js
       node_js: 8.11
       cache:
         - ~/.cache
-      install:
+      install: true
+      script:
         - vvv-utilities/provision.sh
-      env: CI_TEST_CASE=VVV
 
   allow_failures:
-    - language: node_js
-      env: CI_TEST_CASE=VVV
+    - name: 'Test VVV provisioning'
 

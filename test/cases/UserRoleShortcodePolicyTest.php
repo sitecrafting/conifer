@@ -16,6 +16,7 @@ class UserRoleShortcodeAuthorizationPolicyTest extends Base {
   private $policy;
 
   public function setUp() {
+    parent::setUp();
     $this->policy = new UserRoleShortcodePolicy();
   }
 

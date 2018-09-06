@@ -16,6 +16,7 @@ class TemplateAuthorizationPolicyTest extends Base {
   private $policy;
 
   public function setUp() {
+    parent::setUp();
     $this->policy = $this->getMockForAbstractClass(
       TemplatePolicy::class
     );

@@ -153,7 +153,7 @@ abstract class Page {
     string $menuTitle = '',
     string $capability = '',
     string $slug = ''
-  ) {
+  ) : self {
     $page = new $class($this, $title, $menuTitle, $capability, $slug);
     $page->add();
 

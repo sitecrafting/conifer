@@ -18,9 +18,8 @@ class ShortcodeAuthorizationPolicyTest extends Base {
   private $policy;
 
   public function setUp() {
-    $this->policy = $this->getMockForAbstractClass(
-      ShortcodePolicy::class
-    );
+    parent::setUp();
+    $this->policy = $this->getMockBuilder(ShortcodePolicy::class)->setMethods(['tag'])->getMockForAbstractClass();
   }
 
   public function test_adopt() {

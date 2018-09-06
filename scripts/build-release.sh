@@ -23,6 +23,10 @@ function fail() {
 }
 
 function main() {
+  if ! [[ -f ./conifer.php ]] ; then
+    fail 'Error: not in root conifer directory?'
+  fi
+
   RELEASE="$1"
 
   if [[ -z "$RELEASE" ]] ; then
@@ -61,20 +65,38 @@ function main() {
 
   backup_vendor
 
-  archive_name="conifer-${RELEASE}.tar.gz"
+  tar_name="conifer-${RELEASE}.tar.gz"
+  zip_name="conifer-${RELEASE}.zip"
   composer install --no-dev --prefer-dist
 
-  tar -cvzf "$archive_name" \
-    conifer.php \
-    lib \
-    vendor \
-    views \
-    LICENSE.txt \
-    README.md
+  # hackishly create a symlink conifer directory, so that when extracted, the
+  # archives we create have a top-level directory
+  ln -sfn . conifer
+
+  # archive plugins distro files inside a top-level conifer/ dir
+  tar -cvzf "$tar_name" \
+    conifer/conifer.php \
+    conifer/lib \
+    conifer/vendor \
+    conifer/views \
+    conifer/LICENSE.txt \
+    conifer/README.md
+
+  # ditto for zip
+  zip -r "${zip_name}" \
+    conifer/conifer.php \
+    conifer/lib \
+    conifer/vendor \
+    conifer/views \
+    conifer/LICENSE.txt \
+    conifer/README.md
+
+  # remove hackish symlink
+  rm ./conifer
 
   restore_vendor
 
-  echo "Created ${archive_name}"
+  echo "Created ${tar_name}, ${zip_name}"
 }
 
 function backup_vendor() {
