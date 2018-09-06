@@ -602,7 +602,7 @@ abstract class AbstractBase {
         $errorMessage = static::MESSAGE_UPLOAD_ERROR;
         break;
     }
-    return sprintf($errorMessage, $field['name']);
+    return sprintf($errorMessage, $field['label'] ?? $field['name']);
   }
 
   /**
