@@ -16,7 +16,13 @@ use Timber\User;
  */
 abstract class ShortcodePolicy extends AbstractPolicy {
 
+  /**
+   * The shortcode tag
+   *
+   * @var string
+   */
   protected $tag;
+
   /**
    * Sets the shortcode tag for the new shortcode policy
    *
@@ -25,6 +31,7 @@ abstract class ShortcodePolicy extends AbstractPolicy {
   public function __construct(string $tag = 'protected') {
       $this->tag = $tag;
   }
+
   /**
    * Filter the shortcode content based on the implementation of the `decide`
    * method.

@@ -2,9 +2,12 @@
 /wp/
 /wp-content/
 /node_modules/
+/database-backups/
+/conifer/
 
 # build artifacts
 /conifer-*.tar.gz
+/conifer-*.zip
 
 # cypress test artifacts
 /cypress/videos
@@ -18,5 +21,8 @@ yarn-error.log
 wp-cli.local.yml
 /nbproject/private/
 
+<<<<<<< HEAD
 # documentation
 /_book/
+=======
+>>>>>>> master
