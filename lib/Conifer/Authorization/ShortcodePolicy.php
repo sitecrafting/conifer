@@ -15,15 +15,14 @@ use Timber\User;
  * content according to custom authorization logic
  */
 abstract class ShortcodePolicy extends AbstractPolicy {
-  
+
   protected $tag;
   /**
    * Sets the shortcode tag for the new shortcode policy
    *
    * @param string $tag
    */
-  public function __construct(string $tag = 'protected')
-  {
+  public function __construct(string $tag = 'protected') {
       $this->tag = $tag;
   }
   /**
