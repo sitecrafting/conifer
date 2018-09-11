@@ -52,6 +52,9 @@ class SiteTest extends Base {
     WP_Mock::userFunction('get_stylesheet_directory', [
       'return' => self::THEME_DIRECTORY,
     ]);
+
+    vfsStreamWrapper::register();
+    vfsStreamWrapper::setRoot(new vfsStreamDirectory('exampleDir'));
   }
 
   public function tearDown() {
