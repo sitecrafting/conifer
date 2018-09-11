@@ -8,7 +8,7 @@
 ## Features
 
 * [Posts and Post Types](/posts.md)
-* [Admin Helper](/admin.md)
+* [Admin Helpers](/admin.md)
 * [Shortcode Authorizatoin](/shortcodeAuthorization.md)
 
 ## Development
