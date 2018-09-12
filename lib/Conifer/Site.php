@@ -63,10 +63,22 @@ class Site extends TimberSite {
   protected $twig_filters = [];
 
   /**
-   * Constructor
+   * Construct a Conifer Site object.
+   *
+   * @example
+   * ```php
+   * use Conifer\Site;
+   *
+   * // non-multisite setup:
+   * $site = new Site();
+   *
+   * // multisite setup:
+   * $site = new Site(1);
+   * ```
+   * @param string|int $identifier the WP site name or ID
    */
-  public function __construct() {
-    parent::__construct();
+  public function __construct($identifier = null) {
+    parent::__construct($identifier);
 
     $this->script_directory_cascade = [get_stylesheet_directory() . '/js/'];
     $this->style_directory_cascade  = [get_stylesheet_directory() . '/'];
@@ -117,6 +129,7 @@ class Site extends TimberSite {
     $this->add_default_twig_helpers();
 
     Integrations\YoastIntegration::demote_metabox();
+    // TODO moar integrations!
   }
 
 
