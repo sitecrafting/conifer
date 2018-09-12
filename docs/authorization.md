@@ -35,31 +35,86 @@ Read on to learn about Conifer's built-in authorization policy classes and how t
 
 ## User Role Shortcode Policy
 
-The `UserRoleShortcodePolicy` class helps admins lock down content on pages and posts by using shortcodes so only specified user roles can see it. In your code, all you need to do is register the shortcode (this registers the shortcode with a default shortcode tag of `"protected"`):
+The `UserRoleShortcodePolicy` class helps admins lock down content on pages and posts by using shortcodes so only specified user roles can see it. In your code, all you need to do is "adopt" the shortcode (this registers the shortcode with a default shortcode tag of `"protected"`):
 
 ```php
 use Conifer\Authorization\UserRoleShortcodePolicy;
 
-UserRoleShortcodePolicy::register();
+$policy = new UserRoleShortcodePolicy();
+$policy->adopt();
 ```
 
 The protected content can now be set up using a simple shortcode. All the site admin needs to do in the shortcode tag is specify what roles can see the content:
 
 ```
-[protected role = "editor"]
+[protected role="editor"]
 
 Hello Editors
 
 [/protected]
 ```
 
-### Register your User Role Shortcode
+## Defining Custom Authorization Shortcodes
 
-The User Role Shortcode Class extends an abstract class called Shortcode Policy. This abstract class provides a basis for defining shortcodes that filter their content according to custom authorization logic.  
+The `UserRoleShortcodePolicy` class extends an abstract class called `ShortcodePolicy`. This abstract class provides a basis for defining shortcodes that filter their content according to custom authorization logic.
 
-The Shortcode Policy Class extends an Abstract Policy Class. This Abstract class provides a basis for defining custom, template-level authorization logic
+For example, say that instead of checking a user's `role` we instead want to check a meta field called `moral_character`, and determine whether to show them the shortcode content based on the value of that field:
 
-Finally, the Abstract Policy Class implements a custom interface called the Policy Interface, which is an abstract interface for a high-level authorization API. 
+```
+[protected character="upstanding"]
+
+Upstanding Characters Only!
+
+[/protected]
+```
+
+The `ShortcodePolicy` class actually implements the `adopt()` method for us: we just need to implement a `decide()` method to tell Conifer whether the current user is authorized to view the content inside the shortcode. Here's what that method signature looks like:
+
+```php
+public function decide(array $atts, string $content, User $user) : bool;
+```
+
+As you can see, we just need to return `true` or `false` to convey whether or not the user is authorized.
+
+The `ShortcodePolicy` class knows to initialize the current user before passing it to decide, so we don't have to worry about that step. Implementing our test of moral character is a simple matter of grabbing user metadata:
+
+```php
+use Conifer\Authorization\ShortcodePolicy;
+use Timber\User;
+
+class MoralCharacterPolicy extends ShortcodePolicy {
+  public function decide(array $atts, string $_, User $user) : bool {
+    // get the required moral_character value from the shortcode atts,
+    // displaying the content to any old scoundrel by default.
+    $expectedCharacter = $atts['character'] ?? 'scoundrel';
+    return $user->meta('moral_character') === $expectedCharacter;
+  }
+}
+```
+
+And that's it! "Upstanding Characters Only" will only display to users whose `moral_character` field is `"upstanding"`.
+
+### Defining a custom shortcode tag
+
+The first parameter to `UserRoleShortcodePolicy`'s constructor is the shortcode tag name, which defaults to `"protected"`. So to use a different shortcode tag, simply pass a different string to the constructor:
+
+```php
+$policy = new UserRoleShortcodePolicy('nice_try_hackerz');
+```
+
+Now your admins can gloat in the satisfaction of hiding content from hackerz using your amazing new custom shortcode:
+
+```
+[nice_try_hackerz role="editor"]
+
+Hello Editors
+
+[/nice_try_hackerz]
+```
+
+Note that this works for anything that extends `ShortcodePolicy`, not just the `UserRoleShortcodePolicy` class!
+
+
 
  ### Policy Interface
 The Policy Interface contains two functions that all classes must implement. 
