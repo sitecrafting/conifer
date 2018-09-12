@@ -10,6 +10,7 @@
 * [Posts and Post Types](/posts.md)
 * [Admin Helpers](/admin.md)
 * [Authorization](/authorization.md)
+* [Forms](/forms.md)
 
 ## Development
 
