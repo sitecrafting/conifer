@@ -9,7 +9,7 @@
 
 * [Posts and Post Types](/posts.md)
 * [Admin Helpers](/admin.md)
-* [Shortcode Authorizatoin](/shortcodeAuthorization.md)
+* [Authorization](/authorization.md)
 
 ## Development
 
