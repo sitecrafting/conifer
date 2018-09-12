@@ -93,6 +93,15 @@ Conifer boasts a simple [Post API](/features/posts.md) that lets you query and m
 * Group post query results by taxonomy term
 * Configure custom admin filters and columns
 
+### Forms
+
+Conifer comes with an insanely powerful Form API that lets you create and process forms with:
+
+- an extensible, ergonomic OO interface
+- field-specific error states and messaging
+- custom field validations and filters
+- tightly integrated Twig filters for rendering form state
+
 ### Admin Helpers
 
 Conifer's Admin Helpers make working with the WP Admin much simpler:
@@ -107,15 +116,6 @@ Tell WordPress to hide or modify certain content based on the current user:
 * Register a shortcode to let admins control pieces of content to hide based on user role. With a single line of code.
 * Easily define custom shortcodes with arbitrary user authorization logic
 * Redirect away from certain templates if the user lacks specific/arbitrary privileges
-
-### Forms
-
-Conifer comes with an insanely powerful Form API that lets you create and process forms with:
-
-* an extensible, ergonomic OO interface
-* field-specific error states and messaging
-* custom field validations and filters
-* tightly integrated Twig filters for rendering form state
 
 ### Notifiers
 
