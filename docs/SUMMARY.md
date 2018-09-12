@@ -3,14 +3,20 @@
 * [What is Conifer?](/what-is-conifer.md)
 * [Requirements](/requirements.md)
 * [Installation](/installation.md)
-* [Getting Started](/getting-started.md)
+* [Conifer Basics](/basics.md)
 
 ## Features
 
+* [The Site Class](/site.md)
+
 * [Posts and Post Types](/posts.md)
-* [Admin Helpers](/admin.md)
-* [Authorization](/authorization.md)
+
 * [Forms](/forms.md)
+
+* [Admin Helpers](/admin.md)
+
+* [Authorization](/authorization.md)
+
 
 ## Development
 
