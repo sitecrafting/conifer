@@ -8,14 +8,11 @@
 ## Features
 
 * [The Site Class](/site.md)
-
 * [Posts and Post Types](/posts.md)
-
 * [Forms](/forms.md)
-
 * [Admin Helpers](/admin.md)
-
 * [Authorization](/authorization.md)
+* [Notifiers](/features/notifiers.md)
 
 
 ## Development
