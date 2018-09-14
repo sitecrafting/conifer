@@ -206,7 +206,7 @@ class EventNotifier extends EmailNotifier {
   
   public function notify_affected_users() {
     $this->notify(
-    	"A {$this->event->name()} happened",
+      "A {$this->event->name()} happened",
       "Here are the deets: {$this->event->friendly_description()}"
     );
   }
