@@ -76,7 +76,7 @@ class CatContestForm extends AbstractBase {
 }
 ```
 
-This is not so bad, but we can simplify this code by creating our notifiers at the beginning, pulling those email addresses out of the 
+This is not so bad, but we can simplify this code by creating our notifiers at the beginning, pulling those email addresses out of the doggo-related business logic.
 
 ```php
 use Conifer\Form\AbstractBase;
