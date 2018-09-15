@@ -12,7 +12,7 @@
 * [Forms](/forms.md)
 * [Admin Helpers](/admin.md)
 * [Authorization](/authorization.md)
-* [Notifiers](/features/notifiers.md)
+* [Notifiers](/notifiers.md)
 
 
 ## Development
