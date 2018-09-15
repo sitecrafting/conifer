@@ -25,7 +25,7 @@ trait SendsEmail {
   abstract public function to();
 
   /**
-   * Send an HTML email
+   * Send a UTF-8-encoded HTML email
    *
    * @param array|string $to array or comma-separated list of email addresses
    * to send to
@@ -46,7 +46,7 @@ trait SendsEmail {
   }
 
   /**
-   * Send a plaintext email
+   * Send a UTF-8-encoded plaintext email
    *
    * @param array|string $to array or comma-separated list of email addresses
    * to send to
