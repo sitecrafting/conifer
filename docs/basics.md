@@ -95,7 +95,7 @@ Conifer boasts a simple [Post API](/features/posts.md) that lets you query and m
 
 ### Forms
 
-Conifer comes with an insanely powerful Form API that lets you create and process forms with:
+Conifer comes with an insanely powerful [Form API](/features/forms.md) that lets you create and process forms with:
 
 - an extensible, ergonomic OO interface
 - field-specific error states and messaging
@@ -104,14 +104,14 @@ Conifer comes with an insanely powerful Form API that lets you create and proces
 
 ### Admin Helpers
 
-Conifer's Admin Helpers make working with the WP Admin much simpler:
+Conifer's [Admin Helpers](/features/admin.md) make working with the WP Admin much simpler:
 
 * Display notices to admin users without writing markup
 * Build custom settings pages and sub-pages easily
 
 ### Authorization
 
-Tell WordPress to hide or modify certain content based on the current user:
+Tell WordPress to [hide or modify certain content](/features/authorization.md) based on the current user:
 
 * Register a shortcode to let admins control pieces of content to hide based on user role. With a single line of code.
 * Easily define custom shortcodes with arbitrary user authorization logic
@@ -119,8 +119,9 @@ Tell WordPress to hide or modify certain content based on the current user:
 
 ### Notifiers
 
-Conifer's dead-simple Notifier API lets you send emails to admins and other users at the drop of a hat:
+Conifer's dead-simple [Notifiers](/features/notifiers.md) lets you send emails to admins and other users at the drop of a hat:
 
 * Email the main site admin with a simple method call
 * Easily send formatted emails to arbitrary addresses
 * Decouple email contents from the destination while reusing code
+

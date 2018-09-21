@@ -152,24 +152,143 @@ Validates that a file field [is set](http://php.net/manual/en/function.isset.php
 
 Validates that an uploaded file field's type is in an array of whitelisted [MIME types](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Complete_list_of_MIME_types). Takes an additional `array` parameter of strings with whitelisted types.
 
+## Field State
+
+Forms know about the state of their fields. You can call `$form->get('field_name')`  to get the submitted value of any field.
+
+Select, checkbox, and radio fields have their own helpers. You can ask whether a field is `selected` or `checked` with the respective methods.
+
+```php
+$form->hydrate([
+  'my_select' => 'user selection',
+  'my_checkbox' => '123',
+]);
+
+$form->selected('my_select'); // true
+$form->selected('my_select', 'user selection'); // true
+$form->selected('my_select', 'some other value'); // false
+
+$form->checked('my_checkbox'); // true
+$form->checked('my_checkbox', '123'); // true
+$form->checked('my_checkbox', '456'); // false
+
+$form->selected('bogus field'); // false
+$form->checked('bogus field'); // false
+```
+
+Note that both methods support array values, so multiselect inputs and checkbox groups (checkboxes with attributes like `name="field_name[]"`) will be considered `selected` or `checked` if the array contains the given value:
+
+```php
+$form->hydrate([
+  'my_multiselect' => ['option A', 'option B'],
+  'my_checkbox_group' => ['selection 1', 'selection 2'],
+]);
+
+$form->selected('my_multiselect', 'option A'); // true
+$form->selected('my_multiselect', 'option B'); // true
+$form->selected('my_multiselect', 'option XYZ'); // false
+
+$form->checked('my_checkbox_group', 'selection 1'); // true
+$form->checked('my_checkbox_group', 'selection 2'); // true
+$form->checked('my_checkbox_group', 'some other value'); // false
+```
+
 ## Form Errors
 
 Once a form submission has been validated, any resulting errors can be used to display an informative message to the user:
 
+```php
+// let's set up an error case
+$form->add_error('my_field', 'something bad happened! 🙀');
+$form->add_error('another_field', 'something even worse happened!! 😿');
+
+$form->has_errors(); // true
+$form->has_errors_for('my_field'); // true
+$form->has_errors_for('bogus field'); // false
+$form->get_error_messages_for('my_field'); // ['something bad happened! 🙀']
+$form->get_error_messages_for('another_field');
+// ['something even worse happened!! 😿']
+```
+
+Of course, you can always call these from Twig:
+
 ```twig
-{% if myform.has_errors %}
+{% if myForm.has_errors %}
   <p>Danger, Will Robinson! Your form has the following errors: {{ myForm.get_unique_error_messages|join(', ') }}</p>
 {% endif %}
 ```
 
-Error messages can be retrieved on a per-field basis as well:
+## Twig helpers
+
+For rendering forms in Twig you have even more power. The `Conifer\Twig\FormHelper`, loaded into Twig by default, provides some nice filters you can use directly in your templates:
 
 ```twig
-<label for="email">Email</label>
-<input type="email" name="email" id="email" value="{{ myForm.get('email') }}" />
-{% if myform.has_errors_for('email') %}
-  <span class="field-error">{{ myForm.get_errors_for('email')|join(', ') }}</span>
+{# add the "error" class on label/input IFF there are errors for this field! #}
+<label class="{{ myForm | field_class }}" for="email">Email</label>
+<input
+	class="{{ myForm | field_class }}"
+	type="email"
+	name="email"
+	id="email"
+	value="{{ myForm.get('email') }}"
+/>
+
+{% if myForm.has_errors_for('email') %}
+  {# render all errors on the email field, separated with <br> tags #}
+  <span class="field-error">{{ myForm | err('email') }}</span>
 {% endif %}
+```
+
+Note that you can also use the more verbose `error_messages_for` in place of the `err` filter, if you're not into the whole brevity thing.
+
+### Custom error classes
+
+By passing an optional parameter to the `field_class` filter, you can specify your own error class to render when the field has errors:
+
+```twig
+<input class="{{ myForm | field_class('validation-error') }}" />
+```
+
+### Custom error message separators
+
+You can specify your own separator when rendering a list of error messages by passing an optional parameter to the filter. Here we're using a semicolon:
+
+```twig
+<span class="field-error">{{ myForm | err('email', ';') }}</span>
+```
+
+### Select/checkbox/radio filters
+
+The special `selected_attr` and `checked_attr` Twig filters know how to render attributes for select, checkbox, and radio fields. These call into the corresponding `selected()` and `checked()` methods on the `Form` class.
+
+These are great for freeing your Twig views from the shackles of conditional logic:
+
+```twig
+{# instead of this: #}
+<input type="checkbox" {% if myForm.checked('my_field') %}checked{% endif %} />
+
+{# ...we can do this: #}
+<input type="checkbox" {{ checked_attr(myForm, 'my_field') }} />
+```
+
+They're also handy for looping through options in a `<select>` element or a radio/checkbox group:
+
+```twig
+<select name="my_field">
+  {% for value, label in my_select_options %}
+		<option {{ selected_attr(myForm, 'my_select_field', value) }}>{{ label }}</option>
+  {% endfor %}
+</select>
+
+{% for value, label in my_radio_options %}
+	<input
+		type="radio"
+		id="my-radio-field-{{ loop.index }}"
+		value="{{ value }}"
+		{{ checked_attr(myForm, 'my_select_field', value) }}
+	/>
+	<label for="my-radio-field-{{ loop.index }}">{{ label }}</label>
+{% endfor %}
 ```
 
 ## Why?

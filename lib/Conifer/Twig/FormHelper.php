@@ -24,6 +24,8 @@ class FormHelper implements HelperInterface {
       'field_class'        => [$this, 'get_field_class'],
       'error_messages_for' => [$this, 'get_error_messages_for'],
       'err'                => [$this, 'get_error_messages_for'],
+      'checked_attr'       => [$this, 'checked_attr'],
+      'selected_attr'      => [$this, 'selected_attr'],
     ];
   }
 
@@ -69,6 +71,48 @@ class FormHelper implements HelperInterface {
     string $separator = '<br>'
   ) : string {
     return implode($separator, $form->get_error_messages_for($fieldName));
+  }
+
+  /**
+   * Return the `checked` attribute for a given form input, given the
+   * (hydrated) form and the field name, and optionally the value to check
+   * against.
+   *
+   * @param Form $form the Form object containing the field in question
+   * @param string $fieldName the `name` of the field
+   * @param string $value (optional) the value to check against. This is
+   * necessary e.g. for radio inputs, where there's more than one possible
+   * value.
+   * @return string literally `" checked "` if the field (optionally the one
+   * matching `$value`) was checked, or the empty string
+   */
+  public function checked_attr(
+    Form $form,
+    string $fieldName,
+    string $value = null
+  ) : string {
+    return $form->checked($fieldName, $value) ? ' checked ' : '';
+  }
+
+  /**
+   * Return the `selected` attribute for a given form input, given the
+   * (hydrated) form and the field name, and optionally the value to check
+   * against.
+   *
+   * @param Form $form the Form object containing the field in question
+   * @param string $fieldName the `name` of the field
+   * @param string $value (optional) the value to check against. This is
+   * necessary e.g. for radio inputs, where there's more than one possible
+   * value.
+   * @return string literally `" selected "` if the field (optionally the one
+   * matching `$value`) was selected, or the empty string
+   */
+  public function selected_attr(
+    Form $form,
+    string $fieldName,
+    string $value
+  ) : string {
+    return $form->selected($fieldName, $value) ? ' selected ' : '';
   }
 }
 
