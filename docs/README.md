@@ -28,7 +28,7 @@ We make every effort to stay out of your way in this regard, to add to and not t
 
 ## Powerful Features
 
-Scan the menu or check out the [Conifer Basics](/getting-started/basics.md) guide for an overview of the powerful features Conifer offers for developing well-architected, object-oriented WordPress code. Here are some of them.
+Scan the menu or check out the [Conifer Basics](/basics.md) guide for an overview of the powerful features Conifer offers for developing well-architected, object-oriented WordPress code. Here are some of them.
 
 ### More Helpers
 
