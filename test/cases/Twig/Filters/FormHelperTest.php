@@ -48,4 +48,50 @@ class FormHelperTest extends Base {
       $this->wrapper->get_error_messages_for($form, 'foo', '; ')
     );
   }
+
+  public function test_checked_attr() {
+    $form = $this->setup_form([
+      // field config
+      'my_checkbox' => [],
+    ], [
+      // field config
+      'my_checkbox' => '1',
+    ]);
+
+    $this->assertEquals(
+      ' checked ',
+      $this->wrapper->checked_attr($form, 'my_checkbox', '1')
+    );
+    $this->assertEquals(
+      '',
+      $this->wrapper->checked_attr($form, 'my_checkbox', 'something else')
+    );
+  }
+
+  public function test_selected_attr() {
+    $form = $this->setup_form([
+      // field config
+      'my_select' => [],
+    ], [
+      // field config
+      'my_select' => '1',
+    ]);
+
+    $this->assertEquals(
+      ' selected ',
+      $this->wrapper->selected_attr($form, 'my_select', '1')
+    );
+    $this->assertEquals(
+      '',
+      $this->wrapper->selected_attr($form, 'my_select', 'something else')
+    );
+  }
+
+  protected function setup_form(array $fields, array $values = []) {
+    $form = $this->getMockForAbstractClass(Form::class);
+    $this->setProtectedProperty($form, 'fields', $fields);
+    $form->hydrate($values);
+
+    return $form;
+  }
 }
