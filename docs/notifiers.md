@@ -29,7 +29,7 @@ You may have noticed that in the above example, **we never specify an email addr
 
 ### Example
 
-Say you're [processing a form submission](/features/forms.md) for your semi-annual **Interwebz Cat Contezt**. You want to scan the submission for the word "doggo" in case the user submitted to the wrong contest by mistake (**Hecking Internet Doggo Contest** is over there, folks). Either way, you want to notify an admin that there's a submission. Assuming we want to send an HTML message, what would this look like with the vanilla `wp_mail()` function?
+Say you're [processing a form submission](/forms.md) for your semi-annual **Interwebz Cat Contezt**. You want to scan the submission for the word "doggo" in case the user submitted to the wrong contest by mistake (**Hecking Internet Doggo Contest** is over there, folks). Either way, you want to notify an admin that there's a submission. Assuming we want to send an HTML message, what would this look like with the vanilla `wp_mail()` function?
 
 ```php
 // Lol/CatContestForm.php

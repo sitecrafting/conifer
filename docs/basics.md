@@ -76,7 +76,7 @@ Here's a brief overview of Conifer's biggest features.
 
 ### The Site Class
 
-[The `Site` class](/features/site.md) is a concept inherited [from Timber](https://timber.github.io/docs/reference/timber-site/). As in the example above, the Site class `configure()` callback is where your site-wide config code goes in a conventional Conifer-style architecture. This class provides a number of helper methods for:
+[The `Site` class](/site.md) is a concept inherited [from Timber](https://timber.github.io/docs/reference/timber-site/). As in the example above, the Site class `configure()` callback is where your site-wide config code goes in a conventional Conifer-style architecture. This class provides a number of helper methods for:
 
 * setting up sensible site-wide defaults
 * enqueueing scripts and styles
@@ -85,7 +85,7 @@ Here's a brief overview of Conifer's biggest features.
 
 ### Posts and Post Types
 
-Conifer boasts a simple [Post API](/features/posts.md) that lets you query and manage posts in powerful ways:
+Conifer boasts a simple [Post API](/posts.md) that lets you query and manage posts in powerful ways:
 
 * Easily register custom post types
 * Create posts with a single `create()` call
@@ -95,7 +95,7 @@ Conifer boasts a simple [Post API](/features/posts.md) that lets you query and m
 
 ### Forms
 
-Conifer comes with an insanely powerful [Form API](/features/forms.md) that lets you create and process forms with:
+Conifer comes with an insanely powerful [Form API](/forms.md) that lets you create and process forms with:
 
 - an extensible, ergonomic OO interface
 - field-specific error states and messaging
@@ -104,14 +104,14 @@ Conifer comes with an insanely powerful [Form API](/features/forms.md) that lets
 
 ### Admin Helpers
 
-Conifer's [Admin Helpers](/features/admin.md) make working with the WP Admin much simpler:
+Conifer's [Admin Helpers](/admin.md) make working with the WP Admin much simpler:
 
 * Display notices to admin users without writing markup
 * Build custom settings pages and sub-pages easily
 
 ### Authorization
 
-Tell WordPress to [hide or modify certain content](/features/authorization.md) based on the current user:
+Tell WordPress to [hide or modify certain content](/authorization.md) based on the current user:
 
 * Register a shortcode to let admins control pieces of content to hide based on user role. With a single line of code.
 * Easily define custom shortcodes with arbitrary user authorization logic
@@ -119,7 +119,7 @@ Tell WordPress to [hide or modify certain content](/features/authorization.md) b
 
 ### Notifiers
 
-Conifer's dead-simple [Notifiers](/features/notifiers.md) lets you send emails to admins and other users at the drop of a hat:
+Conifer's dead-simple [Notifiers](/notifiers.md) let you send emails to admins and other users at the drop of a hat:
 
 * Email the main site admin with a simple method call
 * Easily send formatted emails to arbitrary addresses
