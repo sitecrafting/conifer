@@ -27,7 +27,10 @@ abstract class AbstractBase {
    *
    * @param array $atts the standard WP shortcode attributes
    */
-  abstract public function render( $atts = [] );
+  abstract public function render(
+    array $atts = [],
+    string $content = ''
+  ) : string;
 }
 
 
