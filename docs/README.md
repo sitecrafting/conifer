@@ -1,5 +1,7 @@
 # Conifer Documentation
 
+<div class="conifer-banner"></div>
+
 ## NOTE: ALPHA STATUS
 
 Until v1.0.0, we may introduce breaking changes on minor releases.

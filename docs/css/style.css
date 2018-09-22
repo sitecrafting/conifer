@@ -2,4 +2,67 @@
  * Conifer docs styles go here!
  */
 
+.book .conifer-banner {
+  background-image: url(/img/banner-green.png);
+  width: 1076px;
+  height: 320px;
+}
+.book.color-theme-1 .conifer-banner {
+  background-image: url(/img/banner-sepia.png);
+}
+.book.color-theme-2 .conifer-banner {
+  background-image: url(/img/banner-night.png);
+}
 
+.markdown-section a {
+  font-weight: bold;
+}
+.markdown-section a.glossary-term {
+  font-weight: normal;
+  text-decoration-style: dotted;
+  -webkit-text-decoration-style: dotted;
+}
+
+/* White theme colors */
+.book .book-body .page-wrapper .page-inner section.normal h1,
+.book .book-body .page-wrapper .page-inner section.normal h2,
+.book .book-body .page-wrapper .page-inner section.normal h3,
+.book .book-body .page-wrapper .page-inner section.normal h4,
+.book .book-body .page-wrapper .page-inner section.normal h5,
+.book .book-body .page-wrapper .page-inner section.normal h6,
+.markdown-section a {
+  color: #18893e;
+}
+.book-summary ul.summary li.active > a {
+  color: #14c04e;
+}
+
+/* Sepia theme colors */
+.book.color-theme-1 #book-search-input {
+  background-color: #405042;
+}
+
+/* Night theme colors */
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h1,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h2,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h3,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h4,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h5,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal h6,
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal a,
+.book.color-theme-2 .book-summary ul.summary li.active > a {
+  color: #16da57;
+}
+.book.color-theme-2 #book-search-input {
+  background-color: #104e17;
+}
+
+/* Sans font */
+.book.font-family-1 .book-body .page-wrapper .page-inner section.normal h1,
+.book.font-family-1 .book-body .page-wrapper .page-inner section.normal h2,
+.book.font-family-1 .book-body .page-wrapper .page-inner section.normal h3,
+.book.font-family-1 .book-body .page-wrapper .page-inner section.normal h4,
+.book.font-family-1 .book-body .page-wrapper .page-inner section.normal h5,
+.book.font-family-1 .book-body .page-wrapper .page-inner section.normal h6 {
+  font-family: 'Open Sans', sans-serif;
+}
