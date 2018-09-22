@@ -5,6 +5,14 @@
   "language": "en",
   "plugins": [
     "anchors",
-    "callouts"
-  ]
+    "callouts",
+    "codesnippet",
+    "edit-link"
+  ],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/sitecrafting/conifer/edit/master/docs",
+      "label": "Edit this page"
+    }
+  }
 }
