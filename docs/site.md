@@ -109,7 +109,7 @@ $site->configure(function() { /* ... */ }, false);
 
 ## Directory Cascades
 
-A **Directory Cascade** is an ordered list of directories where Conifer looks for Twig views (*.twig files), JS files, or stylesheets. Each type of asset (views, JS, CSS) has its own set of directories - its own *cascade* - where Conifer looks for that type of file. Each cascade has its own getter and setter on the `Site` class:
+A **Directory Cascade** is an ordered list of directories where Conifer looks for Twig views (`*.twig` files), JS files, or stylesheets. Each type of asset (views, JS, CSS) has its own set of directories - its own *cascade* - where Conifer looks for that type of file. Each cascade has its own getter and setter on the `Site` class:
 
 ```php
 $site->configure(function() {
