@@ -2,9 +2,9 @@
 
 <div class="conifer-banner"></div>
 
-## NOTE: ALPHA STATUS
+> #### Warning::ALPHA STATUS
 
-Until v1.0.0, we may introduce breaking changes on minor releases.
+> Conifer is currently in what we consider a "stable alpha." Most of the code has been extracted from components already running in production. We consider it production-ready. However, there may be lingering bugs and breaking changes to the API at this early stage.
 
 ## What is Conifer?
 

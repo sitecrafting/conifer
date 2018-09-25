@@ -7,6 +7,10 @@ h1#conifer-documentation {
   text-indent: -9999em;
 }
 
+.conifer-banner + .panel-warning {
+  margin-top: 2em;
+}
+
 .book .conifer-banner {
   background-image: url(/img/banner-green.png);
   background-position: center;
@@ -45,10 +49,23 @@ h1#conifer-documentation {
 .book-summary ul.summary li.active > a {
   color: #14c04e;
 }
+.book .book-body .page-wrapper .page-inner section.normal div.panel-warning h3 {
+  color: #aa1818;
+}
+.book .book-body .page-wrapper .page-inner section.normal div.panel-info h3 {
+  color: #e9f6ff;
+}
 
 /* Sepia theme colors */
 .book.color-theme-1 #book-search-input {
   background-color: #405042;
+}
+.book.color-theme-1 .panel-warning .panel-body,
+.book.color-theme-1 .panel-info .panel-body {
+  background-color: #FAFAE7;
+}
+.book.color-theme-1 .panel-info > .panel-heading {
+  background-color: #857DAB;
 }
 
 /* Night theme colors */
@@ -64,6 +81,12 @@ h1#conifer-documentation {
 }
 .book.color-theme-2 #book-search-input {
   background-color: #104e17;
+}
+.book.color-theme-2 .book-body .page-wrapper .page-inner section.normal div.panel-warning h3 {
+  color: #aa1818;
+}
+.book .book-body .page-wrapper .page-inner section.normal div.panel-info h3 {
+  color: #e9f6ff;
 }
 
 /* Sans font */
