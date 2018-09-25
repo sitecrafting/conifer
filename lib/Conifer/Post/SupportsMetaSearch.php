@@ -3,167 +3,99 @@
 /* @codingStandardsIgnoreFile */
 namespace Conifer\Post;
 
+use Conifer\Query\ClauseGenerator;
+
 trait SupportsMetaSearch {
+  public static function include_meta_fields_in_search(array $config) {
+    //$modifier  = new QueryModifier($GLOBALS['wpdb']);
 
-  /**
-   * list_searcheable_acf list all the custom fields we want to include in our search query
-   *
-   * @return array list of custom fields
-   */
-  public static function list_searcheable_acf(){
+    add_filter('posts_clauses', function(array $clauses, $query) use($config) {
+      global $wpdb;
 
-    /*
-     * If you just pass a string, it will do an equals comparison on that value
-     * If you wish to do a like search operation (to search repearter rows for
-     * Instance) pass an array with two values, the meta_key value, and
-     * The meta_compare value
-     * For example:
-     *     ['meta_key' => "page_content_rows___accordion_sections___%", 'meta_compare'=>'LIKE']
-     * This would search all accordion sections of an accordion repeater that is part of a page content repeater (make sense?)
-     *
-     * Be aware:
-     * 1. ACF fields have two values in the database so when building likes make sure to filter out the field that starts with the underscore
-     * 2. To search for repeater fields use the underscore which is a wildcard and can be used to grab repearter rows
-     *
-     */
+      //debug($query->meta_query->queries);
+      if ($query->is_search()) {
+        // ->prepend_distinct
+        $clauses['fields'] = ' DISTINCT ' . $clauses['fields'];
 
-    $list_searcheable_acf = [
-      "test_field",
-    ];
+        // ->add_join('postmeta', 'posts.ID = postmeta.post_id')
+        $clauses['join'] .=
+          " LEFT JOIN {$wpdb->postmeta}"
+          . " ON ( {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id ) ";
 
-    return $list_searcheable_acf;
-  }
+        // map -> wildcard
+        $terms = array_map(function(string $term) : string {
+          return "%{$term}%";
+        }, $query->query_vars['search_terms']);
 
-  /**
-  * advanced_custom_search search that encompasses ACF/advanced custom fields and taxonomies and split expression before request
-   *
-  * @param  query-part/string      $where    the initial "where" part of the search query
-  * @param  object                 $wp_query
-  * @return query-part/string      $where    the "where" part of the search query as we customized
-  * see https://vzurczak.wordpress.com/2013/06/15/extend-the-default-wordpress-search/
-  * credits to Vincent Zurczak for the base query structure/splitting tags section
-  */
-  public static function advanced_custom_search( $where, $wp_query ) {  //TODO: Revise the structure to make this more configurable
-    global $wpdb;
+        $whereClauses = array_map(function(array $postTypeSearch) use($wpdb, $terms) {
+          $titleComparisons = array_map(function(string $term) use($wpdb) : string {
+            return $wpdb->prepare("{$wpdb->posts}.post_title LIKE %s", $term);
+          }, $terms);
+          $titleClause = '(' . implode(' OR ', $titleComparisons) . ')';
 
-    if ( empty( $where )) {
-      return $where;
-    }
+          $excerptComparisons = array_map(function(string $term) use($wpdb) : string {
+            return $wpdb->prepare("{$wpdb->posts}.post_excerpt LIKE %s", $term);
+          }, $terms);
+          $excerptClause = '(' . implode(' OR ', $excerptComparisons) . ')';
 
-    // Get the search term
-    $searchString = $wp_query->query_vars[ 's' ];
+          $contentComparisons = array_map(function(string $term) use($wpdb) : string {
+            return $wpdb->prepare("{$wpdb->posts}.post_content LIKE %s", $term);
+          }, $terms);
+          $contentClause = '(' . implode(' OR ', $contentComparisons) . ')';
 
-    // Create an array of each word in the search string
-    $arrSearchTerms = explode( ' ', $searchString );
+          $metaKeyComparisons = [
+            '(meta_key = "hello")',
+            '(meta_key LIKE "good%")',
+          ];
+          $metaKeyComparisons = array_map(function($key) use($wpdb) : string {
+            if (is_string($key)) {
 
-    //Check if there is just one word in the search string
-    if( $arrSearchTerms === FALSE || count( $arrSearchTerms ) == 0 ){
-      $arrSearchTerms = array( 0 => $searchString );
-    }
+              return $wpdb->prepare('(meta_key = %s)', $key);
 
-    // Reset the where clause
-    $where = '';
+            } elseif (is_array($key) && isset($key['key'])) {
 
-    // Get searchable acf fields we want to query against
-    $list_searcheable_acf = static::list_searcheable_acf();
+              $op = trim($key['key_compare'] ?? '=');
 
-    //For each search term build the query clause to look in the acf fields
-    foreach( $arrSearchTerms as $tag ) {
-      $where .= static::build_where_clause($list_searcheable_acf, $tag);
-    }
+              if ($op !== 'LIKE') {
+                $op = '=';
+              }
 
-    return $where;
-  }
+              return $wpdb->prepare("(meta_key {$op} %s)", $key['key']);
+            }
 
-  /**
-   * build_where_clause build the where string to include in our search query
-   *
-   * @param  array      $list_searcheable_acf       the list of searchable acf fields
-   * @param  string     $tag                        the search value
-   * @return string     $where                      where clause
-   */
-  public static function build_where_clause($list_searcheable_acf, $tag){
-    global $wpdb;
+            return '';
+          }, $postTypeSearch['fields']);
 
-    $where="";
+          $metaKeyClause = '(' . implode(' OR ', $metaKeyComparisons) . ')';
 
-    //Prepare search term
-    $searchTerm="%".$tag."%";
+          $metaValueComparisons = array_map(function(string $term) use($wpdb) {
+            return $wpdb->prepare('(meta_value LIKE %s)', $term);
+          }, $terms);
+          $metaValueClause = '(' . implode(' OR ', $metaValueComparisons) . ')';
 
-    //Build the where clause
-    $where.=$wpdb->prepare(
-            " AND (
-                ($wpdb->post_title LIKE %s)
-                OR ($wpdb->post_content LIKE %s)
-                OR EXISTS (
-                    SELECT * FROM $wpdb->postmeta
-                    WHERE post_id = $wpdb->ID AND (",
-            $searchTerm,
-            $searchTerm);
+          $metaClause = ' (' . implode(' AND ', [$metaKeyClause, $metaValueClause]) . ')';
 
-    //Add the search filters for each acf field
-    $where .= static::build_meta_filters($searchTerm, $list_searcheable_acf);
+          // put it all together
+          $searchClauses = [$titleClause, $excerptClause, $contentClause, $metaClause];
 
-    //Check comments and taxonmy tags
-    $where .= $wpdb->prepare(")
-        )
-        OR EXISTS (
-          SELECT * FROM $wpdb->comments
-          WHERE comment_post_ID = $wpdb->ID
-            AND comment_content LIKE %s
-        )
-        OR EXISTS (
-          SELECT * FROM $wpdb->terms
-          INNER JOIN $wpdb->term_taxonomy
-            ON $wpdb->term_id= $wpdb->term_id
-          INNER JOIN $wpdb->term_relationships
-            ON $wpdb->term_taxonomy_id = $wpdb->term_taxonomy_id
-          WHERE (
-                    taxonomy = 'post_tag'
-                    OR taxonomy = 'category'
-                    )
-            AND object_id = $wpdb->ID
-            AND $wpdb->name LIKE %s
-        )
-    )", $searchTerm, $searchTerm);
+          return
+            '('
 
-    return $where;
-  }
+            . '(' . implode(' OR ', $searchClauses) . ')'
 
-  /**
-   * Build the WHERE clause for each ACF field to include in our search query
-   *
-   * @param  string     $searchTerm             the search value
-   * @param  array      $list_searcheable_acf   the list of searchable acf fields
-   * @return string     $where                  part of the where clause
-   */
-  public static function build_meta_filters($searchTerm, $list_searcheable_acf){
-    global $wpdb;
-    $where="";
-    foreach ($list_searcheable_acf as $index=>$searcheable_acf) {
+            // TODO make post_type configurable
+            . ' AND wp_posts.post_type IN (\'post\', \'page\', \'attachment\')'
 
-      //Set the value of the meta key, this is the acf field we want to search in.
-      if (isset($searcheable_acf['meta_key'])){
-        $meta_key = $searcheable_acf['meta_key'];
-      } else {
-        $meta_key = $searcheable_acf;
+            // TODO get status from a filter
+            . ' AND wp_posts.post_status = \'publish\' '
+
+            . ')';
+        }, $config);
+
+        $clauses['where'] = ' AND (' . implode(' OR ', $whereClauses) . ')';
       }
 
-      // Set the value of the compare if it is set, or set it to '=' if none is set
-      if (isset($searcheable_acf['meta_compare'])){
-        $meta_compare = $searcheable_acf['meta_compare'];
-      } else {
-        $meta_compare = '=';
-      }
-
-      // Build the filter strings
-      if ($index==0){
-        $where .= $wpdb->prepare(" (meta_key ".$meta_compare." %s AND meta_value LIKE %s) ", $meta_key, $searchTerm);
-      } else {
-        $where .= $wpdb->prepare(" OR (meta_key ".$meta_compare." %s AND meta_value LIKE %s) ", $meta_key, $searchTerm);
-      }
-    }
-
-    return $where;
+      return $clauses;
+    }, 10, 2);
   }
 }
