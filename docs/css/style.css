@@ -2,9 +2,18 @@
  * Conifer docs styles go here!
  */
 
+h1#conifer-documentation {
+  height: 0;
+  text-indent: -9999em;
+}
+
 .book .conifer-banner {
   background-image: url(/img/banner-green.png);
-  width: 1076px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 130%;
+  margin-left: -15%;
   height: 320px;
 }
 .book.color-theme-1 .conifer-banner {
@@ -65,4 +74,22 @@
 .book.font-family-1 .book-body .page-wrapper .page-inner section.normal h5,
 .book.font-family-1 .book-body .page-wrapper .page-inner section.normal h6 {
   font-family: 'Open Sans', sans-serif;
+}
+
+
+@media only screen and (max-width: 1092px) {
+  .book .conifer-banner {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .book .conifer-banner {
+    display: none;
+  }
+  h1#conifer-documentation {
+    text-indent: initial;
+    height: initial;
+  }
 }
