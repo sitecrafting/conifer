@@ -66,7 +66,12 @@ class Site extends TimberSite {
   public function __construct($identifier = null) {
     parent::__construct($identifier);
 
-    $this->script_directory_cascade = [get_stylesheet_directory() . '/js/'];
+    $this->script_directory_cascade = [
+      get_stylesheet_directory() . '/js/',
+      WP_PLUGIN_DIR . '/conifer/assets/js/',
+      WPMU_PLUGIN_DIR . '/conifer/assets/js/',
+    ];
+
     $this->style_directory_cascade  = [get_stylesheet_directory() . '/'];
 
     // check theme for view files, then plugin
