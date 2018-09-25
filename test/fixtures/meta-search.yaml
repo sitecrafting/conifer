@@ -1,0 +1,78 @@
+---
+
+home_page_slug: home-page
+
+blank_slate:
+  users: false
+
+# Fixture for testing advanced search features.
+# Search terms are "goo" and "glue"
+posts:
+
+- title: Home Page Title
+  slug: home-page
+  type: page
+  content: This is the home page
+
+- title: A post about goo glue
+  type: post
+  content: This should be at the top since the search terms match exactly
+
+- title: A whole post about glue
+  type: post
+  content: Nothing interesting here :(
+  meta:
+    hello: glob
+    goodbye: glorp
+
+- title: A whole page about goo
+  type: page
+  content: Nothing interesting here :(
+  meta:
+    hello: glop
+    goodbye: blip
+
+- title: Search term in content
+  type: post
+  content: Here is some goo.
+
+- title: "Search term in meta"
+  type: post
+  content: Nothing interesting here :(
+  meta:
+    hello: glob
+    goodbye: glue
+
+- title: "Search term in meta: hello"
+  type: post
+  content: Nothing to see here
+  meta:
+    hello: goo
+    goodbye: glob
+
+- title: Search term partial match in meta
+  type: page
+  content: blah blah blah
+  meta:
+    hello: goop
+    goodbye: glue
+
+- title: Another partial match in meta
+  type: post
+  content: boop beep bep boop
+  meta:
+    hello: glob
+    goodbye: a gluestick
+
+- title: This shouldn't show up at all
+  type: post
+  content: Nothing interesting here :(
+  meta:
+    hello: glob
+    goodbye: blob
+
+- title: This shouldn't either
+  type: page
+  content: The most uninteresting content in the world
+
+...
