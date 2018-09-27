@@ -72,7 +72,7 @@ class Site extends TimberSite {
       WPMU_PLUGIN_DIR . '/conifer/assets/js/',
     ];
 
-    $this->style_directory_cascade  = [get_stylesheet_directory() . '/'];
+    $this->style_directory_cascade = [get_stylesheet_directory() . '/'];
 
     // check theme for view files, then plugin
     $this->view_directory_cascade = [
