@@ -116,6 +116,20 @@ tooling:
     cmd: 'yarn gitbook'
     description: 'Run arbitrary gitbook commands'
 
+events:
+  pre-e2e:
+    # TODO don't destroy dev database state every time?
+    - appserver: '
+      cd $LANDO_MOUNT &&
+      wp fixture install /app/test/fixtures/meta-search.yaml --yes &&
+      wp theme activate search-test-theme
+      '
+    - appserver: '
+      cd $LANDO_MOUNT &&
+      nohup scripts/listen-for-fixtures.sh &
+      echo "listening for fixtures in appserver pid $!"
+      '
+
 proxy:
   appserver:
     - conifer.lndo.site
