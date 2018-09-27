@@ -21,3 +21,11 @@ spl_autoload_register(function(string $className) {
     }
   }
 });
+
+
+/*
+ * Define some WP constants that are referenced directly in Conifer
+ */
+define('ABSPATH', realpath(__DIR__ . '/../'));
+define('WP_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
+define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
