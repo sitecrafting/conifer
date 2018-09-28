@@ -64,7 +64,7 @@ trait SupportsAdvancedSearch {
             }
 
             return '';
-          }, $postTypeSearch['fields']);
+          }, $postTypeSearch['meta_fields']);
 
           $metaKeyClause = '(' . implode(' OR ', $metaKeyComparisons) . ')';
 

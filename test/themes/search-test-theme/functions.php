@@ -7,7 +7,7 @@ $site = new Site();
 $site->configure(function () {
   Post::configure_advanced_search([
     [
-      'fields' => [
+      'meta_fields' => [
         'hello',
         ['key' => '%bye', 'key_compare' => 'LIKE'],
       ],
