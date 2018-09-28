@@ -124,7 +124,7 @@ EOF
   wp --quiet theme activate groot
 
   # install test themes
-  rsync --archive $LANDO_MOUNT/test/themes/ $LANDO_MOUNT/wp/wp-content/themes/
+  rsync --archive --recursive $LANDO_MOUNT/test/themes/ $LANDO_MOUNT/wp/wp-content/themes/
 
   # uninstall stock themes
   wp --quiet theme uninstall \

@@ -60,7 +60,7 @@ tooling:
 
   install-test-themes:
     service: appserver
-    cmd: 'rsync --verbose --archive /app/test/themes/ /app/wp/wp-content/themes/'
+    cmd: 'rsync --verbose --archive --recursive /app/test/themes/ /app/wp/wp-content/themes/'
     description: 'Sync test themes for e2e testing'
 
   yarn:
@@ -122,12 +122,8 @@ events:
     - appserver: '
       cd $LANDO_MOUNT &&
       wp fixture install /app/test/fixtures/meta-search.yaml --yes &&
+      rsync --archive --recursive test/themes/ wp/wp-content/themes/ &&
       wp theme activate search-test-theme
-      '
-    - appserver: '
-      cd $LANDO_MOUNT &&
-      nohup scripts/listen-for-fixtures.sh &
-      echo "listening for fixtures in appserver pid $!"
       '
 
 proxy:
