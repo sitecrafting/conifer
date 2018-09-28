@@ -5,8 +5,8 @@ namespace Conifer\Post;
 
 use Conifer\Query\ClauseGenerator;
 
-trait SupportsMetaSearch {
-  public static function include_meta_fields_in_search(array $config) {
+trait SupportsAdvancedSearch {
+  public static function configure_advanced_search(array $config) {
     //$modifier  = new QueryModifier($GLOBALS['wpdb']);
 
     add_filter('posts_clauses', function(array $clauses, $query) use($config) {

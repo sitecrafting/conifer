@@ -18,7 +18,7 @@ abstract class Post extends TimberPost {
   use HasTerms;
   use HasCustomAdminColumns;
   use HasCustomAdminFilters;
-  use SupportsMetaSearch;
+  use SupportsAdvancedSearch;
 
   const POST_TYPE = '';
 

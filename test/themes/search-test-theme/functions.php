@@ -5,7 +5,7 @@ use Conifer\Site;
 
 $site = new Site();
 $site->configure(function () {
-  Post::include_meta_fields_in_search([
+  Post::configure_advanced_search([
     [
       'fields' => [
         'hello',
