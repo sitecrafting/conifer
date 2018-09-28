@@ -4,6 +4,15 @@
   "gitbook": "3.2.2",
   "language": "en",
   "plugins": [
-    "anchors"
-  ]
+    "anchors",
+    "callouts",
+    "codesnippet",
+    "edit-link"
+  ],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/sitecrafting/conifer/edit/master/docs",
+      "label": "Edit this page"
+    }
+  }
 }

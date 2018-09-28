@@ -3,12 +3,17 @@
 * [What is Conifer?](/what-is-conifer.md)
 * [Requirements](/requirements.md)
 * [Installation](/installation.md)
-* [Getting Started](/getting-started.md)
+* [Conifer Basics](/basics.md)
 
 ## Features
 
+* [The Site Class](/site.md)
 * [Posts and Post Types](/posts.md)
+* [Forms](/forms.md)
 * [Admin Helpers](/admin.md)
+* [Authorization](/authorization.md)
+* [Notifiers](/notifiers.md)
+* [Shortcodes](/shortcodes.md)
 
 ## Development
 
@@ -17,4 +22,8 @@
 * [Team](/team.md)
 * [Governance](/governance.md)
 * [Code of Conduct](/code-of-conduct.md)
+
+## Integration
+
+* [Timber](/timber.md)
 

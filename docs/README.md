@@ -1,8 +1,10 @@
 # Conifer Documentation
 
-## NOTE: ALPHA STATUS
+<div class="conifer-banner"></div>
 
-Until v1.0.0, we may introduce breaking changes on minor releases.
+> #### Warning::ALPHA STATUS
+
+> Conifer is currently in what we consider a "stable alpha." Most of the code has been extracted from components already running in production. We consider it production-ready. However, there may be lingering bugs and breaking changes to the API at this early stage.
 
 ## What is Conifer?
 
@@ -24,7 +26,11 @@ Conifer shares several of Timber's [stated goals](https://github.com/timber/timb
 
 We make every effort to stay out of your way in this regard, to add to and not take away from Timber's powerful features.
 
-## More Helpers
+## Powerful Features
+
+Scan the menu or check out the [Conifer Basics](/basics.md) guide for an overview of the powerful features Conifer offers for developing well-architected, object-oriented WordPress code. Here are some of them.
+
+### More Helpers
 
 Simplify your theme with a wealth of utility functions and helpers.
 
@@ -50,16 +56,20 @@ Timber::render('single.twig', $data);
   
   <aside>
   	<h3>Related Posts</h3>
-  	{% for related in post.get_related(3) %}
+  	{% for related in post.get_related_by_category(3) %}
   		<a href="{{ related.link }}">{{ related.title }}</a>
   	{% endfor %}
   </aside>
 </html>	
 ```
 
-## DRY Architecture
+### Easy custom Twig functions/filters
 
-Get more stuff done without so much boilerplate.
+```php
+use MyProject\MyCustomTwigHelper;
+
+$site->add_twig_helper(new MyCustomTwigHelper());
+```
 
 ### AJAX Action API
 
@@ -87,8 +97,6 @@ add_action('wp_ajax_some_action', [MySimpleAjaxHandler::class, 'handle']);
 */
 
 ```
-
-
 
 ### Forms
 

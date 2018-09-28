@@ -29,7 +29,7 @@ class Button extends AbstractBase {
    * @param  string $html the raw markup between the start/end shortcode tags.
    * @return string the modified <a> tag HTML
    */
-  public function render( $atts = [], $html = '' ) {
+  public function render(array $atts = [], string $html = '') : string {
     if ( $html ) {
       $dom = new DOMDocument();
 

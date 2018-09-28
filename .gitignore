@@ -2,8 +2,9 @@
 /wp/
 /wp-content/
 /node_modules/
+/_book/
 /database-backups/
-/conifer/
+/conifer
 
 # build artifacts
 /conifer-*.tar.gz
@@ -21,3 +22,5 @@ yarn-error.log
 wp-cli.local.yml
 /nbproject/private/
 
+# documentation
+/_book/

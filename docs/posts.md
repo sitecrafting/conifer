@@ -127,7 +127,7 @@ $wall_e->get_field('disposition');
 
 Note that we can mix in the custom `disposition` and `directive` fields with our arguments. Conifer filters the data intelligently, discerning which keys correspond to proper `wp_posts` columns, and which should become meta fields.
 
-## Querying for subclasses
+## Querying for custom post types
 
 Conifer Post classes know how to instantiate themselves in query results. The static `get_all()` method will return an array of whichever subclass of `Post` was called, whether that's `BlogPost`, `Page`, or a CPT:
 

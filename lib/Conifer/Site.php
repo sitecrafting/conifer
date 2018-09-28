@@ -49,27 +49,30 @@ class Site extends TimberSite {
   protected $assets_version;
 
   /**
-   * Keys are function names and values are closures.
+   * Construct a Conifer Site object.
    *
-   * @var array An associative array of Twig functions.
-   */
-  protected $twig_functions = [];
-
-  /**
-   * Keys are function names and values are closures.
+   * @example
+   * ```php
+   * use Conifer\Site;
    *
-   * @var array An associative array of Twig filters.
+   * // non-multisite setup:
+   * $site = new Site();
+   *
+   * // multisite setup:
+   * $site = new Site(1);
+   * ```
+   * @param string|int $identifier the WP site name or ID
    */
-  protected $twig_filters = [];
+  public function __construct($identifier = null) {
+    parent::__construct($identifier);
 
-  /**
-   * Constructor
-   */
-  public function __construct() {
-    parent::__construct();
+    $this->script_directory_cascade = [
+      get_stylesheet_directory() . '/js/',
+      WP_PLUGIN_DIR . '/conifer/assets/js/',
+      WPMU_PLUGIN_DIR . '/conifer/assets/js/',
+    ];
 
-    $this->script_directory_cascade = [get_stylesheet_directory() . '/js/'];
-    $this->style_directory_cascade  = [get_stylesheet_directory() . '/'];
+    $this->style_directory_cascade = [get_stylesheet_directory() . '/'];
 
     // check theme for view files, then plugin
     $this->view_directory_cascade = [
@@ -117,6 +120,7 @@ class Site extends TimberSite {
     $this->add_default_twig_helpers();
 
     Integrations\YoastIntegration::demote_metabox();
+    // TODO moar integrations!
   }
 
 
@@ -318,22 +322,6 @@ class Site extends TimberSite {
     $this->add_twig_helper(new Twig\TextHelper());
     $this->add_twig_helper(new Twig\TermHelper());
     $this->add_twig_helper(new Twig\ImageHelper());
-
-    add_filter('get_twig', function(Twig_Environment $twig) {
-      // add Twig filters
-      foreach ( $this->twig_filters as $name => $callable ) {
-        $filter = new Twig_SimpleFilter( $name, $callable );
-        $twig->addFilter( $filter );
-      }
-
-      // add Twig functions
-      foreach ( $this->twig_functions as $name => $callable ) {
-        $function = new Twig_SimpleFunction( $name, $callable );
-        $twig->addFunction( $function );
-      }
-
-      return $twig;
-    });
   }
 
 

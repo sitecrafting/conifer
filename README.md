@@ -2,12 +2,10 @@
 
 > **THIS REPO IS IN ALPHA STATUS. ITS USE IN PRODUCTION IS NOT RECOMMENDED.**
 
-Powerful abstractions on top of [Timber](https://timber.github.io/docs/) for simple, opinionated OO WordPress development.
+[![Powerful abstractions on top of Timber for simple, opinionated OO WordPress development.](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/banner-green.png)](https://coniferplug.in)
 
 [![Build Status](https://img.shields.io/travis/sitecrafting/conifer.svg)](https://travis-ci.org/sitecrafting/conifer)
 [![Build Status](https://img.shields.io/packagist/v/sitecrafting/conifer.svg)](https://packagist.org/packages/sitecrafting/conifer)
-
-[![Work with SiteCrafting on your next web project](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/sc-banner.jpg)](https://www.sitecrafting.com/)
 
 ## Documentation
 
@@ -37,3 +35,9 @@ Follow the prompts and you should have a local WordPress site running Conifer
 and its companion starter theme, [Groot](https://github.com/sitecrafting/groot)!
 
 **NOTE: there is currently a known issue with how Lando sets up pretty permalinks. They won't work before you configure them manually.**
+
+## Authored by SiteCrafting
+
+Built with 💚 + ☕ in Tacoma, Washington.
+
+[![Work with SiteCrafting on your next web project](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/sc-banner.jpg)](https://www.sitecrafting.com/)
