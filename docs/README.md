@@ -4,7 +4,9 @@
 
 > #### Warning::ALPHA STATUS
 
-> Conifer is currently in what we consider a "stable alpha." Most of the code has been extracted from components already running in production. We consider it production-ready. However, there may be lingering bugs and breaking changes to the API at this early stage.
+> Conifer is in what we're calling a "stable alpha." This means that we consider the code production-ready and that breaking changes to the API are unlikely. Most of the code has been extracted from components already running in production.
+>
+> **However, there may be lingering bugs and, if necessary, breaking changes at this early stage.**
 
 ## What is Conifer?
 
