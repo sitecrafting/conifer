@@ -78,13 +78,18 @@ trait SupportsAdvancedSearch {
           // put it all together
           $searchClauses = [$titleClause, $excerptClause, $contentClause, $metaClause];
 
+          $postTypes = $postTypeSearch['post_type'] ?? ['post', 'page'];
+          $postTypeCriteria = array_map(function(string $type) use($wpdb) {
+            return $wpdb->prepare('%s', $type);
+          }, $postTypes);
+
           return
             '('
 
             . '(' . implode(' OR ', $searchClauses) . ')'
 
             // TODO make post_type configurable
-            . ' AND wp_posts.post_type IN (\'post\', \'page\', \'attachment\')'
+            . ' AND wp_posts.post_type IN (' . implode(', ', $postTypeCriteria) . ')'
 
             // TODO get status from a filter
             . ' AND wp_posts.post_status = \'publish\' '

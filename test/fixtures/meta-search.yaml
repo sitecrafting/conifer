@@ -75,4 +75,18 @@ posts:
   type: page
   content: The most uninteresting content in the world
 
+- title: A Thing
+  type: thing
+  content: This is a post of type "thing"
+  meta:
+    meh: I say "meh" to glue
+    meep: I say "meep!" to goo!
+
+- title: Another Thing
+  type: thing
+  content: This thing shouldn't show up at all.
+  meta:
+    meh: just meh.
+    meep: hecka meep!!1
+
 ...
