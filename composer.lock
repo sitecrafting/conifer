@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4da63cbc69022b10a08e11cafe01274d",
+    "content-hash": "5e2f40693498bffcd276b967f8bb7211",
     "packages": [],
     "packages-dev": [
         {
@@ -71,16 +71,16 @@
         },
         {
             "name": "acobster/wp-cli-yaml-fixtures",
-            "version": "dev-master",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acobster/wp-yaml-fixtures.git",
-                "reference": "fbe32575b7527e111c66f9fc2efef5208d3d95e7"
+                "reference": "a5f422e8f4b39edd380a49c4a5215d6001bd1a68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/fbe32575b7527e111c66f9fc2efef5208d3d95e7",
-                "reference": "fbe32575b7527e111c66f9fc2efef5208d3d95e7",
+                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/a5f422e8f4b39edd380a49c4a5215d6001bd1a68",
+                "reference": "a5f422e8f4b39edd380a49c4a5215d6001bd1a68",
                 "shasum": ""
             },
             "require": {
@@ -112,7 +112,7 @@
                 }
             ],
             "description": "Define WordPress database snapshots as simple YAML files",
-            "time": "2018-09-29T00:55:33+00:00"
+            "time": "2018-09-29T18:51:22+00:00"
         },
         {
             "name": "altorouter/altorouter",
@@ -796,23 +796,23 @@
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "4.9.x-dev",
+            "version": "4.9.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "1dc722bde6b2e2ccb81e4224576caa3da2e641d7"
+                "reference": "50323f9b91d7689d615b4af02caf9d80584b1cfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/1dc722bde6b2e2ccb81e4224576caa3da2e641d7",
-                "reference": "1dc722bde6b2e2ccb81e4224576caa3da2e641d7",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/50323f9b91d7689d615b4af02caf9d80584b1cfc",
+                "reference": "50323f9b91d7689d615b4af02caf9d80584b1cfc",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "provide": {
-                "wordpress/core-implementation": "4.9.x-dev"
+                "wordpress/core-implementation": "4.9.8"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -832,7 +832,7 @@
                 "cms",
                 "wordpress"
             ],
-            "time": "2018-09-24T20:18:24+00:00"
+            "time": "2018-08-02T21:48:32+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -2462,12 +2462,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sitecrafting/groot.git",
-                "reference": "c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96"
+                "reference": "1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sitecrafting/groot/zipball/c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96",
-                "reference": "c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96",
+                "url": "https://api.github.com/repos/sitecrafting/groot/zipball/1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a",
+                "reference": "1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a",
                 "shasum": ""
             },
             "require": {
@@ -2508,7 +2508,7 @@
                 }
             ],
             "description": "The official SiteCrafting WordPress starter theme",
-            "time": "2018-08-21T04:47:15+00:00"
+            "time": "2018-09-29T16:37:38+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -3493,8 +3493,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "10up/wp_mock": 20,
-        "sitecrafting/groot": 20,
-        "acobster/wp-cli-yaml-fixtures": 20
+        "sitecrafting/groot": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
