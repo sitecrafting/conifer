@@ -14,7 +14,7 @@
 * [Admin Helpers](/admin.md)
 * [Authorization](/authorization.md)
 * [Notifiers](/notifiers.md)
-
+* [Shortcodes](/shortcodes.md)
 
 ## Development
 
