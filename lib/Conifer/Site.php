@@ -27,6 +27,11 @@ use Conifer\Twig;
  * @package Conifer
  */
 class Site extends TimberSite {
+  const DEFAULT_TWIG_EXTENSIONS = [
+    Twig_Extension_Debug::class,
+    Twig_Extension_StringLoader::class,
+  ];
+
   /**
    * An array of directories where Conifer will look for JavaScript files
    *
@@ -300,12 +305,17 @@ class Site extends TimberSite {
    */
   public function configure_default_twig_extensions() {
     add_filter('get_twig', function(Twig_Environment $twig) {
-      $twig->addExtension( new Twig_Extension_StringLoader() );
+      $loadedExtensions = array_keys($twig->getExtensions());
 
-      // Make debugging available through Twig
-      // Note: in order for Twig's dump() function to work,
+      // load default extensions unless they've been loaded already
+      foreach (static::DEFAULT_TWIG_EXTENSIONS as $extClass) {
+        if (!in_array($extClass, $loadedExtensions, true)) {
+          $twig->addExtension(new $extClass());
+        }
+      }
+
+      // Note: in order for Twig_Extension_Debug's dump() function to work,
       // the WP_DEBUG constant must be set to true in wp-config.php
-      $twig->addExtension( new Twig_Extension_Debug() );
 
       return $twig;
     });
@@ -321,7 +331,6 @@ class Site extends TimberSite {
     $this->add_twig_helper(new Twig\NumberHelper());
     $this->add_twig_helper(new Twig\TextHelper());
     $this->add_twig_helper(new Twig\TermHelper());
-    $this->add_twig_helper(new Twig\ImageHelper());
   }
 
 
