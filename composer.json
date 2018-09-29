@@ -35,7 +35,7 @@
     "squizlabs/php_codesniffer": "3.*",
     "timber/timber": "^1.7",
     "wp-coding-standards/wpcs": "^0.14",
-    "acobster/wp-cli-yaml-fixtures": "dev-master"
+    "acobster/wp-cli-yaml-fixtures": "^0.5.0"
   },
   "extra": {
     "wordpress-install-dir": {

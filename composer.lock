@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6aefae53fbc7e068a17480a51a619ca",
+    "content-hash": "5e2f40693498bffcd276b967f8bb7211",
     "packages": [],
     "packages-dev": [
         {
@@ -71,16 +71,16 @@
         },
         {
             "name": "acobster/wp-cli-yaml-fixtures",
-            "version": "dev-master",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acobster/wp-yaml-fixtures.git",
-                "reference": "fbe32575b7527e111c66f9fc2efef5208d3d95e7"
+                "reference": "a5f422e8f4b39edd380a49c4a5215d6001bd1a68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/fbe32575b7527e111c66f9fc2efef5208d3d95e7",
-                "reference": "fbe32575b7527e111c66f9fc2efef5208d3d95e7",
+                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/a5f422e8f4b39edd380a49c4a5215d6001bd1a68",
+                "reference": "a5f422e8f4b39edd380a49c4a5215d6001bd1a68",
                 "shasum": ""
             },
             "require": {
@@ -112,7 +112,7 @@
                 }
             ],
             "description": "Define WordPress database snapshots as simple YAML files",
-            "time": "2018-09-29T00:55:33+00:00"
+            "time": "2018-09-29T18:51:22+00:00"
         },
         {
             "name": "altorouter/altorouter",
@@ -3493,8 +3493,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "10up/wp_mock": 20,
-        "sitecrafting/groot": 20,
-        "acobster/wp-cli-yaml-fixtures": 20
+        "sitecrafting/groot": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
