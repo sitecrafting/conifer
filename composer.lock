@@ -75,12 +75,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/acobster/wp-yaml-fixtures.git",
-                "reference": "ec041515899baf0e7dafb8e744d292f0f669ba0a"
+                "reference": "fbe32575b7527e111c66f9fc2efef5208d3d95e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/ec041515899baf0e7dafb8e744d292f0f669ba0a",
-                "reference": "ec041515899baf0e7dafb8e744d292f0f669ba0a",
+                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/fbe32575b7527e111c66f9fc2efef5208d3d95e7",
+                "reference": "fbe32575b7527e111c66f9fc2efef5208d3d95e7",
                 "shasum": ""
             },
             "require": {
@@ -112,7 +112,7 @@
                 }
             ],
             "description": "Define WordPress database snapshots as simple YAML files",
-            "time": "2018-09-28T23:59:28+00:00"
+            "time": "2018-09-29T00:55:33+00:00"
         },
         {
             "name": "altorouter/altorouter",
