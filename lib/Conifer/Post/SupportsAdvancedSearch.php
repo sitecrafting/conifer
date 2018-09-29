@@ -104,7 +104,6 @@ trait SupportsAdvancedSearch {
 
         $clauses['where'] = ' AND (' . implode(' OR ', $whereClauses) . ')';
       }
-      add_filter('query', function($sql) { error_log($sql); return $sql; });
 
       return $clauses;
     }, 10, 2);
