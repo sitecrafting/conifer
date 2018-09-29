@@ -308,14 +308,13 @@ class Site extends TimberSite {
       $loadedExtensions = array_keys($twig->getExtensions());
 
       // load default extensions unless they've been loaded already
+      // Note: in order for Twig_Extension_Debug's dump() function to work,
+      // the WP_DEBUG constant must be set to true in wp-config.php
       foreach (static::DEFAULT_TWIG_EXTENSIONS as $extClass) {
         if (!in_array($extClass, $loadedExtensions, true)) {
           $twig->addExtension(new $extClass());
         }
       }
-
-      // Note: in order for Twig_Extension_Debug's dump() function to work,
-      // the WP_DEBUG constant must be set to true in wp-config.php
 
       return $twig;
     });
