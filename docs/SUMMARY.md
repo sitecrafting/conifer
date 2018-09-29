@@ -17,9 +17,11 @@
 * [Notifiers](/notifiers.md)
 * [Shortcodes](/shortcodes.md)
 
-## Development
+## Contributing
 
+* [How to Contribute](/how-to-contribute.md)
 * [Development Setup](/dev-setup.md)
 * [Testing](/testing.md)
 * [Governance](/governance.md)
 * [Code of Conduct](/code-of-conduct.md)
+
