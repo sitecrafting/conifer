@@ -179,3 +179,55 @@ $parent->add()
 ```
 
 `SubPage` is a subclass of `AdminPage` and therefore inherits the same fluent interface. Instances of `SubPage` inherit their required capability from their parent page.
+
+## Hotkeys
+
+Admin hotkeys are a special feature of Conifer and one of the few things it does out of the box. These hotkeys allow you type, for example, `gd` to go to the Dashboard from any page in the WP Admin.
+
+You can add your own custom hotkeys from your config callback:
+
+```php
+$this->set_custom_admin_hotkeys([
+  // typing "ga" redirects us to the home page
+  '97' => '/a-page'
+]);
+```
+
+Note that we're passing a character code here, not a letter. JavaScript uses character codes to recognize the letter that the user typed. 97 is the code for a lower-case "a", so this is telling the JavaScript that when the user types `ga` it should redirect to `/a-page`.
+
+> ####Info::Cursor focus must be on the window
+>
+> Your focus must be on the wider window in order for hotkeys to work. This is to prevent them from taking effect inside text boxes.
+
+Here are the default hotkeys and their corresponding character codes. Note that `g` is the universal prefix for all hotkeys (its character code is 103, by the way):
+
+| Hotkey | Code | Redirects to... |
+| -------|------|-----------------|
+| `gd` | 100 | Dashboard (`/wp-admin/index.php`) |
+| `gp` | 112 | Posts (`/wp-admin/edit.php`) |
+| `gP` | 80 | New Post (`/wp-admin/post-new.php`) |
+| `gc` | 99 | Categories (`/wp-admin/edit-tags.php?taxonomy=category`) |
+| `gt` | 116 | Tags (`/wp-admin/edit-tags.php`) |
+| `gm` | 109 | Media (`/wp-admin/upload.php`) |
+| `ga` | 97 | Pages (`/wp-admin/edit.php?post_type=page`) |
+| `gA` | 65 | New Page (`/wp-admin/post-new.php?post_type=page`) |
+| `gT` | 84 | Themes (`/wp-admin/themes.php`) |
+| `gC` | 67 | Customizer (`"/wp-admin/customize.php?return=" + location.pathname`) |
+| `gl` | 108 | Plugins (`/wp-admin/plugins.php`) |
+| `gL` | 108 | Install Plugin (`/wp-admin/plugin-install.php`) |
+| `gu` | 117 | Users (`/wp-admin/users.php`) |
+| `gg` | 103 | General Settings (`/wp-admin/options-general.php`) |
+| `gw` | 119 | Writing (`/wp-admin/options-writing.php`) |
+| `gr` | 114 | Reading (`/wp-admin/options-reading.php`) |
+| `gi` | 105 | Discussion (`/wp-admin/options-discussion.php`) |
+| `gk` | 107 | General Settings (`/wp-admin/options-permalink.php`) |
+| `gh` | 104 | Home Page (`/`) |
+
+### Disabling hotkeys
+
+You can disable admin hotkeys from your config callback by calling:
+
+```php
+$this->disable_admin_hotkeys();
+```
+
