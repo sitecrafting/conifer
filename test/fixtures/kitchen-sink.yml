@@ -1,0 +1,84 @@
+---
+name: Conifer Test
+description: Just another database described in YAML
+
+# tell me what **not** to delete
+blank_slate:
+  preserve_users:
+  - me
+  - myself
+  - i@email.me
+  - 123 # ID
+
+# insert users
+users:
+- email: admin@example.com
+  login: admin
+  role: administrator
+  meta:
+    my_info: 'This info is v important'
+    moar_info: 'here iz sum moar infoz'
+
+# insert arbitrary post data
+posts:
+- title: My Blog Post
+  type: post
+
+- title: Page with a Custom Slug
+  slug: yep-this-heres-a-completely-custom-slug
+  type: page
+
+  content: |
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Nunc haec primum fortasse audientis servire debemus.
+
+    Sumenda potius quam expetenda.
+
+    Mihi quidem Homerus huius modi quiddam vidisse videatur in iis,
+    quae de Sirenum cantibus finxerit.
+    Ut in geometria, prima si dederis, danda sunt omnia.
+
+  # specify any number of terms, across taxonomies
+  terms:
+    page_type:
+    - custom-term-slug
+    category:
+    - special
+
+- title: A Post with Some Meta Fields
+  type: page
+  # oh and I want to nest this page
+  parent: bar
+
+  # specify arbitrary meta fields
+  meta:
+    my_custom_field: Some custom value
+
+    # specify multiple values for the same key!
+    # these will be inserted as three wp_postmeta rows
+    another_field:
+    - 'value #1'
+    - 'value #2'
+    - 'value #3'
+
+  terms:
+    page_type:
+    - custom-term-slug
+    - another
+    - and-another
+
+# Define taxonomy terms
+taxonomies:
+  category:
+  - name: Special
+  - name: Snowflake
+  - name: Unicorn
+
+  page_type:
+  - name: Page Type
+    slug: custom-term-slug
+  - name: Another Page Type
+    slug: another
+  - name: And Another
+...
+

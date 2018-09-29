@@ -8,8 +8,9 @@
 ## Features
 
 * [The Site Class](/site.md)
-* [Posts and Post Types](/posts.md)
+* [Posts and Post Types](/posts.md
 * [AJAX Handlers](/ajax-handlers.md)
+* [Search](/search.md)
 * [Forms](/forms.md)
 * [Admin Helpers](/admin.md)
 * [Authorization](/authorization.md)
