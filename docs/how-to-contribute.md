@@ -4,10 +4,10 @@ Thank you for your interest in contributing to Conifer. We'd love your help! �
 
 Keep in mind that coding is just one of many ways you can help. We welcome people of all kinds of abilities who want to contribute to making WordPress development easier. Here are some things you can do:
 
-* Creating instructional videos
-* Writing examples and documentation
-* [Reporting issues](https://github.com/sitecrafting/conifer/issues) or commenting on existing issues: **we want to hear from you!**
-* [Sending us a message](mailto:team@coniferplug.in) 👋
+* Create instructional videos
+* Write examples and documentation
+* [Report issues](https://github.com/sitecrafting/conifer/issues) or commenting on existing issues: **we want to hear from you!**
+* [Send us a message](mailto:team@coniferplug.in) 👋
 
 Before reporting an issue, please be sure to check over the [existing issues](https://github.com/sitecrafting/conifer/issues) on GitHub.
 
