@@ -335,7 +335,7 @@ class Site extends TimberSite {
   }
 
   /**
-   * Remove default WP Admin dashboard widgets
+   * Add a Conifer helper widget to the admin dashboard
    */
   public function configure_default_admin_dashboard_widgets() {
     add_action('wp_dashboard_setup', function() {
@@ -347,6 +347,16 @@ class Site extends TimberSite {
           Timber::render('admin/welcome-to-conifer-widget.twig');
         }
       );
+    });
+  }
+
+  /**
+   * Remove the Conifer widget from the dashboard
+   */
+  public function remove_conifer_widget() {
+    add_action('wp_dashboard_setup', function() {
+      // TODO widget API?
+      remove_meta_box('conifer_guide', 'dashboard', 'normal');
     });
   }
 
