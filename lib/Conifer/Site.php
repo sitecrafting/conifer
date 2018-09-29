@@ -54,6 +54,13 @@ class Site extends TimberSite {
   protected $assets_version;
 
   /**
+   * User-defined admin hotkeys
+   *
+   * @var array
+   */
+  protected $custom_admin_hotkeys;
+
+  /**
    * Construct a Conifer Site object.
    *
    * @example
@@ -84,6 +91,8 @@ class Site extends TimberSite {
       get_stylesheet_directory() . '/views/',
       realpath(__DIR__ . '/../../views/'),
     ];
+
+    $this->custom_admin_hotkeys = [];
   }
 
   /**
@@ -366,7 +375,28 @@ class Site extends TimberSite {
   public function enable_admin_hotkeys() {
     add_action('admin_enqueue_scripts', function() {
       $this->enqueue_script('conifer-admin-hotkeys', 'admin/conifer-admin.js');
+
+      // allow overriding/customizing hotkeys
+      wp_localize_script(
+        'conifer-admin-hotkeys',
+        'CUSTOM_HOTKEY_LOCATIONS',
+        $this->get_custom_admin_hotkeys()
+      );
     });
+  }
+
+  /**
+   * Get user-defined admin hotkeys that will override defaults
+   */
+  public function get_custom_admin_hotkeys() : array {
+    return $this->custom_admin_hotkeys;
+  }
+
+  /**
+   * Override the default admin hotkeys
+   */
+  public function set_custom_admin_hotkeys(array $hotkeys) {
+    $this->custom_admin_hotkeys = $hotkeys;
   }
 
   /**
