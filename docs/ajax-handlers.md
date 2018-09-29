@@ -5,7 +5,7 @@ Conifer provides an elegant and flexible abstraction of the standard [WordPress 
 
 ```PHP
 use Conifer\AjaxHandler\AbstractBase;
-​
+
 class MyAjaxHandler extends AbstractBase {
   protected function execute() {
     /* 
@@ -13,26 +13,31 @@ class MyAjaxHandler extends AbstractBase {
     * Request data is accessible via $this->request
     * Return an array with the appropriate response data
     */
-    return ['foo' => 'bar'];
+    return ['example' => 'data'];
   }
 }
 ```
 
-From here, all you need to do is add the appropriate `wp_ajax_{action}` and/or `wp_ajax_nopriv_{action}` actions in functions.php (most likely via `Site::configure()`):
+From here, all you need to do is add the appropriate `wp_ajax_{action}` and/or `wp_ajax_nopriv_{action}` actions in your site's [config callback](/site.md#simple-configuration):
 
 ```PHP
 add_action('wp_ajax_my_action', [MyAjaxHandler::class, 'handle']);
 ```
 
+> ### Info::Use handle(), not execute()
+>
+> While `execute()` is the method you typically want to implement, `handle()` is the one you want to reference in your `add_action()` callback. It handles some extra stuff for you, like converting to JSON and setting `Content-Type`.
+
 Subsequent AJAX calls which include the action of `my_action` will respond with the following JSON, based on our class definition above:
 
 ```JS
 {
-  foo: 'bar'
+  example: 'data'
 }
 ```
 
 ## Handling Multiple Requests
+
 The above example is great for one-off AJAX requests, but chances are you might have more than one type of request for a given feature in your project. Instead of creating separate AjaxHandler classes for each request, we can group related requests into a single class which can handle multiple actions:
 
 ```PHP
