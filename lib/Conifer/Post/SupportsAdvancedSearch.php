@@ -78,27 +78,33 @@ trait SupportsAdvancedSearch {
           // put it all together
           $searchClauses = [$titleClause, $excerptClause, $contentClause, $metaClause];
 
+          // TODO default to get_post_types() or similar
           $postTypes = $postTypeSearch['post_type'] ?? ['post', 'page'];
           $postTypeCriteria = array_map(function(string $type) use($wpdb) {
             return $wpdb->prepare('%s', $type);
           }, $postTypes);
+
+          // TODO default to get_post_statues() or similar
+          $postStatuses = $postTypeSearch['post_status'] ?? ['publish'];
+          $postStatusCriteria = array_map(function(string $type) use($wpdb) {
+            return $wpdb->prepare('%s', $type);
+          }, $postStatuses);
 
           return
             '('
 
             . '(' . implode(' OR ', $searchClauses) . ')'
 
-            // TODO make post_type configurable
             . ' AND wp_posts.post_type IN (' . implode(', ', $postTypeCriteria) . ')'
 
-            // TODO get status from a filter
-            . ' AND wp_posts.post_status = \'publish\' '
+            . ' AND wp_posts.post_status IN (' . implode(', ', $postStatusCriteria) . ')'
 
             . ')';
         }, $config);
 
         $clauses['where'] = ' AND (' . implode(' OR ', $whereClauses) . ')';
       }
+      add_filter('query', function($sql) { error_log($sql); return $sql; });
 
       return $clauses;
     }, 10, 2);

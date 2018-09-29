@@ -78,6 +78,7 @@ posts:
 - title: A Thing
   type: thing
   content: This is a post of type "thing"
+  status: custom_status
   meta:
     meh: I say "meh" to glue
     meep: I say "meep!" to goo!
@@ -85,8 +86,17 @@ posts:
 - title: Another Thing
   type: thing
   content: This thing shouldn't show up at all.
+  status: custom_status
   meta:
     meh: just meh.
     meep: hecka meep!!1
+
+- title: Thing Draft
+  type: thing
+  content: This thing isn't in custom_status so it also shouldn't show up.
+  status: whatever
+  meta:
+    meh: even tho it matches on goo
+    meep: and glue too!
 
 ...

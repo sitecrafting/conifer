@@ -6,6 +6,7 @@ use Conifer\Site;
 $site = new Site();
 $site->configure(function () {
   register_post_type('thing');
+  register_post_status('custom_status');
 
   Post::configure_advanced_search([
     [
@@ -18,6 +19,7 @@ $site->configure(function () {
     [
       'post_type' => ['thing'],
       'meta_fields' => ['meh', 'meep'],
+      'post_status' => ['custom_status'],
     ],
   ]);
 });
