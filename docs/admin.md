@@ -231,3 +231,11 @@ You can disable admin hotkeys from your config callback by calling:
 $this->disable_admin_hotkeys();
 ```
 
+## The Conifer help widget
+
+By default, Conifer displays a small widget on the admin dashboard containing links you may find helpful. To remove it, put this in your config callback:
+
+```php
+$this->remove_conifer_widget();
+```
+
