@@ -2462,12 +2462,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sitecrafting/groot.git",
-                "reference": "c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96"
+                "reference": "1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sitecrafting/groot/zipball/c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96",
-                "reference": "c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96",
+                "url": "https://api.github.com/repos/sitecrafting/groot/zipball/1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a",
+                "reference": "1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a",
                 "shasum": ""
             },
             "require": {
@@ -2508,7 +2508,7 @@
                 }
             ],
             "description": "The official SiteCrafting WordPress starter theme",
-            "time": "2018-08-21T04:47:15+00:00"
+            "time": "2018-09-29T16:37:38+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
