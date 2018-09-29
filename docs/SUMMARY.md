@@ -25,3 +25,6 @@
 * [Governance](/governance.md)
 * [Code of Conduct](/code-of-conduct.md)
 
+## Reference
+
+* [Changelog](/changelog/2018.md)
