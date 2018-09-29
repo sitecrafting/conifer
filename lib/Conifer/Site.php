@@ -123,6 +123,7 @@ class Site extends TimberSite {
     $this->configure_twig_view_cascade();
     $this->configure_default_twig_extensions();
     $this->add_default_twig_helpers();
+    $this->configure_default_admin_dashboard_widgets();
 
     Integrations\YoastIntegration::demote_metabox();
     // TODO moar integrations!
@@ -332,7 +333,20 @@ class Site extends TimberSite {
     $this->add_twig_helper(new Twig\TermHelper());
   }
 
-
+  /**
+   * Remove default WP Admin dashboard widgets
+   */
+  public function configure_default_admin_dashboard_widgets() {
+    add_action('wp_dashboard_setup', function() {
+      wp_add_dashboard_widget(
+        'conifer_guide',
+        __('Welcome to Conifer'),
+        function() {
+          Timber::render('admin/welcome-to-conifer-widget.twig');
+        }
+      );
+    });
+  }
 
 
   /**
