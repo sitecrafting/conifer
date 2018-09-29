@@ -12,7 +12,7 @@ use WP_Mock;
 
 use Conifer\Site;
 use Conifer\Twig\HelperInterface;
-use \org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStream;
 
 class SiteTest extends Base {
   const THEME_DIRECTORY = 'wp-content/themes/foo';
@@ -55,19 +55,19 @@ class SiteTest extends Base {
       'times' => 3,
     ]);
 
-    //Set up a new virtual file system to test some of the site functions
-    $structure = [
+    // Set up a new virtual file system to test some of the site functions
+    $structure         = [
       'examples' => [
           'test.php'    => 'some text content',
           'other.php'   => 'Some more text content',
           'Invalid.csv' => 'Something else',
-          'assets.version' =>'1'
-        ],
+          'assets.version' =>'1',
+      ],
       'an_empty_folder' => [],
       'badlocation.php' => 'some bad content',
-      '[Foo]'           => 'a block device'
+      '[Foo]'           => 'a block device',
     ];
-    $this->file_system = \org\bovigo\vfs\vfsStream::setup('root', null, $structure);
+    $this->file_system = vfsStream::setup('root', null, $structure);
 
   }
 
@@ -76,22 +76,22 @@ class SiteTest extends Base {
   }
 
   public function test_find_file() {
-    
+
     $site = new Site();
-    
+
     $fileURL = $site->find_file('test.php', [vfsStream::url('root/examples/'), vfsStream::url('root/an_empty_folder/')]);
 
-    $this->assertEquals("vfs://root/examples/test.php", $fileURL);
+    $this->assertEquals('vfs://root/examples/test.php', $fileURL);
 
   }
 
   public function test_find_file_fail() {
-    
+
     $site = new Site();
-    
+
     $fileURL = $site->find_file('test2.php', [vfsStream::url('root/examples/'), vfsStream::url('root/an_empty_folder/')]);
 
-    $this->assertEquals("", $fileURL);
+    $this->assertEquals('', $fileURL);
 
   }
 
@@ -99,21 +99,20 @@ class SiteTest extends Base {
 
     $site = new Site();
 
-    //We will set the stylesheet directory to our virtual file system directory
+    // We will set the stylesheet directory to our virtual file system directory
     WP_Mock::userFunction('get_stylesheet_directory', [
       'return' => vfsStream::url('root/examples'),
       'times' => 2,
     ]);
-    
-    //read the file value from our file in the virtual file system directory
+
+    // read the file value from our file in the virtual file system directory
     $this->assertEquals(
       '1',
       $site->get_assets_version()
     );
-    
 
   }
-  
+
   public function test_get_theme_file() {
     $site = new Site();
 
