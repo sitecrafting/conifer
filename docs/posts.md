@@ -392,3 +392,7 @@ $data['robots_by_eeriness_level'] = Robot::get_all_grouped_by_term(
 ```
 
 Each time posts for a given term are queried, Conifer will merge the `pending` status constraint into the query. This third argument can be any valid [arguments to `WP_Query`](https://codex.wordpress.org/Class_Reference/WP_Query#Parameters) , with the exception of `post_type`, which is locked down.
+
+## Advanced Search Features
+
+Conifer exposes a very powerful API for customizing how post searches works, allowing you to expose meta fields in search with fine-grained control over post types, statuses, and more. See [Search](/search.md) for more details.

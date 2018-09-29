@@ -1,0 +1,7 @@
+<h1>{{ post.title }}</h1>
+
+<section class="search-results">
+  {% for result in posts %}
+    <article><h2>{{ result.title }}</h2></article>
+  {% endfor %}
+</section>
