@@ -121,6 +121,7 @@ events:
     # TODO don't destroy dev database state every time?
     - appserver: '
       cd $LANDO_MOUNT &&
+      scripts/create-test-command-server.sh &&
       rsync --archive --recursive test/themes/ wp/wp-content/themes/
       '
 

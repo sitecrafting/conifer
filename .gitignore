@@ -6,6 +6,11 @@
 /database-backups/
 /conifer
 
+# editor artifacts
+*.swp
+*.swo
+*.swn
+
 # build artifacts
 /conifer-*.tar.gz
 /conifer-*.zip

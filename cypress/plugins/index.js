@@ -4,15 +4,21 @@ module.exports = (on) => {
 
   on('task', {
 
-    installTheme(slug) {
-      const cmd = `wp theme activate ${slug}`
-      request.post('https://appserver/test-command.php', {
-        body: cmd,
-      })
+    activateTheme(slug) {
+      return runWpCommand(`wp theme activate ${slug}`)
+    },
 
-      return null
+    installFixture(path) {
+      return runWpCommand(`wp fixture install --yes ${path}`)
     },
 
   })
 
+}
+
+
+function runWpCommand(command) {
+  return request.post('https://appserver/test-command.php', {
+    body: command,
+  })
 }
