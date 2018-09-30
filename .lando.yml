@@ -121,9 +121,7 @@ events:
     # TODO don't destroy dev database state every time?
     - appserver: '
       cd $LANDO_MOUNT &&
-      wp fixture install /app/test/fixtures/meta-search.yaml --yes &&
-      rsync --archive --recursive test/themes/ wp/wp-content/themes/ &&
-      wp theme activate search-test-theme
+      rsync --archive --recursive test/themes/ wp/wp-content/themes/
       '
 
 proxy:
