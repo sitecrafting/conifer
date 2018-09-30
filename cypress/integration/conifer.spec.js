@@ -1,8 +1,11 @@
 /* globals cy, context */
 describe('Conifer', () => {
+  before(() => {
+    cy.task('installTheme', 'search-test-theme')
+  })
 
   context('The home page', () => {
-    it('display the front-page content', () => {
+    it('displays the front-page content', () => {
       cy.visit('/')
 
       cy.get('h1').should('contain', 'Home Page Title')
