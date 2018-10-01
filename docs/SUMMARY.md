@@ -26,6 +26,7 @@
 ## Reference
 
 * [Admin](/reference/admin.md)
+* [Ajax Handler](/reference/ajaxhandler.md)
 * [Authorization](/reference/authorization.md)
 * [Form](/reference/form.md)
 * [Integrations](/reference/integrations.md)
