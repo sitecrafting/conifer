@@ -113,7 +113,7 @@ tooling:
 
 events:
   pre-docs:
-    - appserver: '/app/scripts/build-api-md.sh'
+    - appserver: 'cd $LANDO_MOUNT && ./scripts/build-api-md.sh'
 
 proxy:
   appserver:
