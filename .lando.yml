@@ -111,6 +111,10 @@ tooling:
     cmd: 'yarn gitbook'
     description: 'Run arbitrary gitbook commands'
 
+events:
+  pre-docs:
+    - appserver: '/app/scripts/build-api-md.sh'
+
 proxy:
   appserver:
     - conifer.lndo.site
