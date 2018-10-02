@@ -19,7 +19,6 @@ echo "Building API markdown..."
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\EmailNotifier        > docs/reference-notifier-emailnotifier.md
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\SendsEmail           > docs/reference-notifier-sendsemail.md
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\SimpleNotifier       > docs/reference-notifier-simplenotifier.md
-
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\BlogPost                 > docs/reference-post-blogpost.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\FrontPage                > docs/reference-post-frontpage.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\HasCustomAdminColumns    > docs/reference-post-hascustomadmincolumns.md
@@ -28,7 +27,6 @@ echo "Building API markdown..."
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\Image                    > docs/reference-post-image.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\Page                     > docs/reference-post-page.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\Post                     > docs/reference-post-post.md
-
 ./vendor/bin/phpdoc-md generate Conifer\\Shortcode\\AbstractBase        > docs/reference-shortcode-abstractbase.md
 ./vendor/bin/phpdoc-md generate Conifer\\Shortcode\\Button              > docs/reference-shortcode-button.md
 ./vendor/bin/phpdoc-md generate Conifer\\Twig\\FormHelper               > docs/reference-twig-formhelper.md
@@ -38,11 +36,8 @@ echo "Building API markdown..."
 ./vendor/bin/phpdoc-md generate Conifer\\Twig\\TermHelper               > docs/reference-twig-termhelper.md
 ./vendor/bin/phpdoc-md generate Conifer\\Twig\\TextHelper               > docs/reference-twig-texthelper.md
 ./vendor/bin/phpdoc-md generate Conifer\\Twig\\WordPressHelper          > docs/reference-twig-wordpresshelper.md
-
 ./vendor/bin/phpdoc-md generate Conifer\\AcfSearch                      > docs/reference-acfsearch.md
 ./vendor/bin/phpdoc-md generate Conifer\\Site                           > docs/reference-site.md 
 
 cd docs
 ls -la
-
-cat admin.md
