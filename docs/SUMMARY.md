@@ -36,7 +36,7 @@
 * [Authorization/TemplatePolicy](/reference-authorization-templatepolicy.md)
 * [Authorization/UserRoleShortcodePolicy](/reference-authorization-userroleshortcodepolicy.md)
 #* [Form/AbstractBase](/reference-form-abstractbase.md)
-* [Integrations/YoastIntegration](/reference-integrations-yoastintegration.md)
+#* [Integrations/YoastIntegration](/reference-integrations-yoastintegration.md)
 * [Navigation/Menu](/reference-navigation-menu.md)
 * [Navigation/MenuItem](/reference-navigation-menuitem.md)
 * [Notifier/AdminNotifier](/reference-notifier-adminnotifier.md)
