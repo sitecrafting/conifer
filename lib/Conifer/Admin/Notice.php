@@ -37,7 +37,7 @@ class Notice {
    * Constructor
    *
    * @param string $message the message to display
-   * @param string $extraClasses any extra HTML class to display.
+   * @param string $extraClasses any extra -HTML- class to display
    * Multiple classes can be specified with a space-separated string, e.g.
    * `"one two three"`
    */
@@ -51,7 +51,7 @@ class Notice {
   }
 
   /**
-   * Clear all flash notices in session
+   * Clear all flash notices in session.
    */
   public static function clear_flash_notices() {
     $_SESSION[static::FLASH_SESSION_KEY] = [];
