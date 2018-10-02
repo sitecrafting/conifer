@@ -25,7 +25,10 @@
 
 ## Reference
 
-* [Admin](reference-admin.md)
+* [Admin/Notice](reference-admin-notice.md)
+* [Admin/Page](reference-admin-page.md)
+* [Admin/SubPage](reference-admin-subpage.md)
+
 * [Authorization](/reference-authorization.md)
 * [Form](/reference-form.md)
 * [Integrations](/reference-integrations.md)

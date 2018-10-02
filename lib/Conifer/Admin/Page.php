@@ -84,10 +84,10 @@ abstract class Page {
    */
   public function __construct(
     string $title,
-    string $menuTitle = NULL,
+    string $menuTitle = '',
     string $capability = 'manage_options',
-    string $slug = NULL,
-    string $iconUrl = NULL
+    string $slug = '',
+    string $iconUrl = ''
   ) {
     $this->title      = $title;
     $this->menu_title = $menuTitle ?: $title;
