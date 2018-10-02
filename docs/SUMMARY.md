@@ -27,7 +27,6 @@
 
 ## API Reference
 
-* [AcfSearch](/reference-acfsearch.md)
 * [Admin\Notice](/reference-admin-notice.md)
 * [Admin\Page](/reference-admin-page.md)
 * [Admin\SubPage](/reference-admin-subpage.md)

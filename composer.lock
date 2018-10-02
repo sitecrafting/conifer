@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "5c7e03a0b997b6c1613af0b63399788a",
-=======
-    "content-hash": "5e2f40693498bffcd276b967f8bb7211",
->>>>>>> master
+    "content-hash": "861d1a505f21ca02c073ca11bd31c37f",
     "packages": [],
     "packages-dev": [
         {
@@ -79,21 +75,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/acobster/wp-yaml-fixtures.git",
-<<<<<<< HEAD
-                "reference": "fb102fc481f24fb1dba45b1dc8a4e608b9072366"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/fb102fc481f24fb1dba45b1dc8a4e608b9072366",
-                "reference": "fb102fc481f24fb1dba45b1dc8a4e608b9072366",
-=======
                 "reference": "a5f422e8f4b39edd380a49c4a5215d6001bd1a68"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/a5f422e8f4b39edd380a49c4a5215d6001bd1a68",
                 "reference": "a5f422e8f4b39edd380a49c4a5215d6001bd1a68",
->>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -125,11 +112,7 @@
                 }
             ],
             "description": "Define WordPress database snapshots as simple YAML files",
-<<<<<<< HEAD
-            "time": "2018-09-25T01:42:55+00:00"
-=======
             "time": "2018-09-29T18:51:22+00:00"
->>>>>>> master
         },
         {
             "name": "altorouter/altorouter",
@@ -817,21 +800,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-<<<<<<< HEAD
-                "reference": "1dc722bde6b2e2ccb81e4224576caa3da2e641d7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/1dc722bde6b2e2ccb81e4224576caa3da2e641d7",
-                "reference": "1dc722bde6b2e2ccb81e4224576caa3da2e641d7",
-=======
                 "reference": "50323f9b91d7689d615b4af02caf9d80584b1cfc"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/50323f9b91d7689d615b4af02caf9d80584b1cfc",
                 "reference": "50323f9b91d7689d615b4af02caf9d80584b1cfc",
->>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -858,11 +832,7 @@
                 "cms",
                 "wordpress"
             ],
-<<<<<<< HEAD
-            "time": "2018-09-24T20:18:24+00:00"
-=======
             "time": "2018-08-02T21:48:32+00:00"
->>>>>>> master
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -2492,21 +2462,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sitecrafting/groot.git",
-<<<<<<< HEAD
-                "reference": "c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sitecrafting/groot/zipball/c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96",
-                "reference": "c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96",
-=======
                 "reference": "1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/sitecrafting/groot/zipball/1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a",
                 "reference": "1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a",
->>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -2547,11 +2508,7 @@
                 }
             ],
             "description": "The official SiteCrafting WordPress starter theme",
-<<<<<<< HEAD
-            "time": "2018-08-21T04:47:15+00:00"
-=======
             "time": "2018-09-29T16:37:38+00:00"
->>>>>>> master
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -2674,12 +2631,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "d2c9c9bd095b7dbd5bec8cef6cdb932784691e66"
+                "reference": "3b2b415d4c48fbefca7dc742aa0a0171bfae4e0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/d2c9c9bd095b7dbd5bec8cef6cdb932784691e66",
-                "reference": "d2c9c9bd095b7dbd5bec8cef6cdb932784691e66",
+                "url": "https://api.github.com/repos/symfony/console/zipball/3b2b415d4c48fbefca7dc742aa0a0171bfae4e0b",
+                "reference": "3b2b415d4c48fbefca7dc742aa0a0171bfae4e0b",
                 "shasum": ""
             },
             "require": {
@@ -2735,7 +2692,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2018-09-22T18:49:52+00:00"
+            "time": "2018-10-02T16:33:53+00:00"
         },
         {
             "name": "symfony/debug",
@@ -2743,12 +2700,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "b70cfaae39009ecde3164bb8cba4d029220d27b1"
+                "reference": "0a612e9dfbd2ccce03eb174365f31ecdca930ff6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/b70cfaae39009ecde3164bb8cba4d029220d27b1",
-                "reference": "b70cfaae39009ecde3164bb8cba4d029220d27b1",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/0a612e9dfbd2ccce03eb174365f31ecdca930ff6",
+                "reference": "0a612e9dfbd2ccce03eb174365f31ecdca930ff6",
                 "shasum": ""
             },
             "require": {
@@ -2791,7 +2748,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2018-09-22T18:25:03+00:00"
+            "time": "2018-10-02T16:33:53+00:00"
         },
         {
             "name": "symfony/dependency-injection",
@@ -2799,12 +2756,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "edfb30a6eacd6c0f763f52c1b5a66756f5657395"
+                "reference": "aea20fef4e92396928b5db175788b90234c0270d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/edfb30a6eacd6c0f763f52c1b5a66756f5657395",
-                "reference": "edfb30a6eacd6c0f763f52c1b5a66756f5657395",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/aea20fef4e92396928b5db175788b90234c0270d",
+                "reference": "aea20fef4e92396928b5db175788b90234c0270d",
                 "shasum": ""
             },
             "require": {
@@ -2862,7 +2819,7 @@
             ],
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
-            "time": "2018-09-21T12:47:54+00:00"
+            "time": "2018-10-02T12:28:39+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -2933,12 +2890,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "68bc3e48dcdc144f8595e1374861ff3b348b0042"
+                "reference": "d69930fc337d767607267d57c20a7403d0a822a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/68bc3e48dcdc144f8595e1374861ff3b348b0042",
-                "reference": "68bc3e48dcdc144f8595e1374861ff3b348b0042",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/d69930fc337d767607267d57c20a7403d0a822a4",
+                "reference": "d69930fc337d767607267d57c20a7403d0a822a4",
                 "shasum": ""
             },
             "require": {
@@ -2975,7 +2932,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2018-09-08T13:15:14+00:00"
+            "time": "2018-10-02T12:28:39+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3100,12 +3057,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "97e07ec91584eca4e9a96d3eb5aadd55844c55a8"
+                "reference": "94bc3a79008e6640defedf5e14eb3b4f20048352"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/97e07ec91584eca4e9a96d3eb5aadd55844c55a8",
-                "reference": "97e07ec91584eca4e9a96d3eb5aadd55844c55a8",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/94bc3a79008e6640defedf5e14eb3b4f20048352",
+                "reference": "94bc3a79008e6640defedf5e14eb3b4f20048352",
                 "shasum": ""
             },
             "require": {
@@ -3160,7 +3117,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
-            "time": "2018-09-21T12:47:54+00:00"
+            "time": "2018-10-02T16:33:53+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -3168,12 +3125,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "61973ecda60e9f3561e929e19c07d4878b960fc1"
+                "reference": "640b6c27fed4066d64b64d5903a86043f4a4de7f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/61973ecda60e9f3561e929e19c07d4878b960fc1",
-                "reference": "61973ecda60e9f3561e929e19c07d4878b960fc1",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/640b6c27fed4066d64b64d5903a86043f4a4de7f",
+                "reference": "640b6c27fed4066d64b64d5903a86043f4a4de7f",
                 "shasum": ""
             },
             "require": {
@@ -3219,7 +3176,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-09-24T08:15:45+00:00"
+            "time": "2018-10-02T16:33:53+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -3263,16 +3220,16 @@
         },
         {
             "name": "timber/timber",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/timber/timber.git",
-                "reference": "2a5b709b5881fdc2e07df6134fbb4ff144280e5c"
+                "reference": "51314124b9608de85dc0400c9a2c71caf336eb6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/timber/timber/zipball/2a5b709b5881fdc2e07df6134fbb4ff144280e5c",
-                "reference": "2a5b709b5881fdc2e07df6134fbb4ff144280e5c",
+                "url": "https://api.github.com/repos/timber/timber/zipball/51314124b9608de85dc0400c9a2c71caf336eb6c",
+                "reference": "51314124b9608de85dc0400c9a2c71caf336eb6c",
                 "shasum": ""
             },
             "require": {
@@ -3284,8 +3241,8 @@
             },
             "require-dev": {
                 "johnpbloch/wordpress": "4.*",
-                "phpunit/phpunit": "5.7.16",
-                "wpackagist-plugin/advanced-custom-fields": "4.4.*",
+                "phpunit/phpunit": "5.7.16|6.*",
+                "wpackagist-plugin/advanced-custom-fields": "5.*",
                 "wpackagist-plugin/co-authors-plus": "3.2.*"
             },
             "suggest": {
@@ -3321,7 +3278,7 @@
                 "timber",
                 "twig"
             ],
-            "time": "2018-09-17T17:02:34+00:00"
+            "time": "2018-09-30T14:50:29+00:00"
         },
         {
             "name": "twig/twig",
@@ -3580,13 +3537,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "10up/wp_mock": 20,
-<<<<<<< HEAD
         "sitecrafting/groot": 20,
-        "acobster/wp-cli-yaml-fixtures": 20,
         "victorjonsson/markdowndocs": 20
-=======
-        "sitecrafting/groot": 20
->>>>>>> master
     },
     "prefer-stable": false,
     "prefer-lowest": false,
