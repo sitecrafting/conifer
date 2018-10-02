@@ -5,9 +5,7 @@ echo "Building API markdown..."
 pwd
 ls -la
 
-./vendor/bin/phpdoc-md help
-
-./vendor/bin/phpdoc-md generate lib/Conifer/Admin > docs/reference/admin.md
+./vendor/bin/phpdoc-md generate lib/Conifer/Admin > docs/reference/admin.md -vvv
 #./vendor/bin/phpdoc-md generate lib/Conifer/AjaxHandler > docs/reference/ajaxhandler.md
 ./vendor/bin/phpdoc-md generate lib/Conifer/Authorization > docs/reference/authorization.md
 ./vendor/bin/phpdoc-md generate lib/Conifer/Form > docs/reference/form.md
