@@ -26,31 +26,23 @@
 ## Reference
 
 * [AcfSearch](/reference-acfsearch.md)
-
 * [Admin/Notice](/reference-admin-notice.md)
 * [Admin/Page](/reference-admin-page.md)
 * [Admin/SubPage](/reference-admin-subpage.md)
-
 * [AjaxHandler/AbstractBase](/reference-ajaxhandler-abstractbase.md)
-
 * [Authorization/AbstractPolicy](/reference-authorization-abstractpolicy.md)
 * [Authorization/PolicyInterface](/reference-authorization-policyinterface.md)
 * [Authorization/ShortcodePolicy](/reference-authorization-shortcodepolicy.md)
 * [Authorization/TemplatePolicy](/reference-authorization-templatepolicy.md)
 * [Authorization/UserRoleShortcodePolicy](/reference-authorization-userroleshortcodepolicy.md)
-
 * [Form/AbstractBase](/reference-form-abstractbase.md)
 * [Integrations/YoastIntegration](/reference-integrations-yoastintegration.md)
-
 * [Navigation/Menu](/reference-navigation-menu.md)
 * [Navigation/MenuItem](/reference-navigation-menuitem.md)
 * [Notifier/AdminNotifier](/reference-notifier-adminnotifier.md)
 * [Notifier/EmailNotifier](/reference-notifier-emailnotifier.md)
-
 * [Notifier/SendsEmail](/reference-notifier-sendsemail.md)
-
 * [Notifier/SimpleNotifier](/reference-notifier-simplenotifier.md)
-
 * [Post/BlogPost](/reference-post-blogpost.md)
 * [Post/FrontPage](/reference-post-frontpage.md)
 * [Post/HasCustomAdminColumns](/reference-post-hascustomadmincolumns.md)
@@ -60,7 +52,6 @@
 * [Post/Page](/reference-post-page.md)
 * [Post/Post](/reference-post-post.md)
 * [Site](/reference-site.md)
-
 * [Shortcode/AbstractBase](/reference-shortcode-abstractbase.md)
 * [Shortcode/Button](/reference-shortcode-button.md)
 * [Twig/FormHelper](/reference-twig-formhelper.md)
