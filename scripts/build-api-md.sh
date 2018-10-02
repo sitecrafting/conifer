@@ -2,7 +2,7 @@
 
 echo "Building API markdown..."
 
-./vendor/bin/phpdoc-md generate lib/Conifer/Admin/Notice > docs/reference-admin-notice.md
+./vendor/bin/phpdoc-md generate Conifer\\Admin\\Notice > docs/reference-admin-notice.md
 ./vendor/bin/phpdoc-md generate lib/Conifer/Admin/Page > docs/reference-admin-page.md
 ./vendor/bin/phpdoc-md generate lib/Conifer/Admin/SubPage > docs/reference-admin-subpage.md
 
