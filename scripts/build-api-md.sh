@@ -19,10 +19,5 @@ ls -la
 #./vendor/bin/phpdoc-md generate lib/Conifer/AcfSearch.php > /app/docs/reference/acf-search.md
 #./vendor/bin/phpdoc-md generate lib/Conifer/Site.php > /app/docs/reference/site.md 
 
-ls -la
-
-cd docs
-ls -la
-
-cd reference
+cd docs/reference
 ls -la
