@@ -17,7 +17,7 @@ echo "Building API markdown..."
 ./vendor/bin/phpdoc-md generate Conifer\\Navigation\\MenuItem           > docs/reference-navigation-menuitem.md
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\AdminNotifier        > docs/reference-notifier-adminnotifier.md
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\EmailNotifier        > docs/reference-notifier-emailnotifier.md
-./vendor/bin/phpdoc-md generate Conifer\\Notifier\\SendsEmail           > docs/reference-notifier-sendsemail.md
+#./vendor/bin/phpdoc-md generate Conifer\\Notifier\\SendsEmail           > docs/reference-notifier-sendsemail.md
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\SimpleNotifier       > docs/reference-notifier-simplenotifier.md
 #./vendor/bin/phpdoc-md generate Conifer\\Post\\BlogPost                 > docs/reference-post-blogpost.md
 #./vendor/bin/phpdoc-md generate Conifer\\Post\\FrontPage                > docs/reference-post-frontpage.md

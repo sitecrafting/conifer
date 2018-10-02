@@ -41,7 +41,7 @@
 * [Navigation/MenuItem](/reference-navigation-menuitem.md)
 * [Notifier/AdminNotifier](/reference-notifier-adminnotifier.md)
 * [Notifier/EmailNotifier](/reference-notifier-emailnotifier.md)
-* [Notifier/SendsEmail](/reference-notifier-sendsemail.md)
+#* [Notifier/SendsEmail](/reference-notifier-sendsemail.md)
 * [Notifier/SimpleNotifier](/reference-notifier-simplenotifier.md)
 #* [Post/BlogPost](/reference-post-blogpost.md)
 #* [Post/FrontPage](/reference-post-frontpage.md)
