@@ -2,12 +2,9 @@
 
 echo "Building API markdown..."
 
-pwd
-ls -la
-
-./vendor/bin/phpdoc-md generate lib/Conifer/Admin > docs/reference-admin-notice.md
-./vendor/bin/phpdoc-md generate lib/Conifer/Admin > docs/reference-admin-page.md
-./vendor/bin/phpdoc-md generate lib/Conifer/Admin > docs/reference-admin-subpage.md
+./vendor/bin/phpdoc-md generate lib/Conifer/Admin/Notice.php > docs/reference-admin-notice.md
+./vendor/bin/phpdoc-md generate lib/Conifer/Admin/Page.php > docs/reference-admin-page.md
+./vendor/bin/phpdoc-md generate lib/Conifer/Admin/SubPage.php > docs/reference-admin-subpage.md
 
 #./vendor/bin/phpdoc-md generate lib/Conifer/AjaxHandler > docs/reference-ajaxhandler.md
 ./vendor/bin/phpdoc-md generate lib/Conifer/Authorization > docs/reference-authorization.md
