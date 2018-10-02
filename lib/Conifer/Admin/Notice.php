@@ -78,7 +78,7 @@ class Notice {
    *
    * @return bool
    */
-  public static function flash_notices_enabled() {
+  public static function flash_notices_enabled() : bool {
     return self::$flash_enabled;
   }
 
