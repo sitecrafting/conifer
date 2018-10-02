@@ -3,4 +3,4 @@
 echo "Building documentation..."
 
 yarn gitbook install
-yarn gitbook build -v
+yarn gitbook build --debug
