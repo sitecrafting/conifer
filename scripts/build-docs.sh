@@ -3,6 +3,6 @@
 echo "Building documentation..."
 
 yarn gitbook install
-yarn gitbook build --debug
+sudo yarn gitbook build
 
 ls -la _book
