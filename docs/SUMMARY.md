@@ -25,14 +25,14 @@
 
 ## Reference
 
-* [Admin](reference/admin.md)
-* [Authorization](/reference/authorization.md)
-* [Form](/reference/form.md)
-* [Integrations](/reference/integrations.md)
-* [Navigation](/reference/navigation.md)
-* [Notifier](/reference/notifier.md)
-* [Shortcode](/reference/shortcode.md)
-* [Twig](/reference/twig.md)
+* [Admin](reference-admin.md)
+* [Authorization](/reference-authorization.md)
+* [Form](/reference-form.md)
+* [Integrations](/reference-integrations.md)
+* [Navigation](/reference-navigation.md)
+* [Notifier](/reference-notifier.md)
+* [Shortcode](/reference-shortcode.md)
+* [Twig](/reference-twig.md)
 
 ## Integration
 
