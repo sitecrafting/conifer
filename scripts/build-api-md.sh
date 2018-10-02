@@ -38,6 +38,3 @@ echo "Building API markdown..."
 ./vendor/bin/phpdoc-md generate Conifer\\Twig\\WordPressHelper          > docs/reference-twig-wordpresshelper.md
 ./vendor/bin/phpdoc-md generate Conifer\\AcfSearch                      > docs/reference-acfsearch.md
 ./vendor/bin/phpdoc-md generate Conifer\\Site                           > docs/reference-site.md 
-
-cd docs
-ls -la
