@@ -25,7 +25,7 @@
 
 ## Reference
 
-* [Admin](/reference/admin.md)
+* [Admin](reference/admin.md)
 * [Authorization](/reference/authorization.md)
 * [Form](/reference/form.md)
 * [Integrations](/reference/integrations.md)
