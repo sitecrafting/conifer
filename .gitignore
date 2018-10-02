@@ -24,5 +24,3 @@ wp-cli.local.yml
 
 # documentation
 /_book/
-#/docs/reference/*.md
-/docs/reference-*
