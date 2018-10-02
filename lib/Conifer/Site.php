@@ -27,6 +27,11 @@ use Conifer\Twig;
  * @package Conifer
  */
 class Site extends TimberSite {
+  const DEFAULT_TWIG_EXTENSIONS = [
+    Twig_Extension_Debug::class,
+    Twig_Extension_StringLoader::class,
+  ];
+
   /**
    * An array of directories where Conifer will look for JavaScript files
    *
@@ -47,6 +52,13 @@ class Site extends TimberSite {
    * @var string
    */
   protected $assets_version;
+
+  /**
+   * User-defined admin hotkeys
+   *
+   * @var array
+   */
+  protected $custom_admin_hotkeys;
 
   /**
    * Construct a Conifer Site object.
@@ -79,6 +91,8 @@ class Site extends TimberSite {
       get_stylesheet_directory() . '/views/',
       realpath(__DIR__ . '/../../views/'),
     ];
+
+    $this->custom_admin_hotkeys = [];
   }
 
   /**
@@ -118,6 +132,8 @@ class Site extends TimberSite {
     $this->configure_twig_view_cascade();
     $this->configure_default_twig_extensions();
     $this->add_default_twig_helpers();
+    $this->configure_default_admin_dashboard_widgets();
+    $this->enable_admin_hotkeys();
 
     Integrations\YoastIntegration::demote_metabox();
     // TODO moar integrations!
@@ -300,12 +316,16 @@ class Site extends TimberSite {
    */
   public function configure_default_twig_extensions() {
     add_filter('get_twig', function(Twig_Environment $twig) {
-      $twig->addExtension( new Twig_Extension_StringLoader() );
+      $loadedExtensions = array_keys($twig->getExtensions());
 
-      // Make debugging available through Twig
-      // Note: in order for Twig's dump() function to work,
+      // load default extensions unless they've been loaded already
+      // Note: in order for Twig_Extension_Debug's dump() function to work,
       // the WP_DEBUG constant must be set to true in wp-config.php
-      $twig->addExtension( new Twig_Extension_Debug() );
+      foreach (static::DEFAULT_TWIG_EXTENSIONS as $extClass) {
+        if (!in_array($extClass, $loadedExtensions, true)) {
+          $twig->addExtension(new $extClass());
+        }
+      }
 
       return $twig;
     });
@@ -321,10 +341,72 @@ class Site extends TimberSite {
     $this->add_twig_helper(new Twig\NumberHelper());
     $this->add_twig_helper(new Twig\TextHelper());
     $this->add_twig_helper(new Twig\TermHelper());
-    $this->add_twig_helper(new Twig\ImageHelper());
   }
 
+  /**
+   * Add a Conifer helper widget to the admin dashboard
+   */
+  public function configure_default_admin_dashboard_widgets() {
+    add_action('wp_dashboard_setup', function() {
+      // TODO widget API?
+      wp_add_dashboard_widget(
+        'conifer_guide',
+        __('Welcome to Conifer'),
+        function() {
+          Timber::render('admin/welcome-to-conifer-widget.twig');
+        }
+      );
+    });
+  }
 
+  /**
+   * Remove the Conifer widget from the dashboard
+   */
+  public function remove_conifer_widget() {
+    add_action('wp_dashboard_setup', function() {
+      // TODO widget API?
+      remove_meta_box('conifer_guide', 'dashboard', 'normal');
+    });
+  }
+
+  /**
+   * Enable hotkey-based navigation on the WP dashboard
+   */
+  public function enable_admin_hotkeys() {
+    add_action('admin_enqueue_scripts', function() {
+      $this->enqueue_script('conifer-admin-hotkeys', 'admin/conifer-admin.js');
+
+      // allow overriding/customizing hotkeys
+      wp_localize_script(
+        'conifer-admin-hotkeys',
+        'CUSTOM_HOTKEY_LOCATIONS',
+        $this->get_custom_admin_hotkeys()
+      );
+    });
+  }
+
+  /**
+   * Get user-defined admin hotkeys that will override defaults
+   */
+  public function get_custom_admin_hotkeys() : array {
+    return $this->custom_admin_hotkeys;
+  }
+
+  /**
+   * Override the default admin hotkeys
+   */
+  public function set_custom_admin_hotkeys(array $hotkeys) {
+    $this->custom_admin_hotkeys = $hotkeys;
+  }
+
+  /**
+   * Disable hotkey-based navigation on the WP dashboard
+   */
+  public function disable_admin_hotkeys() {
+    add_action('admin_enqueue_scripts', function() {
+      wp_dequeue_script('conifer-admin-hotkeys');
+    });
+  }
 
 
   /**

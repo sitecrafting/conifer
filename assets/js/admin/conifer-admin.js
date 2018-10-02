@@ -54,6 +54,14 @@
     '104': '/',
   };
 
+  // Merge in custom user-defined hotkeys
+  if (window.CUSTOM_HOTKEY_LOCATIONS) {
+    Object.keys(window.CUSTOM_HOTKEY_LOCATIONS).forEach(function(key) {
+      // set this hotkey location
+      HOTKEY_LOCATIONS[key] = window.CUSTOM_HOTKEY_LOCATIONS[key];
+    });
+  }
+
   $(window).keypress(function(e) {
     if (interpretAsCommandPrefix(e)) {
       // user pressed "g" while focused on the main window

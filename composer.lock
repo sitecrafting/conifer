@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
     "content-hash": "5c7e03a0b997b6c1613af0b63399788a",
+=======
+    "content-hash": "5e2f40693498bffcd276b967f8bb7211",
+>>>>>>> master
     "packages": [],
     "packages-dev": [
         {
@@ -71,16 +75,25 @@
         },
         {
             "name": "acobster/wp-cli-yaml-fixtures",
-            "version": "dev-master",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/acobster/wp-yaml-fixtures.git",
+<<<<<<< HEAD
                 "reference": "fb102fc481f24fb1dba45b1dc8a4e608b9072366"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/fb102fc481f24fb1dba45b1dc8a4e608b9072366",
                 "reference": "fb102fc481f24fb1dba45b1dc8a4e608b9072366",
+=======
+                "reference": "a5f422e8f4b39edd380a49c4a5215d6001bd1a68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/acobster/wp-yaml-fixtures/zipball/a5f422e8f4b39edd380a49c4a5215d6001bd1a68",
+                "reference": "a5f422e8f4b39edd380a49c4a5215d6001bd1a68",
+>>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -112,7 +125,11 @@
                 }
             ],
             "description": "Define WordPress database snapshots as simple YAML files",
+<<<<<<< HEAD
             "time": "2018-09-25T01:42:55+00:00"
+=======
+            "time": "2018-09-29T18:51:22+00:00"
+>>>>>>> master
         },
         {
             "name": "altorouter/altorouter",
@@ -796,23 +813,32 @@
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "4.9.x-dev",
+            "version": "4.9.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
+<<<<<<< HEAD
                 "reference": "1dc722bde6b2e2ccb81e4224576caa3da2e641d7"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/1dc722bde6b2e2ccb81e4224576caa3da2e641d7",
                 "reference": "1dc722bde6b2e2ccb81e4224576caa3da2e641d7",
+=======
+                "reference": "50323f9b91d7689d615b4af02caf9d80584b1cfc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/50323f9b91d7689d615b4af02caf9d80584b1cfc",
+                "reference": "50323f9b91d7689d615b4af02caf9d80584b1cfc",
+>>>>>>> master
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "provide": {
-                "wordpress/core-implementation": "4.9.x-dev"
+                "wordpress/core-implementation": "4.9.8"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -832,7 +858,11 @@
                 "cms",
                 "wordpress"
             ],
+<<<<<<< HEAD
             "time": "2018-09-24T20:18:24+00:00"
+=======
+            "time": "2018-08-02T21:48:32+00:00"
+>>>>>>> master
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
@@ -882,6 +912,52 @@
                 "wordpress"
             ],
             "time": "2018-01-29T14:49:29+00:00"
+        },
+        {
+            "name": "mikey179/vfsStream",
+            "version": "v1.6.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mikey179/vfsStream.git",
+                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mikey179/vfsStream/zipball/d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "reference": "d5fec95f541d4d71c4823bb5e30cf9b9e5b96145",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "org\\bovigo\\vfs\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Frank Kleine",
+                    "homepage": "http://frankkleine.de/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Virtual file system to mock the real file system in unit tests.",
+            "homepage": "http://vfs.bovigo.org/",
+            "time": "2017-08-01T08:02:14+00:00"
         },
         {
             "name": "mnsami/composer-custom-directory-installer",
@@ -2416,12 +2492,21 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sitecrafting/groot.git",
+<<<<<<< HEAD
                 "reference": "c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/sitecrafting/groot/zipball/c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96",
                 "reference": "c87bb55adc9d5ba9fd1f7c2d11c0f9313cc04c96",
+=======
+                "reference": "1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sitecrafting/groot/zipball/1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a",
+                "reference": "1f1cb1cd00e7ba7d5456410ae637f28de2fc5e3a",
+>>>>>>> master
                 "shasum": ""
             },
             "require": {
@@ -2462,7 +2547,11 @@
                 }
             ],
             "description": "The official SiteCrafting WordPress starter theme",
+<<<<<<< HEAD
             "time": "2018-08-21T04:47:15+00:00"
+=======
+            "time": "2018-09-29T16:37:38+00:00"
+>>>>>>> master
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -3491,9 +3580,13 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "10up/wp_mock": 20,
+<<<<<<< HEAD
         "sitecrafting/groot": 20,
         "acobster/wp-cli-yaml-fixtures": 20,
         "victorjonsson/markdowndocs": 20
+=======
+        "sitecrafting/groot": 20
+>>>>>>> master
     },
     "prefer-stable": false,
     "prefer-lowest": false,

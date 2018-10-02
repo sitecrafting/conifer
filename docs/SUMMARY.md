@@ -9,21 +9,23 @@
 
 * [The Site Class](/site.md)
 * [Posts and Post Types](/posts.md)
+* [AJAX Handlers](/ajax-handlers.md)
+* [Search](/search.md)
 * [Forms](/forms.md)
 * [Admin Helpers](/admin.md)
 * [Authorization](/authorization.md)
 * [Notifiers](/notifiers.md)
 * [Shortcodes](/shortcodes.md)
 
-## Development
+## Contributing
 
+* [How to Contribute](/how-to-contribute.md)
 * [Development Setup](/dev-setup.md)
 * [Testing](/testing.md)
-* [Team](/team.md)
 * [Governance](/governance.md)
 * [Code of Conduct](/code-of-conduct.md)
 
-## Reference
+## API Reference
 
 * [AcfSearch](/reference-acfsearch.md)
 * [Admin/Notice](/reference-admin-notice.md)
@@ -62,7 +64,4 @@
 * [Twig/TextHelper](/reference-twig-texthelper.md)
 * [Twig/WordPressHelper](/reference-twig-wordpresshelper.md)
 
-## Integration
-
-* [Timber](/timber.md)
-
+* [Changelog](/changelog/2018.md)

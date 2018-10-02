@@ -58,6 +58,11 @@ tooling:
     cmd: '/app/scripts/setup-wordpress.sh'
     description: 'Install and configure WordPress for custom plugin dev'
 
+  install-test-themes:
+    service: appserver
+    cmd: 'rsync --verbose --archive --recursive /app/test/themes/ /app/wp/wp-content/themes/'
+    description: 'Sync test themes for e2e testing'
+
   yarn:
     service: node
 
@@ -114,6 +119,14 @@ tooling:
 events:
   pre-docs:
     - appserver: 'cd $LANDO_MOUNT && ./scripts/build-api-md.sh'
+  pre-e2e:
+    # TODO don't destroy dev database state every time?
+    - appserver: '
+      cd $LANDO_MOUNT &&
+      wp fixture install /app/test/fixtures/meta-search.yaml --yes &&
+      rsync --archive --recursive test/themes/ wp/wp-content/themes/ &&
+      wp theme activate search-test-theme
+      '
 
 proxy:
   appserver:

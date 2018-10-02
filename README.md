@@ -1,6 +1,8 @@
 # Conifer
 
-> **THIS REPO IS IN ALPHA STATUS. ITS USE IN PRODUCTION IS NOT RECOMMENDED.**
+> **ALPHA STATUS.**
+>
+> This is code that has been extracted from systems currently in production. While we consider Conifer production-ready, there may be lingering bugs. While the API is fairly stable, there may be breaking changes at this early stage.
 
 [![Powerful abstractions on top of Timber for simple, opinionated OO WordPress development.](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/banner-green.png)](https://coniferplug.in)
 
