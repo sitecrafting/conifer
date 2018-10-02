@@ -67,9 +67,9 @@ abstract class SubPage extends Page {
   public function __construct(
     Page $parent,
     string $title,
-    string $menuTitle = '',
-    string $capability = '',
-    string $slug = ''
+    string $menuTitle = NULL,
+    string $capability = NULL,
+    string $slug = NULL
   ) {
     $this->parent = $parent;
 
