@@ -22,4 +22,4 @@
 
 #### Testing
 
-<!-- Are unit tests included? If not, please provide pseudo code for a scenario that fails without your code, but succeeds with it. NOTE: we *strongly* encourage you to include unit tests with your code. -->
+<!-- First, do your changes pass unit tests and coding standards (`lando unit` and `lando sniff`)? Second, are unit tests included? If not, please provide pseudo code for a scenario that fails without your code, but succeeds with it. NOTE: we *strongly* encourage you to include unit tests with your code. -->
