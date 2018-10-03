@@ -117,6 +117,8 @@ tooling:
     description: 'Run arbitrary gitbook commands'
 
 events:
+  pre-docs:
+    - appserver: 'cd $LANDO_MOUNT && ./scripts/build-api-md.sh'
   pre-e2e:
     # TODO don't destroy dev database state every time?
     - appserver: '
