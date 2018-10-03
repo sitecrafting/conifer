@@ -37,11 +37,11 @@ class Notice {
    * Constructor
    *
    * @param string $message the message to display
-   * @param string $extraClasses any extra HTML class to display.
+   * @param string $extraClasses any extra HTML class to display
    * Multiple classes can be specified with a space-separated string, e.g.
    * `"one two three"`
    */
-  public function __construct(string $message, string $extraClasses = NULL) {
+  public function __construct(string $message, string $extraClasses = '') {
     $this->message = $message;
 
     // clean up classes and convert to an array
