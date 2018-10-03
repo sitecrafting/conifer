@@ -50,7 +50,7 @@ services:
   docs:
     type: nginx:1.13
     ssl: true
-    webroot: _book
+    webroot: docs/_book
 
 tooling:
   install:
@@ -108,7 +108,7 @@ tooling:
 
   docs:
     service: node
-    cmd: '/app/scripts/build-docs.sh'
+    cmd: '/app/scripts/build-docs.sh /app/docs'
     description: 'Build documentation in _book folder using Gitbook'
 
   gitbook:
