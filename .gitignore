@@ -23,4 +23,5 @@ wp-cli.local.yml
 /nbproject/private/
 
 # documentation
-/_book/
+/docs/_book/
+/docs/reference/*.md
