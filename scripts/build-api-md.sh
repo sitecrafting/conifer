@@ -17,13 +17,13 @@ echo "Building API markdown..."
 ./vendor/bin/phpdoc-md generate Conifer\\Navigation\\MenuItem           > docs/reference/navigation-menuitem.md
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\AdminNotifier        > docs/reference/notifier-adminnotifier.md
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\EmailNotifier        > docs/reference/notifier-emailnotifier.md
-./vendor/bin/phpdoc-md generate Conifer\\Notifier\\SendsEmail           > docs/reference/notifier-sendsemail.md
+#./vendor/bin/phpdoc-md generate Conifer\\Notifier\\SendsEmail           > docs/reference/notifier-sendsemail.md
 ./vendor/bin/phpdoc-md generate Conifer\\Notifier\\SimpleNotifier       > docs/reference/notifier-simplenotifier.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\BlogPost                 > docs/reference/post-blogpost.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\FrontPage                > docs/reference/post-frontpage.md
-./vendor/bin/phpdoc-md generate Conifer\\Post\\HasCustomAdminColumns    > docs/reference/post-hascustomadmincolumns.md
-./vendor/bin/phpdoc-md generate Conifer\\Post\\HasCustomAdminFilters    > docs/reference/post-hascustomadminfilters.md
-./vendor/bin/phpdoc-md generate Conifer\\Post\\HasTerms                 > docs/reference/post-hasterms.md
+#./vendor/bin/phpdoc-md generate Conifer\\Post\\HasCustomAdminColumns    > docs/reference/post-hascustomadmincolumns.md
+#./vendor/bin/phpdoc-md generate Conifer\\Post\\HasCustomAdminFilters    > docs/reference/post-hascustomadminfilters.md
+#./vendor/bin/phpdoc-md generate Conifer\\Post\\HasTerms                 > docs/reference/post-hasterms.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\Image                    > docs/reference/post-image.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\Page                     > docs/reference/post-page.md
 ./vendor/bin/phpdoc-md generate Conifer\\Post\\Post                     > docs/reference/post-post.md
