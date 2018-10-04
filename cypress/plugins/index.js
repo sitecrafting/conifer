@@ -1,12 +1,13 @@
 const request = require('request')
+module.exports = (on, config) => {
 
-module.exports = (on) => {
+  const TEST_COMMAND_URL = `${config.baseUrl}/test-command.php`
 
   on('task', {
 
     installTheme(slug) {
       const cmd = `wp theme activate ${slug}`
-      request.post('https://appserver/test-command.php', {
+      request.post(TEST_COMMAND_URL, {
         body: cmd,
       })
 
