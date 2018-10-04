@@ -18,13 +18,6 @@ posts:
   type: post
   content: This should be at the top since the search terms match exactly
 
-- title: A whole post about glue
-  type: post
-  content: Nothing interesting here :(
-  meta:
-    hello: glob
-    goodbye: glorp
-
 - title: A whole page about goo
   type: page
   content: Nothing interesting here :(
@@ -50,7 +43,7 @@ posts:
     hello: goo
     goodbye: glob
 
-- title: Search term partial match in meta
+- title: Search term double match in meta
   type: page
   content: blah blah blah
   meta:
