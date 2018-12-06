@@ -11,7 +11,7 @@
 
 ## Documentation
 
-For reference documentation, use-cases, and design principles, check out the [docs on Gitbook](https://www.coniferplug.in/).
+For reference documentation, use-cases, and design principles, [check out the docs](https://www.coniferplug.in/).
 
 ## Quick start
 
