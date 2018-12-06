@@ -29,14 +29,14 @@ posts:
   type: post
   content: Here is some goo.
 
-- title: "Search term in meta"
+- title: Search term in meta (hello)
   type: post
   content: Nothing interesting here :(
   meta:
     hello: glob
     goodbye: glue
 
-- title: "Search term in meta: hello"
+- title: Search term in meta (*bye)
   type: post
   content: Nothing to see here
   meta:
