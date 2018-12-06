@@ -88,17 +88,17 @@ tooling:
 
   sniff:
     service: appserver
-    cmd: 'cd /app && composer sniff'
+    cmd: 'composer sniff'
     description: 'Run phpcs code sniffer'
 
   sniff-summary:
     service: appserver
-    cmd: 'cd /app && composer sniff-summary'
+    cmd: 'composer sniff-summary'
     description: 'Summarize phpcs results'
 
   sniff-fix:
     service: appserver
-    cmd: 'cd /app && composer sniff-fix'
+    cmd: 'composer sniff-fix'
     description: 'Fix coding standards issues that are automatically fixable'
 
   release:
