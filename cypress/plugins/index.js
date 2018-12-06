@@ -1,16 +1,16 @@
-const request = require('request')
-module.exports = (on, config) => {
+const execSync = require('child_process').execSync
 
-  const TEST_COMMAND_URL = `${config.baseUrl}/test-command.php`
+module.exports = (on) => {
 
   on('task', {
 
     installTheme(slug) {
-      const cmd = `wp theme activate ${slug}`
-      request.post(TEST_COMMAND_URL, {
-        body: cmd,
-      })
+      execSync(`wp theme activate --quiet ${slug}`)
+      return null
+    },
 
+    installFixture(name) {
+      execSync(`wp fixture install --yes test/fixtures/${name}.yaml`)
       return null
     },
 

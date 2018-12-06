@@ -37,7 +37,7 @@ services:
 
     overrides:
       services:
-        image: 'sitecrafting/lando-node-cypress:latest'
+        image: 'sitecrafting/lando-cypress-wordpress:latest'
 
   phpmyadmin:
     type: phpmyadmin:4.7
