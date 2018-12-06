@@ -1,18 +1,11 @@
 ---
 
-home_page_slug: home-page
-
 blank_slate:
   users: false
 
 # Fixture for testing advanced search features.
 # Search terms are "goo" and "glue"
 posts:
-
-- title: Home Page Title
-  slug: home-page
-  type: page
-  content: This is the home page
 
 - title: A post about goo glue
   type: post

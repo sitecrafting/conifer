@@ -1,0 +1,16 @@
+---
+
+home_page_slug: home-page
+
+blank_slate:
+  users: false
+
+# Fixture for sanity-checking the Home Page
+posts:
+
+- title: Home Page Title
+  slug: home-page
+  type: page
+  content: This is the home page
+
+...
