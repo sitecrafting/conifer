@@ -45,13 +45,8 @@ matrix:
       install:
         - lando start
         - yarn install --frozen-lockfile
-        - cypress install
-        # TODO do this directly in Cypress
-        # https://github.com/sitecrafting/conifer/issues/65
-        - lando wp fixture install /app/test/fixtures/meta-search.yaml --yes
-        - lando wp theme activate search-test-theme
       script:
-        - cypress run --config 'baseUrl=http://conifer.lndo.site'
+        - lando e2e
       after_failure:
         - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
 
