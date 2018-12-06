@@ -57,15 +57,11 @@ class SiteTest extends Base {
 
     // Set up a new virtual file system to test some of the site functions
     $structure         = [
-      'examples' => [
+      'theme-dir' => [
           'test.php'    => 'some text content',
-          'other.php'   => 'Some more text content',
-          'Invalid.csv' => 'Something else',
           'assets.version' =>'1',
       ],
       'an_empty_folder' => [],
-      'badlocation.php' => 'some bad content',
-      '[Foo]'           => 'a block device',
     ];
     $this->file_system = vfsStream::setup('root', null, $structure);
 
@@ -79,9 +75,12 @@ class SiteTest extends Base {
 
     $site = new Site();
 
-    $fileURL = $site->find_file('test.php', [vfsStream::url('root/examples/'), vfsStream::url('root/an_empty_folder/')]);
+    $fileURL = $site->find_file('test.php', [
+      vfsStream::url('root/theme-dir/'),
+      vfsStream::url('root/an_empty_folder/')
+    ]);
 
-    $this->assertEquals('vfs://root/examples/test.php', $fileURL);
+    $this->assertEquals('vfs://root/theme-dir/test.php', $fileURL);
 
   }
 
@@ -89,7 +88,10 @@ class SiteTest extends Base {
 
     $site = new Site();
 
-    $fileURL = $site->find_file('test2.php', [vfsStream::url('root/examples/'), vfsStream::url('root/an_empty_folder/')]);
+    $fileURL = $site->find_file('test2.php', [
+      vfsStream::url('root/theme-dir/'),
+      vfsStream::url('root/an_empty_folder/')
+    ]);
 
     $this->assertEquals('', $fileURL);
 
@@ -101,7 +103,7 @@ class SiteTest extends Base {
 
     // We will set the stylesheet directory to our virtual file system directory
     WP_Mock::userFunction('get_stylesheet_directory', [
-      'return' => vfsStream::url('root/examples'),
+      'return' => vfsStream::url('root/theme-dir'),
       'times' => 2,
     ]);
 
@@ -118,12 +120,12 @@ class SiteTest extends Base {
     $site = new Site();
 
     $this->file_system = vfsStream::setup('root', null, [
-      'theme' => [],
+      'theme-dir' => [],
     ]);
 
     // We will set the stylesheet directory to our virtual file system directory
     WP_Mock::userFunction('get_stylesheet_directory', [
-      'return' => vfsStream::url('root/theme'),
+      'return' => vfsStream::url('root/theme-dir'),
       'times' => 1,
     ]);
 
