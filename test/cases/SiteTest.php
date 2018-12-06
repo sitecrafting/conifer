@@ -113,6 +113,25 @@ class SiteTest extends Base {
 
   }
 
+  public function test_get_assets_version_with_no_file() {
+
+    $site = new Site();
+
+    $this->file_system = vfsStream::setup('root', null, [
+      'theme' => [],
+    ]);
+
+    // We will set the stylesheet directory to our virtual file system directory
+    WP_Mock::userFunction('get_stylesheet_directory', [
+      'return' => vfsStream::url('root/theme'),
+      'times' => 1,
+    ]);
+
+    // read the file value from our file in the virtual file system directory
+    $this->assertEquals('', $site->get_assets_version());
+
+  }
+
   public function test_get_theme_file() {
     $site = new Site();
 

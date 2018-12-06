@@ -538,6 +538,8 @@ class Site extends TimberSite {
       $this->assets_version = trim($contents);
     }
 
+    $this->assets_version = $this->assets_version ?: '';
+
     // Cache the version in this object
     return $this->assets_version;
   }
