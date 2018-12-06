@@ -17,9 +17,9 @@ For reference documentation, use-cases, and design principles, [check out the do
 
 See the [Installation docs](https://www.coniferplug.in/getting-started/installation) to get Conifer installed for use in your theme or plugin.
 
-## Issues
+## Issues and Feature Requests
 
-Please submit issues directly to GitHub. We need guidance from the community about how people would like to use Conifer!
+Please submit issues and feature requests directly to GitHub. We need guidance from the community about how people would like to use Conifer!
 
 ## Development
 
