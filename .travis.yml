@@ -55,6 +55,7 @@ matrix:
       node_js: 8.11
       cache:
         - ~/.cache
+        - /var/www/.cache
       install: true
       script:
         - vvv-utilities/provision.sh
