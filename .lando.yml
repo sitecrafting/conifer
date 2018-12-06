@@ -88,17 +88,17 @@ tooling:
 
   sniff:
     service: appserver
-    cmd: 'composer sniff'
+    cmd: 'cd /app && composer sniff'
     description: 'Run phpcs code sniffer'
 
   sniff-summary:
     service: appserver
-    cmd: 'composer sniff-summary'
+    cmd: 'cd /app && composer sniff-summary'
     description: 'Summarize phpcs results'
 
   sniff-fix:
     service: appserver
-    cmd: 'composer sniff-fix'
+    cmd: 'cd /app && composer sniff-fix'
     description: 'Fix coding standards issues that are automatically fixable'
 
   release:
@@ -119,6 +119,10 @@ tooling:
 events:
   pre-docs:
     - appserver: 'cd $LANDO_MOUNT && ./scripts/build-api-md.sh'
+
+  pre-e2e:
+    - appserver: 'echo installing test themes...'
+    - appserver: 'rsync --verbose --archive --recursive /app/test/themes/ /app/wp/wp-content/themes/'
 
 proxy:
   appserver:
