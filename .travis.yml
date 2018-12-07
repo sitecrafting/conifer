@@ -30,6 +30,10 @@ matrix:
     - name: '7.2 unit tests'
       php: 7.2
 
+    - name: 'Coding standards'
+      php: 7.2
+      script: composer sniff
+
     - name: 'End-to-end tests with Lando/Cypress'
       language: node_js
       node_js: 6.11
