@@ -30,3 +30,16 @@ define('ABSPATH', realpath(__DIR__ . '/../'));
 define('WP_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
 define('WP_CONTENT_URL', 'http://appserver/wp-content');
 define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
+
+/**
+ * Define our own version of apply_filters_deprecated, rather than mocking,
+ * so that we can raise warnings from our tests.
+ */
+function apply_filters_deprecated($filter, $filterArgs, ...$args) {
+  trigger_error(sprintf(
+    'deprecated filter %s was called with args: %s',
+    $filter,
+    print_r($filterArgs, true)
+  ));
+  return $filterArgs[0];
+}
