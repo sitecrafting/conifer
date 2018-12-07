@@ -30,6 +30,19 @@ matrix:
     - name: '7.2 unit tests'
       php: 7.2
 
+    - name: '7.0 unit tests on Timber 2.x'
+      php: 7.0
+      before_script:
+        - composer require timber/timber:2x.-dev
+    - name: '7.1 unit tests on Timber 2.x'
+      php: 7.1
+      before_script:
+        - composer require timber/timber:2x.-dev
+    - name: '7.2 unit tests on Timber 2.x'
+      php: 7.2
+      before_script:
+        - composer require timber/timber:2x.-dev
+
     - name: 'Coding standards'
       php: 7.2
       script: composer sniff
