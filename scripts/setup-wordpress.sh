@@ -10,6 +10,11 @@ case $key in
     INTERACTIVE=NO
     shift # past argument
     ;;
+    --timber-version)
+    TIMBER_VERSION="$2"
+    shift # past argument
+    shift # past argument
+    ;;
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -122,6 +127,11 @@ EOF
   wp --quiet plugin install --activate timber-library
   wp --quiet plugin activate conifer
   wp --quiet theme activate groot
+
+  # install a specific version of Timber if necessary
+  if [[ "$TIMBER_VERSION" ]] ; then
+    composer require --dev timber/timber:"$TIMBER_VERSION"
+  fi
 
   # install test themes
   rsync --archive --recursive $LANDO_MOUNT/test/themes/ $LANDO_MOUNT/wp/wp-content/themes/
