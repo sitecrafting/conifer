@@ -77,7 +77,7 @@ class SiteTest extends Base {
 
     $fileURL = $site->find_file('test.php', [
       vfsStream::url('root/theme-dir/'),
-      vfsStream::url('root/an_empty_folder/')
+      vfsStream::url('root/an_empty_folder/'),
     ]);
 
     $this->assertEquals('vfs://root/theme-dir/test.php', $fileURL);
@@ -102,7 +102,7 @@ class SiteTest extends Base {
 
     $fileURL = $site->find_file('test2.php', [
       vfsStream::url('root/theme-dir/'),
-      vfsStream::url('root/an_empty_folder/')
+      vfsStream::url('root/an_empty_folder/'),
     ]);
 
     $this->assertEquals('', $fileURL);
