@@ -518,6 +518,11 @@ class Site extends TimberSite {
    */
   public function find_file(string $file, array $dirs) : string {
     foreach ($dirs as $dir) {
+      // add trailing slash if necessary
+      if (substr($dir, -1) !== '/') {
+        $dir .= '/';
+      }
+
       if (file_exists($dir . $file)) {
         return $dir . $file;
       }
