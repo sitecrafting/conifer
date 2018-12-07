@@ -28,4 +28,5 @@ spl_autoload_register(function(string $className) {
  */
 define('ABSPATH', realpath(__DIR__ . '/../'));
 define('WP_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
+define('WP_CONTENT_URL', 'http://appserver/wp-content');
 define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');

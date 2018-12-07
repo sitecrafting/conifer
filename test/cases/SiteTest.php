@@ -84,6 +84,18 @@ class SiteTest extends Base {
 
   }
 
+  public function test_find_file_without_trailing_slash() {
+
+    $site = new Site();
+
+    $fileURL = $site->find_file('test.php', [
+      vfsStream::url('root/theme-dir'),
+    ]);
+
+    $this->assertEquals('vfs://root/theme-dir/test.php', $fileURL);
+
+  }
+
   public function test_find_file_fail() {
 
     $site = new Site();
