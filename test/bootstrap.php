@@ -35,11 +35,22 @@ define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
  * Define our own version of apply_filters_deprecated, rather than mocking,
  * so that we can raise warnings from our tests.
  */
-function apply_filters_deprecated($filter, $filterArgs, ...$args) {
-  trigger_error(sprintf(
-    'deprecated filter %s was called with args: %s',
-    $filter,
-    print_r($filterArgs, true)
-  ));
+function apply_filters_deprecated($filter, $filterArgs) {
+  // Do some terrible horcrux-style dark magic shit
+  // @codingStandardsIgnoreStart
+  $wpMock = new ReflectionClass(WP_Mock::class);
+  $mgrProp = $wpMock->getProperty('event_manager');
+  $mgrProp->setAccessible(true);
+  $mgr = $mgrProp->getValue();
+  $mgrReflection = new ReflectionClass($mgr);
+  $callbacksProp = $mgrReflection->getProperty('callbacks');
+  $callbacksProp->setAccessible(true);
+  $callbacks = $callbacksProp->getValue($mgr);
+
+  // were any filters added?
+  if ($callbacks && isset($callbacks["filter::$filter"])) {
+    trigger_error("{$filter} is deprecated");
+  }
+
   return $filterArgs[0];
 }
