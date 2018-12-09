@@ -3,60 +3,55 @@
 #
 
 
-#
-# !!! IMPORTANT !!!
-#
-# "without the top-level `env`, no job will be allowed to fail."
-# https://docs.travis-ci.com/user/customizing-the-build/
-env:
-
-
 language: php
-
-install:
-  - composer install --prefer-dist
-  - if [ $TIMBER_VERSION ] ; then composer require timber/timber:$TIMBER_VERSION; fi
-
-script:
-  - vendor/bin/phpunit
-  - vendor/bin/phpcs
 
 php:
   - '7.0'
   - '7.1'
   - '7.2'
 
+before_install:
+  - sudo apt-get -y update
+  - sudo apt-get -y install cgroup-bin curl
+  - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-beta.47/lando-v3.0.0-beta.47.deb
+  - sudo dpkg -i /tmp/lando-latest.deb
+  - lando version
+
+install:
+  - lando start
+  - yarn install --frozen-lockfile
+
+script:
+  # Run unit tests outside of Lando, on the host's PHP version
+  - vendor/bin/phpunit
+
+  # Enforce coding standards
+  - vendor/bin/phpcs
+
+  # Run end-to-end tests
+  - lando e2e
+
+after_failure:
+  - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
+
 env:
-  - TIMBER_VERSION='' # default to whatever is declared in composer.lock
-  - TIMBER_VERSION='2.x-dev'
+  # default to whatever is declared in composer.lock
+  - TIMBER_VERSION='' WP_VERSION=4.8.2
+  - TIMBER_VERSION='' WP_VERSION=4.9
+  - TIMBER_VERSION='' WP_VERSION=4.9.8
+  - TIMBER_VERSION='' WP_VERSION=5.0
+  - TIMBER_VERSION=2.x-dev WP_VERSION=4.8.2
+  - TIMBER_VERSION=2.x-dev WP_VERSION=4.9
+  - TIMBER_VERSION=2.x-dev WP_VERSION=4.9.8
+  - TIMBER_VERSION=2.x-dev WP_VERSION=5.0
+
+cache:
+  - ~/.lando
+  - ~/.cache
 
 # Test Conifer against PHP 7.x and run end-to-end tests
 matrix:
   include:
-    - name: 'Coding standards'
-      php: 7.2
-      script: composer sniff
-
-    - name: 'End-to-end tests with Lando/Cypress'
-      language: node_js
-      node_js: 6.11
-      cache:
-        - ~/.lando
-        - ~/.cache
-      before_install:
-        - sudo apt-get -y update
-        - sudo apt-get -y install cgroup-bin curl
-        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-beta.47/lando-v3.0.0-beta.47.deb
-        - sudo dpkg -i /tmp/lando-latest.deb
-        - lando version
-      install:
-        - lando start
-        - yarn install --frozen-lockfile
-      script:
-        - lando e2e
-      after_failure:
-        - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
-
     - name: 'Test VVV provisioning'
       language: node_js
       node_js: 8.11
@@ -69,5 +64,9 @@ matrix:
 
   allow_failures:
     - name: 'Test VVV provisioning'
-    - env: TIMBER_VERSION='2.x-dev'
+    - env: TIMBER_VERSION='' WP_VERSION=5.0
+    - env: TIMBER_VERSION=2.x-dev WP_VERSION=4.8.2
+    - env: TIMBER_VERSION=2.x-dev WP_VERSION=4.9
+    - env: TIMBER_VERSION=2.x-dev WP_VERSION=4.9.8
+    - env: TIMBER_VERSION=2.x-dev WP_VERSION=5.0
 
