@@ -36,6 +36,16 @@ define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
  * so that we can raise warnings from our tests.
  */
 function apply_filters_deprecated($filter, $filterArgs) {
+  deprecated_hook_notice('filter', $filter);
+
+  return $filterArgs[0];
+}
+
+function do_action_deprecated($action) {
+  deprecated_hook_notice('action', $action);
+}
+
+function deprecated_hook_notice($type, $hook) {
   // Do some terrible horcrux-style dark magic shit
   // @codingStandardsIgnoreStart
   $wpMock = new ReflectionClass(WP_Mock::class);
@@ -48,9 +58,7 @@ function apply_filters_deprecated($filter, $filterArgs) {
   $callbacks = $callbacksProp->getValue($mgr);
 
   // were any filters added?
-  if ($callbacks && isset($callbacks["filter::$filter"])) {
-    trigger_error("{$filter} is deprecated");
+  if ($callbacks && isset($callbacks["$type::$hook"])) {
+    trigger_error("{$hook} is deprecated");
   }
-
-  return $filterArgs[0];
 }
