@@ -46,7 +46,7 @@ main() {
 
   echo 'Checking for WordPress config...'
   if wp_configured ; then
-    echo 'WordPress is configured'
+    echo '✓ WordPress is configured'
   else
     read -d '' extra_php <<'EOF'
 // log all notices, warnings, etc.
@@ -69,7 +69,7 @@ EOF
 
   echo 'Checking for WordPress installation...'
   if wp_installed ; then
-    echo 'WordPress is installed'
+    echo '✓ WordPress is installed'
   else
     if [[ $INTERACTIVE = 'YES' ]] ; then
 
