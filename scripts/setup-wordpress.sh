@@ -142,14 +142,14 @@ EOF
 
   # configure plugins and theme
   uninstall_plugins hello akismet
-  wp --quiet plugin install --activate timber-library
-  wp --quiet plugin activate conifer
-  wp --quiet theme activate groot
 
   # install a specific version of Timber if necessary
   if [[ "$TIMBER_VERSION" ]] ; then
     composer require --dev timber/timber:"$TIMBER_VERSION"
   fi
+
+  wp --quiet plugin activate conifer
+  wp --quiet theme activate groot
 
   # install test themes
   rsync --archive --recursive $LANDO_MOUNT/test/themes/ $LANDO_MOUNT/wp/wp-content/themes/
