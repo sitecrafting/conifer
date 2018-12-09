@@ -45,10 +45,14 @@ class UserRoleShortcodeAuthorizationPolicyTest extends Base {
   }
 
   public function test_decide_with_multiple_roles() {
+    $user = $this->mockCurrentUser(123, [], [
+      'wp_capabilities' => ['editor' => true],
+    ]);
+
     $this->assertTrue($this->policy->decide(
       ['role' => ' editor, administrator'],
       'some content',
-      $this->mockCurrentUser(123, [], ['wp_capabilities' => ['editor' => true]])
+      $user
     ));
   }
 }

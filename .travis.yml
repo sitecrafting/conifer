@@ -13,23 +13,26 @@ env:
 
 language: php
 
-install: composer install --prefer-dist
+install:
+  - composer install --prefer-dist
+  - if [ $TIMBER_VERSION ] ; then composer require timber/timber:$TIMBER_VERSION; fi
 
 script:
   - vendor/bin/phpunit
   - vendor/bin/phpcs
 
+php:
+  - '7.0'
+  - '7.1'
+  - '7.2'
+
+env:
+  - TIMBER_VERSION='' # default to whatever is declared in composer.lock
+  - TIMBER_VERSION='2.x-dev'
 
 # Test Conifer against PHP 7.x and run end-to-end tests
 matrix:
   include:
-    - name: '7.0 unit tests'
-      php: 7.0
-    - name: '7.1 unit tests'
-      php: 7.1
-    - name: '7.2 unit tests'
-      php: 7.2
-
     - name: 'Coding standards'
       php: 7.2
       script: composer sniff
@@ -66,4 +69,5 @@ matrix:
 
   allow_failures:
     - name: 'Test VVV provisioning'
+    - env: TIMBER_VERSION='2.x-dev'
 
