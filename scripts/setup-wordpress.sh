@@ -15,6 +15,11 @@ case $key in
     shift # past argument
     shift # past argument
     ;;
+    --wp-version)
+    WP_VERSION="$2"
+    shift # past argument
+    shift # past argument
+    ;;
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -42,6 +47,19 @@ main() {
   if ! [[ -d "$WP_DIR"/wp-content/plugins/conifer ]] ; then
     echo 'Linking conifer plugin directory...'
     ln -s "../../../" "$WP_DIR"/wp-content/plugins/conifer
+  fi
+
+  if [[ "$WP_VERSION" ]]
+  then
+    echo 'Checking WordPress version...'
+    current_version=$(wp core version)
+    if [[ "$WP_VERSION" != "$current_version" ]]
+    then
+      echo "WordPress core is at v${current_version}; downloading ${WP_VERSION}"
+      wp core download --version="$WP_VERSION" --force
+    else
+      echo "✓ WordPress core is at v${current_version}"
+    fi
   fi
 
   echo 'Checking for WordPress config...'
