@@ -20,6 +20,8 @@ services:
           # Pass any non-empty CI envvar from the host into Lando
           # This is so we can force non-interactive mode setting up WP
           CI: ${CI:-''}
+          WP_VERSION: ${WP_VERSION:-''}
+          TIMBER_VERSION: ${TIMBER_VERSION:-''}
 
   database:
     type: mysql:5.7
