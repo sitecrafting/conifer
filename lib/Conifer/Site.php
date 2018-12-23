@@ -78,8 +78,10 @@ class Site extends TimberSite {
   public function __construct($identifier = null) {
     parent::__construct($identifier);
 
+    // establish some sensible default script directories
     $this->script_directory_cascade = [
       get_stylesheet_directory() . '/js/',
+      get_stylesheet_directory() . '/dist/',
       WP_PLUGIN_DIR . '/conifer/assets/js/',
       WPMU_PLUGIN_DIR . '/conifer/assets/js/',
     ];
