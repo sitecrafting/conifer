@@ -52,7 +52,7 @@ class SiteTest extends Base {
     ]);
     WP_Mock::userFunction('get_stylesheet_directory', [
       'return' => self::THEME_DIRECTORY,
-      'times' => 3,
+      'times' => 4,
     ]);
 
     // Set up a new virtual file system to test some of the site functions
