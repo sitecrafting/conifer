@@ -55,6 +55,108 @@ abstract class Post extends TimberPost {
   protected $related_post_counts = [];
 
   /**
+   * Register this post type given the high-level label options.
+   *
+   * @example
+   * ```php
+   * Post::register_type('person', [
+   *   'plural_label' => 'People',
+   *   'labels' => [
+   *     'add_new_item' => 'Onboard New Person'
+   *   ],
+   * ]);
+   *
+   * // equivalent to:
+   * register_post_type('person', [
+   *   'label' => 'Person', // inferred from post_type,
+   *   'labels' => [
+   *     'singular_name' => 'Person', // inferred from post_type
+   *     'add_new_item' => 'Onboard New Person', // overridden directly w/ labels.add_new_item
+   *     'view_items' => 'View People', // inferred from plural_label
+   *     // ... other singular/plural labels are inferred in the same way
+   *   ],
+   * ]);
+   * ```
+   * @param array $options any valid array of options to `register_post_type()`,
+   * plus an optional "plural_label" index. It produces a more comprehensive
+   * array of labels before passing it to `register_post_type()`.
+   */
+  public static function register_type() {
+    $options = static::type_options();
+
+    $options['labels'] = $options['labels'] ?? [];
+
+    // For singular label, fallback on post type
+    $singular = $options['labels']['singular_name']
+      ?? ucfirst(static::_post_type());
+
+    // Unless there's an explicity plural_label, follow the same default logic
+    // as register_post_type()
+    $plural = $options['plural_label']
+      ?? $options['label']
+      ?? $options['labels']['name']
+      ?? $singular . 's'; // pluralize singular naively
+
+    // this isn't meaningful to WP, just remove it
+    unset($options['plural_label']);
+
+    $options['labels']['name'] = $options['labels']['name'] ?? $plural;
+
+    $options['labels']['singular_name'] = $singular;
+
+    $options['labels']['add_new_item'] = $options['labels']['add_new_item']
+      ?? "Add New $singular";
+
+    $options['labels']['edit_item'] = $options['labels']['edit_item']
+      ?? "Edit $singular";
+
+    $options['labels']['new_item'] = $options['labels']['new_item']
+      ?? "New $singular";
+
+    $options['labels']['view_item'] = $options['labels']['view_item']
+      ?? "View $singular";
+
+    $options['labels']['view_items'] = $options['labels']['view_items']
+      ?? "View $plural";
+
+    $options['labels']['search_items'] = $options['labels']['search_items']
+      ?? "Search $plural";
+
+    $options['labels']['not_found'] = $options['labels']['not_found']
+      ?? "No $plural found";
+
+    $options['labels']['not_found_in_trash'] = $options['labels']['not_found_in_trash']
+      ?? "No $plural found in trash";
+
+    $options['labels']['all_items'] = $options['labels']['all_items']
+      ?? "All $plural";
+
+    $options['labels']['archives'] = $options['labels']['archives']
+      ?? "$singular Archives";
+
+    $options['labels']['attributes'] = $options['labels']['attributes']
+      ?? "$singular Attributes";
+
+    $options['labels']['insert_into_item'] = $options['labels']['insert_into_item']
+      ?? "Insert into $singular";
+
+    $options['labels']['uploaded_to_this_item'] = $options['labels']['uploaded_to_this_item']
+      ?? "Uploaded to this $singular";
+
+    register_post_type(static::_post_type(), $options);
+  }
+
+  /**
+   * Default implementation of custom post type labels,
+   * for use in register_post_type().
+   *
+   * @return array
+   */
+  public static function type_options() : array {
+    return [];
+  }
+
+  /**
    * Child classes must declare their own post types
    *
    * @throws \RuntimeException if the POST_TYPE class constant is empty

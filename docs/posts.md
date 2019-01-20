@@ -30,34 +30,77 @@ class Robot extends Post {
 
 Failing to define this constant may result in a `RuntimeException` being thrown later. The message should tell you exactly what you need to do.
 
-### Register your Custom Post Type
+### Registering your Custom Post Type
 
-Just like in vanilla WP, you need to register your CPT using `register_post_type`. You can of course do this directly in `functions.php`, but the convention we've found to be most helpful is to define a static `register` method on your CPT class, and call that method.
+Just like in vanilla WP, you need to register your CPT using `register_post_type`.
 
-Building on the example above, our `Robot` class now looks like:
-
-```php
-use Conifer\Post\Post;
-
-class Robot extends Post {
-  const POST_TYPE = 'robot';
-
-  public static function register() {
-    register_post_type('robot', ['label' => 'Robots']);
-  }
-}
-```
-
-Meanwhile, over in `functions.php` land, don't forget to call your new `register` method!
+To make this easier, Conifer offers a higher-level `Post::register_type()` method.
 
 ```php
 $site = new Conifer\Site();
 $site->configure(function() {
-	add_action('init', [Robot::class, 'register']);
+	add_action('init', [Robot::class, 'register_type']);
 });
 ```
 
-This approach keeps the behavior of the `Robot` class/post type encapsulated and the high-level site configuration scannable.
+Calling `Robot::register_type()` *with no arguments* will result in labels like **Add New Robot** and **View All Robots**:
+
+How? Conifer uses the `POST_TYPE` class constant along with any passed `$options` to produce a comprehensive set of `labels` to pass to `register_post_type()`. By default, plural labels are just singular labels with an "s" appended, to capture most cases in English. But you can also specify a `plural_label` inside your `$options` array to override this, and any plural labels will be interpolated accordingly.
+
+#### Overriding post type label settings
+
+Custom pluralization and other fine-tuning is also easy: simply implement the static `type_options()` method:
+
+```php
+/* lib/MyProject/Person.php */
+namespace MyProject;
+
+class Person extends Post {
+  const POST_TYPE = 'person';
+
+  public static function type_options() : array {
+  	return [
+      'plural_label' => 'People',
+      'labels' => [
+        'add_new_item'     => 'Onboard New Person'
+        'singular_name'    => 'Person',
+        'insert_into_item' => 'Insert into description',
+      ],
+    ];
+  }
+}
+```
+
+Then just call your custom post type's `register_type()` method normally in your site config callback:
+
+```php
+  /* functions.php config callback */
+  MyProject\Person::register_type();
+```
+
+This is equivalent to the following:
+
+```php
+register_post_type('person', [
+  'labels' => [
+    'name'                  => 'People',
+    'singular_name'         => 'Person',
+    'add_new_item'          => 'Onboard New Person',
+    'edit_item'             => 'Edit Person',
+    'new_item'              => 'New Person',
+    'view_item'             => 'View Person',
+    'view_items'            => 'View People',
+    'search_items'          => 'Search People',
+    'not_found'             => 'No People found',
+    'not_found_in_trash'    => 'No People found in trash',
+    'all_items'             => 'All People',
+    'archives'              => 'Person Archives',
+    'attributes'            => 'Person Attributes',
+    'insert_into_item'      => 'Insert into description',
+    'uploaded_to_this_item' => 'Uploaded to this Person',
+  ],
+]);
+```
 
 ## Checking for the existence of a post ID
 
@@ -155,7 +198,7 @@ use Conifer\Post\Post;
 
 class Robot extends Post {
   const POST_TYPE = 'robot';
-  
+
   public static function register() {
     register_post_type('robot', ['label' => 'Robots']);
     register_taxonomy('eeriness_level', 'robot');
