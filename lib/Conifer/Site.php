@@ -143,12 +143,52 @@ class Site extends TimberSite {
 
 
   /**
+   * Register a script within the script cascade path. Calls `wp_register_script`
+   * transparently, except that it defaults to registering in the footer instead
+   * of the header.
+   *
+   * @param string $scriptHandle the script handle to register
+   * @param string $fileName the file to search for in the script cascade path
+   * @param array $dependencies an array of registered dependency handles
+   * @param string|bool|null $version the version of the script to append to
+   * the URL rendered in the <script> tag. Accepts any valid value of the $ver
+   * argument to `wp_register_script`, plus the literal value `true`, which
+   * tells Conifer to look for an assets version file to use for cache-busting.
+   * Defaults to `true`.
+   * @param bool $inFooter whether to register this script in the footer. Unlike
+   * the same argument to the core `wp_register_script` function, this defaults
+   * to `true`.
+   */
+  public function register_script(
+    string $scriptName,
+    string $fileName,
+    array $dependencies = [],
+    $version = true,
+    bool $inFooter = true
+  ) {
+    if ($version === true) {
+      // use automatic any automatic cache-busting in the theme build process
+      $version = $this->get_assets_version();
+    }
+
+    wp_register_script(
+      $scriptName,
+      $this->get_script_uri($fileName),
+      $dependencies,
+      $version,
+      $inFooter
+    );
+  }
+
+  /**
    * Enqueue a script within the script cascade path. Calls wp_enqueue_script
    * transparently, except that it defaults to enqueueing in the footer instead
    * of the header.
    *
    * @param string $scriptHandle the script handle to register and enqueue
-   * @param string $fileName the file to search for in the script cascade path
+   * @param string $fileName the file to search for in the script cascade path.
+   * Defaults to the empty string, but is required if the script has not
+   * already been registered.
    * @param array $dependencies an array of registered dependency handles
    * @param string|bool|null $version the version of the script to append to
    * the URL rendered in the <script> tag. Accepts any valid value of the $ver
@@ -156,12 +196,12 @@ class Site extends TimberSite {
    * tells Conifer to look for an assets version file to use for cache-busting.
    * Defaults to `true`.
    * @param bool $inFooter whether to enqueue this script in the footer. Unlike
-   * the same argument to the core `wp_enqueue_script` functions, this defaults
+   * the same argument to the core `wp_enqueue_script` function, this defaults
    * to `true`.
    */
   public function enqueue_script(
     string $scriptName,
-    string $fileName,
+    string $fileName = '',
     array $dependencies = [],
     $version = true,
     bool $inFooter = true
@@ -181,11 +221,50 @@ class Site extends TimberSite {
   }
 
   /**
+   * Register a stylesheet within the style cascade path. Calls
+   * `wp_register_style` transparently.
+   *
+   * @param string $stylesheetHandle the style handle to register
+   * @param string $fileName the file to search for in the style cascade path
+   * @param array $dependencies an array of registered dependency handles
+   * @param string|bool|null $version the version of the style to append to
+   * the URL rendered in the <link> tag. Accepts any valid value of the $ver
+   * argument to `wp_register_style`, plus the literal value `true`, which
+   * tells Conifer to look for an assets version file to use for cache-busting.
+   * Defaults to `true`.
+   * @param bool $media the media for which this stylesheet has been defined;
+   * passed transparently to `wp_register_style`. Defaults to "all" (as does
+   * `wp_register_style` itself).
+   */
+  public function register_style(
+    string $stylesheetName,
+    string $fileName,
+    array $dependencies = [],
+    $version = true,
+    string $media = 'all'
+  ) {
+    if ($version === true) {
+      // use automatic any automatic cache-busting in the theme build process
+      $version = $this->get_assets_version();
+    }
+
+    wp_register_style(
+      $stylesheetName,
+      $this->get_stylesheet_uri($fileName),
+      $dependencies,
+      $version,
+      $media
+    );
+  }
+
+  /**
    * Enqueue a stylesheet within the style cascade path. Calls
    * `wp_enqueue_style` transparently.
    *
    * @param string $stylesheetHandle the style handle to register and enqueue
-   * @param string $fileName the file to search for in the style cascade path
+   * @param string $fileName the file to search for in the style cascade path.
+   * Defaults to the empty string, but is required if the style has not
+   * already been registered.
    * @param array $dependencies an array of registered dependency handles
    * @param string|bool|null $version the version of the style to append to
    * the URL rendered in the <link> tag. Accepts any valid value of the $ver
@@ -198,7 +277,7 @@ class Site extends TimberSite {
    */
   public function enqueue_style(
     string $stylesheetName,
-    string $fileName,
+    string $fileName = '',
     array $dependencies = [],
     $version = true,
     string $media = 'all'
