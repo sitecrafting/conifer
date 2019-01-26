@@ -387,8 +387,8 @@ class Site extends TimberSite {
    * @see set_view_directory_cascade
    */
   public function configure_twig_view_cascade() {
-    add_filter('timber/loader/paths', function() {
-      return $this->get_view_directory_cascade();
+    add_filter('timber/loader/paths', function($dirs) {
+      return array_merge($this->get_view_directory_cascade(), $dirs);
     });
   }
 
