@@ -2,7 +2,18 @@
 
 ## config callback
 
-The anonymous function you pass to the Conifer\Site::configure() method. See The Site Class docs.
+The anonymous function you pass to the `Conifer\Site::configure()` method. See The Site Class docs.
+
+Example:
+
+```
+/* functions.php */
+use Conifer\Site;
+$site = new Site();
+$site->configure(function() {
+  /* now we're in the config callback; call add_action() and stuff here... */
+});
+```
 
 ## Timber
 
