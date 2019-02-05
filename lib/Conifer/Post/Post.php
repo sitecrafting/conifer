@@ -88,7 +88,12 @@ abstract class Post extends TimberPost {
 
     // For singular label, fallback on post type
     $singular = $options['labels']['singular_name']
-      ?? ucfirst(static::_post_type());
+      // convert underscore_inflection to Words Separated By Spaces
+      // TODO separate this into a utility method
+      ?? implode(' ', array_map(function(string $word) {
+        return ucfirst($word);
+      }, explode('_', $name)));
+
 
     // Unless there's an explicity plural_label, follow the same default logic
     // as register_post_type()
@@ -182,13 +187,18 @@ abstract class Post extends TimberPost {
    */
   public static function register_taxonomy(
     string $name,
-    array $options,
+    array $options = [],
     bool $omitPostType = false
   ) {
     $options['labels'] = $options['labels'] ?? [];
 
     // For singular label, fallback on taxonomy name
-    $singular = $options['labels']['singular_name'] ?? ucfirst($name);
+    $singular = $options['labels']['singular_name']
+      // convert underscore_inflection to Words Separated By Spaces
+      // TODO separate this into a utility method
+      ?? implode(' ', array_map(function(string $word) {
+        return ucfirst($word);
+      }, explode('_', $name)));
 
     // Unless there's an explicity plural_label, follow the same default logic
     // as register_post_type()
