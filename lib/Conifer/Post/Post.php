@@ -94,7 +94,6 @@ abstract class Post extends TimberPost {
         return ucfirst($word);
       }, explode('_', static::_post_type)));
 
-
     // Unless there's an explicity plural_label, follow the same default logic
     // as register_post_type()
     $plural = $options['plural_label']
