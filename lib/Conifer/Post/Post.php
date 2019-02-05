@@ -147,6 +147,118 @@ abstract class Post extends TimberPost {
   }
 
   /**
+   * Register a taxonomy for this post type
+   *
+   * @example
+   * ```php
+   * Post::register_taxonomy('sign', [
+   *   'plural_label' => 'Signs',
+   *   'labels' => [
+   *     'add_new_item' => 'Divine New Sign'
+   *   ]
+   * ]);
+   *
+   * // equivalent to:
+   * register_taxonomy('sign', 'person', [
+   *   'labels' => [
+   *     'name'          => 'Signs',
+   *     'singular_name' => 'Sign', // inferred from taxonomy name
+   *     'add_new_item'  => 'Divine New Sign', // overridden directly w/ labels.add_new_item
+   *     'menu_naem'     => 'View Signs' // inferred from plural_label
+   *     // ... other singular/plural labels are inferred in the same way
+   *   ]
+   * ]);
+   * ```
+   * @param string $name the name of the taxonomy. Must be all lower-case, with
+   * no spaces.
+   * @param array $options any valid array of options to `register_taxonomy()`,
+   * plus an optional "plural_label" index. It produces a more comprehensive
+   * array of labels before passing it to `register_taxonomy()`.
+   * @param bool $omitPostType whether to omit the post type in the declaration.
+   * If true, passes `null` as the `$object_type` argument to
+   * `register_taxonomy()`, which is useful for declaring taxonomies across
+   * post types. Defaults to `false`.
+   * @see https://codex.wordpress.org/Function_Reference/register_taxonomy
+   */
+  public static function register_taxonomy(
+    string $name,
+    array $options,
+    bool $omitPostType = false
+  ) {
+    $options['labels'] = $options['labels'] ?? [];
+
+    // For singular label, fallback on taxonomy name
+    $singular = $options['labels']['singular_name'] ?? ucfirst($name);
+
+    // Unless there's an explicity plural_label, follow the same default logic
+    // as register_post_type()
+    $plural = $options['plural_label']
+      ?? $options['label']
+      ?? $options['labels']['name']
+      ?? $singular . 's'; // pluralize singular naively
+
+    // this isn't meaningful to WP, just remove it
+    unset($options['plural_label']);
+
+    $options['labels']['name'] = $options['labels']['name'] ?? $plural;
+
+    // omit $object_type option in taxonomy declaration?
+    $postType = $omitPostType ? null : self::_post_type();
+
+    $options['labels']['singular_name'] = $singular;
+
+    $options['labels']['menu_name'] = $options['labels']['menu_name']
+      ?? $plural;
+
+    $options['labels']['all_items'] = $options['labels']['all_items']
+      ?? "All {$plural}";
+
+    $options['labels']['edit_item'] = $options['labels']['edit_item']
+      ?? "Edit {$singular}";
+
+    $options['labels']['view_item'] = $options['labels']['view_item']
+      ?? "View {$singular}";
+
+    $options['labels']['update_item'] = $options['labels']['update_item']
+      ?? "Update {$singular}";
+
+    $options['labels']['add_new_item'] = $options['labels']['add_new_item']
+      ?? "Add New {$singular}";
+
+    $options['labels']['new_item_name'] = $options['labels']['new_item_name']
+      ?? "New {$singular} Name";
+
+    $options['labels']['parent_item'] = $options['labels']['parent_item']
+      ?? "Parent {$singular}";
+
+    $options['labels']['parent_item_colon'] = $options['labels']['parent_item_colon']
+      ?? "Parent {$singular}:";
+
+    $options['labels']['search_items'] = $options['labels']['search_items']
+      ?? "Search {$plural}";
+
+    $options['labels']['popular_items'] = $options['labels']['r_items']
+      ?? "Popular {$plural}";
+
+    $options['labels']['separate_items_with_commas'] = $options['labels']['separate_items_with_commas']
+      ?? "Separate {$plural} with commas";
+
+    $options['labels']['add_or_remove_items'] = $options['labels']['add_or_remove_items']
+      ?? "Add or remove {$plural}";
+
+    $options['labels']['choose_from_most_used'] = $options['labels']['choose_from_most_used']
+      ?? "Choose from the most used {$plural}";
+
+    $options['labels']['not_found'] = $options['labels']['not_found']
+      ?? "No {$plural} found";
+
+    $options['labels']['back_to_items'] = $options['labels']['back_to_items']
+      ?? "← Back to {$plural}";
+
+    register_taxonomy($name, $postType, $options);
+  }
+
+  /**
    * Default implementation of custom post type labels,
    * for use in register_post_type().
    *

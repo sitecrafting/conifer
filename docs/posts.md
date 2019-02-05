@@ -102,6 +102,31 @@ register_post_type('person', [
 ]);
 ```
 
+### Registering custom taxonomies
+
+The `Post::register_taxonomy()` method offers a similarly high-level way to declare custom taxonomies on your custom post types. In this case, it takes the name of the taxonomy and any valid options, plus a special `plural_label` option:
+
+```php
+Robot::register_taxonomy('era', [
+  'description'  => 'The time period in which this robot came to be',
+  'plural_label' => 'Eras',
+]);
+```
+
+Similar to the `register_type()` method, this will appropriately infer singular and plural labels to be passed to the core [`register_taxonomy()`](https://codex.wordpress.org/Function_Reference/register_taxonomy) function. The `$object_type` argument is simply inferred from the post type.
+
+#### Registering taxonomies across post types
+
+To declare custom taxonomies shared across post types, you must pass `null` as the [`$object_type` argument](https://codex.wordpress.org/Function_Reference/register_taxonomy#Parameters) to the core function. Since Conifer's method version infers this from the post type, you can instead pass an optional third parameter to the method, to tell it to omit the post type in the taxonomy declaration:
+
+```php
+Robot::register_taxonomy('era', [/* ... */], true);
+```
+
+Per the Codex, if you do this you'll need to explicitly include this taxonomy in a call to `Post::register_type()` (or `register_post_type()` directly):
+
+> **null** - Setting explicitly to null registers the taxonomy but doesn't associate it with any objects, so it won't be directly available within the Admin UI. You will need to manually register it using the 'taxonomy' parameter (passed through $args) when registering a custom post_type (see [register_post_type()](https://codex.wordpress.org/Function_Reference/register_post_type)), or using [register_taxonomy_for_object_type()](https://codex.wordpress.org/Function_Reference/register_taxonomy_for_object_type).
+
 ## Checking for the existence of a post ID
 
 You can check whether a post exists with a given ID *and an appropriate post_type* using the `Post::exists()` method. It uses [late static binding](https://secure.php.net/manual/en/language.oop5.late-static-bindings.php) on the `POST_TYPE` class constant to check the `post_type` of any posts it finds. That is, the `exists()` method will only return `true` when the `post_type` matches up with the `POST_TYPE` constant.
