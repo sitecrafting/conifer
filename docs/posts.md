@@ -43,9 +43,11 @@ $site->configure(function() {
 });
 ```
 
-Calling `Robot::register_type()` *with no arguments* will result in labels like **Add New Robot** and **View All Robots**:
+Calling `Robot::register_type()` *with no arguments* will result in labels like **Add New Robot** and **View All Robots**.
 
 How? Conifer uses the `POST_TYPE` class constant along with any passed `$options` to produce a comprehensive set of `labels` to pass to `register_post_type()`. By default, plural labels are just singular labels with an "s" appended, to capture most cases in English. But you can also specify a `plural_label` inside your `$options` array to override this, and any plural labels will be interpolated accordingly.
+
+If your `POST_TYPE` class constant is in snake_case (which is the recommended style), `Post::register_type()` will convert it to Space Separated Capitalized Words. For example, a `POST_TYPE` definition of `special_post`  translates into singular and plural labels `Special Post` and `Special Posts`, respectively.
 
 #### Overriding post type label settings
 
@@ -61,11 +63,12 @@ class Person extends Post {
   public static function type_options() : array {
   	return [
       'plural_label' => 'People',
-      'labels' => [
+      'labels'       => [
         'add_new_item'     => 'Onboard New Person'
         'singular_name'    => 'Person',
-        'insert_into_item' => 'Insert into description',
+        'insert_into_item' => 'Insert into bio',
       ],
+      'description'  => 'A real-life person',
     ];
   }
 }
@@ -82,7 +85,7 @@ This is equivalent to the following:
 
 ```php
 register_post_type('person', [
-  'labels' => [
+  'labels'      => [
     'name'                  => 'People',
     'singular_name'         => 'Person',
     'add_new_item'          => 'Onboard New Person',
@@ -96,9 +99,10 @@ register_post_type('person', [
     'all_items'             => 'All People',
     'archives'              => 'Person Archives',
     'attributes'            => 'Person Attributes',
-    'insert_into_item'      => 'Insert into description',
+    'insert_into_item'      => 'Insert into bio',
     'uploaded_to_this_item' => 'Uploaded to this Person',
   ],
+  'description' => 'A real-life person',
 ]);
 ```
 
@@ -107,23 +111,72 @@ register_post_type('person', [
 The `Post::register_taxonomy()` method offers a similarly high-level way to declare custom taxonomies on your custom post types. In this case, it takes the name of the taxonomy and any valid options, plus a special `plural_label` option:
 
 ```php
-Robot::register_taxonomy('era', [
-  'description'  => 'The time period in which this robot came to be',
-  'plural_label' => 'Eras',
-]);
+Person::register_taxonomy('sign');
 ```
 
 Similar to the `register_type()` method, this will appropriately infer singular and plural labels to be passed to the core [`register_taxonomy()`](https://codex.wordpress.org/Function_Reference/register_taxonomy) function. The `$object_type` argument is simply inferred from the post type.
+
+The above snippet is equivalent to:
+
+```php
+register_taxonomy('sign', 'person', [
+  'labels' => [
+    'name'                       => 'Signs', // inferred from taxonomy name
+    'singular_name'              => 'Sign',  // inferred from taxonomy name
+    'menu_name'                  => 'Signs',
+    'all_items'                  => 'All Signs',
+    'edit_item'                  => 'Edit Sign',
+    'view_item'                  => 'View Sign',
+    'update_item'                => 'Update Sign',
+    'add_new_item'               => 'Add New Sign',
+    'new_item_name'              => 'New Sign Name',
+    'parent_item'                => 'Parent Sign',
+    'parent_item_colon'          => 'Parent Sign:',
+    'search_items'               => 'Search Signs',
+    'popular_items'              => 'Popular Signs',
+    'separate_items_with_commas' => 'Separate Signs with commas',
+    'add_or_remove_items'        => 'Add or remove Signs',
+    'choose_from_most_used'      => 'Choose from the most used Signs',
+    'not_found'                  => 'No Signs found',
+    'back_to_items'              => '← Back to Signs',
+  ],
+]);
+```
+
+Just as with defining post type options within your `type_options()` method, you can specify arbitrary options:
+
+```php
+Person::register_taxonomy('sign', [
+  'description' => 'This person\'s astrological sign',
+]);
+```
+
+> #### Info::Don't pass post type!
+>
+> Note that you don't pass in a post type argument, as that's inferred from your class's `POST_TYPE` constant.
+
+This is equivalent to:
+
+```php
+register_taxonomy('sign', 'person', [
+  'description' => 'This person\'s astrological sign',	
+  'labels' => [
+    'name'                       => 'Signs', // inferred from taxonomy name
+    'singular_name'              => 'Sign',  // inferred from taxonomy name
+    // ... all the same labels as above ...
+  ],
+]);
+```
 
 #### Registering taxonomies across post types
 
 To declare custom taxonomies shared across post types, you must pass `null` as the [`$object_type` argument](https://codex.wordpress.org/Function_Reference/register_taxonomy#Parameters) to the core function. Since Conifer's method version infers this from the post type, you can instead pass an optional third parameter to the method, to tell it to omit the post type in the taxonomy declaration:
 
 ```php
-Robot::register_taxonomy('era', [/* ... */], true);
+Person::register_taxonomy('sign', [/* ... */], true);
 ```
 
-Per the Codex, if you do this you'll need to explicitly include this taxonomy in a call to `Post::register_type()` (or `register_post_type()` directly):
+Per the Codex, if you do this you'll need to explicitly include this taxonomy in the `type_options()` method for each of your post types you want included in this taxonomy:
 
 > **null** - Setting explicitly to null registers the taxonomy but doesn't associate it with any objects, so it won't be directly available within the Admin UI. You will need to manually register it using the 'taxonomy' parameter (passed through $args) when registering a custom post_type (see [register_post_type()](https://codex.wordpress.org/Function_Reference/register_post_type)), or using [register_taxonomy_for_object_type()](https://codex.wordpress.org/Function_Reference/register_taxonomy_for_object_type).
 
