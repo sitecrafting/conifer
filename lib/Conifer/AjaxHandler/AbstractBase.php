@@ -73,6 +73,7 @@
 
 namespace Conifer\AjaxHandler;
 
+use BadMethodCallException;
 use LogicException;
 use ReflectionClass;
 
@@ -108,10 +109,9 @@ abstract class AbstractBase {
    * Abstract method used to define the functionality when handling an AJAX request.
    * Should return an array to be encoded in the response.
    *
-   * @param  array $request The request data
    * @return array The response after handling the request
    */
-  abstract protected function execute(array $request);
+  abstract protected function execute() : array;
 
 
   /*
@@ -124,11 +124,11 @@ abstract class AbstractBase {
    * @param array $request the HTTP request params.
    * Defaults to the $_REQUEST superglobal.
    */
-  public static function handle(array $request = []) {
-    $request = $request ?: $_REQUEST; // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
-    $handler = new static($request);
+  public static function handle() {
+    // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+    $handler = new static($_REQUEST);
     $handler->set_cookie($_COOKIE);
-    $handler->send_json_response($handler->execute($request));
+    $handler->send_json_response($handler->execute());
   }
 
   /**
