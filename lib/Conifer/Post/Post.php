@@ -92,7 +92,7 @@ abstract class Post extends TimberPost {
       // TODO separate this into a utility method
       ?? implode(' ', array_map(function(string $word) {
         return ucfirst($word);
-      }, explode('_', static::_post_type)));
+      }, explode('_', static::_post_type())));
 
     // Unless there's an explicity plural_label, follow the same default logic
     // as register_post_type()
