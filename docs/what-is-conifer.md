@@ -21,7 +21,7 @@ These tasks include:
 
 Rather than aiming to be The One True Way to Do WordPress, Conifer leans more toward The Way We Like to Do WordPress. Like its authors, Conifer is opinionated.
 
-We hold certain values at the center our philosophy as developers, designers, and creators. If you share these values, we think you'll benefit from Conifer.
+We hold certain values at the center of our philosophy as developers, designers, and creators. If you share these values, we think you'll benefit from Conifer.
 
 ### Abstractions for a WordPress architecture
 
