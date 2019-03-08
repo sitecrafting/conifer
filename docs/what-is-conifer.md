@@ -102,7 +102,7 @@ Like Timber, Conifer stays out of your way. You can use as much or as little of 
 
 ## Not for Everyone
 
-Why would you use Conifer, rather than just Timber (or vanilla WordPress)? Why a write separate plugin at all, instead of just adding more stuff to Timber? Two reasons.
+Why would you use Conifer, rather than just Timber (or vanilla WordPress)? Why a write separate plugin at all, instead of just adding more stuff to Timber? There are two reasons.
 
 First, Conifer aims to be even _more_ opinionated. It requires PHP 7.0+. It leverages PHP's new type-hinting features extensively. It takes the philosophy of Timber as a _premise_ and builds on it.
 
