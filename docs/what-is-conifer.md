@@ -110,4 +110,4 @@ Second, Conifer aims to be _bigger_. Compared to Conifer, Timber aims to be a fa
 
 While we feel that Timber and Conifer's philosophies are extremely compatible, they are not identical. We didn't feel it would be appropriate or effective to impose our design decisions on the wider Timber community, and we didn't want to bloat the Timber codebase with more stuff than it needs in order to be the great foundation it already is.
 
-So if you're content working with just Timber and don't need a lot beyond some basic Twig stuff or some simple Post logic, that's great! More power to you. But if you find yourself nodding along to these values and wishing Timber did _more_... meet Conifer. We think you'll get along.
+So if you're content working with just Timber and don't need a lot beyond some basic Twig stuff or some simple Post logic, that's great! More power to you. But if you find yourself nodding along to these values and wishing Timber did _more_... meet Conifer. We think you'll get along!
