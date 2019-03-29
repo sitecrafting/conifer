@@ -271,8 +271,8 @@ class Site extends TimberSite {
    * argument to `wp_enqueue_style`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
    * Defaults to `true`.
-   * @param bool $media the media for which this stylesheet has been defined;
-   * passed transparently to `wp_enqueue_style`. Defaults to "all" (as does
+   * @param string $media the media for which this stylesheet has been defined.
+   * Passed transparently to `wp_enqueue_style`. Defaults to "all" (as does
    * `wp_enqueue_style` itself).
    */
   public function enqueue_style(
