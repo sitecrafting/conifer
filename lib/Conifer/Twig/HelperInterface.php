@@ -2,6 +2,13 @@
 /**
  * Interface for declarative, OO Twig functions and filters
  *
+ */
+
+namespace Conifer\Twig;
+
+/**
+ * Easily define custom functions to add to Twig by implementing this interface
+ *
  * @example
  * Define a class that implements this interface (typically in a lib file
  * in your theme):
@@ -64,14 +71,7 @@
  * <p>The cat says: "meow!"</p>
  * <p>The fox says: "o hai!"</p>
  * ```
- */
-
-namespace Conifer\Twig;
-
-/**
- * Easily define custom functions to add to Twig by extending this class.
- *
- * @copyright 2018 SiteCrafting, Inc.
+ * @copyright 2019 SiteCrafting, Inc.
  * @author Coby Tamayo
  */
 interface HelperInterface {
