@@ -224,9 +224,9 @@ For rendering forms in Twig you have even more power. The `Conifer\Twig\FormHelp
 
 ```twig
 {# add the "error" class on label/input IFF there are errors for this field! #}
-<label class="{{ myForm | field_class }}" for="email">Email</label>
+<label class="{{ myForm | field_class('email') }}" for="email">Email</label>
 <input
-	class="{{ myForm | field_class }}"
+	class="{{ myForm | field_class('email') }}"
 	type="email"
 	name="email"
 	id="email"
@@ -243,10 +243,10 @@ Note that you can also use the more verbose `error_messages_for` in place of the
 
 ### Custom error classes
 
-By passing an optional parameter to the `field_class` filter, you can specify your own error class to render when the field has errors:
+By passing an optional second parameter to the `field_class` filter, you can specify your own error class to render when the field has errors:
 
 ```twig
-<input class="{{ myForm | field_class('validation-error') }}" />
+<input class="{{ myForm | field_class('field-name','validation-error') }}" />
 ```
 
 ### Custom error message separators
@@ -268,7 +268,7 @@ These are great for freeing your Twig views from the shackles of conditional log
 <input type="checkbox" {% if myForm.checked('my_field') %}checked{% endif %} />
 
 {# ...we can do this: #}
-<input type="checkbox" {{ checked_attr(myForm, 'my_field') }} />
+<input type="checkbox" {{ myForm | checked_attr('my_field') }} />
 ```
 
 They're also handy for looping through options in a `<select>` element or a radio/checkbox group:
@@ -276,7 +276,7 @@ They're also handy for looping through options in a `<select>` element or a radi
 ```twig
 <select name="my_field">
   {% for value, label in my_select_options %}
-		<option {{ selected_attr(myForm, 'my_select_field', value) }}>{{ label }}</option>
+		<option {{ myForm | selected_attr('my_select_field', value) }}>{{ label }}</option>
   {% endfor %}
 </select>
 
@@ -285,7 +285,7 @@ They're also handy for looping through options in a `<select>` element or a radi
 		type="radio"
 		id="my-radio-field-{{ loop.index }}"
 		value="{{ value }}"
-		{{ checked_attr(myForm, 'my_select_field', value) }}
+		{{ myForm | checked_attr('my_select_field', value) }}
 	/>
 	<label for="my-radio-field-{{ loop.index }}">{{ label }}</label>
 {% endfor %}
