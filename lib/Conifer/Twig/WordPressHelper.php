@@ -5,6 +5,9 @@
 
 namespace Conifer\Twig;
 
+use Conifer\Post\BlogPost;
+use Conifer\Post\Post;
+
 use Timber\Timber;
 
 /**
@@ -53,6 +56,9 @@ class WordPressHelper implements HelperInterface {
       },
       'get_sidebar_widgets' => function($name) {
         return Timber::get_widgets($name);
+      },
+      'get_latest_posts' => function(int $count = Post::LATEST_POST_COUNT) : array {
+        return BlogPost::latest($count);
       },
     ];
   }

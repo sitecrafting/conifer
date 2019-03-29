@@ -24,6 +24,8 @@ abstract class Post extends TimberPost {
 
   const RELATED_POST_COUNT = 3;
 
+  const LATEST_POST_COUNT = 3;
+
   /**
    * When instantiating TimberImages, create instances of this class
    *
@@ -297,6 +299,24 @@ abstract class Post extends TimberPost {
   }
 
   /**
+   * Get the latest posts
+   *
+   * @return
+   */
+  public static function latest(int $count = self::LATEST_POST_COUNT) : array {
+    return static::get_all([
+      'numberposts' => $count
+    ]);
+  }
+
+
+
+  /*
+   * Instance methods
+   */
+
+
+  /**
    * Place tighter restrictions on post types than Timber,
    * forcing all concrete subclasses to implement this method.
    */
@@ -320,6 +340,9 @@ abstract class Post extends TimberPost {
     // @see https://github.com/timber/timber/pull/1218
     if ($class === self::class) {
       $class = TimberPost::class;
+    } else {
+      // we're NOT just defaulting to blog post, so get the post type to query
+      $query['post_type'] = static::_post_type();
     }
 
     return Timber::get_posts( $query, $class );
