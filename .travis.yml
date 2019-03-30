@@ -25,6 +25,7 @@ php:
   - '7.0'
   - '7.1'
   - '7.2'
+  - '7.3'
 
 env:
   - TIMBER_VERSION='' # default to whatever is declared in composer.lock
@@ -34,7 +35,7 @@ env:
 matrix:
   include:
     - name: 'Coding standards'
-      php: 7.2
+      php: 7.3
       script: composer sniff
 
     - name: 'End-to-end tests with Lando/Cypress'
