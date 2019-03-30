@@ -1,7 +1,6 @@
 <?php
 /**
  * Interface for declarative, OO Twig functions and filters
- *
  */
 
 namespace Conifer\Twig;

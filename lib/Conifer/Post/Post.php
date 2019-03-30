@@ -305,7 +305,7 @@ abstract class Post extends TimberPost {
    */
   public static function latest(int $count = self::LATEST_POST_COUNT) : array {
     return static::get_all([
-      'numberposts' => $count
+      'numberposts' => $count,
     ]);
   }
 
