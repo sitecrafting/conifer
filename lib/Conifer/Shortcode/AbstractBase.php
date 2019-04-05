@@ -19,7 +19,11 @@ abstract class AbstractBase {
    * @param  string $tag The tag to be used to write the actual shortcode
    */
   public static function register( $tag ) {
-    add_shortcode( $tag, [new static(), 'render'] );
+    add_shortcode( $tag, function($args = [], string $html = '') {
+      $shortcode = new static();
+      // coerce args to an array
+      return $shortcode->render($args ?: [], $html);
+    });
   }
 
   /**
