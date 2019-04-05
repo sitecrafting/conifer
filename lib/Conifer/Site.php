@@ -137,6 +137,8 @@ class Site extends TimberSite {
     $this->configure_default_admin_dashboard_widgets();
     $this->enable_admin_hotkeys();
 
+    Button::register('button');
+
     Integrations\YoastIntegration::demote_metabox();
     // TODO moar integrations!
   }
