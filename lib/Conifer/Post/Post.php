@@ -331,7 +331,7 @@ abstract class Post extends TimberPost {
    * @param  array|string $query any valid Timber query
    * @return array         an array of all matching post objects
    */
-  public static function get_all( $query = false ) {
+  public static function get_all(array $query = []) : array {
     $class = static::class;
 
     // Avoid instantiating this (abstract) class, causing a Fatal Error.
@@ -345,7 +345,7 @@ abstract class Post extends TimberPost {
       $query['post_type'] = static::_post_type();
     }
 
-    return Timber::get_posts( $query, $class );
+    return Timber::get_posts($query, $class);
   }
 
   /**
