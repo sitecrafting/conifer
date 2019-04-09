@@ -63,6 +63,7 @@
 * [Twig\TextHelper](/reference/twig-texthelper.md)
 * [Twig\WordPressHelper](/reference/twig-wordpresshelper.md)
 
-## Notes
+## Changelog
 
-* [Changelog](/changelog/2018.md)
+* [2019](/changelog/2019.md)
+* [2018](/changelog/2018.md)
