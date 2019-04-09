@@ -23,7 +23,7 @@ Please submit issues and feature requests directly to GitHub. We need guidance f
 
 ## Development
 
-**To get started hacking on Conifer itself, first install [Lando](https://docs.devwithlando.io/),** the official dev environment for Conifer and sole system requirement for developing Conifer.
+**To get started hacking on Conifer itself, first install [Lando](https://docs.devwithlando.io/),** the official dev environment for Conifer and sole system requirement for developing Conifer. **Note that you need Lando version beta.47 or rc.1.** The transition to rc.2+ is a [work in progress](https://github.com/sitecrafting/conifer/issues/103).
 
 Then, just clone the repo and start up the dev environment:
 
