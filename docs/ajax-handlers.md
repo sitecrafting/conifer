@@ -7,7 +7,7 @@ Conifer provides an elegant and flexible abstraction of the standard [WordPress 
 use Conifer\AjaxHandler\AbstractBase;
 
 class MyAjaxHandler extends AbstractBase {
-  protected function execute() {
+  protected function execute() : array {
     /* 
     * Your custom logic goes here
     * Request data is accessible via $this->request
