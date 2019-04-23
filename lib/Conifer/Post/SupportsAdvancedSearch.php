@@ -13,7 +13,7 @@ trait SupportsAdvancedSearch {
       global $wpdb;
 
       //debug($query->meta_query->queries);
-      if (!$query->is_search()) {
+      if (!$query->is_search() || empty($query->query_vars['search_terms'])) {
         // nothing to do
         return $clauses;
       }
