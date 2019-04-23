@@ -13,97 +13,100 @@ trait SupportsAdvancedSearch {
       global $wpdb;
 
       //debug($query->meta_query->queries);
-      if ($query->is_search()) {
-        // ->prepend_distinct
-        $clauses['fields'] = ' DISTINCT ' . $clauses['fields'];
+      if (!$query->is_search()) {
+        // nothing to do
+        return $clauses;
+      }
 
-        // ->add_join('postmeta', 'posts.ID = postmeta.post_id')
-        $clauses['join'] .=
-          " LEFT JOIN {$wpdb->postmeta}"
-          . " ON ( {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id ) ";
+      // ->prepend_distinct
+      $clauses['fields'] = ' DISTINCT ' . $clauses['fields'];
 
-        // map -> wildcard
-        $terms = array_map(function(string $term) : string {
-          return "%{$term}%";
-        }, $query->query_vars['search_terms']);
+      // ->add_join('postmeta', 'posts.ID = postmeta.post_id')
+      $clauses['join'] .=
+        " LEFT JOIN {$wpdb->postmeta}"
+        . " ON ( {$wpdb->posts}.ID = {$wpdb->postmeta}.post_id ) ";
 
-        $whereClauses = array_map(function(array $postTypeSearch) use($wpdb, $terms) {
-          $titleComparisons = array_map(function(string $term) use($wpdb) : string {
-            return $wpdb->prepare("{$wpdb->posts}.post_title LIKE %s", $term);
-          }, $terms);
-          $titleClause = '(' . implode(' OR ', $titleComparisons) . ')';
+      // map -> wildcard
+      $terms = array_map(function(string $term) : string {
+        return "%{$term}%";
+      }, $query->query_vars['search_terms']);
 
-          $excerptComparisons = array_map(function(string $term) use($wpdb) : string {
-            return $wpdb->prepare("{$wpdb->posts}.post_excerpt LIKE %s", $term);
-          }, $terms);
-          $excerptClause = '(' . implode(' OR ', $excerptComparisons) . ')';
+      $whereClauses = array_map(function(array $postTypeSearch) use($wpdb, $terms) {
+        $titleComparisons = array_map(function(string $term) use($wpdb) : string {
+          return $wpdb->prepare("{$wpdb->posts}.post_title LIKE %s", $term);
+        }, $terms);
+        $titleClause = '(' . implode(' OR ', $titleComparisons) . ')';
 
-          $contentComparisons = array_map(function(string $term) use($wpdb) : string {
-            return $wpdb->prepare("{$wpdb->posts}.post_content LIKE %s", $term);
-          }, $terms);
-          $contentClause = '(' . implode(' OR ', $contentComparisons) . ')';
+        $excerptComparisons = array_map(function(string $term) use($wpdb) : string {
+          return $wpdb->prepare("{$wpdb->posts}.post_excerpt LIKE %s", $term);
+        }, $terms);
+        $excerptClause = '(' . implode(' OR ', $excerptComparisons) . ')';
 
-          $metaKeyComparisons = [
-            '(meta_key = "hello")',
-            '(meta_key LIKE "good%")',
-          ];
-          $metaKeyComparisons = array_map(function($key) use($wpdb) : string {
-            if (is_string($key)) {
+        $contentComparisons = array_map(function(string $term) use($wpdb) : string {
+          return $wpdb->prepare("{$wpdb->posts}.post_content LIKE %s", $term);
+        }, $terms);
+        $contentClause = '(' . implode(' OR ', $contentComparisons) . ')';
 
-              return $wpdb->prepare('(meta_key = %s)', $key);
+        $metaKeyComparisons = [
+          '(meta_key = "hello")',
+          '(meta_key LIKE "good%")',
+        ];
+        $metaKeyComparisons = array_map(function($key) use($wpdb) : string {
+          if (is_string($key)) {
 
-            } elseif (is_array($key) && isset($key['key'])) {
+            return $wpdb->prepare('(meta_key = %s)', $key);
 
-              $op = trim($key['key_compare'] ?? '=');
+          } elseif (is_array($key) && isset($key['key'])) {
 
-              if ($op !== 'LIKE') {
-                $op = '=';
-              }
+            $op = trim($key['key_compare'] ?? '=');
 
-              return $wpdb->prepare("(meta_key {$op} %s)", $key['key']);
+            if ($op !== 'LIKE') {
+              $op = '=';
             }
 
-            return '';
-          }, $postTypeSearch['meta_fields']);
+            return $wpdb->prepare("(meta_key {$op} %s)", $key['key']);
+          }
 
-          $metaKeyClause = '(' . implode(' OR ', $metaKeyComparisons) . ')';
+          return '';
+        }, $postTypeSearch['meta_fields']);
 
-          $metaValueComparisons = array_map(function(string $term) use($wpdb) {
-            return $wpdb->prepare('(meta_value LIKE %s)', $term);
-          }, $terms);
-          $metaValueClause = '(' . implode(' OR ', $metaValueComparisons) . ')';
+        $metaKeyClause = '(' . implode(' OR ', $metaKeyComparisons) . ')';
 
-          $metaClause = ' (' . implode(' AND ', [$metaKeyClause, $metaValueClause]) . ')';
+        $metaValueComparisons = array_map(function(string $term) use($wpdb) {
+          return $wpdb->prepare('(meta_value LIKE %s)', $term);
+        }, $terms);
+        $metaValueClause = '(' . implode(' OR ', $metaValueComparisons) . ')';
 
-          // put it all together
-          $searchClauses = [$titleClause, $excerptClause, $contentClause, $metaClause];
+        $metaClause = ' (' . implode(' AND ', [$metaKeyClause, $metaValueClause]) . ')';
 
-          // TODO default to get_post_types() or similar
-          $postTypes = $postTypeSearch['post_type'] ?? ['post', 'page'];
-          $postTypeCriteria = array_map(function(string $type) use($wpdb) {
-            return $wpdb->prepare('%s', $type);
-          }, $postTypes);
+        // put it all together
+        $searchClauses = [$titleClause, $excerptClause, $contentClause, $metaClause];
 
-          // TODO default to get_post_statues() or similar
-          $postStatuses = $postTypeSearch['post_status'] ?? ['publish'];
-          $postStatusCriteria = array_map(function(string $type) use($wpdb) {
-            return $wpdb->prepare('%s', $type);
-          }, $postStatuses);
+        // TODO default to get_post_types() or similar
+        $postTypes = $postTypeSearch['post_type'] ?? ['post', 'page'];
+        $postTypeCriteria = array_map(function(string $type) use($wpdb) {
+          return $wpdb->prepare('%s', $type);
+        }, $postTypes);
 
-          return
-            '('
+        // TODO default to get_post_statues() or similar
+        $postStatuses = $postTypeSearch['post_status'] ?? ['publish'];
+        $postStatusCriteria = array_map(function(string $type) use($wpdb) {
+          return $wpdb->prepare('%s', $type);
+        }, $postStatuses);
 
-            . '(' . implode(' OR ', $searchClauses) . ')'
+        return
+          '('
 
-            . ' AND wp_posts.post_type IN (' . implode(', ', $postTypeCriteria) . ')'
+          . '(' . implode(' OR ', $searchClauses) . ')'
 
-            . ' AND wp_posts.post_status IN (' . implode(', ', $postStatusCriteria) . ')'
+          . ' AND wp_posts.post_type IN (' . implode(', ', $postTypeCriteria) . ')'
 
-            . ')';
-        }, $config);
+          . ' AND wp_posts.post_status IN (' . implode(', ', $postStatusCriteria) . ')'
 
-        $clauses['where'] = ' AND (' . implode(' OR ', $whereClauses) . ')';
-      }
+          . ')';
+      }, $config);
+
+      $clauses['where'] = ' AND (' . implode(' OR ', $whereClauses) . ')';
 
       return $clauses;
     }, 10, 2);
