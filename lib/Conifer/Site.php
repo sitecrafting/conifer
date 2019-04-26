@@ -299,6 +299,26 @@ class Site extends TimberSite {
   }
 
   /**
+   * Get the Timber context, optionally with extra data to add within the
+   * current scope.
+   *
+   * @param array $with data to merge into the context array
+   * @return array the merged data
+   * @example
+   * // get the default context data
+   * $data = $site->context();
+   *
+   * // get the default context data, plus some extra stuff
+   * $data = $site->context([
+   *   'post'    => $post,
+   *   'whatevs' => 'CUZ THIS IS MY UNITED STATES OF WHATEVER',
+   * ]);
+   */
+  public function context(array $with = []) : array {
+    return array_merge(Timber::get_context(), $with);
+  }
+
+  /**
    * Get the current Timber context, with the "post" index set to $post
    *
    * @param Conifer\Post $post the current Post object
