@@ -299,12 +299,36 @@ class Site extends TimberSite {
   }
 
   /**
+   * Get the Timber context, optionally with extra data to add within the
+   * current scope.
+   *
+   * @param array $with data to merge into the context array
+   * @return array the merged data
+   * @example
+   * // get the default context data
+   * $data = $site->context();
+   *
+   * // get the default context data, plus some extra stuff
+   * $data = $site->context([
+   *   'post'    => $post,
+   *   'whatevs' => 'CUZ THIS IS MY UNITED STATES OF WHATEVER',
+   * ]);
+   */
+  public function context(array $with = []) : array {
+    return array_merge(Timber::get_context(), $with);
+  }
+
+  /**
    * Get the current Timber context, with the "post" index set to $post
    *
+   * @deprecated v0.7.0
    * @param Conifer\Post $post the current Post object
    * @return array the Timber context
    */
   public function get_context_with_post( Post $post ) {
+    // @codingStandardsIgnoreStart WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+    trigger_error('get_context_with_post is deprecated. Use context instead. https://coniferplug.in/site.html#timber-context-helper', E_USER_DEPRECATED);
+    // @codingStandardsIgnoreEnd
     $context         = Timber::get_context();
     $context['post'] = $post;
     return $context;
@@ -313,10 +337,14 @@ class Site extends TimberSite {
   /**
    * Get the current Timber context, with the "posts" index set to $posts
    *
+   * @deprecated v0.7.0
    * @param array $posts an array of Conifer\Post objects
    * @return array the Timber context
    */
   public function get_context_with_posts( array $posts ) {
+    // @codingStandardsIgnoreStart WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+    trigger_error('get_context_with_post is deprecated. Use context instead. https://coniferplug.in/site.html#timber-context-helper', E_USER_DEPRECATED);
+    // @codingStandardsIgnoreEnd
     $context          = Timber::get_context();
     $context['posts'] = $posts;
     return $context;

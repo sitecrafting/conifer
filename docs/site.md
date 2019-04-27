@@ -191,20 +191,20 @@ This looks in the [script cascade and style cascade](#directory-cascades) for `c
 * The `$src` argument is evaluated as a path relative to each step in the script/style cascade: that is, Conifer looks first in `js/` or `css/` in the theme by default.
 * The `$version` argument is `true` by default, which tells Conifer to look for a special file called `assets.version` in the theme directory. If the file is found, its contents are passed to `wp_enqueue_*` as the version argument. This can be used as a means of fine-grained [cache-busting](https://css-tricks.com/strategies-for-cache-busting-css/) for your theme assets. If you track bundled assets as part of your theme code in source control and you use a build system such as Webpack, Gulp, or Grunt, just write a content hash or datetime to your theme's `assets.version` file.
 
-## Timber Context helpers
+## Timber Context helper
 
-A common use case of Timber is to get the default data to pass to the Twig view, AKA the "context," and then immediately set the `post` or `posts` variable. The `get_context_with_post()` and `get_context_with_posts()` methods are simple helpers for these scenarios, allowing you to get the context with that variable already set:
+A common use case of Timber is to get the default data to pass to the Twig view, AKA the "context," and then immediately set the `post` or `posts` variable. The `Site::context()` method allows passing arbitrary data to merge into the current context data, to help out with this use-case and many others:
 
 ```php
 // my-custom-page.php
 use Conifer\Post\Page;
-$data = $site->get_context_with_post(new Page());
-// -> `post` is set to the Page instance
+$data = $site->context(['post' => new Page()]);
+```
 
-// ...OR...
+Note that this method is not effectful, i.e. it doesn't actually write to the Timber context. So calling it more than once and expecting data from prior calls won't work:
 
-// my-archive.php
-use Timber\Timber;
-$data = $site->get_context_with_posts(Timber::get_posts());
-// -> `posts` is set to an array of the posts in the current archive
+```php
+$data = $site->context(['stuff' => 'my stuff']);
+$data = $site->context();
+$stuff = $data['stuff']; // Notice: Undefined index: stuff
 ```
