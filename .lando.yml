@@ -30,20 +30,22 @@ services:
   database:
     type: mysql:5.7
 
-  node:
-    type: node:6.11
-
-    globals:
-      yarn: "1.6.0"
+  gitbook:
+    type: node:8
 
     run:
-      - cd $LANDO_MOUNT && yarn
-      - cd $LANDO_MOUNT && yarn cypress install
-      - $LANDO_MOUNT/scripts/build-docs.sh
+      - yarn
+      - /app/scripts/build-docs.sh
+
+  cypress:
+    type: node:8
+
+    run:
+      - yarn cypress install
 
     overrides:
       services:
-        image: 'sitecrafting/lando-cypress-wordpress:latest'
+        image: 'sitecrafting/lando-cypress-wordpress:0.2.0'
 
   phpmyadmin:
     type: phpmyadmin:4.7
@@ -69,21 +71,18 @@ tooling:
     cmd: 'rsync --verbose --archive --recursive /app/test/themes/ /app/wp/wp-content/themes/'
     description: 'Sync test themes for e2e testing'
 
-  yarn:
-    service: node
-
   debug:
     service: appserver
     cmd: 'tail -f /app/wp/wp-content/debug.log'
     description: 'Get real-time WP debug log output'
 
   cypress:
-    service: node
+    service: cypress
     cmd: 'yarn cypress'
     description: 'Run arbitrary cypress commands'
 
   e2e:
-    service: node
+    service: cypress
     cmd: 'yarn cypress run'
     description: 'Run end-to-end tests'
 
@@ -113,12 +112,12 @@ tooling:
     description: 'Build a downloadable release of the Conifer WordPress plugin'
 
   docs:
-    service: node
+    service: gitbook
     cmd: '/app/scripts/build-docs.sh /app/docs'
     description: 'Build documentation in _book folder using Gitbook'
 
   gitbook:
-    service: node
+    service: gitbook
     cmd: 'yarn gitbook'
     description: 'Run arbitrary gitbook commands'
 
