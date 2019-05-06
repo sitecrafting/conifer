@@ -53,7 +53,7 @@ state and defining public API functions in the global
 namespace.
 
 Because of how WordPress was designed, this is
-unavavoidable to an extent. But we believe that a different
+unavoidable to an extent. But we believe that a different
 approach to WordPress can minimize global state and global
 functions, and allow your PHP to be much more expressive
 and flexible.
@@ -102,7 +102,7 @@ Like Timber, Conifer stays out of your way. You can use as much or as little of 
 
 ## Not for Everyone
 
-Why would you use Conifer, rather than just Timber (or vanilla WordPress)? Why a write separate plugin at all, instead of just adding more stuff to Timber? There are two reasons.
+Why would you use Conifer, rather than just Timber (or vanilla WordPress)? Why a write separate plugin at all, instead of just adding more stuff to Timber? Two reasons.
 
 First, Conifer aims to be even _more_ opinionated. It requires PHP 7.0+. It leverages PHP's new type-hinting features extensively. It takes the philosophy of Timber as a _premise_ and builds on it.
 
@@ -110,4 +110,4 @@ Second, Conifer aims to be _bigger_. Compared to Conifer, Timber aims to be a fa
 
 While we feel that Timber and Conifer's philosophies are extremely compatible, they are not identical. We didn't feel it would be appropriate or effective to impose our design decisions on the wider Timber community, and we didn't want to bloat the Timber codebase with more stuff than it needs in order to be the great foundation it already is.
 
-So if you're content working with just Timber and don't need a lot beyond some basic Twig stuff or some simple Post logic, that's great! More power to you. But if you find yourself nodding along to these values and wishing Timber did _more_... meet Conifer. We think you'll get along!
+So if you're content working with just Timber and don't need a lot beyond some basic Twig stuff or some simple Post logic, that's great! More power to you. But if you find yourself nodding along to these values and wishing Timber did _more_... meet Conifer. We think you'll get along.
