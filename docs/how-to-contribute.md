@@ -20,3 +20,9 @@ Of course, new contributions in the form of code are welcome too, *especially* w
 **Before making a pull request, please familiarize yourself with the [Testing docs](/testing.md).** It's a good idea to also be aware of the [Code of Conduct](/code-of-conduct.md) (TL;DR: don't be a jerk).
 
 If you're wondering how best to set up Conifer to work on the source code, check out [Development Setup](/dev-setup.md).
+
+## Pull Request Guidelines
+
+In general, please follow the Pull Request template that GitHub prompts you with when you create a PR. This comprises various criteria you should think through. Not all criteria necessarily need to be met for every PR (for example, update to documentation only don't need unit tests). Please apply good judgment, think through the effects of your change, and try to empathize with maintainers as well as future developers who may be interested in the reasoning behind a given change.
+
+If you edit any code, please run unit tests and coding standard checks (`lando unit` and `lando sniff`, respectively) before creating your PR. If either of these checks fails, it is your responsibility to figure out why, and fix any failures caused by your code. Of course, if you don't understand why something failed or the reasoning behind a certain test/check, feel free to reach out and we can work with you to figure out the best solution!
