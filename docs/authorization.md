@@ -152,7 +152,7 @@ And to encourage the odd `"scoundrel"` on your site to clean up their act and at
 
 ```php
   protected function filter_unauthorized(string $content) : string {
-    // wrap the regular content in vainglorious narcissism
+    // withhold most of the content out of prejudice and spite
     return substr($content, 0, 25) . '...'
       . "<br><br>You can't see the rest and you should feel bad about it.";
   }
