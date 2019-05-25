@@ -51,7 +51,7 @@ class MyForm extends AbstractBase {
     // Here we're just checking that $name matches a certain value.
     $valid = $name === 'Bob';
     if (!$valid) {
-      $this->add_error($nameField['name'], 'Only people name Bob are worthy');
+      $this->add_error($nameField['name'], 'Only people named Bob are worthy');
     }
     return $valid;
   }
