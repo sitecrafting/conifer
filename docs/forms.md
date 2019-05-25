@@ -73,7 +73,7 @@ Displaying validation errors and submitted values is just as simple:
 
 <a name="frontEndFormExample"></a>
 ```twig
-{% if myform.has_errors %}
+{% if myForm.has_errors %}
   <p>Danger, Will Robinson! Your form has the following errors: {{ myForm.get_unique_error_messages|join(', ') }}</p>
 {% elseif myForm.succeeded %}
   <p>Success, thanks for the info!</p>
