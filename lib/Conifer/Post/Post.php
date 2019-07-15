@@ -500,13 +500,13 @@ abstract class Post extends TimberPost {
       }, $this->terms($taxonomy));
 
       $this->related_by[$taxonomy] = static::get_all([
-        'post_type'     => $this->get_post_type(),
-        'post__not_in'  => [$this->ID],
-        'numberposts'   => $postCount,
-        'tax_query'     => [
+        'post_type'        => $this->get_post_type(),
+        'post__not_in'     => [$this->ID],
+        'posts_per_page'   => $postCount,
+        'tax_query'        => [
           [
-            'taxonomy'   => $taxonomy,
-            'terms'      => $termIds,
+            'taxonomy'     => $taxonomy,
+            'terms'        => $termIds,
           ],
         ],
       ]);
