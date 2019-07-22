@@ -180,73 +180,20 @@ Per the Codex, if you do this you'll need to explicitly include this taxonomy in
 
 > **null** - Setting explicitly to null registers the taxonomy but doesn't associate it with any objects, so it won't be directly available within the Admin UI. You will need to manually register it using the 'taxonomy' parameter (passed through $args) when registering a custom post_type (see [register_post_type()](https://codex.wordpress.org/Function_Reference/register_post_type)), or using [register_taxonomy_for_object_type()](https://codex.wordpress.org/Function_Reference/register_taxonomy_for_object_type).
 
-## Checking for the existence of a post ID
+## Filtering by standard post query parameters
 
-You can check whether a post exists with a given ID *and an appropriate post_type* using the `Post::exists()` method. It uses [late static binding](https://secure.php.net/manual/en/language.oop5.late-static-bindings.php) on the `POST_TYPE` class constant to check the `post_type` of any posts it finds. That is, the `exists()` method will only return `true` when the `post_type` matches up with the `POST_TYPE` constant.
-
-For example, let's say we have a `page` in the database:
+Conifer supports all arguments to [`WP_Query::construct()`](https://developer.wordpress.org/reference/classes/wp_query/__construct/) out of the box. For example, on a standard blog archive template, you can do something like this:
 
 ```php
-$pageId = wp_insert_post(['post_type' => 'page']);
-\Conifer\Post\Page::exists($pageId); // -> true
-\Conifer\Post\BlogPost::exists($pageId); // -> false
-```
+use Conifer\Post\BlogPost;
 
-Of course, it'll also return `false` if we call it with an `ID` that does not exist at all, regardless of `post_type`:
-
-```php
-$badId = 9001;
-get_post($badId); // -> null
-\Conifer\Post\BlogPost::exists($badId); // -> false
-\Conifer\Post\Page::exists($badId); // -> false
-\Conifer\Post\Post::exists($badId); // -> false
-```
-
-### Checking for any type of post
-
-You can call `exists()` on the abstract `Post` class to skip the `post_type` check and look for a post of *any* `post_type`:
-
-```php
-$pageId = wp_insert_post(['post_type' => 'page']);
-$postId = wp_insert_post(['post_type' => 'post']);
-
-\Conifer\Post\Post::exists($pageId); // -> true
-\Conifer\Post\Post::exists($postId); // -> true
-
-$badId = 9001;
-get_post($badId); // -> null
-\Conifer\Post\Post::exists($badId); // -> false
-```
-
-### Checking for custom posts
-
-This works for custom posts, too, as long as your custom post class defines its own `POST_TYPE` contant:
-
-```php
-echo Robot::POST_TYPE; // -> outputs "robot"
-$robot = Robot::create(['post_title' => 'Some robot or other']);
-Robot::exists($robot->id); // -> true
-
-$postId = wp_insert_post(['post_type' => 'post']);
-Robot::exists($postId); // -> false
-```
-
-## Saving New Posts
-
-Using our `Robot` class from above as an example, let's see how easy it is to create posts, even ones that implement a CPT, using `Post::create()`:
-
-```php
-$wall_e = Robot::create([
-  'post_title' => 'WALL-E',
-  'post_content' => 'Waaaaallll eeeeee! Eeeeevaaaaa!',
-  'disposition' => 'friendly',
-  'directive' => 'save the planet',
+$posts = BlogPost::get_all([
+  'paged'        => get_query_var('paged'),
+  'category__in' => get_query_var('cat'),
 ]);
-
-$wall_e->get_field('disposition');
 ```
 
-Note that we can mix in the custom `disposition` and `directive` fields with our arguments. Conifer filters the data intelligently, discerning which keys correspond to proper `wp_posts` columns, and which should become meta fields.
+This will compose the default pagination and category parameters transparently, so using the core [`paginate_links()`](https://developer.wordpress.org/reference/functions/paginate_links/) core function will work transparently.
 
 ## Querying for custom post types
 
@@ -341,6 +288,74 @@ If you want to display something more involved than a simple `meta_value`, you c
 ```
 
 This code tells Conifer to grab the `beeps` for each Robot, count them, and display the count (or "None" if the count is zero, or if no `beeps` value exists for any given Robot).
+
+## Checking for the existence of a post ID
+
+You can check whether a post exists with a given ID *and an appropriate post_type* using the `Post::exists()` method. It uses [late static binding](https://secure.php.net/manual/en/language.oop5.late-static-bindings.php) on the `POST_TYPE` class constant to check the `post_type` of any posts it finds. That is, the `exists()` method will only return `true` when the `post_type` matches up with the `POST_TYPE` constant.
+
+For example, let's say we have a `page` in the database:
+
+```php
+$pageId = wp_insert_post(['post_type' => 'page']);
+\Conifer\Post\Page::exists($pageId); // -> true
+\Conifer\Post\BlogPost::exists($pageId); // -> false
+```
+
+Of course, it'll also return `false` if we call it with an `ID` that does not exist at all, regardless of `post_type`:
+
+```php
+$badId = 9001;
+get_post($badId); // -> null
+\Conifer\Post\BlogPost::exists($badId); // -> false
+\Conifer\Post\Page::exists($badId); // -> false
+\Conifer\Post\Post::exists($badId); // -> false
+```
+
+### Checking for any type of post
+
+You can call `exists()` on the abstract `Post` class to skip the `post_type` check and look for a post of *any* `post_type`:
+
+```php
+$pageId = wp_insert_post(['post_type' => 'page']);
+$postId = wp_insert_post(['post_type' => 'post']);
+
+\Conifer\Post\Post::exists($pageId); // -> true
+\Conifer\Post\Post::exists($postId); // -> true
+
+$badId = 9001;
+get_post($badId); // -> null
+\Conifer\Post\Post::exists($badId); // -> false
+```
+
+### Checking for custom posts
+
+This works for custom posts, too, as long as your custom post class defines its own `POST_TYPE` contant:
+
+```php
+echo Robot::POST_TYPE; // -> outputs "robot"
+$robot = Robot::create(['post_title' => 'Some robot or other']);
+Robot::exists($robot->id); // -> true
+
+$postId = wp_insert_post(['post_type' => 'post']);
+Robot::exists($postId); // -> false
+```
+
+## Saving New Posts
+
+Using our `Robot` class from above as an example, let's see how easy it is to create posts, even ones that implement a CPT, using `Post::create()`:
+
+```php
+$wall_e = Robot::create([
+  'post_title' => 'WALL-E',
+  'post_content' => 'Waaaaallll eeeeee! Eeeeevaaaaa!',
+  'disposition' => 'friendly',
+  'directive' => 'save the planet',
+]);
+
+$wall_e->get_field('disposition');
+```
+
+Note that we can mix in the custom `disposition` and `directive` fields with our arguments. Conifer filters the data intelligently, discerning which keys correspond to proper `wp_posts` columns, and which should become meta fields.
 
 ## Customizing Post Admin Filters
 
