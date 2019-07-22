@@ -304,8 +304,8 @@ WordPress's built-in `category` and `post_tag` taxonomies get their own helpers 
 ```php
 // single.php
 $post = new BlogPost();
-$relatedPosts = $post->get_related_posts_by_category();
-$relatedPostsByTag = $post->get_related_posts_by_tag();
+$relatedPosts = $post->get_related_by_category();
+$relatedPostsByTag = $post->get_related_by_tag();
 ```
 
 ## Customizing Post Admin Columns
