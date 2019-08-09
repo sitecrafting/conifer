@@ -34,7 +34,7 @@ class Button extends AbstractBase {
       $dom = new DOMDocument();
 
       // prevent doctype, html/body tags from being added
-      $dom->loadHTML($html, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+      $dom->loadHTML($html, LIBXML_NOERROR | LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
       // get the first <a> in the markup
       $link = $dom->getElementsByTagName('a')->item(0);
