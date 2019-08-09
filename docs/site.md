@@ -182,6 +182,13 @@ $site->configure(function() {
     $deps    = [],
     $version = true,
     $footer  = true
+  );
+  $this->enqueue_style(
+    $handle  = 'custom-style',
+    $src     = 'custom-style.css',
+    $deps    = [],
+    $version = ['file' => 'custom-style.version'],
+    $footer  = true
 	);
 });
 ```
@@ -189,7 +196,7 @@ $site->configure(function() {
 This looks in the [script cascade and style cascade](#directory-cascades) for `custom.js` and `extra.css`, respectively. The method arguments are almost identical to those of`wp_enqueue_script()` and `wp_enqueue_style()`, with a few exceptions:
 
 * The `$src` argument is evaluated as a path relative to each step in the script/style cascade: that is, Conifer looks first in `js/` or `css/` in the theme by default.
-* The `$version` argument is `true` by default, which tells Conifer to look for a special file called `assets.version` in the theme directory. If the file is found, its contents are passed to `wp_enqueue_*` as the version argument. This can be used as a means of fine-grained [cache-busting](https://css-tricks.com/strategies-for-cache-busting-css/) for your theme assets. If you track bundled assets as part of your theme code in source control and you use a build system such as Webpack, Gulp, or Grunt, just write a content hash or datetime to your theme's `assets.version` file.
+* The `$version` argument is `true` by default, which tells Conifer to look for a special file called `assets.version` in the theme directory. If the file is found, its contents are passed to `wp_enqueue_*` as the version argument. This can be used as a means of fine-grained [cache-busting](https://css-tricks.com/strategies-for-cache-busting-css/) for your theme assets. If you track bundled assets as part of your theme code in source control and you use a build system such as Webpack, Gulp, or Grunt, just write a content hash or datetime to your theme's `assets.version` file. Alternatively, $vesion can be a key/value array. Where the key = "file" and value="filename". This filename will contain a version number for your custom asset. The path is relative to the theme folder.
 
 ## Timber Context helper
 
