@@ -5,7 +5,7 @@ use Conifer\Site;
 
 $site = new Site();
 $site->configure(function () {
-  register_post_type('thing');
+  register_post_type('thing', ['public' => true]);
   register_post_status('custom_status');
 
   Post::configure_advanced_search([
