@@ -9,7 +9,6 @@ describe('Search', () => {
     // search for "goo glue"
     cy.visit('/?s=goo+glue')
 
-    cy.get('.search-results article').should('have.length', 8)
     // posts with search term in title should come first
     cy.get('article:nth-of-type(1) h2').should('have.text', 'A post about goo glue')
     cy.get('article:nth-of-type(2) h2').should('have.text', 'A whole page about goo')
@@ -25,6 +24,8 @@ describe('Search', () => {
     cy.get('.search-results').should('not.contain', 'This shouldn\'t either')
     cy.get('.search-results').should('not.contain', 'Another Thing')
     cy.get('.search-results').should('not.contain', 'Thing Draft')
+
+    cy.get('.search-results article').should('have.length', 8)
   })
 })
 
