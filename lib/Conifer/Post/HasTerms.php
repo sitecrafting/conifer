@@ -64,17 +64,21 @@ trait HasTerms {
       array $grouped,
       Term $term
     ) use ($taxonomy, $postQueryArgs) : array {
-      $query = static::build_term_posts_query(
-        $term->term_id,
-        $taxonomy,
-        $postQueryArgs
+      // Because the count may be different from the denormalized term count,
+      // since this may be a special query, we need to check if this term is
+      // actually populated/empty.
+      $posts = $term->posts(
+        $postQueryArgs,
+        static::_post_type(),
+        static::class
       );
-
-      // group this term with its respective posts
-      $grouped[] = [
-        'term' => $term,
-        'posts'  => static::get_all($query),
-      ];
+      if ($posts) {
+        // Group this term with its respective posts.
+        $grouped[] = [
+          'term'  => $term,
+          'posts' => $posts,
+        ];
+      }
 
       // return the grouped posts so far
       return $grouped;
