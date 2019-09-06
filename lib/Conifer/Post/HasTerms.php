@@ -199,7 +199,52 @@ trait HasTerms {
     $options['labels']['back_to_items'] = $options['labels']['back_to_items']
       ?? "← Back to {$plural}";
 
+    // Honor custom statuses in term counts
+    if (is_array($options['statuses_toward_count'] ?? null)) {
+      $statuses = $options['statuses_toward_count'];
+
+      // Include "publish" status in query?
+      $includePublished = $statuses['publish'] ?? null;
+      if ($includePublished !== false) {
+        // user explicitly remove publish from counted statuses
+        $statuses = array_unique(array_merge(['publish'], $statuses));
+      }
+      unset($statuses['publish']);
+
+      $options['update_count_callback'] = function($terms) use ($statuses) {
+        foreach ($terms as $term) {
+          static::count_statuses_toward_term_count(new Term($term), $statuses);
+        }
+      };
+    }
+
     register_taxonomy($name, $postType, $options);
+  }
+
+  /**
+   * Keep term counts up to date, taking into account posts in $status
+   *
+   * @param Timber\Term the Term instance whose count we want to update
+   * @param string $taxonomy the taxonomy whose terms we want to affect
+   */
+  public static function count_statuses_toward_term_count(Term $term, array $statuses) {
+    global $wpdb;
+
+    // Get all posts in $statuses, plus all published posts
+    $inStatus = $term->posts([
+      'post_status' => $statuses,
+      'post_type'   => static::POST_TYPE,
+      'numberposts' => -1,
+    ]);
+
+    if (is_array($inStatus)) {
+      // increment count by the number of term posts in $statuses
+      $wpdb->update(
+        $wpdb->term_taxonomy,
+        ['count' => count($inStatus)],
+        ['term_taxonomy_id' => $term->term_taxonomy_id]
+      );
+    }
   }
 }
 
