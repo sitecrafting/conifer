@@ -667,45 +667,27 @@ class Site extends TimberSite {
   /**
    * Get the build-tool-generated hash for assets
    *
-   * @param string $filepath Optional filepath to assets.version file
-   *
+   * @param string $filepath Optional filepath whose contents will be used
+   * in the cache-busting query string. Defaults to "assets.version"
    * @return the hash for
    */
   public function get_assets_version($filepath = 'assets.version') : string {
 
-    $version = '';
+    $this->assets_version = $this->assets_version ?? [];
 
-    if (!isset($this->assets_version[$filepath]) && is_readable($this->get_theme_file($filepath)) ) {
+    if (
+      !isset($this->assets_version[$filepath])
+      && is_readable($this->get_theme_file($filepath))
+    ) {
 
       // phpcs:ignore WordPress.WP.AlternativeFunctions
       $version = trim(file_get_contents($this->get_theme_file($filepath)));
 
-      if (!is_array($this->assets_version[$filepath])) {
-
-        // start a new array
-        $this->assets_version = [
-          $filepath => $version,
-        ];
-
-      } else {
-
-        // add to the array
-        $this->assets_version[$filepath] = $version;
-
-      }
-    } elseif (isset($this->assets_version[$filepath])) {
-
-      $version = $this->assets_version[$filepath];
-
-    } else {
-
-      // handler for missing file
-      $version = '';
+      $this->assets_version[$filepath] = $version;
 
     }
 
-    return $version;
-
+    return $this->assets_version[$filepath] ?? '';
   }
 
   /**
