@@ -677,6 +677,7 @@ class Site extends TimberSite {
 
     if (!isset($this->assets_version[$filepath]) && is_readable($this->get_theme_file($filepath)) ) {
 
+      // phpcs:ignore WordPress.WP.AlternativeFunctions
       $version = trim(file_get_contents($this->get_theme_file($filepath)));
 
       if (!is_array($this->assets_version[$filepath])) {
