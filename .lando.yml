@@ -17,35 +17,33 @@ services:
       - apt-get install zip
 
     run:
-      - cd $LANDO_MOUNT && composer install
-      - cd $LANDO_MOUNT && scripts/setup-wordpress.sh
+      - composer install
+      - /app/scripts/setup-wordpress.sh
 
     overrides:
-      services:
-        environment:
-          # Pass any non-empty CI envvar from the host into Lando
-          # This is so we can force non-interactive mode setting up WP
-          CI: ${CI:-''}
+      environment:
+        # Pass any non-empty CI envvar from the host into Lando
+        # This is so we can force non-interactive mode setting up WP
+        CI: ${CI:-''}
 
   database:
     type: mysql:5.7
 
   gitbook:
-    type: node:8
+    type: node:10
 
     run:
       - yarn
       - /app/scripts/build-docs.sh
 
   cypress:
-    type: node:8
+    type: node:10
 
     run:
       - yarn cypress install
 
     overrides:
-      services:
-        image: 'sitecrafting/lando-cypress-wordpress:0.2.0'
+      image: 'sitecrafting/lando-cypress-wordpress:latest'
 
   phpmyadmin:
     type: phpmyadmin:4.7
@@ -56,7 +54,7 @@ services:
       - appserver
 
   docs:
-    type: nginx:1.13
+    type: nginx:1.14
     ssl: true
     webroot: docs/_book
 
@@ -88,7 +86,7 @@ tooling:
 
   unit:
     service: appserver
-    cmd: 'vendor/bin/phpunit'
+    cmd: '/app/vendor/bin/phpunit'
     description: 'Run unit tests'
 
   sniff:
@@ -123,7 +121,7 @@ tooling:
 
 events:
   pre-docs:
-    - appserver: 'cd $LANDO_MOUNT && ./scripts/build-api-md.sh'
+    - appserver: '/app/scripts/build-api-md.sh'
 
   pre-e2e:
     - appserver: 'echo installing test themes...'

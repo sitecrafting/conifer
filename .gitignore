@@ -25,3 +25,4 @@ wp-cli.local.yml
 # documentation
 /docs/_book/
 /docs/reference/*.md
+/docs/node_modules/
