@@ -49,7 +49,7 @@ class Site extends TimberSite {
   /**
    * Assets version timestamp, used for cache-busting
    * Array: key=filename, value=timestamp
-   * 
+   *
    * @var array
    */
   protected $assets_version;
@@ -157,9 +157,9 @@ class Site extends TimberSite {
    * the URL rendered in the <script> tag. Accepts any valid value of the $ver
    * argument to `wp_register_script`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
-   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset 
+   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset
    * file version relative to the theme folder path.
-   * Defaults to `true`. 
+   * Defaults to `true`.
    * @param bool $inFooter whether to register this script in the footer. Unlike
    * the same argument to the core `wp_register_script` function, this defaults
    * to `true`.
@@ -171,10 +171,10 @@ class Site extends TimberSite {
     $version = true,
     bool $inFooter = true
   ) {
-    if (is_array($version) && isset($version["file"])) {
+    if (is_array($version) && isset($version['file'])) {
       // use defined asset version file for cache-busting in the theme build process
-      $version = $this->get_assets_version($version["file"]);
-    } else if ($version === true) {
+      $version = $this->get_assets_version($version['file']);
+    } elseif ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
       $version = $this->get_assets_version();
     }
@@ -202,7 +202,7 @@ class Site extends TimberSite {
    * the URL rendered in the <script> tag. Accepts any valid value of the $ver
    * argument to `wp_enqueue_script`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
-   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset 
+   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset
    * file version relative to the theme folder path.
    * Defaults to `true`.
    * @param bool $inFooter whether to enqueue this script in the footer. Unlike
@@ -217,10 +217,10 @@ class Site extends TimberSite {
     bool $inFooter = true
   ) {
 
-    if (is_array($version) && isset($version["file"])) {
+    if (is_array($version) && isset($version['file'])) {
       // use defined asset version file for cache-busting in the theme build process
-      $version = $this->get_assets_version($version["file"]);
-    } else if ($version === true) {
+      $version = $this->get_assets_version($version['file']);
+    } elseif ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
       $version = $this->get_assets_version();
     }
@@ -245,7 +245,7 @@ class Site extends TimberSite {
    * the URL rendered in the <link> tag. Accepts any valid value of the $ver
    * argument to `wp_register_style`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
-   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset 
+   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset
    * file version relative to the theme folder path.
    * Defaults to `true`.
    * @param bool $media the media for which this stylesheet has been defined;
@@ -259,10 +259,10 @@ class Site extends TimberSite {
     $version = true,
     string $media = 'all'
   ) {
-    if (is_array($version) && isset($version["file"])) {
+    if (is_array($version) && isset($version['file'])) {
       // use defined asset version file for cache-busting in the theme build process
-      $version = $this->get_assets_version($version["file"]);
-    } else if ($version === true) {
+      $version = $this->get_assets_version($version['file']);
+    } elseif ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
       $version = $this->get_assets_version();
     }
@@ -289,7 +289,7 @@ class Site extends TimberSite {
    * the URL rendered in the <link> tag. Accepts any valid value of the $ver
    * argument to `wp_enqueue_style`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
-   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset 
+   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset
    * file version relative to the theme folder path.
    * Defaults to `true`.
    * @param string $media the media for which this stylesheet has been defined.
@@ -303,10 +303,10 @@ class Site extends TimberSite {
     $version = true,
     string $media = 'all'
   ) {
-    if (is_array($version) && isset($version["file"])) {
+    if (is_array($version) && isset($version['file'])) {
       // use defined asset version file for cache-busting in the theme build process
-      $version = $this->get_assets_version($version["file"]);
-    } else if ($version === true) {
+      $version = $this->get_assets_version($version['file']);
+    } elseif ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
       $version = $this->get_assets_version();
     }
@@ -668,13 +668,13 @@ class Site extends TimberSite {
    * Get the build-tool-generated hash for assets
    *
    * @param string $filepath Optional filepath to assets.version file
-   * 
+   *
    * @return the hash for
    */
-  public function get_assets_version($filepath="assets.version") : string {
+  public function get_assets_version($filepath = 'assets.version') : string {
 
-    $version = "";
-    
+    $version = '';
+
     if (!isset($this->assets_version[$filepath]) && is_readable($this->get_theme_file($filepath)) ) {
 
       $version = trim(file_get_contents($this->get_theme_file($filepath)));
@@ -683,7 +683,7 @@ class Site extends TimberSite {
 
         // start a new array
         $this->assets_version = [
-          $filepath => $version
+          $filepath => $version,
         ];
 
       } else {
@@ -692,10 +692,14 @@ class Site extends TimberSite {
         $this->assets_version[$filepath] = $version;
 
       }
+    } elseif (isset($this->assets_version[$filepath])) {
+
+      $version = $this->assets_version[$filepath];
 
     } else {
 
-      $version = $this->assets_version[$filepath];
+      // handler for missing file
+      $version = '';
 
     }
 
