@@ -180,6 +180,64 @@ Per the Codex, if you do this you'll need to explicitly include this taxonomy in
 
 > **null** - Setting explicitly to null registers the taxonomy but doesn't associate it with any objects, so it won't be directly available within the Admin UI. You will need to manually register it using the 'taxonomy' parameter (passed through $args) when registering a custom post_type (see [register_post_type()](https://codex.wordpress.org/Function_Reference/register_post_type)), or using [register_taxonomy_for_object_type()](https://codex.wordpress.org/Function_Reference/register_taxonomy_for_object_type).
 
+#### Taxonomies, custom statuses, and term counts
+
+Say you have a `planet` post type with custom statuses `in_prograde` and `in_retrograde`, along with a `nature` taxonomy to denote each planet's astrological nature:
+
+```php
+use Conifer\Post\Post;
+
+class Planet {
+  const POST_TYPE = 'planet';
+
+  public static register() {
+    register_post_status('in_prograde',   ['post_type' => static::POST_TYPE]);
+    register_post_status('in_retrograde', ['post_type' => static::POST_TYPE]);
+
+    static::register_taxonomy('nature', [
+      'description' => 'The cosmic nature of a planet',
+    ]);
+  }
+}
+```
+
+Let's also say that you have two terms in your `nature` taxonomy, `benefic` and `malefic`, which basically mean "good" and "bad," respectively. So you populate your database with those terms, and put a few planets in each status under each term.
+
+Now, what if you want to get the `malefic` planets? You might think that you can do something like:
+
+```php
+$maleficPlanetsInRetrograde = get_terms([
+  'taxonomy' => 'nature',
+  'slug'     => ['malefic'],
+]);
+```
+
+This is a reasonable assumption, but a subtlety of how WordPress treats custom statuses rears its head here, and this returns an empty array! Why? Because WordPress considers the `malefic` and `benefic` terms *empty* because neither contains any *published* posts. [From the docs](https://codex.wordpress.org/Function_Reference/register_taxonomy):
+
+> Another important consideration is that `_update_post_term_count()` only counts **published** posts. If you are using custom statuses, or using custom post types where being published is not necessarily a consideration for being counted in the term count, then you will need to provide your own [`update_count_callback`] callback.
+
+In other words, for custom taxonomies, you need to provide an `update_count_callback` parameter to your `register_taxonomy` call if you want to consider any statuses other than `publish`.
+
+**Conifer provides a shortcut for doing this.**
+
+Simply provide a `statuses_toward_count` (array) argument to `register_taxonomy`:
+
+```php
+    static::register_taxonomy('nature', [
+      'description'           => 'The cosmic nature of a planet',
+      'statuses_toward_count' => ['in_prograde', 'in_retrograde'],
+    ]);
+```
+
+You can also completely discount published posts by including `'publish' => false` in your array:
+
+```php
+    static::register_taxonomy('nature', [
+      'description'           => 'The cosmic nature of a planet',
+      'statuses_toward_count' => ['in_prograde', 'in_retrograde', 'publish' => false],
+    ]);
+```
+
 ## Filtering by standard post query parameters
 
 Conifer supports all arguments to [`WP_Query::construct()`](https://developer.wordpress.org/reference/classes/wp_query/__construct/) out of the box. For example, on a standard blog archive template, you can do something like this:
@@ -225,8 +283,8 @@ class Robot extends Post {
   const POST_TYPE = 'robot';
 
   public static function register() {
-    register_post_type('robot', ['label' => 'Robots']);
-    register_taxonomy('eeriness_level', 'robot');
+    static::register_type(static::POST_TYPE);
+    static::register_taxonomy('eeriness_level');
   }
 }
 // make sure to call `Robot::register()` in an `init` action callback!
@@ -266,7 +324,7 @@ class Robot extends Post {
   const POST_TYPE = 'robot';
 
   public static function register() {
-    register_post_type('robot', ['label' => 'Robots']);
+    static::register_type(static::POST_TYPE);
     static::add_admin_column('disposition', 'Disposition');
   }
 }
@@ -366,13 +424,10 @@ use Conifer\Post\Post;
 
 class Robot extends Post {
   const POST_TYPE = 'robot';
-
+  
   public static function register() {
-    register_post_type('robot', ['label' => 'Robots']);
-    register_taxonomy('eeriness_level', 'robot', [
-      'labels' => ['name' => 'Eeriness Levels', 'singular_name' => 'Eeriness Level'],
-    ]);
-
+    static::register_type(static::POST_TYPE);
+    static::register_taxonomy('eeriness_level');
     static::add_admin_filter('eeriness_level');
   }
 }
@@ -528,6 +583,25 @@ $data['robots_by_eeriness_level'] = Robot::get_all_grouped_by_term(
 ```
 
 Each time posts for a given term are queried, Conifer will merge the `pending` status constraint into the query. This third argument can be any valid [arguments to `WP_Query`](https://codex.wordpress.org/Class_Reference/WP_Query#Parameters) , with the exception of `post_type`, which is locked down.
+
+Note that in order for this to work, **you'll also need to make posts in the `pending` status count toward term count**, using the special `statuses_toward_count` argument when registering your taxonomy:
+
+```php
+use Conifer\Post\Post;
+
+class Robot extends Post {
+  const POST_TYPE = 'robot';
+  
+  public static function register() {
+    static::register_type(static::POST_TYPE);
+    static::register_taxonomy('eeriness_level', [
+      'statuses_toward_count' => ['pending'] // count pending robots toward term counts
+    ]);
+  }
+}
+```
+
+See [Taxonomies, custom statuses, and term counts](/posts.md#taxonomies-custom-statuses-and-term-counts) for more details.
 
 ## Advanced Search Features
 
