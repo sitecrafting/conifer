@@ -47,7 +47,7 @@ matrix:
       before_install:
         - sudo apt-get -y update
         - sudo apt-get -y install cgroup-bin curl
-        - curl -fsSL -o /tmp/lando-latest.deb https://files.devwithlando.io/lando-stable.deb
+        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-rc.19/lando-v3.0.0-rc.19.deb
         - sudo dpkg -i /tmp/lando-latest.deb
         - lando version
       install:
