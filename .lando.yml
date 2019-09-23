@@ -54,7 +54,7 @@ services:
       - appserver
 
   docs:
-    type: nginx:1.14
+    type: nginx
     ssl: true
     webroot: docs/_book
 
