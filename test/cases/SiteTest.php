@@ -60,6 +60,7 @@ class SiteTest extends Base {
       'theme-dir' => [
           'test.php'    => 'some text content',
           'assets.version' =>'1',
+          'custom-assets.version' => 'CUSTOM',
       ],
       'an_empty_folder' => [],
     ];
@@ -123,6 +124,46 @@ class SiteTest extends Base {
     $this->assertEquals(
       '1',
       $site->get_assets_version()
+    );
+
+  }
+
+  public function test_get_assets_version_with_arg() {
+
+    $site = new Site();
+
+    // We will set the stylesheet directory to our virtual file system directory
+    WP_Mock::userFunction('get_stylesheet_directory', [
+      'return' => vfsStream::url('root/theme-dir'),
+      'times' => 2,
+    ]);
+
+    // read the file value from our file in the virtual file system directory
+    $this->assertEquals(
+      'CUSTOM',
+      $site->get_assets_version('custom-assets.version')
+    );
+
+  }
+
+  public function test_subsequent_get_assets_version_with() {
+
+    $site = new Site();
+
+    // We will set the stylesheet directory to our virtual file system directory
+    WP_Mock::userFunction('get_stylesheet_directory', [
+      'return' => vfsStream::url('root/theme-dir'),
+      'times' => 4,
+    ]);
+
+    // read the file value from our file in the virtual file system directory
+    $this->assertEquals(
+      'CUSTOM',
+      $site->get_assets_version('custom-assets.version')
+    );
+    $this->assertEquals(
+      '1',
+      $site->get_assets_version('assets.version')
     );
 
   }
