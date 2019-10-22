@@ -474,6 +474,7 @@ class Site extends TimberSite {
     $this->add_twig_helper(new Twig\NumberHelper());
     $this->add_twig_helper(new Twig\TextHelper());
     $this->add_twig_helper(new Twig\TermHelper());
+    $this->add_twig_helper(new Twig\FormHelper());
   }
 
   /**
