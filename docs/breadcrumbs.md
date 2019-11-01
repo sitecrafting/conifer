@@ -57,13 +57,13 @@ $data = $site->get_context_with([
 Timber::render('page.twig', $data);
 ```
 
-Then, in your Twig view, just call the `breadcrumbs()` method on your breadcrumb trail object:
+Then, in your Twig view, just call the `breadcrumbs(...)` method on your breadcrumb trail object:
 
 ```twig
 {# page.twig #}
 
 <nav class="breadcrumb-nav">
-  {% for crumb in breadcrumb_trail.breadcrumbs %}
+  {% for crumb in breadcrumb_trail.breadcrumbs(post) %}
   	<a href="{{ crumb.link }}">{{ crumb.title }}</a>
   {% endfor %}
 </nav>
@@ -73,11 +73,45 @@ That's it.
 
 ## Breadcrumbs from Post Hierarchy
 
-### TODO
+If your site structure relies heavily on post hierarchy (i.e. parent/child relationships between posts, as set in the `wp_posts.post_parent` database column) rather than your navigation structure, the `PostBreadcrumbTrail` class is your friend.
 
-## Breadcrumbs from Taxonomy Hierarchy
+Usage is nearly identical to the example above. Just switch out the class, and your breadcrumbs will honor the post hierarchy instead:
 
-### TODO
+```php
+/* page.php */
+use Conifer\Navigation\PostBreadcrumbTrail;        // <-- use a different class...
+use Conifer\Post\Page;
+use Timber\Timber;
+
+$data = $site->get_context_with([
+  'post'             => new Page(),
+  'breadcrumb_trail' => new PostBreadcrumbTrail(), // <-- ...and instatiate it here
+]);
+
+Timber::render('page.twig', $data);
+```
+
+Your Twig code can remain exactly the same.
+
+## Breadcrumbs from Term Hierarchy
+
+Another common use-case for breadcrumbs is hierarchical taxonomies, such as categories. For breadcrumb structures that mirror these hierarchies, Conifer provides the `TaxonomyBreadcrumbTrail` class. This work in much the same way as `PostBreadcrumbTrail`:
+
+```php
+/* page.php */
+use Conifer\Navigation\TermBreadcrumbTrail;        // <-- again, just use the class...
+use Conifer\Post\Page;
+use Timber\Timber;
+
+$data = $site->get_context_with([
+  'post'             => new Page(),
+  'breadcrumb_trail' => new TermBreadcrumbTrail(), // <-- ...and instatiate it here
+]);
+
+Timber::render('page.twig', $data);
+```
+
+And again, your Twig can stay as-is. 🚀
 
 ## Composing custom Breadcrumb structures
 

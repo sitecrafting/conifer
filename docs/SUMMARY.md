@@ -13,6 +13,7 @@
 * [Search](/search.md)
 * [Forms](/forms.md)
 * [Admin Helpers](/admin.md)
+* [Breadcrumbs](/breadcrumbs.md)
 * [Authorization](/authorization.md)
 * [Notifiers](/notifiers.md)
 * [Shortcodes](/shortcodes.md)
