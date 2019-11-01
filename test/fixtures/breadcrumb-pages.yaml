@@ -1,0 +1,22 @@
+---
+
+blank_slate:
+  users: false
+
+# Fixture for testing breadcrumbs.
+posts:
+
+- title: Home
+  type: page
+
+- title: One
+  type: page
+  content: i tried so hard
+
+- title: Two
+  type: page
+  content: and got so far
+
+- title: Three
+  type: page
+  content: but this content doesn't even matter
