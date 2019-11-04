@@ -43,9 +43,9 @@ class Page extends Post {
    * Get a page by its template filename, relative to the theme root.
    *
    * @param string $template
-   * @return Page the first page found matching the template
+   * @return null|Page the first page found matching the template, or null if no such page exists
    */
-  public static function get_by_template(string $template) : Page {
+  public static function get_by_template(string $template) {
     // query the Page by template
     $pages = Timber::get_posts([
       'post_type' => 'page',
