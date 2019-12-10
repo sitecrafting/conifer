@@ -28,8 +28,9 @@ class TextHelper implements HelperInterface {
    */
   public function get_filters() : array {
     return [
-      'oxford_comma' => [$this, 'oxford_comma'],
-      'pluralize' => [$this, 'pluralize'],
+      'oxford_comma'    => [$this, 'oxford_comma'],
+      'pluralize'       => [$this, 'pluralize'],
+      'capitalize_each' => [$this, 'capitalize_each'],
     ];
   }
 
@@ -86,5 +87,40 @@ class TextHelper implements HelperInterface {
     }
 
     return $list;
+  }
+
+  /**
+   * Capitalize each word in the given $phrase, other than "small" words such
+   * as "a," "the," etc.
+   *
+   * @param string $phrase a string to capitalize each word of
+   * @param array $options an optional array of options including:
+   * - `small_words`: words not to capitalize. Defaults to the normal rules
+   *   of the English language.
+   * - `split_by`: the delimiter for splitting out words when calling
+   *   `explode()`. Defaults to a single space, i.e. `" "`.
+   * @return the capitalized string, e.g. "The Old Man and the Sea"
+   */
+  public function capitalize_each(string $phrase, array $options = []) : string {
+    // @codingStandardsIgnoreStart WordPress.Arrays.ArrayDeclarationSpacing
+    $smallWords = $options['small_words'] ?? [
+      'a', 'and', 'the', 'or', 'of', 'as', 'for', 'but', 'yet', 'so', 'at',
+      'around', 'by', 'after', 'along', 'from', 'on', 'to', 'with', 'without',
+    ];
+
+    $words = explode(($options['split_by'] ?? ' '), $phrase);
+
+    // capitalize each word
+    $capitalizedWords = array_map(
+      function(string $word, int $i) use ($smallWords) : string {
+        // always capitalize the first word; capitalize other "big" words
+        $capitalize = $i === 0 || !in_array(strtolower($word), $smallWords, true);
+        return $capitalize ? ucfirst($word) : lcfirst($word);
+      },
+      $words,
+      array_keys($words)
+    );
+
+    return implode(' ', $capitalizedWords);
   }
 }
