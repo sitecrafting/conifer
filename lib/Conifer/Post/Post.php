@@ -228,7 +228,7 @@ abstract class Post extends TimberPost {
       $query['post_type'] = static::_post_type();
     }
 
-    return Timber::get_posts($query, $class);
+    return Timber::get_posts($query, $class) ?: [];
   }
 
   /**
