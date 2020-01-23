@@ -327,6 +327,7 @@ class Site extends TimberSite {
    * @param array $with data to merge into the context array
    * @return array the merged data
    * @example
+   * ```
    * // get the default context data
    * $data = $site->context();
    *
@@ -335,6 +336,7 @@ class Site extends TimberSite {
    *   'post'    => $post,
    *   'whatevs' => 'CUZ THIS IS MY UNITED STATES OF WHATEVER',
    * ]);
+   * ```
    */
   public function context(array $with = []) : array {
     return array_merge(Timber::get_context(), $with);
