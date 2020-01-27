@@ -23,7 +23,7 @@ esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-if [[ $CI = true ]] ; then
+if [[ ! -z $CI ]] ; then
 	# are we in a CI environment?
 	echo 'forcing non-interactive mode for CI environment'
 	INTERACTIVE='NO'
