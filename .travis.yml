@@ -92,6 +92,5 @@ matrix:
 
   allow_failures:
     - name: 'Test VVV provisioning'
-    - name: 'Building Docs'
     - env: TIMBER_VERSION='2.x-dev'
 
