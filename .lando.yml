@@ -5,6 +5,9 @@ config:
   php: '7.0'
 
 services:
+  node:
+    type: node:10
+
   appserver:
     run_as_root:
       # Temporary hack to get a Debian package to install
@@ -18,7 +21,7 @@ services:
 
     run:
       - composer install
-      - /app/scripts/setup-wordpress.sh
+      - ./scripts/setup-wordpress.sh
 
     overrides:
       environment:
@@ -34,7 +37,7 @@ services:
 
     run:
       - yarn
-      - /app/scripts/build-docs.sh
+      - ./scripts/build-docs.sh
 
   cypress:
     type: node:10
@@ -54,24 +57,24 @@ services:
       - appserver
 
   docs:
-    type: nginx
+    type: nginx:1.14
     ssl: true
     webroot: docs/_book
 
 tooling:
   install:
     service: appserver
-    cmd: '/app/scripts/setup-wordpress.sh'
+    cmd: './scripts/setup-wordpress.sh'
     description: 'Install and configure WordPress for custom plugin dev'
 
   install-test-themes:
     service: appserver
-    cmd: 'rsync --verbose --archive --recursive /app/test/themes/ /app/wp/wp-content/themes/'
+    cmd: 'rsync --verbose --archive --recursive ./test/themes/ ./wp/wp-content/themes/'
     description: 'Sync test themes for e2e testing'
 
   debug:
     service: appserver
-    cmd: 'tail -f /app/wp/wp-content/debug.log'
+    cmd: 'tail -f ./wp/wp-content/debug.log'
     description: 'Get real-time WP debug log output'
 
   cypress:
@@ -86,7 +89,7 @@ tooling:
 
   unit:
     service: appserver
-    cmd: '/app/vendor/bin/phpunit'
+    cmd: './vendor/bin/phpunit'
     description: 'Run unit tests'
 
   sniff:
@@ -106,12 +109,12 @@ tooling:
 
   release:
     service: appserver
-    cmd: '/app/scripts/build-release.sh'
+    cmd: './scripts/build-release.sh'
     description: 'Build a downloadable release of the Conifer WordPress plugin'
 
   docs:
     service: gitbook
-    cmd: '/app/scripts/build-docs.sh /app/docs'
+    cmd: './scripts/build-docs.sh ./docs'
     description: 'Build documentation in _book folder using Gitbook'
 
   gitbook:
@@ -121,11 +124,11 @@ tooling:
 
 events:
   pre-docs:
-    - appserver: '/app/scripts/build-api-md.sh'
+    - appserver: './scripts/build-api-md.sh'
 
   pre-e2e:
     - appserver: 'echo installing test themes...'
-    - appserver: 'rsync --verbose --archive --recursive /app/test/themes/ /app/wp/wp-content/themes/'
+    - appserver: 'rsync --verbose --archive --recursive ./test/themes/ ./wp/wp-content/themes/'
 
 proxy:
   appserver:
