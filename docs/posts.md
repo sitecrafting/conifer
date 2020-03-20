@@ -347,6 +347,16 @@ If you want to display something more involved than a simple `meta_value`, you c
 
 This code tells Conifer to grab the `beeps` for each Robot, count them, and display the count (or "None" if the count is zero, or if no `beeps` value exists for any given Robot).
 
+## Displaying the Page Template
+
+Because it's so common and useful, there's a shortcut for displaying the page template in an admin column:
+
+```php
+Page::add_admin_column('_wp_page_template', 'Page Template');
+```
+
+Conifer will recognize the `_wp_page_template` key as special, and return the name of the template as defined in the template header comment, or "Default Template" for pages not using a custom template. The second argument can be any string.
+
 ## Checking for the existence of a post ID
 
 You can check whether a post exists with a given ID *and an appropriate post_type* using the `Post::exists()` method. It uses [late static binding](https://secure.php.net/manual/en/language.oop5.late-static-bindings.php) on the `POST_TYPE` class constant to check the `post_type` of any posts it finds. That is, the `exists()` method will only return `true` when the `post_type` matches up with the `POST_TYPE` constant.
