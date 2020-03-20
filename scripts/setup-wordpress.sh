@@ -6,10 +6,6 @@ do
 key="$1"
 
 case $key in
-    -n|--non-interactive)
-    INTERACTIVE=NO
-    shift # past argument
-    ;;
     --timber-version)
     TIMBER_VERSION="$2"
     shift # past argument
@@ -22,15 +18,6 @@ case $key in
 esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
-
-if [[ ! -z $CI ]] ; then
-	# are we in a CI environment?
-	echo 'forcing non-interactive mode for CI environment'
-	INTERACTIVE='NO'
-else
-	# not in a CI environment, default to interactive mode
-	INTERACTIVE=${INTERACTIVE:-'YES'}
-fi
 
 # Install and configure WordPress if we haven't already
 main() {
@@ -71,54 +58,13 @@ EOF
   if wp_installed ; then
     echo 'WordPress is installed'
   else
-    if [[ $INTERACTIVE = 'YES' ]] ; then
-
-      #
-      # Normal/default interactive mode: prompt the user for WP settings
-      #
-
-      read -p "${BOLD}Site URL${NORMAL} (https://conifer.lndo.site): " URL
-      URL=${URL:-'https://conifer.lndo.site'}
-
-      read -p "${BOLD}Site Title${NORMAL} (Conifer): " TITLE
-      TITLE=${TITLE:-'Conifer'}
-
-      # Determine the default username/email to suggest based on git config
-      DEFAULT_EMAIL=$(git config --global user.email)
-      DEFAULT_EMAIL=${DEFAULT_EMAIL:-'admin@example.com'}
-      DEFAULT_USERNAME=$(echo $DEFAULT_EMAIL | sed 's/@.*$//')
-
-      read -p "${BOLD}Admin username${NORMAL} ($DEFAULT_USERNAME): " ADMIN_USER
-      ADMIN_USER=${ADMIN_USER:-"$DEFAULT_USERNAME"}
-
-      read -p "${BOLD}Admin password${NORMAL} (conifer): " ADMIN_PASSWORD
-      ADMIN_PASSWORD=${ADMIN_PASSWORD:-'conifer'}
-
-      read -p "${BOLD}Admin email${NORMAL} ($DEFAULT_EMAIL): " ADMIN_EMAIL
-      ADMIN_EMAIL=${ADMIN_EMAIL:-"$DEFAULT_EMAIL"}
-
-    else
-
-      #
-      # NON-INTERACTIVE MODE
-      # ONE DOES NOT SIMPLY PROMPT TRAVIS CI FOR USER PREFERENCES
-      #
-
-      URL='http://conifer.lndo.site'
-      TITLE='Conifer'
-      ADMIN_USER='conifer'
-      ADMIN_PASSWORD='conifer'
-      ADMIN_EMAIL='conifer+travisci@sitecrafting.com'
-
-    fi
-
     # install WordPress
     wp core install \
-      --url="$URL" \
-      --title="$TITLE" \
-      --admin_user="$ADMIN_USER" \
-      --admin_password="$ADMIN_PASSWORD" \
-      --admin_email="$ADMIN_EMAIL" \
+      --url='http://conifer.lndo.site' \
+      --title='Conifer' \
+      --admin_user='conifer' \
+      --admin_password='conifer' \
+      --admin_email='conifer@coniferplug.in' \
       --skip-email
   fi
 
@@ -149,6 +95,13 @@ EOF
 
   wp option set permalink_structure '/%postname%/'
   wp rewrite flush
+
+  echo
+  echo 'Done setting up!'
+  echo
+  echo 'Your WP username is: conifer'
+  echo 'Your password is: conifer'
+  echo
 
 }
 
