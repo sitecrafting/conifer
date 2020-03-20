@@ -107,6 +107,18 @@ If you want to *only* run your custom config callback without funning Conifer's 
 $site->configure(function() { /* ... */ }, false);
 ```
 
+## Disabling Comments
+
+Many sites don't need user-facing comments at all. For this, the `Site` class has a simple convenience method:
+
+```php
+$site->configure(function() {
+  $this->disable_comments();
+});
+```
+
+This closes all comments on the frontend, hides all existing comments on all posts on the frontend and within WP Admin, and removes comment management pages from WP Admin.
+
 ## Directory Cascades
 
 A **Directory Cascade** is an ordered list of directories where Conifer looks for Twig views (`*.twig` files), JS files, or stylesheets. Each type of asset (views, JS, CSS) has its own set of directories - its own *cascade* - where Conifer looks for that type of file. Each cascade has its own getter and setter on the `Site` class:
