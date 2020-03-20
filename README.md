@@ -15,7 +15,7 @@ For reference documentation, use-cases, and design principles, [check out the do
 
 ## Quick start
 
-See the [Installation docs](https://www.coniferplug.in/getting-started/installation) to get Conifer installed for use in your theme or plugin.
+See the [Installation docs](https://www.coniferplug.in/installation.html) to get Conifer installed for use in your theme or plugin.
 
 ## Issues and Feature Requests
 
@@ -43,3 +43,15 @@ and its companion starter theme, [Groot](https://github.com/sitecrafting/groot)!
 Built with 💚 + ☕ in Tacoma, Washington.
 
 [![Work with SiteCrafting on your next web project](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/sc-banner.jpg)](https://www.sitecrafting.com/)
+
+### Building a new release
+
+Groot includes a script for building itself and creating a release. To create a tag and corresponding release called `vX.Y.Z`:
+
+```bash
+scripts/build-release.sh vX.Y.Z
+```
+
+This will create a .tar.gz and a .zip archive which you can upload to a new release on GitHub.
+
+If you have [`hub`](https://hub.github.com/) installed, it will also prompt you to optionally create a release directly!
