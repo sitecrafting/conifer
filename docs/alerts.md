@@ -17,7 +17,7 @@ use Conifer\Alert\DismissableAlert;
 use Timber\Timber;
 
 // Load the alert into Timber's context
-$alert   = new DismissableAlert('IMPORTANT ALERT!!!');
+$alert   = new DismissableAlert(get_option('global_alert'));
 $context = $site->context(['alert' => $alert]);
 
 // Render your view as you normally would
@@ -50,3 +50,7 @@ Timber::render('my-view.twig', $context);
 
 {% endif %}
 ```
+
+Now, when the user dismisses the alert, their cookies will remember that they did so and they won't see it again unless they clear their cookies.
+
+Internally, `DismissableAlert` hashes the text of the alert and uses that hash within the cookie name. This means that for a given user, each dismissal creates a single new cookie that corresponds to exactly that alert. So when the `global_alert` site option (or whatever you pass to `new DismissableAlert(...)`) changes to something new, the new alert will show up automatically.
