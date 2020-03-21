@@ -80,17 +80,6 @@ matrix:
       after_failure:
         - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
 
-    - name: 'Test VVV provisioning'
-      language: node_js
-      node_js: 10
-      cache:
-        - ~/.cache
-        - /var/www/.cache
-      install: true
-      script:
-        - vvv-utilities/provision.sh
-
   allow_failures:
-    - name: 'Test VVV provisioning'
     - env: TIMBER_VERSION='2.x-dev'
 
