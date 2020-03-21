@@ -43,9 +43,9 @@ class DismissableAlertTest extends Base {
   }
 
   public function test_cooke_text_path_opt() {
-    $text = 'THIS IS AN IMPORTANT ALERT!!!';
+    $text   = 'THIS IS AN IMPORTANT ALERT!!!';
     $cookie = 'wp-user_dismissed_alert_' . md5($text);
-    $alert = new DismissableAlert($text, [
+    $alert  = new DismissableAlert($text, [
       'cookies' => [$cookie => 1],
       'cookie_expires' => 'Sat, 21 Mar 2020 12:11:34 -0700',
       'cookie_path' => '/custom',

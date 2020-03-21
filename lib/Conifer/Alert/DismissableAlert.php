@@ -21,6 +21,11 @@ class DismissableAlert {
    */
   protected $message;
 
+  /**
+   * Configurable options to the constructor
+   *
+   * @var array
+   */
   protected $options;
 
   /**
@@ -119,10 +124,20 @@ class DismissableAlert {
   }
 
 
+  /**
+   * Get the cookies from options or the $_COOKIE superglobal
+   *
+   * @return array
+   */
   protected function cookies() : array {
     return (array) ($this->options['cookies'] ?? $_COOKIE);
   }
 
+  /**
+   * String that the cookie should start with
+   *
+   * @return string
+   */
   protected function cookie_prefix() : string {
     return $this->options['cookie_prefix'] ?? 'wp-user_dismissed_alert_';
   }
