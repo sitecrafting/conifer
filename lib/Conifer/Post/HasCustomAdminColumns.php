@@ -48,19 +48,61 @@ trait HasCustomAdminColumns {
       return $columns;
     });
 
-    // If no callback is given, look for a meta_key of $key on each post
-    $getValue = $getValue ?? function($id) use ($key) {
-      $post = new static($id);
-      return $post->meta($key);
-    };
+    // If no callback is given, infer a sensible default from the key.
+    $getValue = $getValue ?? static::value_getter($key);
 
     // register a callback to display the value for this column
     add_action($displayHook, function($column, $id) use ($key, $getValue) {
       if ( $column === $key ) {
         // NOTE: THE USER IS RESPONSIBLE FOR ESCAPING USER INPUT AS NECESSARY
         // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
-        echo $getValue($id);
+        echo $getValue( (int) $id);
       }
     }, 10, 2);
+  }
+
+  /**
+   * Get a function to run based on the meta $key.
+   *
+   * @param string $key the column key whose value we need to get when rendering
+   * a custom column
+   * @return callable
+   */
+  private static function value_getter($key) : callable {
+    $keyToGetterMapping = [
+      '_wp_page_template' => [static::class, 'page_template_name'],
+    ];
+
+    return $keyToGetterMapping[$key] ?? static::post_meta_getter($key);
+  }
+
+  /**
+   * Basic get_post_meta-like fallback
+   *
+   * @param string $key the column key
+   */
+  private static function post_meta_getter($key) {
+    return function(int $id) use ($key) {
+      $post = new static($id);
+      return $post->meta($key);
+    };
+  }
+
+  /**
+   * Get the page template given a post ID
+   *
+   * @param int $id the post ID
+   * @return string the page template name, as declared in the template header comment, or "Default Template"
+   */
+  private static function page_template_name(int $id) : string {
+    // get mapping of Template File => Template Name
+    static $templates = null;
+    $templates        = $templates ?: array_flip(get_page_templates());
+
+    // get the template file for this page
+    $templateFile = get_post_meta($id, '_wp_page_template', true) ?: '';
+
+    // return the template name for this page
+    return $templates[$templateFile] ?? 'Default Template';
   }
 }

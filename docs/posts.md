@@ -49,6 +49,33 @@ How? Conifer uses the `POST_TYPE` class constant along with any passed `$options
 
 If your `POST_TYPE` class constant is in snake_case (which is the recommended style), `Post::register_type()` will convert it to Space Separated Capitalized Words. For example, a `POST_TYPE` definition of `special_post`  translates into singular and plural labels `Special Post` and `Special Posts`, respectively.
 
+#### Customizing post type options
+
+Conifer sets up some nice defaults to pass to the low-level `register_post_type`, but you can easily override those by defining a static `type_options()` method on your post class:
+
+```php
+/* lib/MyProject/Doctor.php */
+namespace MyProject;
+
+use Conifer\Post;
+
+class Doctor extends Post {
+    const POST_TYPE = 'doctor';
+
+    public static function type_options() : array {
+      return [
+        'public'                => true,
+        'has_archive'           => false,
+        'supports'              => ['title', 'editor'],
+        'hierarchical'          => false,
+        'menu_position'         => 20,
+        // any other valid options for register_post_type can go here
+      ];
+    }
+
+}
+```
+
 #### Overriding post type label settings
 
 Custom pluralization and other fine-tuning is also easy: simply implement the static `type_options()` method:
@@ -57,6 +84,8 @@ Custom pluralization and other fine-tuning is also easy: simply implement the st
 /* lib/MyProject/Person.php */
 namespace MyProject;
 
+use Conifer\Post;
+
 class Person extends Post {
   const POST_TYPE = 'person';
 
@@ -64,7 +93,7 @@ class Person extends Post {
   	return [
       'plural_label' => 'People',
       'labels'       => [
-        'add_new_item'     => 'Onboard New Person'
+        'add_new_item'     => 'Onboard New Person',
         'singular_name'    => 'Person',
         'insert_into_item' => 'Insert into bio',
       ],
@@ -346,6 +375,16 @@ If you want to display something more involved than a simple `meta_value`, you c
 ```
 
 This code tells Conifer to grab the `beeps` for each Robot, count them, and display the count (or "None" if the count is zero, or if no `beeps` value exists for any given Robot).
+
+## Displaying the Page Template
+
+Because it's so common and useful, there's a shortcut for displaying the page template in an admin column:
+
+```php
+Page::add_admin_column('_wp_page_template', 'Page Template');
+```
+
+Conifer will recognize the `_wp_page_template` key as special, and return the name of the template as defined in the template header comment, or "Default Template" for pages not using a custom template. The second argument can be any string.
 
 ## Checking for the existence of a post ID
 
