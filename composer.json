@@ -1,7 +1,6 @@
 {
   "name": "sitecrafting/conifer",
   "description": "Powerful abstractions for serious WordPress theme development",
-  "type": "wordpress-plugin",
   "repositories": [
     {
       "type": "composer",
