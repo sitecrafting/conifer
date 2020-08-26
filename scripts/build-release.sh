@@ -52,15 +52,6 @@ function main() {
       echo 'aborted.'
       exit
     fi
-
-    # prompt for annotation
-    read -p "Annotate this tag? (leave blank for no annotation) " annotation
-
-    if [[ "$annotation" ]] ; then
-      git tag "$RELEASE" -am "$annotation"
-    else
-      git tag "$RELEASE"
-    fi
   fi
 
   backup_vendor
