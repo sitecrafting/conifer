@@ -201,14 +201,16 @@ $site->configure(function() {
     $deps    = [],
     $version = ['file' => 'custom-style.version'],
     $footer  = true
-	);
+  );
 });
 ```
 
 This looks in the [script cascade and style cascade](#directory-cascades) for `custom.js` and `extra.css`, respectively. The method arguments are almost identical to those of`wp_enqueue_script()` and `wp_enqueue_style()`, with a few exceptions:
 
 * The `$src` argument is evaluated as a path relative to each step in the script/style cascade: that is, Conifer looks first in `js/` or `css/` in the theme by default.
-* The `$version` argument is `true` by default, which tells Conifer to look for a special file called `assets.version` in the theme directory. If the file is found, its contents are passed to `wp_enqueue_*` as the version argument. This can be used as a means of fine-grained [cache-busting](https://css-tricks.com/strategies-for-cache-busting-css/) for your theme assets. If you track bundled assets as part of your theme code in source control and you use a build system such as Webpack, Gulp, or Grunt, just write a content hash or datetime to your theme's `assets.version` file. Alternatively, $vesion can be a key/value array. Where the key = "file" and value="filename". This filename will contain a version number for your custom asset. The path is relative to the theme folder.
+* The `$version` argument is `true` by default, which tells Conifer to look for a special file called `assets.version` in the theme directory. If the file is found, its contents are passed to `wp_enqueue_*` as the version argument. This can be used as a means of coarse-grained [cache-busting](https://css-tricks.com/strategies-for-cache-busting-css/) for your theme assets. If you track bundled assets as part of your theme code in source control and you use a build system such as Webpack, Gulp, or Grunt, just write a content hash or datetime to your theme's `assets.version` file.
+* For even finer granularity cache-busting, `$version` can be an associative array like `['file' => 'filename']`. The `filename` value should be a file (relative to the theme folder) containing a version number for your custom asset. This is useful if your frontend build tool distinguishes between asset bundles, for example if you want to cache JavaScript and CSS independently.
+* If the `$version['file']` option is provided (or if it is `true`, meaning `assets.version`), but no such file is detected, the version falls back to the current version of WordPress.
 
 ## Timber Context helper
 
