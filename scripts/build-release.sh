@@ -52,15 +52,6 @@ function main() {
       echo 'aborted.'
       exit
     fi
-
-    # prompt for annotation
-    read -p "Annotate this tag? (leave blank for no annotation) " annotation
-
-    if [[ "$annotation" ]] ; then
-      git tag "$RELEASE" -am "$annotation"
-    else
-      git tag "$RELEASE"
-    fi
   fi
 
   backup_vendor
@@ -97,6 +88,27 @@ function main() {
   restore_vendor
 
   echo "Created ${tar_name}, ${zip_name}"
+
+  create_github_release "$RELEASE" "$tar_name" "$zip_name"
+}
+
+function create_github_release() {
+  if [[ $(which hub) ]] ; then
+    echo $($BOLD)hub detected! You win at Git!$($RESET)
+    read -p 'Create a GitHub release? (y/N) ' create
+    if [[ "$create" = "y" ]] ; then
+      echo 'pushing latest changes and tags...'
+      git push origin master
+      git push --tags
+      hub release create --prerelease \
+        --attach="$2" \
+        --attach="$3" \
+        --edit --message="$1" \
+        "$1"
+    else
+      echo 'skipping GitHub release.'
+    fi
+  fi
 }
 
 function backup_vendor() {

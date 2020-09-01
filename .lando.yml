@@ -5,6 +5,9 @@ config:
   php: '7.0'
 
 services:
+  node:
+    type: node:10
+
   appserver:
     run_as_root:
       # Temporary hack to get a Debian package to install
@@ -17,35 +20,33 @@ services:
       - apt-get install zip
 
     run:
-      - cd $LANDO_MOUNT && composer install
-      - cd $LANDO_MOUNT && scripts/setup-wordpress.sh
+      - composer install
+      - ./scripts/setup-wordpress.sh
 
     overrides:
-      services:
-        environment:
-          # Pass any non-empty CI envvar from the host into Lando
-          # This is so we can force non-interactive mode setting up WP
-          CI: ${CI:-''}
+      environment:
+        # Pass any non-empty CI envvar from the host into Lando
+        # This is so we can force non-interactive mode setting up WP
+        CI: ${CI:-''}
 
   database:
     type: mysql:5.7
 
   gitbook:
-    type: node:8
+    type: node:10
 
     run:
       - yarn
-      - /app/scripts/build-docs.sh
+      - ./scripts/build-docs.sh
 
   cypress:
-    type: node:8
+    type: node:10
 
     run:
       - yarn cypress install
 
     overrides:
-      services:
-        image: 'sitecrafting/lando-cypress-wordpress:0.2.0'
+      image: 'sitecrafting/lando-cypress-wordpress:latest'
 
   phpmyadmin:
     type: phpmyadmin:4.7
@@ -56,24 +57,24 @@ services:
       - appserver
 
   docs:
-    type: nginx:1.13
+    type: nginx:1.14
     ssl: true
     webroot: docs/_book
 
 tooling:
   install:
     service: appserver
-    cmd: '/app/scripts/setup-wordpress.sh'
+    cmd: './scripts/setup-wordpress.sh'
     description: 'Install and configure WordPress for custom plugin dev'
 
   install-test-themes:
     service: appserver
-    cmd: 'rsync --verbose --archive --recursive /app/test/themes/ /app/wp/wp-content/themes/'
+    cmd: 'rsync --verbose --archive --recursive ./test/themes/ ./wp/wp-content/themes/'
     description: 'Sync test themes for e2e testing'
 
   debug:
     service: appserver
-    cmd: 'tail -f /app/wp/wp-content/debug.log'
+    cmd: 'tail -f ./wp/wp-content/debug.log'
     description: 'Get real-time WP debug log output'
 
   cypress:
@@ -88,7 +89,7 @@ tooling:
 
   unit:
     service: appserver
-    cmd: 'vendor/bin/phpunit'
+    cmd: './vendor/bin/phpunit'
     description: 'Run unit tests'
 
   sniff:
@@ -108,12 +109,12 @@ tooling:
 
   release:
     service: appserver
-    cmd: '/app/scripts/build-release.sh'
+    cmd: './scripts/build-release.sh'
     description: 'Build a downloadable release of the Conifer WordPress plugin'
 
   docs:
     service: gitbook
-    cmd: '/app/scripts/build-docs.sh /app/docs'
+    cmd: './scripts/build-docs.sh ./docs'
     description: 'Build documentation in _book folder using Gitbook'
 
   gitbook:
@@ -123,11 +124,11 @@ tooling:
 
 events:
   pre-docs:
-    - appserver: 'cd $LANDO_MOUNT && ./scripts/build-api-md.sh'
+    - appserver: './scripts/build-api-md.sh'
 
   pre-e2e:
     - appserver: 'echo installing test themes...'
-    - appserver: 'rsync --verbose --archive --recursive /app/test/themes/ /app/wp/wp-content/themes/'
+    - appserver: 'rsync --verbose --archive --recursive ./test/themes/ ./wp/wp-content/themes/'
 
 proxy:
   appserver:

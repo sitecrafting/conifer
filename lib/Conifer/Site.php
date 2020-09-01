@@ -48,8 +48,9 @@ class Site extends TimberSite {
 
   /**
    * Assets version timestamp, used for cache-busting
+   * Array: key=filename, value=timestamp
    *
-   * @var string
+   * @var array
    */
   protected $assets_version;
 
@@ -152,10 +153,12 @@ class Site extends TimberSite {
    * @param string $scriptHandle the script handle to register
    * @param string $fileName the file to search for in the script cascade path
    * @param array $dependencies an array of registered dependency handles
-   * @param string|bool|null $version the version of the script to append to
+   * @param array|string|bool|null $version the version of the script to append to
    * the URL rendered in the <script> tag. Accepts any valid value of the $ver
    * argument to `wp_register_script`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
+   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset
+   * file version relative to the theme folder path.
    * Defaults to `true`.
    * @param bool $inFooter whether to register this script in the footer. Unlike
    * the same argument to the core `wp_register_script` function, this defaults
@@ -168,7 +171,10 @@ class Site extends TimberSite {
     $version = true,
     bool $inFooter = true
   ) {
-    if ($version === true) {
+    if (is_array($version) && isset($version['file'])) {
+      // use defined asset version file for cache-busting in the theme build process
+      $version = $this->get_assets_version($version['file']);
+    } elseif ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
       $version = $this->get_assets_version();
     }
@@ -192,10 +198,12 @@ class Site extends TimberSite {
    * Defaults to the empty string, but is required if the script has not
    * already been registered.
    * @param array $dependencies an array of registered dependency handles
-   * @param string|bool|null $version the version of the script to append to
+   * @param array|string|bool|null $version the version of the script to append to
    * the URL rendered in the <script> tag. Accepts any valid value of the $ver
    * argument to `wp_enqueue_script`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
+   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset
+   * file version relative to the theme folder path.
    * Defaults to `true`.
    * @param bool $inFooter whether to enqueue this script in the footer. Unlike
    * the same argument to the core `wp_enqueue_script` function, this defaults
@@ -208,7 +216,11 @@ class Site extends TimberSite {
     $version = true,
     bool $inFooter = true
   ) {
-    if ($version === true) {
+
+    if (is_array($version) && isset($version['file'])) {
+      // use defined asset version file for cache-busting in the theme build process
+      $version = $this->get_assets_version($version['file']);
+    } elseif ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
       $version = $this->get_assets_version();
     }
@@ -229,10 +241,12 @@ class Site extends TimberSite {
    * @param string $stylesheetHandle the style handle to register
    * @param string $fileName the file to search for in the style cascade path
    * @param array $dependencies an array of registered dependency handles
-   * @param string|bool|null $version the version of the style to append to
+   * @param array|string|bool|null $version the version of the style to append to
    * the URL rendered in the <link> tag. Accepts any valid value of the $ver
    * argument to `wp_register_style`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
+   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset
+   * file version relative to the theme folder path.
    * Defaults to `true`.
    * @param bool $media the media for which this stylesheet has been defined;
    * passed transparently to `wp_register_style`. Defaults to "all" (as does
@@ -245,7 +259,10 @@ class Site extends TimberSite {
     $version = true,
     string $media = 'all'
   ) {
-    if ($version === true) {
+    if (is_array($version) && isset($version['file'])) {
+      // use defined asset version file for cache-busting in the theme build process
+      $version = $this->get_assets_version($version['file']);
+    } elseif ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
       $version = $this->get_assets_version();
     }
@@ -268,10 +285,12 @@ class Site extends TimberSite {
    * Defaults to the empty string, but is required if the style has not
    * already been registered.
    * @param array $dependencies an array of registered dependency handles
-   * @param string|bool|null $version the version of the style to append to
+   * @param array|string|bool|null $version the version of the style to append to
    * the URL rendered in the <link> tag. Accepts any valid value of the $ver
    * argument to `wp_enqueue_style`, plus the literal value `true`, which
    * tells Conifer to look for an assets version file to use for cache-busting.
+   * Pass an array ['file' => 'my-assets-version-text'] to get a custom asset
+   * file version relative to the theme folder path.
    * Defaults to `true`.
    * @param string $media the media for which this stylesheet has been defined.
    * Passed transparently to `wp_enqueue_style`. Defaults to "all" (as does
@@ -284,7 +303,10 @@ class Site extends TimberSite {
     $version = true,
     string $media = 'all'
   ) {
-    if ($version === true) {
+    if (is_array($version) && isset($version['file'])) {
+      // use defined asset version file for cache-busting in the theme build process
+      $version = $this->get_assets_version($version['file']);
+    } elseif ($version === true) {
       // use automatic any automatic cache-busting in the theme build process
       $version = $this->get_assets_version();
     }
@@ -452,6 +474,7 @@ class Site extends TimberSite {
     $this->add_twig_helper(new Twig\NumberHelper());
     $this->add_twig_helper(new Twig\TextHelper());
     $this->add_twig_helper(new Twig\TermHelper());
+    $this->add_twig_helper(new Twig\FormHelper());
   }
 
   /**
@@ -643,21 +666,29 @@ class Site extends TimberSite {
   }
 
   /**
-   * Get the build-tool-generated hash for global assets
+   * Get the build-tool-generated hash for assets
    *
+   * @param string $filepath Optional filepath whose contents will be used
+   * in the cache-busting query string. Defaults to "assets.version"
    * @return the hash for
    */
-  public function get_assets_version() : string {
-    if (!$this->assets_version && is_readable($this->get_theme_file('assets.version')) ) {
+  public function get_assets_version($filepath = 'assets.version') : string {
+
+    $this->assets_version = $this->assets_version ?? [];
+
+    if (
+      !isset($this->assets_version[$filepath])
+      && is_readable($this->get_theme_file($filepath))
+    ) {
+
       // phpcs:ignore WordPress.WP.AlternativeFunctions
-      $contents             = file_get_contents($this->get_theme_file('assets.version'));
-      $this->assets_version = trim($contents);
+      $version = trim(file_get_contents($this->get_theme_file($filepath)));
+
+      $this->assets_version[$filepath] = $version;
+
     }
 
-    $this->assets_version = $this->assets_version ?: '';
-
-    // Cache the version in this object
-    return $this->assets_version;
+    return $this->assets_version[$filepath] ?? '';
   }
 
   /**
@@ -680,5 +711,54 @@ class Site extends TimberSite {
       $file = "/$file";
     }
     return get_stylesheet_directory() . $file;
+  }
+
+  /**
+   * Disable all comment functionality across the site.
+   */
+  public function disable_comments() {
+     add_action('admin_init', function() {
+       global $pagenow;
+
+      if ($pagenow === 'edit-comments.php') {
+        wp_redirect(admin_url());
+        exit;
+      }
+
+        // Remove comments metabox from dashboard
+        remove_meta_box('dashboard_recent_comments', 'dashboard', 'normal');
+
+        // Disable support for comments and trackbacks in post types
+      foreach (get_post_types() as $post_type) {
+        if (post_type_supports($post_type, 'comments')) {
+          remove_post_type_support($post_type, 'comments');
+          remove_post_type_support($post_type, 'trackbacks');
+        }
+      }
+     });
+
+     // hide comment menu item from WP Dashboard menu
+     add_action('admin_menu', function() {
+       remove_menu_page('edit-comments.php');
+     });
+
+     // hide comment menu items in WP Admin bar
+     add_action('wp_before_admin_bar_render', function() {
+       global $wp_admin_bar;
+       $wp_admin_bar->remove_menu('comments');
+     });
+
+     // hide comments column in WP Admin
+     add_filter('manage_page_columns', function(array $columns) {
+       unset($columns['comments']);
+       return $columns;
+     });
+
+     // hide all existing comments
+     add_filter('comments_array', '__return_empty_array', 10, 2);
+
+     // Close comments on the frontend
+     add_filter('comments_open', '__return_false', 20, 2);
+     add_filter('pings_open', '__return_false', 20, 2);
   }
 }

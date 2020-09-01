@@ -65,5 +65,6 @@
 
 ## Changelog
 
+* [2020](/changelog/2020.md)
 * [2019](/changelog/2019.md)
 * [2018](/changelog/2018.md)

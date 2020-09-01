@@ -107,6 +107,18 @@ If you want to *only* run your custom config callback without funning Conifer's 
 $site->configure(function() { /* ... */ }, false);
 ```
 
+## Disabling Comments
+
+Many sites don't need user-facing comments at all. For this, the `Site` class has a simple convenience method:
+
+```php
+$site->configure(function() {
+  $this->disable_comments();
+});
+```
+
+This closes all comments on the frontend, hides all existing comments on all posts on the frontend and within WP Admin, and removes comment management pages from WP Admin.
+
 ## Directory Cascades
 
 A **Directory Cascade** is an ordered list of directories where Conifer looks for Twig views (`*.twig` files), JS files, or stylesheets. Each type of asset (views, JS, CSS) has its own set of directories - its own *cascade* - where Conifer looks for that type of file. Each cascade has its own getter and setter on the `Site` class:
@@ -182,14 +194,23 @@ $site->configure(function() {
     $deps    = [],
     $version = true,
     $footer  = true
-	);
+  );
+  $this->enqueue_style(
+    $handle  = 'custom-style',
+    $src     = 'custom-style.css',
+    $deps    = [],
+    $version = ['file' => 'custom-style.version'],
+    $footer  = true
+  );
 });
 ```
 
 This looks in the [script cascade and style cascade](#directory-cascades) for `custom.js` and `extra.css`, respectively. The method arguments are almost identical to those of`wp_enqueue_script()` and `wp_enqueue_style()`, with a few exceptions:
 
 * The `$src` argument is evaluated as a path relative to each step in the script/style cascade: that is, Conifer looks first in `js/` or `css/` in the theme by default.
-* The `$version` argument is `true` by default, which tells Conifer to look for a special file called `assets.version` in the theme directory. If the file is found, its contents are passed to `wp_enqueue_*` as the version argument. This can be used as a means of fine-grained [cache-busting](https://css-tricks.com/strategies-for-cache-busting-css/) for your theme assets. If you track bundled assets as part of your theme code in source control and you use a build system such as Webpack, Gulp, or Grunt, just write a content hash or datetime to your theme's `assets.version` file.
+* The `$version` argument is `true` by default, which tells Conifer to look for a special file called `assets.version` in the theme directory. If the file is found, its contents are passed to `wp_enqueue_*` as the version argument. This can be used as a means of coarse-grained [cache-busting](https://css-tricks.com/strategies-for-cache-busting-css/) for your theme assets. If you track bundled assets as part of your theme code in source control and you use a build system such as Webpack, Gulp, or Grunt, just write a content hash or datetime to your theme's `assets.version` file.
+* For even finer granularity cache-busting, `$version` can be an associative array like `['file' => 'filename']`. The `filename` value should be a file (relative to the theme folder) containing a version number for your custom asset. This is useful if your frontend build tool distinguishes between asset bundles, for example if you want to cache JavaScript and CSS independently.
+* If the `$version['file']` option is provided (or if it is `true`, meaning `assets.version`), but no such file is detected, the version falls back to the current version of WordPress.
 
 ## Timber Context helper
 

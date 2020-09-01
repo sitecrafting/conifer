@@ -23,7 +23,11 @@ cd conifer
 lando start
 ```
 
-The first time you start the app, it will install WordPress, Timber, and the Groot starter theme for you. It will prompt you for various admin setup details, similar to the WP installation process. Then it will expose your local Conifer dev site at https://conifer.lndo.site (or similiar).
+The first time you start the app, it will install WordPress, Timber, and the Groot starter theme for you. Then it will expose your local Conifer dev site at https://conifer.lndo.site (or similiar).
+
+WP Admin username: **conifer**
+
+Password: **conifer**
 
 ### That's it
 
