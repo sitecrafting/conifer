@@ -36,9 +36,6 @@ class WordPressHelper implements HelperInterface {
         wp_nav_menu( $args );
         return ob_get_clean();
       },
-      'get_terms' => function( $taxonomy, $opts = ['hide_empty' => true] ) {
-        return Timber::get_terms($taxonomy, $opts);
-      },
       'paginate_links' => function( $args = [] ) {
         return paginate_links($args);
       },
