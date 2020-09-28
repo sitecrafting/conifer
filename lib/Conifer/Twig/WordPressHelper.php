@@ -57,7 +57,7 @@ class WordPressHelper implements HelperInterface {
       'get_sidebar_widgets' => function($name) {
         return Timber::get_widgets($name);
       },
-      'get_latest_posts' => function(int $count = Post::LATEST_POST_COUNT) : array {
+      'get_latest_posts' => function(int $count = Post::LATEST_POST_COUNT) : Iterable {
         return BlogPost::latest($count);
       },
     ];

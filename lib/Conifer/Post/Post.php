@@ -186,7 +186,7 @@ abstract class Post extends TimberPost {
    *
    * @return
    */
-  public static function latest(int $count = self::LATEST_POST_COUNT) : array {
+  public static function latest(int $count = self::LATEST_POST_COUNT) : Iterable {
     return static::get_all([
       'numberposts' => $count,
     ]);
@@ -214,7 +214,7 @@ abstract class Post extends TimberPost {
    * @param  array|string $query any valid Timber query
    * @return array         an array of all matching post objects
    */
-  public static function get_all(array $query = []) : array {
+  public static function get_all(array $query = []) : Iterable {
     $class = static::class;
 
     // Avoid instantiating this (abstract) class, causing a Fatal Error.
@@ -371,7 +371,7 @@ abstract class Post extends TimberPost {
   public function get_related_by_taxonomy(
     string $taxonomy,
     int $postCount = self::RELATED_POST_COUNT
-  ) : array {
+  ) : Iterable {
     // Get any previously queried related posts
     $relatedPosts     = $this->related_by[$taxonomy] ?? [];
     $relatedPostCount = $this->related_post_counts[$taxonomy] ?? null;
@@ -415,7 +415,7 @@ abstract class Post extends TimberPost {
    */
   public function get_related_by_category(
     int $postCount = self::RELATED_POST_COUNT
-  ) : array {
+  ) : Iterable {
     return $this->get_related_by_taxonomy('category', $postCount);
   }
 
@@ -428,7 +428,7 @@ abstract class Post extends TimberPost {
    */
   public function get_related_by_tag(
     int $postCount = self::RELATED_POST_COUNT
-  ) : array {
+  ) : Iterable {
     return $this->get_related_by_taxonomy('post_tag', $postCount);
   }
 }
