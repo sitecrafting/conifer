@@ -130,7 +130,7 @@ class Site extends TimberSite {
    * custom image sizes, shortcodes, etc.
    */
   public function configure_defaults() {
-    add_filter('timber_context', [$this, 'add_to_context']);
+    add_filter('timber/context', [$this, 'add_to_context']);
 
     $this->configure_twig_view_cascade();
     $this->configure_default_twig_extensions();
@@ -337,7 +337,7 @@ class Site extends TimberSite {
    * ]);
    */
   public function context(array $with = []) : array {
-    return array_merge(Timber::get_context(), $with);
+    return array_merge(Timber::context(), $with);
   }
 
   /**
@@ -351,7 +351,7 @@ class Site extends TimberSite {
     // @codingStandardsIgnoreStart WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
     trigger_error('get_context_with_post is deprecated. Use context instead. https://coniferplug.in/site.html#timber-context-helper', E_USER_DEPRECATED);
     // @codingStandardsIgnoreEnd
-    $context         = Timber::get_context();
+    $context         = Timber::context();
     $context['post'] = $post;
     return $context;
   }
@@ -367,7 +367,7 @@ class Site extends TimberSite {
     // @codingStandardsIgnoreStart WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
     trigger_error('get_context_with_post is deprecated. Use context instead. https://coniferplug.in/site.html#timber-context-helper', E_USER_DEPRECATED);
     // @codingStandardsIgnoreEnd
-    $context          = Timber::get_context();
+    $context          = Timber::context();
     $context['posts'] = $posts;
     return $context;
   }
