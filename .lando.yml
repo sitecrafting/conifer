@@ -48,16 +48,13 @@ services:
     overrides:
       image: 'sitecrafting/lando-cypress-wordpress:latest'
 
-  phpmyadmin:
-    type: phpmyadmin:4.7
-
   mailhog:
     type: mailhog:v1.0.0
     hogfrom:
       - appserver
 
   docs:
-    type: nginx:1.14
+    type: nginx:1.18
     ssl: true
     webroot: docs/_book
 
@@ -136,9 +133,6 @@ proxy:
 
   mailhog:
     - mail.conifer.lndo.site
-
-  phpmyadmin:
-    - phpmyadmin.conifer.lndo.site
 
   docs:
     - docs.conifer.lndo.site
