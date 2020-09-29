@@ -66,7 +66,7 @@ _SQL_;
       // Get term_ids to query by
       $categoryIds = array_map(function($cat) {
         return $cat->id;
-      }, $this->get_categories());
+      }, $this->categories());
 
       $this->related_posts = Timber::get_posts([
         // posts of this same type only
