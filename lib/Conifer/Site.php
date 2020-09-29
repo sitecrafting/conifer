@@ -400,7 +400,7 @@ class Site extends TimberSite {
    * Twig\HelperInterface that implements the functions/filters to add
    */
   public function add_twig_helper(Twig\HelperInterface $helper) {
-    add_filter('get_twig', function(Twig_Environment $twig) use ($helper) {
+    add_filter('timber/twig', function(Twig_Environment $twig) use ($helper) {
       return $this->get_twig_with_helper($twig, $helper);
     });
   }
@@ -439,8 +439,13 @@ class Site extends TimberSite {
    * @see set_view_directory_cascade
    */
   public function configure_twig_view_cascade() {
-    add_filter('timber/loader/paths', function($dirs) {
-      return array_merge($this->get_view_directory_cascade(), $dirs);
+    add_filter('timber/locations', function($dirs) {
+      $dirList = array_merge($this->get_view_directory_cascade(), $dirs);
+
+      // The timber/loader/paths filter wants an array of arrays
+      return array_map(function($x) {
+        return is_array($x) ? $x : [$x];
+      }, $dirList);
     });
   }
 
@@ -448,7 +453,7 @@ class Site extends TimberSite {
    * Load Twig's String Loader and Debug extensions
    */
   public function configure_default_twig_extensions() {
-    add_filter('get_twig', function(Twig_Environment $twig) {
+    add_filter('timber/twig', function(Twig_Environment $twig) {
       $loadedExtensions = array_keys($twig->getExtensions());
 
       // load default extensions unless they've been loaded already
