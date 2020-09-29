@@ -9,9 +9,9 @@ use Timber\Timber;
 use Timber\Site as TimberSite;
 use Timber\URLHelper;
 
+// TODO use properly namespaced Twig classes
 use Twig_Environment;
 use Twig_Extension_StringLoader;
-use Twig_Extension_Debug;
 use Twig_SimpleFunction;
 use Twig_SimpleFilter;
 
@@ -28,7 +28,6 @@ use Conifer\Twig;
  */
 class Site extends TimberSite {
   const DEFAULT_TWIG_EXTENSIONS = [
-    Twig_Extension_Debug::class,
     Twig_Extension_StringLoader::class,
   ];
 
