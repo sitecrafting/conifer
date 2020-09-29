@@ -68,7 +68,7 @@ _SQL_;
         return $cat->id;
       }, $this->get_categories());
 
-      $this->related_posts = static::get_all([
+      $this->related_posts = Timber::get_posts([
         // posts of this same type only
         'post_type' => $this->post_type,
         // limit number of posts

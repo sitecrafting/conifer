@@ -28,7 +28,7 @@ trait HasTerms {
    * * a Timber\Term object
    * Defaults to all terms within $taxonomy.
    * @param array $postQueryArgs additional query filters to merge into the
-   * array passed to `get_all()`. Defaults to an empty array.
+   * array passed to `Timber::get_posts()`. Defaults to an empty array.
    * @return array an array like:
    * ```php
    * [
