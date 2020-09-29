@@ -9,6 +9,7 @@
 namespace Conifer\Post;
 
 use DateTime;
+use Timber\Timber;
 
 /**
  * Class for encapsulating WP posts of type "post"
