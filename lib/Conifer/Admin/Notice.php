@@ -34,6 +34,11 @@ class Notice {
   protected $classes;
 
   /**
+   * @var string
+   */
+  protected $message;
+
+  /**
    * Constructor
    *
    * @param string $message the message to display

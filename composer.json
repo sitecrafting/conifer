@@ -35,7 +35,9 @@
     "timber/timber": "^1.7",
     "wp-coding-standards/wpcs": "^0.14",
     "acobster/wp-cli-yaml-fixtures": "^0.5.0",
-    "victorjonsson/markdowndocs": "dev-master"
+    "victorjonsson/markdowndocs": "dev-master",
+    "szepeviktor/phpstan-wordpress": "^0.6.5",
+    "paulthewalton/acf-stubs": "^5.8.7"
   },
   "extra": {
     "wordpress-install-dir": {

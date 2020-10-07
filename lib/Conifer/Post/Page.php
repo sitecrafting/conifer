@@ -8,6 +8,7 @@
 
 namespace Conifer\Post;
 
+use Conifer\Navigation\Menu;
 use Timber\Timber;
 
 /**
@@ -22,7 +23,7 @@ class Page extends Post {
    * Get the top-level title to display from the nav structure, fall back
    * on this Page object's title it it's outside the nav hierarchy.
    *
-   * @param \Conifer\Post\Menu $menu the menu to look at to determine the title
+   * @param \Conifer\Navigation\Menu $menu the menu to look at to determine the title
    * @return string the title to display
    */
   public function get_title_from_nav_or_post( Menu $menu ) : string {
