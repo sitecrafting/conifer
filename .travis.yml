@@ -10,7 +10,6 @@ php:
   - '7.3'
   - '7.2'
   - '7.1'
-  - '7.0'
 
 env:
   # Default to whatever is declared in composer.lock
@@ -23,8 +22,12 @@ cache:
 
 jobs:
   include:
+    - name: 'PHP: 7.0'
+      dist: xenial
+      php: '7.0'
+
     - name: 'Coding standards'
-      php: 7.3
+      php: '7.3'
       script:
         - composer run-script sniff --no-interaction
 
@@ -81,6 +84,10 @@ jobs:
         - vvv-utilities/provision.sh
 
   allow_failures:
+    - php: '7.4'
+      env: TIMBER_VERSION=""
+    - php: '7.4'
+      env: TIMBER_VERSION="2.x-dev"
     - name: 'Test VVV provisioning'
     - env: TIMBER_VERSION="2.x-dev"
 
