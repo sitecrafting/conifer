@@ -34,6 +34,8 @@ class Notice {
   protected $classes;
 
   /**
+   * The message to display
+   *
    * @var string
    */
   protected $message;
