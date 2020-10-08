@@ -20,7 +20,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": ">=7.0"
+    "php": "^7.1"
   },
   "require-dev": {
     "10up/wp_mock": "dev-dev",
@@ -38,6 +38,11 @@
     "victorjonsson/markdowndocs": "dev-master",
     "szepeviktor/phpstan-wordpress": "^0.6.5",
     "paulthewalton/acf-stubs": "^5.8.7"
+  },
+  "config": {
+    "platform": {
+      "php": "7.1"
+    }
   },
   "extra": {
     "wordpress-install-dir": {
