@@ -22,10 +22,6 @@ cache:
 
 jobs:
   include:
-    - name: 'PHP: 7.0'
-      dist: xenial
-      php: '7.0'
-
     - name: 'Coding standards'
       php: '7.3'
       script:
