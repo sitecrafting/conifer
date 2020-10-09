@@ -642,7 +642,7 @@ abstract class AbstractBase {
     // check the validators for this field
     $validators = $field['validators'] ?? [];
     if (!is_array($validators)) {
-      throw new \LogicException("$name validators must be defined as an array!");
+      throw new \LogicException('Validators must be defined as an array!');
     }
 
     // call each validator for this field
