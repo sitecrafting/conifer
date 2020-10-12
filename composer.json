@@ -20,7 +20,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.1"
+    "php": "^7.4"
   },
   "require-dev": {
     "10up/wp_mock": "dev-dev",
@@ -41,7 +41,7 @@
   },
   "config": {
     "platform": {
-      "php": "7.1"
+      "php": "7.4"
     }
   },
   "extra": {
