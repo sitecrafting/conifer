@@ -549,11 +549,24 @@ abstract class AbstractBase {
   /**
    * Hydrate this form object with the submitted values
    *
+   * @param array $submission the current request params;
+   * typically `$_POST`, `$_GET`, or `$_REQUEST`.
+   * @param array $options an options array. Supported options:
+   * - `stripslashes` or `strip_slashes`: whether to run `stripslashes()` on
+   *   any string values. When `true`, recursively applies to array options
+   *   as well. Default: `false`; will default to `true` in a future version
+   *   of Conifer.
    * @return \Conifer\Form\AbstractBase this form instance
    */
-  public function hydrate(array $submission) : AbstractBase {
+  public function hydrate(array $submission, $options = []) : AbstractBase {
+    $stripslashes = $options['stripslashes']
+      ?? $options['strip_slashes']
+      ?? false;
+
     foreach ($this->get_whitelisted_fields($submission) as $field => $value) {
-      $this->$field = $value;
+      $this->$field = $stripslashes
+        ? $this->stripslashes_deep($value)
+        : $value;
     }
     return $this;
   }
@@ -718,5 +731,16 @@ abstract class AbstractBase {
     if (is_null($this->files)) {
       throw new \LogicException('The files property must be set in order to use file-related functions.');
     }
+  }
+
+  /**
+   * Recursively strip slashes from arrays and any string values they contain.
+   *
+   * @internal
+   */
+  private function stripslashes_deep($val) {
+    return is_array($val)
+      ? array_map([$this, 'stripslashes_deep'], $val)
+      : stripslashes((string) $val);
   }
 }

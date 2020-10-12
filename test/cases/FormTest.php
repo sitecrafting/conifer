@@ -17,27 +17,52 @@ class FormTest extends Base {
 
   public function setUp() {
     parent::setUp();
+
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);
     // Set the uploaded files for this form to our mocked $_FILES superglobal
     $this->setFiles($this->getDefaultFiles());
   }
 
-  public function test_hydrate() {
+  public function test_hydrate_stripslashes() {
     $this->setFields([
-      'first_name'  => [],
-      'last_name'   => [],
+      'first_name'      => [],
+      'last_name'       => [],
       'favorite_things' => [],
     ]);
     $this->form->hydrate([
       'first_name'      => 'Julie',
-      'last_name'       => 'Andrews',
-      'favorite_things' => ['kettles', 'mittens'],
+      'last_name'       => 'Andrews\\',
+      'favorite_things' => ['kettles\\', 'mittens\\'],
+    ], [
+      'strip_slashes' => true,
     ]);
 
     $this->assertEquals('Julie', $this->form->get('first_name'));
     $this->assertEquals('Andrews', $this->form->get('last_name'));
     $this->assertEquals(
       ['kettles', 'mittens'],
+      $this->form->get('favorite_things')
+    );
+    $this->assertNull($this->form->get('yes_or_no'));
+  }
+
+  public function test_hydrate() {
+    $this->setFields([
+      'first_name'      => [],
+      'last_name'       => [],
+      'favorite_things' => [],
+    ]);
+    $this->form->hydrate([
+      'first_name'      => 'Julie',
+      'last_name'       => 'Andrews\\',
+      'favorite_things' => ['kettles\\', 'mittens\\'],
+    ]);
+
+    // Slashes should get stripped automatically
+    $this->assertEquals('Julie', $this->form->get('first_name'));
+    $this->assertEquals('Andrews\\', $this->form->get('last_name'));
+    $this->assertEquals(
+      ['kettles\\', 'mittens\\'],
       $this->form->get('favorite_things')
     );
     $this->assertNull($this->form->get('yes_or_no'));
