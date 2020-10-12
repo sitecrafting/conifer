@@ -12,6 +12,7 @@ services:
 
   appserver:
     run_as_root:
+      # TODO don't think we need this anymore?
       # Temporary hack to get a Debian package to install
       # https://github.com/lando/lando/issues/1554
       - echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf
@@ -88,28 +89,34 @@ tooling:
 
   unit:
     service: appserver
-    cmd: './vendor/bin/phpunit'
+    cmd: './vendor/bin/phpunit' # TODO --group unit
     description: 'Run unit tests'
 
-  sniff:
+  # TODO integration tests
+  integration:
     service: appserver
-    cmd: 'composer sniff'
-    description: 'Run phpcs code sniffer'
+    cmd: './vendor/bin/phpunit --group integration'
+    description: 'Run integration tests'
 
-  sniff-summary:
+  test:
     service: appserver
-    cmd: 'composer sniff-summary'
-    description: 'Summarize phpcs results'
+    cmd: './vendor/bin/phpunit'
+    description: 'Run all unit and integration tests'
 
-  sniff-fix:
+  analyze:
     service: appserver
-    cmd: 'composer sniff-fix'
-    description: 'Fix coding standards issues that are automatically fixable'
+    cmd: './vendor/bin/phpstan analyse'
+    description: 'Run phpstan coding standards (level 1)'
 
-  release:
+  analyse:
     service: appserver
-    cmd: './scripts/build-release.sh'
-    description: 'Build a downloadable release of the Conifer WordPress plugin'
+    cmd: './vendor/bin/phpstan analyse'
+    description: 'Run phpstan coding standards (level 1)'
+
+  phpstan:
+    service: appserver
+    cmd: './vendor/bin/phpstan'
+    description: 'Run phpstan commands for static analysis'
 
   docs:
     service: gitbook

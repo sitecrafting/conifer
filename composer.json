@@ -60,17 +60,11 @@
     }
   },
   "scripts": {
-    "test": [
+    "unit": [
       "./vendor/bin/phpunit"
-      ],
-      "sniff-summary": [
-        "./vendor/bin/phpcs --report=summary --standard=./phpcs.xml conifer.php test lib"
-      ],
-      "sniff": [
-        "./vendor/bin/phpcs --standard=./phpcs.xml conifer.php test lib"
-      ],
-      "sniff-fix": [
-        "./vendor/bin/phpcbf --standard=./phpcs.xml conifer.php test lib"
-      ]
+    ],
+    "phpstan": [
+      "./vendor/bin/phpstan analyse"
+    ]
   }
 }
