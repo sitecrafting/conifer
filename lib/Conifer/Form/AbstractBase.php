@@ -743,6 +743,6 @@ abstract class AbstractBase {
   private function stripslashes_deep($val) {
     return is_array($val)
       ? array_map([$this, 'stripslashes_deep'], $val)
-      : stripslashes((string) $val);
+      : stripslashes((string)$val);
   }
 }
