@@ -1,4 +1,6 @@
 name: conifer
+stats:
+  - report: false
 recipe: wordpress
 config:
   webroot: wp
