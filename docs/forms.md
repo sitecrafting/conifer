@@ -162,6 +162,10 @@ Select, checkbox, and radio fields have their own helpers. You can ask whether a
 $form->hydrate([
   'my_select' => 'user selection',
   'my_checkbox' => '123',
+], [
+  // This is what you want most of the time.
+  // This will be the default in future versions.
+  'strip_slashes' => true,
 ]);
 
 $form->selected('my_select'); // true
@@ -182,6 +186,8 @@ Note that both methods support array values, so multiselect inputs and checkbox 
 $form->hydrate([
   'my_multiselect' => ['option A', 'option B'],
   'my_checkbox_group' => ['selection 1', 'selection 2'],
+], [
+  'strip_slashes' => true,
 ]);
 
 $form->selected('my_multiselect', 'option A'); // true
@@ -290,6 +296,29 @@ They're also handy for looping through options in a `<select>` element or a radi
 	<label for="my-radio-field-{{ loop.index }}">{{ label }}</label>
 {% endfor %}
 ```
+
+## About stripping slashes
+
+In some cases, for example multi-step forms, you can run into a situation where you're rendering a previously submitted value, perhaps in a hidden field. Resubmitting in this case will give you field values with slashes in them. Most of the time, you want to strip these before any processing. The `strip_slashes` option to `hydrate()` lets you do this:
+
+```php
+$form->hydrate([
+  'escaped_field' => 'previous input\\',
+], [
+  // This is what you want most of the time.
+  // This will be the default in future versions.
+  'strip_slashes' => true,
+]);
+
+$form->selected('escaped_field', 'previous input');
+
+// Result without `strip_slashes` option:
+$form->selected('escaped_field', 'previous input\\');
+```
+
+You can omit this option if for some reason you want the slashes in there.
+
+**NOTE:** `true` will be the default value for this option in the next major version of Conifer.
 
 ## Why?
 
