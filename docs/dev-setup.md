@@ -78,57 +78,8 @@ It's annoying to do that over and over, though. To rebuild the docs automaticall
 >
 > The `gitbook serve` command starts a web server at `localhost:4000`, but this is actually the `localhost` inside the `docs` service container, meaning you can't actually view the doc site at that address. Go to the proxy URL output by `lando start` or `lando info` instead. This will be something like https://docs.conifer.lndo.site.
 
-#### Other development tools
+#### Mailhog
 
-Conifer's Lando environment also includes:
+Conifer's Lando environment also includes a [Mailhog](https://github.com/mailhog/MailHog) instance for catching and managing outgoing mail at https://mailhog.conifer.lndo.site or similar
 
-* a [phpMyAdmin](https://www.phpmyadmin.net/) installation at https://phpmyadmin.conifer.lndo.site or similar
-* a [Mailhog](https://github.com/mailhog/MailHog) instance for catching and managing outgoing mail at https://mailhog.conifer.lndo.site or similar
-
-These URLs may be different depending on which ports are already take on your computer. Tun `lando info` to see the actual URLs.
-
-## Using Varying Vagrant Vagrants (VVV)
-
-**NOTE: We are happy to support Vagrant as a secondary/backup environment if for some reason you can't run Lando/Docker on your machine. However, please do us a favor and try the Lando setup first. It is drastically simpler to maintain and the tooling is much more tightly integrated.**
-
-### Pre-requisite: setup VVV
-
-You will obviously want to have [VVV installed and configured](https://varyingvagrantvagrants.org/docs/en-US/installation/) before you start. If you run into trouble with this, check your system against the [VVV requirements](https://varyingvagrantvagrants.org/docs/en-US/installation/software-requirements/), or take a look at the [troubleshooting guide](https://varyingvagrantvagrants.org/docs/en-US/troubleshooting/).
-
-**Non-standard VVV setups are not supported. GitHub issues about custom VVV configurations will be closed immediately. You have been warned.**
-
-### Add the `xvfb` core utility
-
-[Cypress](https://www.cypress.io/), the CLI tool used for Conifer end-to-end tests, requires [xvfb](https://www.x.org/releases/X11R7.7/doc/man/man1/Xvfb.1.xhtml) for running its headless browser. Tell VVV to install it by adding it as a core utility in `vvv-custom.yml`:
-
-```yaml
-# the core utilities install tools such as phpmyadmin
-utilities:
-  core:
-    # ...existing utils...
-    - xvfb
-```
-
-### Provision the dev site
-
-Add this to your `sites` block in `vvv-custom.yml`:
-
-```yaml
-  conifer:
-    repo: https://github.com/sitecrafting/conifer.git
-      - conifer.wordpress.test
-```
-
-Run `vagrant reload --provision` per usual.
-
-The provisioning scripts within Conifer will install composer dependencies.
-
-### Install front-end tooling
-
-Front-end tooling for VVV is a work in progress and is currently **low-priority**. For now, you can run:
-
-```bash
-sudo npm install -g yarn newman
-```
-
-Cypress tests are currently unsupported in VVV. If you are willing and able to fix this, please submit a PR against [this issue](https://github.com/sitecrafting/conifer/issues/41). Thanks!
+The URL may be different depending on which ports are already take on your computer. Run `lando info` to see the actual URLs.

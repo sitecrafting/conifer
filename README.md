@@ -1,11 +1,10 @@
 # Conifer
 
-> **BREAKING CHANGES AHEAD**
+> #### Warning::ALPHA STATUS
+
+> Conifer is in Alpha. We consider the code production-ready, and breaking changes to the API are unlikely. Most of the code has been extracted from components already running in production.
 >
-> As Timber nears its 2.0 release, Conifer must adapt to this change.
-> For current installations of Conifer, we recommend you pin it to a `^0.x` release to prevent automatic major upgrades when Conifer 1.x becomes available.
-> When Conifer 1.0, which will build on Timber 2.x, becomes available, this website will switch to the Conifer 1.0 API.
-> The docs for 0.x will remain available on the [0.x version of the docs site](https://1-x--coniferplugin.netlify.app/site.html#managing-front-end-assets).
+> **However, there may be lingering bugs and, if necessary, breaking changes at this early stage.**
 
 [![Powerful abstractions on top of Timber for simple, opinionated OO WordPress development.](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/banner-green.png)](https://coniferplug.in)
 

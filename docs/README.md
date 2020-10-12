@@ -2,11 +2,12 @@
 
 <div class="conifer-banner"></div>
 
-> #### Warning::ALPHA STATUS
-
-> Conifer is in Alpha. We consider the code production-ready, and breaking changes to the API are unlikely. Most of the code has been extracted from components already running in production.
+> #### Warning::**BREAKING CHANGES AHEAD**
 >
-> **However, there may be lingering bugs and, if necessary, breaking changes at this early stage.**
+> As Timber nears its 2.0 release, Conifer must adapt to this change.
+> For current installations of Conifer, we recommend you pin it to a `^0.x` release to prevent automatic major upgrades when Conifer 1.x becomes available.
+> When Conifer 1.0, which will build on Timber 2.x, becomes available, this website will switch to the Conifer 1.0 API.
+> The docs for 0.x will remain available on the [0.x version of the docs site](https://0-x--coniferplugin.netlify.app).
 
 ## What is Conifer?
 
@@ -39,7 +40,9 @@ Simplify your theme with a wealth of utility functions and helpers.
 ```php
 <?php
 /* wp-content/my-theme/single.php */
-$data = $site->get_context_with_post(new Conifer\Post\BlogPost());
+use Conifer\Post\BlogPost;
+
+$data = $site->context(['post' => new BlogPost()]);
 Timber::render('single.twig', $data);
 ```
 
