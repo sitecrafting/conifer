@@ -40,7 +40,9 @@ Simplify your theme with a wealth of utility functions and helpers.
 ```php
 <?php
 /* wp-content/my-theme/single.php */
-$data = $site->get_context_with_post(new Conifer\Post\BlogPost());
+use Conifer\Post\BlogPost;
+
+$data = $site->context(['post' => new BlogPost()]);
 Timber::render('single.twig', $data);
 ```
 

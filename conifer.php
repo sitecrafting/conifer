@@ -5,7 +5,7 @@
  * WordPress development
  * Plugin URL: https://www.sitecrafting.com
  * Author: Coby Tamayo, Reena Hensley, SiteCrafting Inc.
- * Version: 0.8.0
+ * Version: 0.9.0
  */
 
 // TODO copy what Timber does

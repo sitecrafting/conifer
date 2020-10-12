@@ -193,7 +193,7 @@ abstract class AbstractBase {
   }
 
   /**
-   * Get a field by its name
+   * Get a field definition by its name
    *
    * @return array|null the field, or null if it doesn't exist
    */
@@ -549,11 +549,24 @@ abstract class AbstractBase {
   /**
    * Hydrate this form object with the submitted values
    *
+   * @param array $submission the current request params;
+   * typically `$_POST`, `$_GET`, or `$_REQUEST`.
+   * @param array $options an options array. Supported options:
+   * - `stripslashes` or `strip_slashes`: whether to run `stripslashes()` on
+   *   any string values. When `true`, recursively applies to array options
+   *   as well. Default: `false`; will default to `true` in a future version
+   *   of Conifer.
    * @return \Conifer\Form\AbstractBase this form instance
    */
-  public function hydrate(array $submission) : AbstractBase {
+  public function hydrate(array $submission, $options = []) : AbstractBase {
+    $stripslashes = $options['stripslashes']
+      ?? $options['strip_slashes']
+      ?? false;
+
     foreach ($this->get_whitelisted_fields($submission) as $field => $value) {
-      $this->$field = $value;
+      $this->$field = $stripslashes
+        ? $this->stripslashes_deep($value)
+        : $value;
     }
     return $this;
   }
@@ -621,8 +634,10 @@ abstract class AbstractBase {
       $value = $filter($value) ?? null;
     }
 
-    // fallback on configured default, if any
-    $value = $value ?: $field['default'] ?? null;
+    // Fallback on configured default, if any.
+    // If the submitted value is falsey and there's no default, use the falsey
+    // value as submitted.
+    $value = $value ?: $field['default'] ?? $value;
 
     return $value;
   }
@@ -718,5 +733,16 @@ abstract class AbstractBase {
     if (is_null($this->files)) {
       throw new \LogicException('The files property must be set in order to use file-related functions.');
     }
+  }
+
+  /**
+   * Recursively strip slashes from arrays and any string values they contain.
+   *
+   * @internal
+   */
+  private function stripslashes_deep($val) {
+    return is_array($val)
+      ? array_map([$this, 'stripslashes_deep'], $val)
+      : stripslashes((string) $val);
   }
 }

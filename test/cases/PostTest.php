@@ -71,10 +71,6 @@ class PostTest extends Base {
     $this->assertFalse(Post::exists(3));
   }
 
-  public function test_get_all() {
-    $this->markTestSkipped();
-  }
-
   public function test_get_blog_url() {
     WP_Mock::userFunction('get_option', [
       'times'   => 1,
@@ -92,8 +88,9 @@ class PostTest extends Base {
   }
 
   public function test_get_related_by_taxonomy() {
-    // Not sure how we can mock Timber's hard-coded `new \WP_Query()`
-    // in QueryIterator::__construct(), so skipping for now...
+    // To get around hard-coded `new WP_Query()` calls, we need to turn this
+    // into an integration test.
+    // See: https://github.com/sitecrafting/conifer/issues/119
     return $this->markTestSkipped();
 
     /* @codingStandardsIgnoreStart

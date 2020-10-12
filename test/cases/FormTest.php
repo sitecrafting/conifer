@@ -17,27 +17,52 @@ class FormTest extends Base {
 
   public function setUp() {
     parent::setUp();
+
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);
     // Set the uploaded files for this form to our mocked $_FILES superglobal
     $this->setFiles($this->getDefaultFiles());
   }
 
-  public function test_hydrate() {
+  public function test_hydrate_stripslashes() {
     $this->setFields([
-      'first_name'  => [],
-      'last_name'   => [],
+      'first_name'      => [],
+      'last_name'       => [],
       'favorite_things' => [],
     ]);
     $this->form->hydrate([
       'first_name'      => 'Julie',
-      'last_name'       => 'Andrews',
-      'favorite_things' => ['kettles', 'mittens'],
+      'last_name'       => 'Andrews\\',
+      'favorite_things' => ['kettles\\', 'mittens\\'],
+    ], [
+      'strip_slashes' => true,
     ]);
 
     $this->assertEquals('Julie', $this->form->get('first_name'));
     $this->assertEquals('Andrews', $this->form->get('last_name'));
     $this->assertEquals(
       ['kettles', 'mittens'],
+      $this->form->get('favorite_things')
+    );
+    $this->assertNull($this->form->get('yes_or_no'));
+  }
+
+  public function test_hydrate() {
+    $this->setFields([
+      'first_name'      => [],
+      'last_name'       => [],
+      'favorite_things' => [],
+    ]);
+    $this->form->hydrate([
+      'first_name'      => 'Julie',
+      'last_name'       => 'Andrews\\',
+      'favorite_things' => ['kettles\\', 'mittens\\'],
+    ]);
+
+    // Slashes should get stripped automatically
+    $this->assertEquals('Julie', $this->form->get('first_name'));
+    $this->assertEquals('Andrews\\', $this->form->get('last_name'));
+    $this->assertEquals(
+      ['kettles\\', 'mittens\\'],
       $this->form->get('favorite_things')
     );
     $this->assertNull($this->form->get('yes_or_no'));
@@ -99,6 +124,26 @@ class FormTest extends Base {
     $this->assertTrue($this->form->selected('favorite_thing', 'raindrops'));
     $this->assertTrue($this->form->selected('favorite_thing', 'mittens'));
     $this->assertFalse($this->form->selected('favorite_thing', 'kittens'));
+  }
+
+  // @see https://github.com/sitecrafting/conifer/issues/129
+  public function test_get_falsey_value() {
+    $this->setFields([
+      'empty_array'   => [],
+      'falsey_string' => [],
+      'empty_string'  => [],
+      'null_field'    => [],
+    ]);
+    $this->form->hydrate([
+      'empty_array'   => [],
+      'falsey_string' => '0',
+      'empty_string'  => '',
+    ]);
+
+    $this->assertEquals([], $this->form->get('empty_array'));
+    $this->assertEquals('0', $this->form->get('falsey_string'));
+    $this->assertEquals('', $this->form->get('empty_string'));
+    $this->assertNull($this->form->get('null_field'));
   }
 
   public function test_get_errors_for() {
