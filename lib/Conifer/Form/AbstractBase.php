@@ -634,7 +634,8 @@ abstract class AbstractBase {
       $value = $filter($value) ?? null;
     }
 
-    // fallback on configured default, if any
+    // Fallback on configured default, if any.
+    // Otherwise, use the submitted value, falsey or not.
     $value = $value ?: $field['default'] ?? $value;
 
     return $value;
