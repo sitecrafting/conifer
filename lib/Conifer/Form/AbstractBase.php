@@ -193,7 +193,7 @@ abstract class AbstractBase {
   }
 
   /**
-   * Get a field by its name
+   * Get a field definition by its name
    *
    * @return array|null the field, or null if it doesn't exist
    */
@@ -635,7 +635,7 @@ abstract class AbstractBase {
     }
 
     // fallback on configured default, if any
-    $value = $value ?: $field['default'] ?? null;
+    $value = $value ?: $field['default'] ?? $value;
 
     return $value;
   }

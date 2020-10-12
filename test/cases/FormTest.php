@@ -126,6 +126,26 @@ class FormTest extends Base {
     $this->assertFalse($this->form->selected('favorite_thing', 'kittens'));
   }
 
+  // @see https://github.com/sitecrafting/conifer/issues/129
+  public function test_get_falsey_value() {
+    $this->setFields([
+      'empty_array'   => [],
+      'falsey_string' => [],
+      'empty_string'  => [],
+      'null_field'    => [],
+    ]);
+    $this->form->hydrate([
+      'empty_array'   => [],
+      'falsey_string' => '0',
+      'empty_string'  => '',
+    ]);
+
+    $this->assertEquals([], $this->form->get('empty_array'));
+    $this->assertEquals('0', $this->form->get('falsey_string'));
+    $this->assertEquals('', $this->form->get('empty_string'));
+    $this->assertNull($this->form->get('null_field'));
+  }
+
   public function test_get_errors_for() {
     $this->form->add_error('nationality', 'INVALID NATIONALITY');
 

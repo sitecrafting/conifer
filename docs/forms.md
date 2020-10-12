@@ -199,6 +199,8 @@ $form->checked('my_checkbox_group', 'selection 2'); // true
 $form->checked('my_checkbox_group', 'some other value'); // false
 ```
 
+Falsey values are returned **as submitted**, i.e. a value of `"0"` will be returned as `"0"` and not `false` or `null`.
+
 ## Form Errors
 
 Once a form submission has been validated, any resulting errors can be used to display an informative message to the user:
