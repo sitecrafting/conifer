@@ -635,7 +635,8 @@ abstract class AbstractBase {
     }
 
     // Fallback on configured default, if any.
-    // Otherwise, use the submitted value, falsey or not.
+    // If the submitted value is falsey and there's no default, use the falsey
+    // value as submitted.
     $value = $value ?: $field['default'] ?? $value;
 
     return $value;
