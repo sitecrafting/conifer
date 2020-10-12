@@ -17,6 +17,8 @@ use Timber\Timber;
 class BlogPost extends Post {
   const POST_TYPE = 'post';
 
+  const NUM_RELATED_POSTS = 10;
+
   /**
    * Get all months for which a published blog post exists
    *
@@ -53,7 +55,7 @@ ORDER BY post_date DESC
 _SQL_;
 
     // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
-    return $wpdb->get_col( $prepared, ARRAY_A );
+    return $wpdb->get_col( $sql, ARRAY_A );
   }
 
   /**
