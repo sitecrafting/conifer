@@ -1,41 +1,31 @@
-#
-# Conifer build process for Travis CI
-#
-
-
-#
-# !!! IMPORTANT !!!
-#
-# "without the top-level `env`, no job will be allowed to fail."
-# https://docs.travis-ci.com/user/customizing-the-build/
-env:
-
+# TravisCI configuration for sitecrafting/conifer
 
 language: php
-
-install:
-  - composer install --prefer-dist
-  - if [ $TIMBER_VERSION ] ; then composer require timber/timber:$TIMBER_VERSION; fi
-
-script:
-  - vendor/bin/phpunit
-  - vendor/bin/phpcs
+os:
+  - linux
+dist: bionic
 
 php:
-  - '7.1'
-  - '7.2'
+  - '7.4'
   - '7.3'
+  - '7.2'
+  - '7.1'
 
 env:
-  - TIMBER_VERSION='' # default to whatever is declared in composer.lock
-  - TIMBER_VERSION='2.x-dev'
+  # Default to whatever is declared in composer.lock
+  - TIMBER_VERSION=""
+  - TIMBER_VERSION="2.x-dev"
 
-# Test Conifer against PHP 7.x and run end-to-end tests
-matrix:
+cache:
+  directories:
+    - '${HOME}/.composer/cache'
+
+jobs:
   include:
     - name: 'Coding standards'
-      php: 7.3
-      script: composer sniff
+      php: '7.3'
+      script:
+        - composer run-script sniff --no-interaction
 
     - name: 'End-to-end tests with Lando/Cypress'
       language: node_js
@@ -46,7 +36,7 @@ matrix:
       before_install:
         - sudo apt-get -y update
         - sudo apt-get -y install cgroup-bin curl
-        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-aft.2/lando-v3.0.0-aft.2.deb
+        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.14/lando-v3.0.14.deb
         - sudo dpkg -i /tmp/lando-latest.deb
         - lando version
       install:
@@ -66,7 +56,7 @@ matrix:
       before_install:
         - sudo apt-get -y update
         - sudo apt-get -y install cgroup-bin curl
-        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-aft.2/lando-v3.0.0-aft.2.deb
+        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.14/lando-v3.0.14.deb
         - sudo dpkg -i /tmp/lando-latest.deb
         - lando version
       install:
@@ -75,7 +65,7 @@ matrix:
       script:
         - lando gitbook
         - lando docs
-        # TODO check that docs site is actually running?
+        # TODO Check that docs site is actually running?
       after_failure:
         - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
 
@@ -85,11 +75,22 @@ matrix:
       cache:
         - ~/.cache
         - /var/www/.cache
-      install: true
+      install: skip
       script:
         - vvv-utilities/provision.sh
 
   allow_failures:
+    - php: '7.4'
+      env: TIMBER_VERSION=""
+    - php: '7.4'
+      env: TIMBER_VERSION="2.x-dev"
     - name: 'Test VVV provisioning'
-    - env: TIMBER_VERSION='2.x-dev'
+    - env: TIMBER_VERSION="2.x-dev"
 
+install:
+  - composer install --no-interaction --prefer-dist
+  - if [ -n "$TIMBER_VERSION" ]; then composer require --no-interaction --dev "timber/timber:$TIMBER_VERSION"; fi
+
+script:
+  - vendor/bin/phpunit
+  - vendor/bin/phpcs
