@@ -20,6 +20,13 @@ class BlogPost extends Post {
   const NUM_RELATED_POSTS = 10;
 
   /**
+   * Posts related via category to this one.
+   *
+   * @var \Timber\PostCollectionInterface
+   */
+  protected $related_posts;
+
+  /**
    * Get all months for which a published blog post exists
    *
    * @return array an array of formatted month strings

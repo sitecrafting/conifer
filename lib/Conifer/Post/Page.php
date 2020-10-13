@@ -28,7 +28,7 @@ class Page extends Post {
    */
   public function get_title_from_nav_or_post( Menu $menu ) : string {
     return $menu->get_current_top_level_item( $this )->title
-      ?? $this->title;
+      ?? $this->title();
   }
 
   /**

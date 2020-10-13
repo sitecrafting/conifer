@@ -63,7 +63,7 @@ trait HasTerms {
     return array_reduce($timberTerms, function(
       array $grouped,
       Term $term
-    ) use ($taxonomy, $postQueryArgs) : array {
+    ) use ($postQueryArgs) : array {
       // Because the count may be different from the denormalized term count,
       // since this may be a special query, we need to check if this term is
       // actually populated/empty.

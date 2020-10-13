@@ -266,7 +266,7 @@ abstract class AbstractBase {
     $fieldValue = $this->get($field);
 
     // at the very least, check that the field is present in the submission...
-    if (!isset($fieldValue)) {
+    if (null === $fieldValue) {
       return false;
     }
 
@@ -300,7 +300,7 @@ abstract class AbstractBase {
     $fieldValue = $this->get($field);
 
     // at the very least, check that the field is present in the submission...
-    if (!isset($fieldValue)) {
+    if (null === $fieldValue) {
       return false;
     }
 

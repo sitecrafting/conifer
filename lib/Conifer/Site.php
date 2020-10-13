@@ -46,6 +46,13 @@ class Site extends TimberSite {
   protected $style_directory_cascade;
 
   /**
+   * An array of directories where Conifer will look for Twig views
+   *
+   * @var array
+   */
+  protected $view_directory_cascade;
+
+  /**
    * Assets version timestamp, used for cache-busting
    * Array: key=filename, value=timestamp
    *
@@ -82,6 +89,8 @@ class Site extends TimberSite {
     $this->script_directory_cascade = [
       get_stylesheet_directory() . '/js/',
       get_stylesheet_directory() . '/dist/',
+      // TODO set up a bootstrap file for symbol discovery
+      // https://phpstan.org/user-guide/discovering-symbols
       WP_PLUGIN_DIR . '/conifer/assets/js/',
       WPMU_PLUGIN_DIR . '/conifer/assets/js/',
     ];

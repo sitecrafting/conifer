@@ -52,7 +52,7 @@ trait SupportsAdvancedSearch {
         return "%{$term}%";
       }, $query->query_vars['search_terms']);
 
-      $whereClauses = array_map(function(array $postTypeSearch) use($wpdb, $terms, $query, $clauses) {
+      $whereClauses = array_map(function(array $postTypeSearch) use($wpdb, $terms, $query) {
         $titleComparisons = array_map(function(string $term) use($wpdb) : string {
           return $wpdb->prepare("{$wpdb->posts}.post_title LIKE %s", $term);
         }, $terms);

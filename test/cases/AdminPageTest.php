@@ -73,4 +73,6 @@ class AdminPageTest extends Base {
     // fluid interface
     $this->assertEquals($this->page, $this->page->do_add());
   }
+
+  // TODO test ::render() in an integration test
 }
