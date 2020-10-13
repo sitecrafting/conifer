@@ -103,6 +103,21 @@ tooling:
     cmd: './vendor/bin/phpunit'
     description: 'Run all unit and integration tests'
 
+  sniff-summary:
+    service: appserver
+    cmd: './vendor/bin/phpcs --report=summary --standard=./phpcs.xml test lib'
+    description: 'Summarize PHPCS code sniffer findings'
+
+  sniff:
+    service: appserver
+    cmd: './vendor/bin/phpcs --standard=./phpcs.xml test lib'
+    description: 'Run PHPCS code sniffer on all test and production code'
+
+  sniff-fix:
+    service: appserver
+    cmd: './vendor/bin/phpcs --standard=./phpcs.xml test lib'
+    description: 'Fix all automatically fixable issues found by PHPCS'
+
   analyze:
     service: appserver
     cmd: './vendor/bin/phpstan analyse'
