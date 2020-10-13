@@ -36,8 +36,7 @@ trait SupportsAdvancedSearch {
 
       if (empty($searchCustomizations)) {
         // no advanced search customizations apply to this query
-        // TODO
-        //return $clauses;
+        return $clauses;
       }
 
       // ->prepend_distinct
