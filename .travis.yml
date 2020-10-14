@@ -38,59 +38,16 @@ matrix:
       php: 7.3
       script: composer sniff
 
-    - name: 'End-to-end tests with Lando/Cypress'
-      language: node_js
-      node_js: 10
-      cache:
-        - ~/.lando
-        - ~/.cache
-      before_install:
-        - sudo apt-get -y update
-        - sudo apt-get -y install cgroup-bin curl
-        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-aft.2/lando-v3.0.0-aft.2.deb
-        - sudo dpkg -i /tmp/lando-latest.deb
-        - lando version
-      install:
-        - lando start
-        - yarn install --frozen-lockfile
-      script:
-        - lando e2e
-      after_failure:
-        - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
-
     - name: 'Building docs'
       language: node_js
       node_js: 10
       cache:
-        - ~/.lando
         - ~/.cache
-      before_install:
-        - sudo apt-get -y update
-        - sudo apt-get -y install cgroup-bin curl
-        - curl -fsSL -o /tmp/lando-latest.deb https://github.com/lando/lando/releases/download/v3.0.0-aft.2/lando-v3.0.0-aft.2.deb
-        - sudo dpkg -i /tmp/lando-latest.deb
-        - lando version
       install:
-        - lando start
         - yarn install --frozen-lockfile
       script:
-        - lando gitbook
-        - lando docs
-        # TODO check that docs site is actually running?
-      after_failure:
-        - curl --upload-file ./cypress/videos/conifer.spec.js.mp4 https://transfer.sh/conifer.spec.js.mp4
-
-    - name: 'Test VVV provisioning'
-      language: node_js
-      node_js: 10
-      cache:
-        - ~/.cache
-        - /var/www/.cache
-      install: true
-      script:
-        - vvv-utilities/provision.sh
+        - ./scripts/build-docs.sh
 
   allow_failures:
-    - name: 'Test VVV provisioning'
     - env: TIMBER_VERSION='2.x-dev'
 
