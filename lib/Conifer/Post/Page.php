@@ -8,8 +8,10 @@
 
 namespace Conifer\Post;
 
-use Conifer\Navigation\Menu;
+use Timber\Post as TimberPost;
 use Timber\Timber;
+
+use Conifer\Navigation\Menu;
 
 /**
  * Class to represent WordPress pages.
@@ -36,7 +38,7 @@ class Page extends Post {
    *
    * @return \Conifer\Post\Page
    */
-  public static function get_blog_page() : Page {
+  public static function get_blog_page() : TimberPost {
     return Timber::get_post( get_option('page_for_posts') );
   }
 
