@@ -135,7 +135,7 @@ abstract class AbstractBase {
    * Handle an HTTP POST request.
    */
   public static function handle_post() {
-    static::handle($_POST); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+    static::handle($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
   }
 
   /**

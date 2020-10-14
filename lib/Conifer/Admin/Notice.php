@@ -132,7 +132,7 @@ class Notice {
       // Because this class is designed to echo HTML, the user is responsible
       // for ensuring the message doesn't contain any malicious markup.
       // Class is already escaped.
-      // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+      // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
       echo $this->html();
     });
   }

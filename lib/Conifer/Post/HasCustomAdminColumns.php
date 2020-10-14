@@ -55,7 +55,7 @@ trait HasCustomAdminColumns {
     add_action($displayHook, function($column, $id) use ($key, $getValue) {
       if ( $column === $key ) {
         // NOTE: THE USER IS RESPONSIBLE FOR ESCAPING USER INPUT AS NECESSARY
-        // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         echo $getValue( (int) $id);
       }
     }, 10, 2);

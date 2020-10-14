@@ -721,6 +721,8 @@ class Site extends TimberSite {
        global $pagenow;
 
       if ($pagenow === 'edit-comments.php') {
+        // TODO https://github.com/sitecrafting/conifer/issues/139
+        // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
         wp_redirect(admin_url());
         exit;
       }
