@@ -1,5 +1,0 @@
-{
-  "baseUrl": "http://appserver",
-  "pluginsFile": "cypress/plugins/index.js",
-  "supportFile": false
-}
