@@ -22,9 +22,6 @@ jobs:
       script:
         - ./scripts/build-docs.sh
 
-  allow_failures:
-    - name: 'Coding Standards'
-
 install:
   - composer install --no-interaction --prefer-dist
 
