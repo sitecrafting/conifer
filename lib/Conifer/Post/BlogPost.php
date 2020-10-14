@@ -43,7 +43,7 @@ FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status = 'publish'
 ORDER BY post_date DESC
 _SQL_;
 
-    // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
+    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
     return $wpdb->get_results( $sql, ARRAY_A );
   }
 
@@ -61,7 +61,7 @@ FROM {$wpdb->posts} WHERE post_type = 'post' AND post_status = 'publish'
 ORDER BY post_date DESC
 _SQL_;
 
-    // phpcs:ignore WordPress.WP.PreparedSQL.NotPrepared
+    // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
     return $wpdb->get_col( $sql, ARRAY_A );
   }
 

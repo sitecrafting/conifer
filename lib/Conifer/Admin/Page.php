@@ -117,7 +117,7 @@ abstract class Page {
     $renderCallback = function() {
       // NOTE: Since render() is specifically for outputting HTML in the admin
       // area, users are responsible for escaping their own output accordingly.
-      // phpcs:ignore WordPress.XSS.EscapeOutput.OutputNotEscaped
+      // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
       echo $this->render($this->slug);
     };
 

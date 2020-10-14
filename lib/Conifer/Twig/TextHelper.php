@@ -17,7 +17,7 @@ class TextHelper implements HelperInterface {
    *
    * @var array
    */
-  static protected $plurals = [
+  protected static $plurals = [
     'person' => 'people',
   ];
 

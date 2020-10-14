@@ -187,7 +187,7 @@ abstract class Post extends TimberPost {
    *
    * @return
    */
-  public static function latest(int $count = self::LATEST_POST_COUNT) : Iterable {
+  public static function latest(int $count = self::LATEST_POST_COUNT) : iterable {
     return Timber::get_posts([
       'numberposts' => $count,
     ]);
@@ -215,7 +215,7 @@ abstract class Post extends TimberPost {
    * @param  array|string $query any valid Timber query
    * @return array         an array of all matching post objects
    */
-  public static function get_all(array $query = []) : Iterable {
+  public static function get_all(array $query = []) : iterable {
     // phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
     // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
     trigger_error( '[ Conifer ] Post::get_all() is deprecated in Conifer 1.0.0. Use Timber::get_posts() with Class Maps instead. https://timber.github.io/docs/v2/guides/class-maps' );
@@ -376,7 +376,7 @@ abstract class Post extends TimberPost {
   public function get_related_by_taxonomy(
     string $taxonomy,
     int $postCount = self::RELATED_POST_COUNT
-  ) : Iterable {
+  ) : iterable {
     // Get any previously queried related posts
     $relatedPosts     = $this->related_by[$taxonomy] ?? [];
     $relatedPostCount = $this->related_post_counts[$taxonomy] ?? null;
@@ -420,7 +420,7 @@ abstract class Post extends TimberPost {
    */
   public function get_related_by_category(
     int $postCount = self::RELATED_POST_COUNT
-  ) : Iterable {
+  ) : iterable {
     return $this->get_related_by_taxonomy('category', $postCount);
   }
 
@@ -433,7 +433,7 @@ abstract class Post extends TimberPost {
    */
   public function get_related_by_tag(
     int $postCount = self::RELATED_POST_COUNT
-  ) : Iterable {
+  ) : iterable {
     return $this->get_related_by_taxonomy('post_tag', $postCount);
   }
 }

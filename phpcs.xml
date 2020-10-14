@@ -33,7 +33,10 @@
     -->
     <rule ref="WordPress-Extra">
 
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
         <!-- Do not check for proper WordPress file names. -->
+        <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceAfterOpen" />
+        <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceBeforeClose" />
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
 
         <exclude name="PEAR.Functions.FunctionCallSignature" />
@@ -52,9 +55,11 @@
         <exclude name="WordPress.Arrays.ArrayIndentation.ItemNotAligned" />
         <exclude name="WordPress.Arrays.ArrayIndentation.MultiLineArrayItemNotAligned" />
         <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions" />
-        <exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCase" />
+        <exclude name="WordPress.NamingConventions.ValidVariableName.InterpolatedVariableNotSnakeCase" />
+        <exclude name="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase" />
         <exclude name="WordPress.NamingConventions.ValidVariableName.StringNotSnakeCase" />
         <exclude name="WordPress.PHP.YodaConditions" />
+        <exclude name="WordPress.PHP.DisallowShortTernary.Found" />
         <exclude name="WordPress.WhiteSpace.ArbitraryParenthesesSpacing.SpaceAfterOpen" />
         <exclude name="WordPress.WhiteSpace.ArbitraryParenthesesSpacing.SpaceBeforeClose" />
         <exclude name="WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis" />

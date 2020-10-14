@@ -125,7 +125,7 @@ abstract class AbstractBase {
    * Defaults to the $_REQUEST superglobal.
    */
   public static function handle(array $request = []) {
-    // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended
     $handler = new static($request ?: $_REQUEST);
     $handler->set_cookie($_COOKIE);
     $handler->send_json_response($handler->execute());
@@ -135,7 +135,7 @@ abstract class AbstractBase {
    * Handle an HTTP POST request.
    */
   public static function handle_post() {
-    static::handle($_POST); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
+    static::handle($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
   }
 
   /**
