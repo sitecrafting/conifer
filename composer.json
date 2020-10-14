@@ -33,7 +33,7 @@
     "sitecrafting/groot": "dev-master",
     "squizlabs/php_codesniffer": "3.*",
     "timber/timber": "^1.7",
-    "wp-coding-standards/wpcs": "^0.14",
+    "wp-coding-standards/wpcs": "^2.3",
     "acobster/wp-cli-yaml-fixtures": "^0.5.0",
     "victorjonsson/markdowndocs": "dev-master"
   },
