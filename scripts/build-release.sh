@@ -23,7 +23,7 @@ function fail() {
 }
 
 function main() {
-  if ! [[ -f ./conifer.php ]] ; then
+  if ! [[ -f ./.lando.yml ]] ; then
     fail 'Error: not in root conifer directory?'
   fi
 
