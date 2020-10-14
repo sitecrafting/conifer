@@ -2,12 +2,9 @@
 
 <div class="conifer-banner"></div>
 
-> #### Warning::**BREAKING CHANGES AHEAD**
->
-> As Timber nears its 2.0 release, Conifer must adapt to this change.
-> For current installations of Conifer, we recommend you pin it to a `^0.x` release to prevent automatic major upgrades when Conifer 1.x becomes available.
-> When Conifer 1.0, which will build on Timber 2.x, becomes available, this website will switch to the Conifer 1.0 API.
-> The docs for 0.x will remain available on the [0.x version of the docs site](https://0-x--coniferplugin.netlify.app).
+> #### Warning::ALPHA STATUS
+
+> This version of Conifer is Alpha status. View the docs for [Conifer 1.0](https://coniferplug.in).
 
 ## What is Conifer?
 
