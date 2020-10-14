@@ -14,6 +14,7 @@ cache:
 
 jobs:
   include:
+    - php: '7.4'
     - name: 'Building docs'
       language: node_js
       node_js: 10
@@ -22,11 +23,20 @@ jobs:
       script:
         - ./scripts/build-docs.sh
 
+addons:
+  apt:
+    packages:
+      - subversion
+
 install:
   - composer install --no-interaction --prefer-dist
+  # TODO
+  # - scrips/install-wp-tests.sh
 
 script:
-  - vendor/bin/phpunit --group unit
+  # TODO WP Unit test suite
+  #- vendor/bin/phpunit --group unit
   # TODO integration tests
+  #- vendor/bin/phpunit --group integration
   - ./vendor/bin/phpcs --standard=./phpcs.xml test lib
   - vendor/bin/phpstan analyse
