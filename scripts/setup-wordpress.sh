@@ -70,7 +70,6 @@ EOF
 
   # configure plugins and theme
   uninstall_plugins hello akismet
-  wp --quiet plugin install --activate timber-library
   wp --quiet plugin activate conifer
   wp --quiet theme activate groot
 
