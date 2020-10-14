@@ -8,7 +8,7 @@
 
 [![Powerful abstractions on top of Timber for simple, opinionated OO WordPress development.](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/banner-green.png)](https://coniferplug.in)
 
-[![Build Status](https://travis-ci.org/sitecrafting/conifer.svg?branch=master)](https://travis-ci.org/sitecrafting/conifer)
+[![Build Status](https://travis-ci.org/sitecrafting/conifer.svg?branch=timber-2.x)](https://travis-ci.org/sitecrafting/conifer)
 [![Build Status](https://img.shields.io/packagist/v/sitecrafting/conifer.svg)](https://packagist.org/packages/sitecrafting/conifer)
 
 ## Documentation
