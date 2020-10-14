@@ -62,6 +62,10 @@ services:
     webroot: docs/_book
 
 tooling:
+  clean:
+    service: appserver
+    cmd: 'rm -rf node_modules vendor *.tar.gz *.zip wp'
+
   install:
     service: appserver
     cmd: './scripts/setup-wordpress.sh'
