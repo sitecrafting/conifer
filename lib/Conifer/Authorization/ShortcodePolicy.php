@@ -8,6 +8,7 @@
 
 namespace Conifer\Authorization;
 
+use Timber\Timber;
 use Timber\User;
 
 /**
@@ -102,7 +103,7 @@ abstract class ShortcodePolicy extends AbstractPolicy {
    * @return \Timber\User
    */
   protected function get_user() : User {
-    return new User();
+    return Timber::get_user();
   }
 
   /**

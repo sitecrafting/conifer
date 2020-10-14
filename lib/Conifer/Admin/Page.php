@@ -65,9 +65,10 @@ abstract class Page {
   /**
    * Render the content of this admin Page.
    *
+   * @param array $data optional view data for rendering in a specific context
    * @return string
    */
-  abstract public function render() : string;
+  abstract public function render(array $data = []) : string;
 
   /**
    * Constructor

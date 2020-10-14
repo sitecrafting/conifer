@@ -1,0 +1,18 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+parameters:
+    level: 1
+#    level: 2
+#    level: 4
+#    level: 5
+#    level: max
+    inferPrivatePropertyTypeFromConstructor: true
+    bootstrapFiles:
+        - phpstan/bootstrap.php
+    scanFiles:
+        - vendor/paulthewalton/acf-stubs/acf-stubs.php
+    paths:
+        - lib/
+    ignoreErrors:
+        # TODO
+        - '#^Unsafe usage of new static\(\)\.$#'

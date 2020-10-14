@@ -5,6 +5,7 @@
 
 namespace Conifer\Post;
 
+use Timber\Helper;
 use Timber\Post as TimberPost;
 use Timber\Term;
 use Timber\Timber;
@@ -186,8 +187,8 @@ abstract class Post extends TimberPost {
    *
    * @return
    */
-  public static function latest(int $count = self::LATEST_POST_COUNT) : array {
-    return static::get_all([
+  public static function latest(int $count = self::LATEST_POST_COUNT) : iterable {
+    return Timber::get_posts([
       'numberposts' => $count,
     ]);
   }
@@ -214,7 +215,11 @@ abstract class Post extends TimberPost {
    * @param  array|string $query any valid Timber query
    * @return array         an array of all matching post objects
    */
-  public static function get_all(array $query = []) : array {
+  public static function get_all(array $query = []) : iterable {
+    // phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+    // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+    trigger_error( '[ Conifer ] Post::get_all() is deprecated in Conifer 1.0.0. Use Timber::get_posts() with Class Maps instead. https://timber.github.io/docs/v2/guides/class-maps' );
+
     $class = static::class;
 
     // Avoid instantiating this (abstract) class, causing a Fatal Error.
@@ -371,7 +376,7 @@ abstract class Post extends TimberPost {
   public function get_related_by_taxonomy(
     string $taxonomy,
     int $postCount = self::RELATED_POST_COUNT
-  ) : array {
+  ) : iterable {
     // Get any previously queried related posts
     $relatedPosts     = $this->related_by[$taxonomy] ?? [];
     $relatedPostCount = $this->related_post_counts[$taxonomy] ?? null;
@@ -382,8 +387,8 @@ abstract class Post extends TimberPost {
         return $term->id;
       }, $this->terms($taxonomy));
 
-      $this->related_by[$taxonomy] = static::get_all([
-        'post_type'        => $this->get_post_type(),
+      $this->related_by[$taxonomy] = Timber::get_posts([
+        'post_type'        => static::_post_type(),
         'post__not_in'     => [$this->ID],
         'posts_per_page'   => $postCount,
         'tax_query'        => [
@@ -415,7 +420,7 @@ abstract class Post extends TimberPost {
    */
   public function get_related_by_category(
     int $postCount = self::RELATED_POST_COUNT
-  ) : array {
+  ) : iterable {
     return $this->get_related_by_taxonomy('category', $postCount);
   }
 
@@ -428,7 +433,7 @@ abstract class Post extends TimberPost {
    */
   public function get_related_by_tag(
     int $postCount = self::RELATED_POST_COUNT
-  ) : array {
+  ) : iterable {
     return $this->get_related_by_taxonomy('post_tag', $postCount);
   }
 }

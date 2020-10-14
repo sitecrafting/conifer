@@ -1,29 +1,36 @@
 # Testing
 
 There are two main types of tests we run on the Conifer codebase: unit tests
-and end-to-end tests. Unit tests are done with [PHPUnit](https://phpunit.de/),
-while end-to-end tests are done with [Cypress](https://www.cypress.io/). Since
+and integration tests. Both types tests are performed with [PHPUnit](https://phpunit.de/).
+The difference is just a `--group ...` option passed to PHPUnit when it is run.
 Conifer uses [Lando](https://docs.devwithlando.io/) as its official dev
 environment, you can leverage both testing tools without having to install
 them directly on your machine:
 
-```
+```sh
 lando unit
-lando e2e
+lando integration
 ```
 
-It's worth mentioning that the Lando environment comes with built-in code-
-sniffing, courtesy of `phpcs`:
+Or run them all at once:
 
+```sh
+lando test
 ```
+
+The Lando environment comes with built-in code-sniffing, courtesy of `phpcs`:
+
+```sh
 lando sniff
 ```
 
-## Writing new tests
+As of 1.0, static analysis by PHPStan is also available:
 
-Generally, new features should be covered by accompanying unit tests at a
-minimum. Whenever possible/applicable, it's a good idea to also write end-to-
-end tests in Cypress.
+```sh
+lando analyze
+```
+
+## Writing new tests
 
 Our guidelines for how and what to test are:
 

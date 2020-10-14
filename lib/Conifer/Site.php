@@ -9,9 +9,9 @@ use Timber\Timber;
 use Timber\Site as TimberSite;
 use Timber\URLHelper;
 
+// TODO use properly namespaced Twig classes
 use Twig_Environment;
 use Twig_Extension_StringLoader;
-use Twig_Extension_Debug;
 use Twig_SimpleFunction;
 use Twig_SimpleFilter;
 
@@ -28,7 +28,6 @@ use Conifer\Twig;
  */
 class Site extends TimberSite {
   const DEFAULT_TWIG_EXTENSIONS = [
-    Twig_Extension_Debug::class,
     Twig_Extension_StringLoader::class,
   ];
 
@@ -45,6 +44,13 @@ class Site extends TimberSite {
    * @var array
    */
   protected $style_directory_cascade;
+
+  /**
+   * An array of directories where Conifer will look for Twig views
+   *
+   * @var array
+   */
+  protected $view_directory_cascade;
 
   /**
    * Assets version timestamp, used for cache-busting
@@ -83,6 +89,8 @@ class Site extends TimberSite {
     $this->script_directory_cascade = [
       get_stylesheet_directory() . '/js/',
       get_stylesheet_directory() . '/dist/',
+      // TODO set up a bootstrap file for symbol discovery
+      // https://phpstan.org/user-guide/discovering-symbols
       WP_PLUGIN_DIR . '/conifer/assets/js/',
       WPMU_PLUGIN_DIR . '/conifer/assets/js/',
     ];
@@ -130,7 +138,7 @@ class Site extends TimberSite {
    * custom image sizes, shortcodes, etc.
    */
   public function configure_defaults() {
-    add_filter('timber_context', [$this, 'add_to_context']);
+    add_filter('timber/context', [$this, 'add_to_context']);
 
     $this->configure_twig_view_cascade();
     $this->configure_default_twig_extensions();
@@ -337,7 +345,7 @@ class Site extends TimberSite {
    * ]);
    */
   public function context(array $with = []) : array {
-    return array_merge(Timber::get_context(), $with);
+    return array_merge(Timber::context(), $with);
   }
 
   /**
@@ -351,7 +359,7 @@ class Site extends TimberSite {
     // @codingStandardsIgnoreStart WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
     trigger_error('get_context_with_post is deprecated. Use context instead. https://coniferplug.in/site.html#timber-context-helper', E_USER_DEPRECATED);
     // @codingStandardsIgnoreEnd
-    $context         = Timber::get_context();
+    $context         = Timber::context();
     $context['post'] = $post;
     return $context;
   }
@@ -367,7 +375,7 @@ class Site extends TimberSite {
     // @codingStandardsIgnoreStart WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
     trigger_error('get_context_with_post is deprecated. Use context instead. https://coniferplug.in/site.html#timber-context-helper', E_USER_DEPRECATED);
     // @codingStandardsIgnoreEnd
-    $context          = Timber::get_context();
+    $context          = Timber::context();
     $context['posts'] = $posts;
     return $context;
   }
@@ -400,7 +408,7 @@ class Site extends TimberSite {
    * Twig\HelperInterface that implements the functions/filters to add
    */
   public function add_twig_helper(Twig\HelperInterface $helper) {
-    add_filter('get_twig', function(Twig_Environment $twig) use ($helper) {
+    add_filter('timber/twig', function(Twig_Environment $twig) use ($helper) {
       return $this->get_twig_with_helper($twig, $helper);
     });
   }
@@ -439,8 +447,13 @@ class Site extends TimberSite {
    * @see set_view_directory_cascade
    */
   public function configure_twig_view_cascade() {
-    add_filter('timber/loader/paths', function($dirs) {
-      return array_merge($this->get_view_directory_cascade(), $dirs);
+    add_filter('timber/locations', function($dirs) {
+      $dirList = array_merge($this->get_view_directory_cascade(), $dirs);
+
+      // The timber/loader/paths filter wants an array of arrays
+      return array_map(function($x) {
+        return is_array($x) ? $x : [$x];
+      }, $dirList);
     });
   }
 
@@ -448,7 +461,7 @@ class Site extends TimberSite {
    * Load Twig's String Loader and Debug extensions
    */
   public function configure_default_twig_extensions() {
-    add_filter('get_twig', function(Twig_Environment $twig) {
+    add_filter('timber/twig', function(Twig_Environment $twig) {
       $loadedExtensions = array_keys($twig->getExtensions());
 
       // load default extensions unless they've been loaded already

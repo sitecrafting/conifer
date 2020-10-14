@@ -8,7 +8,10 @@
 
 namespace Conifer\Post;
 
+use Timber\Post as TimberPost;
 use Timber\Timber;
+
+use Conifer\Navigation\Menu;
 
 /**
  * Class to represent WordPress pages.
@@ -22,12 +25,12 @@ class Page extends Post {
    * Get the top-level title to display from the nav structure, fall back
    * on this Page object's title it it's outside the nav hierarchy.
    *
-   * @param \Conifer\Post\Menu $menu the menu to look at to determine the title
+   * @param \Conifer\Navigation\Menu $menu the menu to look at to determine the title
    * @return string the title to display
    */
   public function get_title_from_nav_or_post( Menu $menu ) : string {
     return $menu->get_current_top_level_item( $this )->title
-      ?? $this->title;
+      ?? $this->title();
   }
 
   /**
@@ -35,8 +38,8 @@ class Page extends Post {
    *
    * @return \Conifer\Post\Page
    */
-  public static function get_blog_page() : Page {
-    return new static( get_option('page_for_posts') );
+  public static function get_blog_page() : TimberPost {
+    return Timber::get_post( get_option('page_for_posts') );
   }
 
   /**

@@ -8,6 +8,7 @@
 
 namespace Conifer\Authorization;
 
+use Timber\Timber;
 use Timber\User;
 
 /**
@@ -22,7 +23,7 @@ abstract class TemplatePolicy extends AbstractPolicy {
    */
   public function adopt() : PolicyInterface {
     add_filter('template_include', function(string $template) {
-      $this->enforce($template, new User());
+      $this->enforce($template, Timber::get_user());
     });
 
     return $this;

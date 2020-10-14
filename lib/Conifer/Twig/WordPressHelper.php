@@ -36,9 +36,6 @@ class WordPressHelper implements HelperInterface {
         wp_nav_menu( $args );
         return ob_get_clean();
       },
-      'get_terms' => function( $taxonomy, $opts = ['hide_empty' => true] ) {
-        return Timber::get_terms($taxonomy, $opts);
-      },
       'paginate_links' => function( $args = [] ) {
         return paginate_links($args);
       },
@@ -57,7 +54,7 @@ class WordPressHelper implements HelperInterface {
       'get_sidebar_widgets' => function($name) {
         return Timber::get_widgets($name);
       },
-      'get_latest_posts' => function(int $count = Post::LATEST_POST_COUNT) : array {
+      'get_latest_posts' => function(int $count = Post::LATEST_POST_COUNT) : iterable {
         return BlogPost::latest($count);
       },
     ];

@@ -18,6 +18,7 @@ class Menu extends TimberMenu {
    * When instantiating MenuItems that belong to this Menu,
    * create instances of this class.
    *
+   * @todo remove this var!
    * @var string
    * @codingStandardsIgnoreStart
    */
@@ -31,7 +32,7 @@ class Menu extends TimberMenu {
    * @return Conifer\MenuItem the current top-level MenuItem
    */
   public function get_current_top_level_item() {
-    foreach ( $this->get_items as $item ) {
+    foreach ( $this->get_items() as $item ) {
       if ( $item->points_to_current_post_or_ancestor() ) {
         return $item;
       }

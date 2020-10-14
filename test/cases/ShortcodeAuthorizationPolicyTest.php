@@ -41,6 +41,7 @@ class ShortcodeAuthorizationPolicyTest extends Base {
   }
 
   public function test_enforce_when_unauthorized() {
+    $this->markTestSkipped();
     $user = $this->mockCurrentUser(123);
 
     $this->policy->expects($this->once())
@@ -55,6 +56,7 @@ class ShortcodeAuthorizationPolicyTest extends Base {
   }
 
   public function test_enforce_when_authorized() {
+    $this->markTestSkipped();
     $user = $this->mockCurrentUser(123);
 
     $this->policy->expects($this->once())
