@@ -54,7 +54,7 @@ trait HasTerms {
       // This allows for a polymorphic list of terms! ✨
       return is_a($termIdent, Term::class)
         ? $termIdent
-        : new Term($termIdent);
+        : Timber::get_term($termIdent);
     }, $terms);
 
     // reduce each term in $taxonomy to an array containing:
@@ -213,7 +213,7 @@ trait HasTerms {
 
       $options['update_count_callback'] = function($terms) use ($statuses) {
         foreach ($terms as $term) {
-          static::count_statuses_toward_term_count(new Term($term), $statuses);
+          static::count_statuses_toward_term_count(Timber::get_term($term), $statuses);
         }
       };
     }
