@@ -34,10 +34,6 @@ env:
 # Test Conifer against PHP 7.x and run end-to-end tests
 matrix:
   include:
-    - name: 'Coding standards'
-      php: 7.3
-      script: composer sniff
-
     - name: 'Building docs'
       language: node_js
       node_js: 10
