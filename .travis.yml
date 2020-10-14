@@ -75,6 +75,7 @@ jobs:
     - php: '7.4'
       env: TIMBER_VERSION="2.x-dev"
     - env: TIMBER_VERSION="2.x-dev"
+    - name: 'Coding Standards'
 
 install:
   - composer install --no-interaction --prefer-dist
