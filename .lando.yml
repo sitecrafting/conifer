@@ -1,6 +1,4 @@
 name: conifer
-stats:
-  - report: false
 recipe: wordpress
 config:
   webroot: wp
@@ -8,29 +6,12 @@ config:
 
 services:
   node:
-    type: node:10
+    type: node:14
 
   appserver:
-    run_as_root:
-      # TODO don't think we need this anymore?
-      # Temporary hack to get a Debian package to install
-      # https://github.com/lando/lando/issues/1554
-      - echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf
-      - echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
-      - sed -i '/deb http:\/\/deb.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list
-
-      - apt-get update
-      - apt-get install zip
-
     run:
       - composer install
       - ./scripts/setup-wordpress.sh
-
-    overrides:
-      environment:
-        # Pass any non-empty CI envvar from the host into Lando
-        # This is so we can force non-interactive mode setting up WP
-        CI: ${CI:-''}
 
   database:
     type: mysql:5.7
@@ -41,15 +22,6 @@ services:
     run:
       - yarn
       - ./scripts/build-docs.sh
-
-  cypress:
-    type: node:10
-
-    run:
-      - yarn cypress install
-
-    overrides:
-      image: 'sitecrafting/lando-cypress-wordpress:latest'
 
   mailhog:
     type: mailhog:v1.0.0
@@ -71,25 +43,10 @@ tooling:
     cmd: './scripts/setup-wordpress.sh'
     description: 'Install and configure WordPress for custom plugin dev'
 
-  install-test-themes:
-    service: appserver
-    cmd: 'rsync --verbose --archive --recursive ./test/themes/ ./wp/wp-content/themes/'
-    description: 'Sync test themes for e2e testing'
-
   debug:
     service: appserver
     cmd: 'tail -f ./wp/wp-content/debug.log'
     description: 'Get real-time WP debug log output'
-
-  cypress:
-    service: cypress
-    cmd: 'yarn cypress'
-    description: 'Run arbitrary cypress commands'
-
-  e2e:
-    service: cypress
-    cmd: 'yarn cypress run'
-    description: 'Run end-to-end tests'
 
   unit:
     service: appserver
@@ -150,10 +107,6 @@ tooling:
 events:
   pre-docs:
     - appserver: './scripts/build-api-md.sh'
-
-  pre-e2e:
-    - appserver: 'echo installing test themes...'
-    - appserver: 'rsync --verbose --archive --recursive ./test/themes/ ./wp/wp-content/themes/'
 
 proxy:
   appserver:
