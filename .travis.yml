@@ -31,6 +31,6 @@ install:
 script:
   - vendor/bin/phpunit --group unit
   # TODO integration tests
+  - ./vendor/bin/phpcs --standard=./phpcs.xml test lib
   # TODO coding standards
-  #- ./vendor/bin/phpcs --standard=./phpcs.xml test lib
   #- vendor/bin/phpstan analyse
