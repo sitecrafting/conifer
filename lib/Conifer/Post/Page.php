@@ -37,7 +37,7 @@ class Page extends Post {
    * @return \Conifer\Post\Page
    */
   public static function get_blog_page() : Page {
-    return new static( get_option('page_for_posts') );
+    return Timber::get_post( get_option('page_for_posts') );
   }
 
   /**
