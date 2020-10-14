@@ -23,9 +23,9 @@ cache:
 jobs:
   include:
     - name: 'Coding standards'
-      php: '7.3'
+      php: '7.4'
       script:
-        - composer run-script sniff --no-interaction
+        - ./vendor/bin/phpcs --standard=./phpcs.xml test lib
 
     - name: 'End-to-end tests with Lando/Cypress'
       language: node_js
