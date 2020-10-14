@@ -29,5 +29,4 @@ script:
   - vendor/bin/phpunit --group unit
   # TODO integration tests
   - ./vendor/bin/phpcs --standard=./phpcs.xml test lib
-  # TODO coding standards
-  #- vendor/bin/phpstan analyse
+  - vendor/bin/phpstan analyse
