@@ -66,7 +66,6 @@ tooling:
     cmd: './vendor/bin/phpunit' # TODO --group unit
     description: 'Run unit tests'
 
-  # TODO integration tests
   integration:
     service: appserver
     cmd: './vendor/bin/phpunit --group integration'

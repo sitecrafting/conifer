@@ -59,6 +59,12 @@
       "Conifer\\": "lib/Conifer/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "ConiferTest\\": "test/unit/",
+      "ConiferTestSupport\\": "test/support/"
+    }
+  },
   "scripts": {
     "unit": [
       "./vendor/bin/phpunit"
