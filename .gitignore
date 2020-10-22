@@ -6,14 +6,13 @@
 /database-backups/
 /conifer
 
+# test artifacts
+/test/wp/
+/test/wp-tests-lib/
+
 # build artifacts
 /conifer-*.tar.gz
 /conifer-*.zip
-
-# cypress test artifacts
-/cypress/videos
-/cypress/screenshots
-.Trash*
 
 # yarn artifacts, or "yartifacts"
 yarn-error.log
@@ -26,7 +25,6 @@ wp-cli.local.yml
 /docs/_book/
 /docs/reference/*.md
 /docs/node_modules/
-
 
 # VS code
 .vscode/*

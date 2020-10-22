@@ -9,12 +9,25 @@ services:
     type: node:14
 
   appserver:
+    run_as_root:
+      - apt-get update
+      - apt-get install subversion -y
+
     run:
       - composer install
       - ./scripts/setup-wordpress.sh
+      - ./scripts/install-wp-tests.sh
 
   database:
     type: mysql:5.7
+
+  testdb:
+    type: mysql:5.7
+    portforward: true
+    creds:
+      user: test
+      password: test
+      database: test
 
   gitbook:
     type: node:10
@@ -63,6 +76,11 @@ tooling:
     service: appserver
     cmd: './vendor/bin/phpunit'
     description: 'Run all unit and integration tests'
+
+  install-tests:
+    service: appserver
+    cmd: './scripts/install-wp-tests.sh'
+    description: 'Install the WP Unit Test suite'
 
   sniff-summary:
     service: appserver
