@@ -6,7 +6,7 @@
  * @author Coby Tamayo
  */
 
-namespace ConiferTest;
+namespace Conifer\Unit;
 
 use WP_Mock;
 

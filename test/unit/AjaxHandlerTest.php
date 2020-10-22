@@ -6,7 +6,7 @@
  * @author    Scott Dunham <sdunham@sitecrafting.com>
  */
 
-namespace ConiferTest;
+namespace Conifer\Unit;
 
 use WP_Mock;
 

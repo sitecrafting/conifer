@@ -62,7 +62,9 @@
   "autoload-dev": {
     "psr-4": {
       "ConiferTest\\": "test/unit/",
-      "ConiferTestSupport\\": "test/support/"
+      "ConiferTestSupport\\": "test/support/",
+      "Conifer\\Unit\\": "test/unit/",
+      "Conifer\\Unit\\Support\\": "test/support/"
     }
   },
   "scripts": {

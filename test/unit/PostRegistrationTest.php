@@ -7,10 +7,10 @@
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 
-namespace ConiferTest;
+namespace Conifer\Unit;
 
 use Conifer\Post\Post;
-use ConiferTestSupport\Person;
+use Conifer\Unit\Support\Person;
 use WP_Mock;
 use WP_Mock\Functions;
 use WP_Term;

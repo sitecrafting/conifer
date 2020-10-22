@@ -7,7 +7,7 @@
  * @author Coby Tamayo
  */
 
-namespace ConiferTest;
+namespace Conifer\Unit;
 
 use Conifer\Shortcode\Button;
 
