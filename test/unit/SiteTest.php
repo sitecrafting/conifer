@@ -17,60 +17,56 @@ use org\bovigo\vfs\vfsStream;
 class SiteTest extends Base {
   const THEME_DIRECTORY = 'wp-content/themes/foo';
 
-  public function setUp() {
-    parent::setUp();
+  //public function setUp() {
+  //  parent::setUp();
 
-    // do a terrible amount of boilerplate to workaround Timber's decision
-    // to put a ton of stuff in the constructor
-    $theme = $this->getMockBuilder('\WP_Theme')
-      ->setMethods([
-        'get',
-        'get_stylesheet',
-        'get_template_directory_uri',
-        'parent',
-        '__toString',
-      ])
-      ->getMock();
-    $theme->expects($this->any())
-      ->method('__toString')
-      ->will($this->returnValue(''));
+  //  // do a terrible amount of boilerplate to workaround Timber's decision
+  //  // to put a ton of stuff in the constructor
+  //  $theme = $this->getMockBuilder('\WP_Theme')
+  //    ->setMethods([
+  //      'get',
+  //      'get_stylesheet',
+  //      'get_template_directory_uri',
+  //      'parent',
+  //      '__toString',
+  //    ])
+  //    ->getMock();
+  //  $theme->expects($this->any())
+  //    ->method('__toString')
+  //    ->will($this->returnValue(''));
 
-    WP_Mock::userFunction('is_multisite', [
-      'return' => false,
-    ]);
-    WP_Mock::userFunction('home_url', [
-      'return' => 'http://appserver',
-    ]);
-    WP_Mock::userFunction('site_url', [
-      'return' => 'http://appserver',
-    ]);
-    WP_Mock::userFunction('get_bloginfo', [
-      'return' => [],
-    ]);
-    WP_Mock::userFunction('wp_get_theme', [
-      'return' => $theme,
-    ]);
-    WP_Mock::userFunction('get_stylesheet_directory', [
-      'return' => self::THEME_DIRECTORY,
-      'times' => 4,
-    ]);
+  //  WP_Mock::userFunction('is_multisite', [
+  //    'return' => false,
+  //  ]);
+  //  WP_Mock::userFunction('home_url', [
+  //    'return' => 'http://appserver',
+  //  ]);
+  //  WP_Mock::userFunction('site_url', [
+  //    'return' => 'http://appserver',
+  //  ]);
+  //  WP_Mock::userFunction('get_bloginfo', [
+  //    'return' => [],
+  //  ]);
+  //  WP_Mock::userFunction('wp_get_theme', [
+  //    'return' => $theme,
+  //  ]);
+  //  WP_Mock::userFunction('get_stylesheet_directory', [
+  //    'return' => self::THEME_DIRECTORY,
+  //    'times' => 4,
+  //  ]);
 
-    // Set up a new virtual file system to test some of the site functions
-    $structure         = [
-      'theme-dir' => [
-          'test.php'    => 'some text content',
-          'assets.version' =>'1',
-          'custom-assets.version' => 'CUSTOM',
-      ],
-      'an_empty_folder' => [],
-    ];
-    $this->file_system = vfsStream::setup('root', null, $structure);
+  //  // Set up a new virtual file system to test some of the site functions
+  //  $structure         = [
+  //    'theme-dir' => [
+  //        'test.php'    => 'some text content',
+  //        'assets.version' =>'1',
+  //        'custom-assets.version' => 'CUSTOM',
+  //    ],
+  //    'an_empty_folder' => [],
+  //  ];
+  //  $this->file_system = vfsStream::setup('root', null, $structure);
 
-  }
-
-  public function tearDown() {
-    WP_Mock::tearDown();
-  }
+  //}
 
   public function test_find_file() {
 

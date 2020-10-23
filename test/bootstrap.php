@@ -9,6 +9,11 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+if (is_dir(__DIR__ . '/wp-tests-lib')) {
+  require_once __DIR__ . '/wp-tests-lib/includes/functions.php';
+  require_once __DIR__ . '/wp-tests-lib/includes/bootstrap.php';
+}
+
 
 /*
  * Define some WP constants that are referenced directly in Conifer
@@ -22,30 +27,30 @@ define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
  * Define our own version of apply_filters_deprecated, rather than mocking,
  * so that we can raise warnings from our tests.
  */
-function apply_filters_deprecated($filter, $filterArgs) {
-  deprecated_hook_notice('filter', $filter);
-
-  return $filterArgs[0];
-}
-
-function do_action_deprecated($action) {
-  deprecated_hook_notice('action', $action);
-}
-
-function deprecated_hook_notice($type, $hook) {
-  // Do some terrible horcrux-style dark magic shit
-  // @codingStandardsIgnoreStart
-  $wpMock = new ReflectionClass(WP_Mock::class);
-  $mgrProp = $wpMock->getProperty('event_manager');
-  $mgrProp->setAccessible(true);
-  $mgr = $mgrProp->getValue();
-  $mgrReflection = new ReflectionClass($mgr);
-  $callbacksProp = $mgrReflection->getProperty('callbacks');
-  $callbacksProp->setAccessible(true);
-  $callbacks = $callbacksProp->getValue($mgr);
-
-  // were any filters added?
-  if ($callbacks && isset($callbacks["$type::$hook"])) {
-    trigger_error("{$hook} is deprecated");
-  }
-}
+//function apply_filters_deprecated($filter, $filterArgs) {
+//  deprecated_hook_notice('filter', $filter);
+//
+//  return $filterArgs[0];
+//}
+//
+//function do_action_deprecated($action) {
+//  deprecated_hook_notice('action', $action);
+//}
+//
+//function deprecated_hook_notice($type, $hook) {
+//  // Do some terrible horcrux-style dark magic shit
+//  // @codingStandardsIgnoreStart
+//  $wpMock = new ReflectionClass(WP_Mock::class);
+//  $mgrProp = $wpMock->getProperty('event_manager');
+//  $mgrProp->setAccessible(true);
+//  $mgr = $mgrProp->getValue();
+//  $mgrReflection = new ReflectionClass($mgr);
+//  $callbacksProp = $mgrReflection->getProperty('callbacks');
+//  $callbacksProp->setAccessible(true);
+//  $callbacks = $callbacksProp->getValue($mgr);
+//
+//  // were any filters added?
+//  if ($callbacks && isset($callbacks["$type::$hook"])) {
+//    trigger_error("{$hook} is deprecated");
+//  }
+//}

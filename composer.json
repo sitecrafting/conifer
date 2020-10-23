@@ -64,6 +64,7 @@
       "ConiferTest\\": "test/unit/",
       "ConiferTestSupport\\": "test/support/",
       "Conifer\\Unit\\": "test/unit/",
+      "Conifer\\Integration\\": "test/integration/",
       "Conifer\\Unit\\Support\\": "test/support/"
     }
   },
