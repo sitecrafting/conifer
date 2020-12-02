@@ -362,7 +362,7 @@ abstract class Post extends TimberPost {
     }
 
     // return a new instance of the called class
-    return new static($id);
+    return Timber::get_post($id);
   }
 
   /**
