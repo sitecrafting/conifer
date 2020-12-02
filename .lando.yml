@@ -62,17 +62,19 @@ tooling:
 
   unit:
     service: appserver
-    cmd: './vendor/bin/phpunit' # TODO --group unit
+    cmd: './vendor/bin/phpunit --config phpunit.xml.dist'
     description: 'Run unit tests'
 
   integration:
     service: appserver
-    cmd: './vendor/bin/phpunit --group integration'
+    cmd: './vendor/bin/phpunit --config phpunit-integration.xml.dist'
     description: 'Run integration tests'
 
   test:
     service: appserver
-    cmd: './vendor/bin/phpunit'
+    cmd:
+      - vendor/bin/phpunit --config phpunit.xml.dist
+      - vendor/bin/phpunit --config phpunit-integration.xml.dist
     description: 'Run all unit and integration tests'
 
   install-tests:

@@ -2,8 +2,8 @@
 /**
  * Conifer test suite bootstrap file; included before every unit test run
  *
- * @todo radically simplify this; split out integration/unit tests
- * @copyright 2018 SiteCrafting, Inc.
+ * @todo remove dependency on WP_Mock
+ * @copyright 2020 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 
