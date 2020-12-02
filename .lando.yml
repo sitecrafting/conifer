@@ -107,6 +107,14 @@ tooling:
     cmd: './vendor/bin/phpstan analyse'
     description: 'Run phpstan coding standards (level 1)'
 
+  ci:
+    service: appserver
+    cmd:
+      - vendor/bin/phpunit --config phpunit.xml.dist
+      - vendor/bin/phpunit --config phpunit-integration.xml.dist
+      - vendor/bin/phpcs --standard=phpcs.xml test lib
+      - vendor/bin/phpstan analyze
+
   phpstan:
     service: appserver
     cmd: './vendor/bin/phpstan'

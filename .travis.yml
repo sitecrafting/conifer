@@ -34,9 +34,7 @@ install:
   # - scrips/install-wp-tests.sh
 
 script:
-  # TODO WP Unit test suite
-  #- vendor/bin/phpunit --group unit
-  # TODO integration tests
-  #- vendor/bin/phpunit --group integration
-  - ./vendor/bin/phpcs --standard=./phpcs.xml test lib
+  - vendor/bin/phpunit --config phpunit.xml.dist
+  - vendor/bin/phpunit --config phpunit-integration.xml.dist
+  - vendor/bin/phpcs --standard=./phpcs.xml test lib
   - vendor/bin/phpstan analyse
