@@ -8,14 +8,17 @@ namespace Conifer;
 use Timber\Timber;
 use Timber\Site as TimberSite;
 use Timber\URLHelper;
-
 // TODO use properly namespaced Twig classes
 use Twig_Environment;
 use Twig_Extension_StringLoader;
 use Twig_SimpleFunction;
 use Twig_SimpleFilter;
+use WP_Post;
 
 use Conifer\Navigation\Menu;
+use Conifer\Post\BlogPost;
+use Conifer\Post\FrontPage;
+use Conifer\Post\Page;
 use Conifer\Post\Post;
 use Conifer\Shortcode\Gallery;
 use Conifer\Shortcode\Button;
@@ -140,6 +143,7 @@ class Site extends TimberSite {
   public function configure_defaults() {
     add_filter('timber/context', [$this, 'add_to_context']);
 
+    $this->configure_default_classmaps();
     $this->configure_twig_view_cascade();
     $this->configure_default_twig_extensions();
     $this->add_default_twig_helpers();
@@ -150,6 +154,26 @@ class Site extends TimberSite {
 
     Integrations\YoastIntegration::demote_metabox();
     // TODO moar integrations!
+  }
+
+  /**
+   * Register default Post Class Maps for default Conifer classes
+   *
+   * @todo Terms/Users
+   */
+  public function configure_default_classmaps() {
+    add_filter('timber/post/classmap', function(array $map) : array {
+      return array_merge($map, [
+        // For pages, instantiate a FrontPage for the globally configured home page,
+        // otherwise return a regular Page.
+        'page'     => function(WP_Post $page) {
+          static $homeId;
+          $homeId = $homeId ?? get_option('page_on_front');
+          return $page->ID === $homeId ? FrontPage::class : Page::class;
+        },
+        'post'     => BlogPost::class,
+      ]);
+    });
   }
 
 
