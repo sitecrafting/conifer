@@ -16,7 +16,6 @@ services:
     run:
       - composer install
       - ./scripts/setup-wordpress.sh
-      - ./scripts/install-wp-tests.sh
 
   database:
     type: mysql:5.7
