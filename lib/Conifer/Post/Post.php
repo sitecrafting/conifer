@@ -397,7 +397,7 @@ abstract class Post extends TimberPost {
             'terms'        => $termIds,
           ],
         ],
-      ]);
+      ])->to_array();
 
       $newCount = count($this->related_by[$taxonomy]);
       if ($newCount < $relatedPostCount) {
@@ -408,7 +408,7 @@ abstract class Post extends TimberPost {
       }
     }
 
-    return $this->related_by[$taxonomy];
+    return array_slice($this->related_by[$taxonomy], 0, $postCount);
   }
 
   /**

@@ -54,4 +54,64 @@ class PostTest extends Base {
     $this->assertTrue(Page::exists($page->ID));
     $this->assertFalse(BlogPost::exists($page->ID));
   }
+
+  public function test_exists_on_nonexistent_post() {
+    $this->assertFalse(Post::exists(99999));
+  }
+
+  public function test_get_blog_page() {
+    $page = Page::create([
+      'post_title' => 'News',
+      'post_name'  => 'news',
+    ]);
+
+    update_option('page_for_posts', $page->id);
+
+    $this->assertEquals($page->id, Page::get_blog_page()->id);
+  }
+
+  public function test_get_blog_url() {
+    $page = Page::create([
+      'post_title' => 'News',
+      'post_name'  => 'news',
+    ]);
+
+    update_option('page_for_posts', $page->id);
+
+    // TODO figure out how to get permalinks working in the test env
+    $this->assertEquals(
+      sprintf('http://example.org/?page_id=%d', $page->id),
+      Page::get_blog_url()
+    );
+  }
+
+  public function test_get_related_by_taxonomy() {
+    $this->markTestSkipped();
+    $awesome = $this->factory->term->create([
+      'name'     => 'Awesome',
+      'taxonomy' => 'category',
+    ]);
+
+    $post = BlogPost::create([
+      'post_title' => 'My Post',
+      'tax_input'  => [
+        'category' => [$awesome],
+      ],
+    ]);
+
+    $this->factory->post->create_many(3, [
+      'post_type'  => 'post',
+      'tax_input'  => [
+        'category' => [$awesome],
+      ],
+    ]);
+
+    $this->factory->post->create_many(2, [
+      'post_type'  => 'post',
+    ]);
+
+    $this->assertCount(3, $post->get_related_by_taxonomy('category'));
+    $this->assertCount(3, $post->get_related_by_taxonomy('category', 5));
+    $this->assertCount(2, $post->get_related_by_taxonomy('category', 2));
+  }
 }

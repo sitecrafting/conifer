@@ -8,7 +8,7 @@
 
 namespace Conifer\Integration;
 
-use PHPUnit\Framework\TestCase;
+use WP_UnitTestCase;
 
 use Conifer\Site;
 
@@ -16,7 +16,7 @@ use Conifer\Site;
  * Base test class for the plugin. Declared abstract so that PHPUnit doesn't
  * complain about a lack of tests defined here.
  */
-abstract class Base extends TestCase {
+abstract class Base extends WP_UnitTestCase {
   /** @var Site */
   protected $site;
 
