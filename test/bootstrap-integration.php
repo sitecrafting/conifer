@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Conifer test suite bootstrap file; included before every unit test run
  *
  * @copyright 2020 SiteCrafting, Inc.

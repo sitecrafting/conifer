@@ -17,7 +17,11 @@ use Conifer\Site;
  * complain about a lack of tests defined here.
  */
 abstract class Base extends WP_UnitTestCase {
-  /** @var Site */
+  /**
+   * The Site instance representing the WP install we are testing
+   *
+   * @var Site
+   */
   protected $site;
 
   public function setUp() {
