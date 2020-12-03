@@ -86,7 +86,6 @@ class PostTest extends Base {
   }
 
   public function test_get_related_by_taxonomy() {
-    $this->markTestSkipped();
     $awesome = $this->factory->term->create([
       'name'     => 'Awesome',
       'taxonomy' => 'category',
@@ -94,18 +93,18 @@ class PostTest extends Base {
 
     $post = BlogPost::create([
       'post_title' => 'My Post',
-      'tax_input'  => [
-        'category' => [$awesome],
-      ],
     ]);
 
-    $this->factory->post->create_many(3, [
+    wp_set_object_terms($post->id, [$awesome], 'category');
+
+    $ids = $this->factory->post->create_many(3, [
       'post_type'  => 'post',
-      'tax_input'  => [
-        'category' => [$awesome],
-      ],
     ]);
+    foreach ($ids as $id) {
+      wp_set_object_terms($id, [$awesome], 'category');
+    }
 
+    // Create uncategorized posts
     $this->factory->post->create_many(2, [
       'post_type'  => 'post',
     ]);
