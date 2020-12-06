@@ -1,15 +1,13 @@
-# Conifer
+[![Conifer](img/banner-green.png)](https://coniferplug.in)
 
-> #### Warning::ALPHA STATUS
+[![Build Status](https://travis-ci.org/sitecrafting/conifer.svg?branch=main)](https://travis-ci.org/github/sitecrafting/conifer)
+[![Packagist Version](https://img.shields.io/packagist/v/sitecrafting/conifer.svg)](https://packagist.org/packages/sitecrafting/conifer)
+
+#### :warning: ALPHA STATUS
 
 > Conifer is in Alpha. We consider the code production-ready, and breaking changes to the API are unlikely. Most of the code has been extracted from components already running in production.
 >
 > **However, there may be lingering bugs and, if necessary, breaking changes at this early stage.**
-
-[![Powerful abstractions on top of Timber for simple, opinionated OO WordPress development.](https://raw.githubusercontent.com/sitecrafting/conifer/master/img/banner-green.png)](https://coniferplug.in)
-
-[![Build Status](https://travis-ci.org/sitecrafting/conifer.svg?branch=main)](https://travis-ci.org/sitecrafting/conifer)
-[![Build Status](https://img.shields.io/packagist/v/sitecrafting/conifer.svg)](https://packagist.org/packages/sitecrafting/conifer)
 
 ## Documentation
 
@@ -29,7 +27,7 @@ Please submit issues and feature requests directly to GitHub. We need guidance f
 
 Then, just clone the repo and start up the dev environment:
 
-```
+```bash
 git clone git@github.com:sitecrafting/conifer.git
 cd conifer
 lando start
