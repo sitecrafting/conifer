@@ -1,4 +1,4 @@
-[![Conifer](img/banner-green.png)](https://coniferplug.in)
+# [![Conifer](img/banner-green.png)](https://coniferplug.in)
 
 [![Build Status](https://travis-ci.org/sitecrafting/conifer.svg?branch=main)](https://travis-ci.org/github/sitecrafting/conifer)
 [![Packagist Version](https://img.shields.io/packagist/v/sitecrafting/conifer.svg)](https://packagist.org/packages/sitecrafting/conifer)
