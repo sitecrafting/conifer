@@ -10,6 +10,8 @@ namespace Conifer\Integration;
 
 use WP_Term;
 
+use Timber\Timber;
+
 use Conifer\Post\Page;
 use Conifer\Post\Post;
 use Conifer\Post\BlogPost;
@@ -112,5 +114,33 @@ class PostTest extends Base {
     $this->assertCount(3, $post->get_related_by_taxonomy('category'));
     $this->assertCount(3, $post->get_related_by_taxonomy('category', 5));
     $this->assertCount(2, $post->get_related_by_taxonomy('category', 2));
+  }
+
+  public function test_get_by_template() {
+    $id = $this->factory->post->create([
+      'post_title'          => 'My Custom Page',
+      'post_status'         => 'publish',
+      'post_type'           => 'page',
+      'meta_input'          => [
+        '_wp_page_template' => 'my-template.php',
+      ],
+    ]);
+
+    $this->assertEquals($id, Page::get_by_template('my-template.php')->id);
+  }
+
+  public function test_get_by_template_with_query_params() {
+    $id = $this->factory->post->create([
+      'post_title'          => 'My Custom Page',
+      'post_status'         => 'draft',
+      'post_type'           => 'page',
+      'meta_input'          => [
+        '_wp_page_template' => 'my-template.php',
+      ],
+    ]);
+
+    $this->assertEquals($id, Page::get_by_template('my-template.php', [
+      'post_status' => 'draft',
+    ])->id);
   }
 }

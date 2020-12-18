@@ -46,26 +46,20 @@ class Page extends Post {
    * Get a page by its template filename, relative to the theme root.
    *
    * @param string $template
+   * @param array extra query params to be merged in with the posts query
+   * to be performed.
    * @return null|Page the first page found matching the template, or null if no such page exists
    */
-  public static function get_by_template(string $template) {
-    // query the Page by template
-    $pages = Timber::get_posts([
-      'post_type' => 'page',
-      'post_status' => 'publish',
-      'posts_per_page' => 1,
+  public static function get_by_template(string $template, array $query = []) {
+    return Timber::get_post(array_merge($query, [
+      'post_type'  => 'page',
       'meta_query' => [
         [
-          'key' => '_wp_page_template',
-          'value' => $template,
+          'key'    => '_wp_page_template',
+          'value'  => $template,
         ],
       ],
-    ], static::class);
-
-    // return the first page we find, if it exists
-    if (isset($pages[0])) {
-      return $pages[0];
-    }
+    ]));
   }
 }
 
