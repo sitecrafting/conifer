@@ -8,7 +8,7 @@ config:
 
 services:
   node:
-    type: node:10
+    type: node:14
 
   appserver:
     run_as_root:
@@ -42,7 +42,7 @@ services:
       - ./scripts/build-docs.sh
 
   cypress:
-    type: node:10
+    type: node:14
 
     run:
       - yarn cypress install
@@ -51,7 +51,7 @@ services:
       image: 'sitecrafting/lando-cypress-wordpress:latest'
 
   phpmyadmin:
-    type: phpmyadmin:4.7
+    type: phpmyadmin:5.1
 
   mailhog:
     type: mailhog:v1.0.0
@@ -59,7 +59,7 @@ services:
       - appserver
 
   docs:
-    type: nginx:1.14
+    type: nginx:1.17
     ssl: true
     webroot: docs/_book
 
