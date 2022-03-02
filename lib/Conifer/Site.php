@@ -8,11 +8,10 @@ namespace Conifer;
 use Timber\Timber;
 use Timber\Site as TimberSite;
 use Timber\URLHelper;
-// TODO use properly namespaced Twig classes
-use Twig_Environment;
-use Twig_Extension_StringLoader;
-use Twig_SimpleFunction;
-use Twig_SimpleFilter;
+use Twig\Environment;
+use Twig\Extension\StringLoaderExtension;
+use Twig\TwigFunction;
+use Twig\TwigFilter;
 use WP_Post;
 
 use Conifer\Navigation\Menu;
@@ -31,7 +30,7 @@ use Conifer\Twig;
  */
 class Site extends TimberSite {
   const DEFAULT_TWIG_EXTENSIONS = [
-    Twig_Extension_StringLoader::class,
+    StringLoaderExtension::class,
   ];
 
   /**
@@ -432,7 +431,7 @@ class Site extends TimberSite {
    * Twig\HelperInterface that implements the functions/filters to add
    */
   public function add_twig_helper(Twig\HelperInterface $helper) {
-    add_filter('timber/twig', function(Twig_Environment $twig) use ($helper) {
+    add_filter('timber/twig', function(Environment $twig) use ($helper) {
       return $this->get_twig_with_helper($twig, $helper);
     });
   }
@@ -441,24 +440,24 @@ class Site extends TimberSite {
    * Add any filters/functions implemented by `$helper` to the Twig instance
    * `$twig`.
    *
-   * @param Twig_Environment $twig the Twig environment to add to
+   * @param Environment $twig the Twig environment to add to
    * @param Twig\HelperInterface $helper the helper instance that implements the
    * filters/functions to add
-   * @return Twig_Environment
+   * @return Environment
    */
   public function get_twig_with_helper(
-    Twig_Environment $twig,
+    Environment $twig,
     Twig\HelperInterface $helper
-  ) : Twig_Environment {
+  ) : Environment {
     // add Twig filters
     foreach ( $helper->get_filters() as $name => $callable ) {
-      $filter = new Twig_SimpleFilter( $name, $callable );
+      $filter = new TwigFilter( $name, $callable );
       $twig->addFilter( $filter );
     }
 
     // add Twig functions
     foreach ( $helper->get_functions() as $name => $callable ) {
-      $function = new Twig_SimpleFunction( $name, $callable );
+      $function = new TwigFunction( $name, $callable );
       $twig->addFunction( $function );
     }
 
@@ -485,7 +484,7 @@ class Site extends TimberSite {
    * Load Twig's String Loader and Debug extensions
    */
   public function configure_default_twig_extensions() {
-    add_filter('timber/twig', function(Twig_Environment $twig) {
+    add_filter('timber/twig', function(Environment $twig) {
       $loadedExtensions = array_keys($twig->getExtensions());
 
       // load default extensions unless they've been loaded already
