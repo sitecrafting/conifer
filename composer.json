@@ -65,5 +65,12 @@
       "sniff-fix": [
         "./vendor/bin/phpcbf --standard=./phpcs.xml conifer.php test lib"
       ]
+  },
+  "config": {
+    "allow-plugins": {
+      "johnpbloch/wordpress-core-installer": true,
+      "mnsami/composer-custom-directory-installer": true,
+      "composer/installers": true
+    }
   }
 }
