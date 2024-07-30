@@ -412,7 +412,7 @@ class Site extends TimberSite {
    */
   public function add_to_context( array $context ) : array {
     $context['site']         = $this;
-    $context['primary_menu'] = new Menu( 'primary' );
+    $context['primary_menu'] = Timber::get_menu('primary');
     $context['body_classes'] = get_body_class();
     $context['search_query'] = get_search_query();
     return $context;

@@ -28,3 +28,4 @@ wp-cli.local.yml
 
 # VS code
 .vscode/*
+.idea

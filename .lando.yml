@@ -2,7 +2,7 @@ name: conifer
 recipe: wordpress
 config:
   webroot: wp
-  php: '7.4'
+  php: '8.2'
 
 services:
   node:
