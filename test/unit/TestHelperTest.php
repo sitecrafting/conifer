@@ -13,7 +13,7 @@ use Conifer\Twig\TextHelper;
 class TextHelperTest extends Base {
   const THEME_DIRECTORY = 'wp-content/themes/foo';
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->helper = new TextHelper();

@@ -15,13 +15,13 @@ use WP_Mock\Functions;
 use Conifer\Admin\Notice;
 
 class AdminNoticeTest extends Base {
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     Notice::clear_flash_notices();
     Notice::enable_flash_notices();
   }
 
-  public function tearDown() {
+  public function tearDown(): void {
     parent::tearDown();
     Notice::disable_flash_notices();
     Notice::clear_flash_notices();

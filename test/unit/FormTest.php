@@ -15,7 +15,7 @@ use Conifer\Form\AbstractBase;
 class FormTest extends Base {
   protected $form;
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);

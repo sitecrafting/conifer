@@ -17,7 +17,7 @@ use Conifer\Authorization\ShortcodePolicy;
 class ShortcodeAuthorizationPolicyTest extends Base {
   private $policy;
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->policy = $this->getMockBuilder(ShortcodePolicy::class)->setMethods(['tag'])->getMockForAbstractClass();
   }

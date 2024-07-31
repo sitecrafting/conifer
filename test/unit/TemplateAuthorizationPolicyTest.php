@@ -15,7 +15,7 @@ use Conifer\Authorization\TemplatePolicy;
 class TemplateAuthorizationPolicyTest extends Base {
   private $policy;
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
     $this->policy = $this->getMockForAbstractClass(
       TemplatePolicy::class

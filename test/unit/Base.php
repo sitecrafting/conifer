@@ -18,11 +18,11 @@ use WP_Term;
  * complain about a lack of tests defined here.
  */
 abstract class Base extends TestCase {
-  public function setUp() {
+  public function setUp(): void {
     WP_Mock::setUp();
   }
 
-  public function tearDown() {
+  public function tearDown(): void {
     WP_Mock::tearDown();
   }
 

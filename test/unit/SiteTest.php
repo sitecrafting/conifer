@@ -17,7 +17,7 @@ use org\bovigo\vfs\vfsStream;
 class SiteTest extends Base {
   const THEME_DIRECTORY = 'wp-content/themes/foo';
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // do a terrible amount of boilerplate to workaround Timber's decision
@@ -55,6 +55,10 @@ class SiteTest extends Base {
       'times' => 4,
     ]);
 
+    WP_Mock::userFunction('get_locale', [
+      'return' => 'en_US',
+    ]);
+
     // Set up a new virtual file system to test some of the site functions
     $structure         = [
       'theme-dir' => [
@@ -68,7 +72,7 @@ class SiteTest extends Base {
 
   }
 
-  public function tearDown() {
+  public function tearDown(): void {
     WP_Mock::tearDown();
   }
 
@@ -226,7 +230,7 @@ class SiteTest extends Base {
     $site = new Site();
 
     // mock Twig API
-    $twig = $this->getMockBuilder('Twig_Environment')
+    $twig = $this->getMockBuilder('Twig\Environment')
       ->disableOriginalConstructor()
       ->setMethods(['addFilter', 'addFunction'])
       ->getMock();

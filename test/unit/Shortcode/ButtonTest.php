@@ -14,7 +14,7 @@ use Conifer\Shortcode\Button;
 class ButtonTest extends Base {
   protected $button;
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->button = new Button();

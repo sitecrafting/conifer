@@ -19,7 +19,7 @@ class AjaxHandlerTest extends Base {
 
   protected $handler;
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     // Mock the abstract base AJAX handler class so we can test against it

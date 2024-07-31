@@ -18,7 +18,7 @@ use Conifer\Admin\SubPage;
 class AdminPageTest extends Base {
   private $page;
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     WP_Mock::userFunction('sanitize_key', [

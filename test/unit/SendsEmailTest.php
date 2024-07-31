@@ -19,7 +19,7 @@ class SendsEmailTest extends Base {
 
   protected $notifier;
 
-  public function setUp() {
+  public function setUp(): void {
     parent::setUp();
 
     $this->notifier = $this->getMockForTrait(SendsEmail::class);

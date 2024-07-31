@@ -20,11 +20,9 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": "^7.4"
+    "php": "^8.2"
   },
   "require-dev": {
-    "10up/wp_mock": "dev-dev",
-    "phpunit/phpunit": "^6.0",
     "mikey179/vfsstream": "~1",
     "behat/behat": "^3.4",
     "johnpbloch/wordpress-core": "6.5.5",
@@ -35,13 +33,15 @@
     "wp-coding-standards/wpcs": "^2.3",
     "acobster/wp-cli-yaml-fixtures": "^0.5.0",
     "victorjonsson/markdowndocs": "dev-master",
-    "szepeviktor/phpstan-wordpress": "^0.6.5",
+    "szepeviktor/phpstan-wordpress": "^1.3",
     "paulthewalton/acf-stubs": "^5.8.7",
-    "johnpbloch/wordpress-core-installer": "dev-master"
+    "johnpbloch/wordpress-core-installer": "dev-master",
+    "phpunit/phpunit": "^8",
+    "10up/wp_mock": "dev-dev"
   },
   "config": {
     "platform": {
-      "php": "7.4"
+      "php": "8.2"
     },
     "allow-plugins": {
       "composer/installers": true,
