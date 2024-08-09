@@ -189,7 +189,7 @@ abstract class Post extends TimberPost {
    */
   public static function latest(int $count = self::LATEST_POST_COUNT) : iterable {
     return Timber::get_posts([
-      'numberposts' => $count,
+      'posts_per_page' => $count,
     ]);
   }
 

@@ -82,7 +82,7 @@ _SQL_;
         // posts of this same type only
         'post_type' => $this->post_type,
         // limit number of posts
-        'numberposts' => $numPosts,
+        'posts_per_page' => $numPosts,
         // exclude this post
         'post__not_in' => [$this->ID],
         // query by shared categories

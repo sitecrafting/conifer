@@ -234,7 +234,7 @@ trait HasTerms {
     $inStatus = $term->posts([
       'post_status' => $statuses,
       'post_type'   => static::POST_TYPE,
-      'numberposts' => -1,
+      'posts_per_page' => -1,
     ]);
 
     if (is_array($inStatus)) {
