@@ -20,7 +20,8 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "php": ">=7.2"
+    "php": ">=7.2",
+    "timber/timber": "^2.1"
   },
   "require-dev": {
     "mikey179/vfsstream": "~1",
@@ -29,7 +30,6 @@
     "mnsami/composer-custom-directory-installer": "^2.0",
     "sitecrafting/groot": "dev-timber-2.x",
     "squizlabs/php_codesniffer": "3.*",
-    "timber/timber": "^2.1",
     "wp-coding-standards/wpcs": "^2.3",
     "acobster/wp-cli-yaml-fixtures": "^0.5.0",
     "victorjonsson/markdowndocs": "dev-master",
