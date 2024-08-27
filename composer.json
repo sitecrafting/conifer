@@ -75,9 +75,25 @@
   "scripts": {
     "unit": [
       "./vendor/bin/phpunit"
-    ],
-    "phpstan": [
+      ],
+      "phpstan": [
       "./vendor/bin/phpstan analyse"
-    ]
+      ],
+      "sniff-summary": [
+        "./vendor/bin/phpcs --report=summary --standard=./phpcs.xml conifer.php test lib"
+      ],
+      "sniff": [
+        "./vendor/bin/phpcs --standard=./phpcs.xml conifer.php test lib"
+      ],
+      "sniff-fix": [
+        "./vendor/bin/phpcbf --standard=./phpcs.xml conifer.php test lib"
+      ]
+  },
+  "config": {
+    "allow-plugins": {
+      "johnpbloch/wordpress-core-installer": true,
+      "mnsami/composer-custom-directory-installer": true,
+      "composer/installers": true
+    }
   }
 }

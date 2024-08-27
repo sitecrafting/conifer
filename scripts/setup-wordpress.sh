@@ -26,10 +26,10 @@ main() {
 
   WP_DIR="$LANDO_MOUNT/wp"
 
-  if ! [[ -d "$WP_DIR"/wp-content/plugins/conifer ]] ; then
-    echo 'Linking conifer plugin directory...'
-    ln -s "../../../" "$WP_DIR"/wp-content/plugins/conifer
-  fi
+  # if ! [[ -d "$WP_DIR"/wp-content/plugins/conifer ]] ; then
+  #   echo 'Linking conifer plugin directory...'
+  #   ln -s "../../../" "$WP_DIR"/wp-content/plugins/conifer
+  # fi
 
   echo 'Checking for WordPress config...'
   if wp_configured ; then
@@ -70,7 +70,6 @@ EOF
 
   # configure plugins and theme
   uninstall_plugins hello akismet
-  wp --quiet plugin activate conifer
   wp --quiet theme activate groot
 
   # install a specific version of Timber if necessary
@@ -90,7 +89,11 @@ EOF
     twentyfourteen \
     twentyfifteen \
     twentysixteen \
-    twentyseventeen
+    twentyseventeen \
+    twentytwentytwo \
+    twentytwentythree \
+    twentytwentyfour
+
 
   wp option set permalink_structure '/%postname%/'
   wp rewrite flush

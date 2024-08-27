@@ -33,7 +33,7 @@ class Image extends TimberImage {
    */
   public static function add_size( $name, $width, $height = false, $crop = false ) {
     add_image_size( $name, $width, $height, $crop );
-    $declared_sizes[$name] = [
+    static::$declared_sizes[$name] = [
       'name'    => $name,
       'width'   => $width,
       'height'  => $height,

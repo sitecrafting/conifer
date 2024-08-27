@@ -35,6 +35,18 @@ services:
       - yarn
       - ./scripts/build-docs.sh
 
+  cypress:
+    type: node:14
+
+    run:
+      - yarn cypress install
+
+    overrides:
+      image: 'sitecrafting/lando-cypress-wordpress:latest'
+
+  phpmyadmin:
+    type: phpmyadmin:5.1
+
   mailhog:
     type: mailhog:v1.0.0
     hogfrom:

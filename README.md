@@ -1,6 +1,9 @@
-# Conifer
+# [![Conifer](img/banner-green.png)](https://coniferplug.in)
 
-> #### Warning::ALPHA STATUS
+[![Build Status](https://travis-ci.org/sitecrafting/conifer.svg?branch=main)](https://travis-ci.org/github/sitecrafting/conifer)
+[![Packagist Version](https://img.shields.io/packagist/v/sitecrafting/conifer.svg)](https://packagist.org/packages/sitecrafting/conifer)
+
+#### :warning: ALPHA STATUS
 
 > Conifer is in Alpha. We consider the code production-ready, and breaking changes to the API are unlikely. Most of the code has been extracted from components already running in production.
 >
@@ -29,7 +32,7 @@ Please submit issues and feature requests directly to GitHub. We need guidance f
 
 Then, just clone the repo and start up the dev environment:
 
-```
+```bash
 git clone git@github.com:sitecrafting/conifer.git
 cd conifer
 lando start
@@ -52,6 +55,12 @@ Groot includes a script for building itself and creating a release. To create a 
 
 ```bash
 scripts/build-release.sh vX.Y.Z
+```
+
+or using Lando:
+
+```bash
+lando release vX.Y.Z
 ```
 
 This will create a .tar.gz and a .zip archive which you can upload to a new release on GitHub.
