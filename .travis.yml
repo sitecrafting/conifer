@@ -6,7 +6,7 @@ os:
 dist: bionic
 
 php:
-  - '7.4'
+  - '8.2'
 
 cache:
   directories:
@@ -14,7 +14,7 @@ cache:
 
 jobs:
   include:
-    - php: '7.4'
+    - php: '8.2'
     - name: 'Building docs'
       language: node_js
       node_js: 10
