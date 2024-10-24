@@ -14,16 +14,6 @@ use Timber\Menu as TimberMenu;
  * @package Conifer
  */
 class Menu extends TimberMenu {
-  /**
-   * When instantiating MenuItems that belong to this Menu,
-   * create instances of this class.
-   *
-   * @todo remove this var!
-   * @var string
-   * @codingStandardsIgnoreStart
-   */
-  public $MenuItemClass = MenuItem::class;
-  /* @codingStandardsIgnoreEnd non-standard var case, needed by Timber */
 
   /**
    * Get the top-level nav item that points, or whose ancestor points,
