@@ -8,8 +8,8 @@
     beStrictAboutTestsThatDoNotTestAnything="true"
 >
     <testsuites>
-        <testsuite>
-            <directory suffix=".php">./test/cases</directory>
+        <testsuite name="unit">
+            <directory suffix=".php">./test/unit</directory>
         </testsuite>
     </testsuites>
 </phpunit>

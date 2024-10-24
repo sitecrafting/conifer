@@ -90,6 +90,8 @@ class Image extends TimberImage {
     if (isset($sizes[$size])) {
       return $sizes[$size];
     }
+
+    return [];
   }
 
   /**

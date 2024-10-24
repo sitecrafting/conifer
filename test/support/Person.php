@@ -4,7 +4,7 @@
  * Support class for testing CPT registration
  */
 
-namespace ConiferTestSupport;
+namespace Conifer\Unit\Support;
 
 use Conifer\Post\Post;
 

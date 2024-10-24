@@ -83,7 +83,7 @@ trait HasCustomAdminFilters {
         $name,
         $queryModifier
       ) {
-        if (static::querying_by_custom_filter($name, $query, $queryModifier)) {
+        if (static::querying_by_custom_filter($name, $query)) {
           // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
           $queryModifier($query, get_query_var($name));
         }

@@ -14,7 +14,8 @@
     <exclude-pattern>wp-content/</exclude-pattern>
     <exclude-pattern>wp/</exclude-pattern>
     <exclude-pattern>vendor/*</exclude-pattern>
-    <exclude-pattern>test/themes</exclude-pattern>
+    <exclude-pattern>test/wp-tests-lib</exclude-pattern>
+    <exclude-pattern>test/wp</exclude-pattern>
 
     <!-- If no files or directories are specified on the command line, check all relevant files. -->
     <file>./lib</file>

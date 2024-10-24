@@ -2,10 +2,6 @@
 
 [Lando](https://docs.devwithlando.io) is the official Conifer development environment, and comes highly recommended. It's the best local dev tool in the galaxy!
 
-We also support [Varying Vagrant Vagrants](https://varyingvagrantvagrants.org/), although much of the tooling around testing etc. may require some tweaking depending on your setup.
-
-## Using Lando (Recommended)
-
 First, [install Lando](https://docs.devwithlando.io/installation/installing.html) if you haven't already. Your future self will thank you.
 
 ### Clone
@@ -58,9 +54,8 @@ Along with the [universal Lando commands](https://docs.devwithlando.io/cli/usage
 Conifer's Lando setup also provides these commands:
 
 * `lando unit`: run Conifer's PHPUnit test suite
-* `lando e2e`: run Conifer's end-to-end Cypress test suite
-* `lando cypress`: run arbitrary `cypress` commands
 * `lando sniff`: run [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) on the Conifer codebase
+* `lando analyze`: run [PHPStan](https://phpstan.com) static analysis on the Conifer codebase
 * `lando debug`: `tail` the WP debug.log in real time
 * `lando yarn`: run arbitrary [yarn](https://www.npmjs.com/package/yarn) commands
 * `lando docs`: build the Conifer doc site being served from the `docs` service (https://docs.conifer.lndo.site or similar)

@@ -28,7 +28,7 @@ trait HasTerms {
    * * a Timber\Term object
    * Defaults to all terms within $taxonomy.
    * @param array $postQueryArgs additional query filters to merge into the
-   * array passed to `get_all()`. Defaults to an empty array.
+   * array passed to `Timber::get_posts()`. Defaults to an empty array.
    * @return array an array like:
    * ```php
    * [
@@ -54,7 +54,7 @@ trait HasTerms {
       // This allows for a polymorphic list of terms! ✨
       return is_a($termIdent, Term::class)
         ? $termIdent
-        : new Term($termIdent);
+        : Timber::get_term($termIdent);
     }, $terms);
 
     // reduce each term in $taxonomy to an array containing:
@@ -63,7 +63,7 @@ trait HasTerms {
     return array_reduce($timberTerms, function(
       array $grouped,
       Term $term
-    ) use ($taxonomy, $postQueryArgs) : array {
+    ) use ($postQueryArgs) : array {
       // Because the count may be different from the denormalized term count,
       // since this may be a special query, we need to check if this term is
       // actually populated/empty.
@@ -213,7 +213,7 @@ trait HasTerms {
 
       $options['update_count_callback'] = function($terms) use ($statuses) {
         foreach ($terms as $term) {
-          static::count_statuses_toward_term_count(new Term($term), $statuses);
+          static::count_statuses_toward_term_count(Timber::get_term($term), $statuses);
         }
       };
     }
@@ -234,7 +234,7 @@ trait HasTerms {
     $inStatus = $term->posts([
       'post_status' => $statuses,
       'post_type'   => static::POST_TYPE,
-      'numberposts' => -1,
+      'posts_per_page' => -1,
     ]);
 
     if (is_array($inStatus)) {

@@ -1,49 +1,40 @@
-#
-# Conifer build process for Travis CI
-#
-
-
-#
-# !!! IMPORTANT !!!
-#
-# "without the top-level `env`, no job will be allowed to fail."
-# https://docs.travis-ci.com/user/customizing-the-build/
-env:
-
+# TravisCI configuration for sitecrafting/conifer
 
 language: php
-
-install:
-  - composer install --prefer-dist
-  - if [ $TIMBER_VERSION ] ; then composer require timber/timber:$TIMBER_VERSION; fi
-
-script:
-  - vendor/bin/phpunit
-  - vendor/bin/phpcs
+os:
+  - linux
+dist: bionic
 
 php:
-  - '7.0'
-  - '7.1'
-  - '7.2'
-  - '7.3'
+  - '8.2'
 
-env:
-  - TIMBER_VERSION='' # default to whatever is declared in composer.lock
-  - TIMBER_VERSION='2.x-dev'
+cache:
+  directories:
+    - '${HOME}/.composer/cache'
 
-# Test Conifer against PHP 7.x and run end-to-end tests
-matrix:
+jobs:
   include:
+    - php: '8.2'
     - name: 'Building docs'
       language: node_js
       node_js: 10
-      cache:
-        - ~/.cache
       install:
         - yarn install --frozen-lockfile
       script:
         - ./scripts/build-docs.sh
 
-  allow_failures:
-    - env: TIMBER_VERSION='2.x-dev'
+addons:
+  apt:
+    packages:
+      - subversion
 
+install:
+  - composer install --no-interaction --prefer-dist
+  # TODO
+  # - scrips/install-wp-tests.sh
+
+script:
+  - vendor/bin/phpunit --config phpunit.xml.dist
+  - vendor/bin/phpunit --config phpunit-integration.xml.dist
+  - vendor/bin/phpcs --standard=./phpcs.xml test lib
+  - vendor/bin/phpstan analyse

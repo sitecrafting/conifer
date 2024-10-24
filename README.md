@@ -3,12 +3,6 @@
 [![Build Status](https://travis-ci.org/sitecrafting/conifer.svg?branch=main)](https://travis-ci.org/github/sitecrafting/conifer)
 [![Packagist Version](https://img.shields.io/packagist/v/sitecrafting/conifer.svg)](https://packagist.org/packages/sitecrafting/conifer)
 
-#### :warning: ALPHA STATUS
-
-> Conifer is in Alpha. We consider the code production-ready, and breaking changes to the API are unlikely. Most of the code has been extracted from components already running in production.
->
-> **However, there may be lingering bugs and, if necessary, breaking changes at this early stage.**
-
 ## Documentation
 
 For reference documentation, use-cases, and design principles, [check out the docs](https://www.coniferplug.in/).

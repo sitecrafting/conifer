@@ -119,10 +119,7 @@ abstract class AbstractBase {
    */
 
   /**
-   * Handle the AJAX action for the given $request
-   *
-   * @param array $request the HTTP request params.
-   * Defaults to the $_REQUEST superglobal.
+   * Handle an HTTP request.
    */
   public static function handle() {
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended

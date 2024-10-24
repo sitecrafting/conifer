@@ -287,14 +287,14 @@ This will compose the default pagination and category parameters transparently, 
 Conifer Post classes know how to instantiate themselves in query results. The static `get_all()` method will return an array of whichever subclass of `Post` was called, whether that's `BlogPost`, `Page`, or a CPT:
 
 ```php
-$robots = Robot::get_all(['numberposts' => 3]);
+$robots = Robot::get_all(['posts_per_page' => 3]);
 // -> array of Robot instances
 ```
 
 Contrast this to the `Timber::get_posts()` method, which we'd have to tell to return `Robot`s:
 
 ```php
-$robots = Timber::get_posts(['numberposts' => 3], Robot::class);
+$robots = Timber::get_posts(['posts_per_page' => 3], Robot::class);
 ```
 
 Thanks to Conifer's use of [late static binding](https://secure.php.net/manual/en/language.oop5.late-static-bindings.php), we can omit this argument to `get_all()`.
