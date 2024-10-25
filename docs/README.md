@@ -2,9 +2,7 @@
 
 <div class="conifer-banner"></div>
 
-> #### Warning::ALPHA STATUS
-
-> This version of Conifer is Alpha status. View the docs for [Conifer 1.0](https://coniferplug.in).
+View the docs for [Conifer 1.0](https://coniferplug.in).
 
 ## What is Conifer?
 
