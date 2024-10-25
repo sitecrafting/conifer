@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c638e72a72004ffbe149bbed00aff409",
+    "content-hash": "c527487bcd6aadd14abde09b5fc83e84",
     "packages": [
         {
             "name": "symfony/deprecation-contracts",
@@ -421,12 +421,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "f3db1d1a0c5cc21fad255bd6690bbde16d378459"
+                "reference": "494f010d29bf86e600fed21ce1d8477b66c475da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/f3db1d1a0c5cc21fad255bd6690bbde16d378459",
-                "reference": "f3db1d1a0c5cc21fad255bd6690bbde16d378459",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/494f010d29bf86e600fed21ce1d8477b66c475da",
+                "reference": "494f010d29bf86e600fed21ce1d8477b66c475da",
                 "shasum": ""
             },
             "require": {
@@ -493,7 +493,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-24T15:55:22+00:00"
+            "time": "2024-10-25T14:01:04+00:00"
         }
     ],
     "packages-dev": [
@@ -2946,16 +2946,16 @@
         },
         {
             "name": "sitecrafting/groot",
-            "version": "dev-timber-2.x",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sitecrafting/groot.git",
-                "reference": "512f277381b9bd17eb58de1fe120f20a0fc2e8d0"
+                "reference": "9b87bf9de39675140de7eb4c3c3f61f137249baa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sitecrafting/groot/zipball/512f277381b9bd17eb58de1fe120f20a0fc2e8d0",
-                "reference": "512f277381b9bd17eb58de1fe120f20a0fc2e8d0",
+                "url": "https://api.github.com/repos/sitecrafting/groot/zipball/9b87bf9de39675140de7eb4c3c3f61f137249baa",
+                "reference": "9b87bf9de39675140de7eb4c3c3f61f137249baa",
                 "shasum": ""
             },
             "require": {
@@ -2967,7 +2967,7 @@
                 "johnpbloch/wordpress-core": "^6.5.1",
                 "johnpbloch/wordpress-core-installer": "^2.0",
                 "mnsami/composer-custom-directory-installer": "^2.0",
-                "sitecrafting/conifer": "dev-timber-2.x",
+                "sitecrafting/conifer": "^1.0",
                 "squizlabs/php_codesniffer": "3.*",
                 "wp-coding-standards/wpcs": "^0.14"
             },
@@ -2999,9 +2999,9 @@
             "description": "The official SiteCrafting WordPress starter theme",
             "support": {
                 "issues": "https://github.com/sitecrafting/groot/issues",
-                "source": "https://github.com/sitecrafting/groot/tree/timber-2.x"
+                "source": "https://github.com/sitecrafting/groot/tree/v1.0.0"
             },
-            "time": "2024-10-24T20:12:43+00:00"
+            "time": "2024-10-25T20:54:01+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -3009,12 +3009,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "9e60f9f8748736d3d06fea8ef26dccbdc5ba4902"
+                "reference": "71853705540d2b6fdf94ec8f73c3ebb978f00a56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/9e60f9f8748736d3d06fea8ef26dccbdc5ba4902",
-                "reference": "9e60f9f8748736d3d06fea8ef26dccbdc5ba4902",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/71853705540d2b6fdf94ec8f73c3ebb978f00a56",
+                "reference": "71853705540d2b6fdf94ec8f73c3ebb978f00a56",
                 "shasum": ""
             },
             "require": {
@@ -3082,7 +3082,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2024-10-16T22:25:17+00:00"
+            "time": "2024-10-25T20:58:58+00:00"
         },
         {
             "name": "symfony/config",
@@ -4519,7 +4519,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "sitecrafting/groot": 20,
         "victorjonsson/markdowndocs": 20,
         "johnpbloch/wordpress-core-installer": 20,
         "10up/wp_mock": 20

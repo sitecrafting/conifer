@@ -28,7 +28,7 @@
     "behat/behat": "^3.4",
     "johnpbloch/wordpress-core": "6.5.5",
     "mnsami/composer-custom-directory-installer": "^2.0",
-    "sitecrafting/groot": "dev-timber-2.x",
+    "sitecrafting/groot": "^1.0",
     "squizlabs/php_codesniffer": "3.*",
     "wp-coding-standards/wpcs": "^2.3",
     "acobster/wp-cli-yaml-fixtures": "^0.5.0",
