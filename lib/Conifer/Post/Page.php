@@ -8,7 +8,10 @@
 
 namespace Conifer\Post;
 
+use Timber\Post as TimberPost;
 use Timber\Timber;
+
+use Conifer\Navigation\Menu;
 
 /**
  * Class to represent WordPress pages.
@@ -22,12 +25,12 @@ class Page extends Post {
    * Get the top-level title to display from the nav structure, fall back
    * on this Page object's title it it's outside the nav hierarchy.
    *
-   * @param \Conifer\Post\Menu $menu the menu to look at to determine the title
+   * @param \Conifer\Navigation\Menu $menu the menu to look at to determine the title
    * @return string the title to display
    */
   public function get_title_from_nav_or_post( Menu $menu ) : string {
     return $menu->get_current_top_level_item( $this )->title
-      ?? $this->title;
+      ?? $this->title();
   }
 
   /**
@@ -35,34 +38,28 @@ class Page extends Post {
    *
    * @return \Conifer\Post\Page
    */
-  public static function get_blog_page() : Page {
-    return new static( get_option('page_for_posts') );
+  public static function get_blog_page() : TimberPost {
+    return Timber::get_post( get_option('page_for_posts') );
   }
 
   /**
    * Get a page by its template filename, relative to the theme root.
    *
    * @param string $template
+   * @param array extra query params to be merged in with the posts query
+   * to be performed.
    * @return null|Page the first page found matching the template, or null if no such page exists
    */
-  public static function get_by_template(string $template) {
-    // query the Page by template
-    $pages = Timber::get_posts([
-      'post_type' => 'page',
-      'post_status' => 'publish',
-      'posts_per_page' => 1,
+  public static function get_by_template(string $template, array $query = []) {
+    return Timber::get_post(array_merge($query, [
+      'post_type'  => 'page',
       'meta_query' => [
         [
-          'key' => '_wp_page_template',
-          'value' => $template,
+          'key'    => '_wp_page_template',
+          'value'  => $template,
         ],
       ],
-    ], static::class);
-
-    // return the first page we find, if it exists
-    if (isset($pages[0])) {
-      return $pages[0];
-    }
+    ]));
   }
 }
 

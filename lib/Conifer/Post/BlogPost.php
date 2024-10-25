@@ -9,12 +9,22 @@
 namespace Conifer\Post;
 
 use DateTime;
+use Timber\Timber;
 
 /**
  * Class for encapsulating WP posts of type "post"
  */
 class BlogPost extends Post {
   const POST_TYPE = 'post';
+
+  const NUM_RELATED_POSTS = 10;
+
+  /**
+   * Posts related via category to this one.
+   *
+   * @var \Timber\PostCollectionInterface
+   */
+  protected $related_posts;
 
   /**
    * Get all months for which a published blog post exists
@@ -66,13 +76,13 @@ _SQL_;
       // Get term_ids to query by
       $categoryIds = array_map(function($cat) {
         return $cat->id;
-      }, $this->get_categories());
+      }, $this->categories());
 
-      $this->related_posts = static::get_all([
+      $this->related_posts = Timber::get_posts([
         // posts of this same type only
         'post_type' => $this->post_type,
         // limit number of posts
-        'numberposts' => $numPosts,
+        'posts_per_page' => $numPosts,
         // exclude this post
         'post__not_in' => [$this->ID],
         // query by shared categories

@@ -9,13 +9,17 @@ use Timber\Timber;
 use Timber\Site as TimberSite;
 use Timber\URLHelper;
 
-use Twig_Environment;
-use Twig_Extension_StringLoader;
-use Twig_Extension_Debug;
-use Twig_SimpleFunction;
-use Twig_SimpleFilter;
+use Twig\Environment;
+use Twig\TwigFunction;
+use Twig\TwigFilter;
+use Twig\Extension\StringLoaderExtension;
+
+use WP_Post;
 
 use Conifer\Navigation\Menu;
+use Conifer\Post\BlogPost;
+use Conifer\Post\FrontPage;
+use Conifer\Post\Page;
 use Conifer\Post\Post;
 use Conifer\Shortcode\Gallery;
 use Conifer\Shortcode\Button;
@@ -28,8 +32,7 @@ use Conifer\Twig;
  */
 class Site extends TimberSite {
   const DEFAULT_TWIG_EXTENSIONS = [
-    Twig_Extension_Debug::class,
-    Twig_Extension_StringLoader::class,
+    StringLoaderExtension::class,
   ];
 
   /**
@@ -45,6 +48,13 @@ class Site extends TimberSite {
    * @var array
    */
   protected $style_directory_cascade;
+
+  /**
+   * An array of directories where Conifer will look for Twig views
+   *
+   * @var array
+   */
+  protected $view_directory_cascade;
 
   /**
    * Assets version timestamp, used for cache-busting
@@ -83,6 +93,8 @@ class Site extends TimberSite {
     $this->script_directory_cascade = [
       get_stylesheet_directory() . '/js/',
       get_stylesheet_directory() . '/dist/',
+      // TODO set up a bootstrap file for symbol discovery
+      // https://phpstan.org/user-guide/discovering-symbols
       WP_PLUGIN_DIR . '/conifer/assets/js/',
       WPMU_PLUGIN_DIR . '/conifer/assets/js/',
     ];
@@ -130,8 +142,9 @@ class Site extends TimberSite {
    * custom image sizes, shortcodes, etc.
    */
   public function configure_defaults() {
-    add_filter('timber_context', [$this, 'add_to_context']);
+    add_filter('timber/context', [$this, 'add_to_context']);
 
+    $this->configure_default_classmaps();
     $this->configure_twig_view_cascade();
     $this->configure_default_twig_extensions();
     $this->add_default_twig_helpers();
@@ -142,6 +155,26 @@ class Site extends TimberSite {
 
     Integrations\YoastIntegration::demote_metabox();
     // TODO moar integrations!
+  }
+
+  /**
+   * Register default Post Class Maps for default Conifer classes
+   *
+   * @todo Terms/Users
+   */
+  public function configure_default_classmaps() {
+    add_filter('timber/post/classmap', function(array $map) : array {
+      return array_merge($map, [
+        // For pages, instantiate a FrontPage for the globally configured home page,
+        // otherwise return a regular Page.
+        'page'     => function(WP_Post $page) {
+          static $homeId;
+          $homeId = $homeId ?? get_option('page_on_front');
+          return $page->ID === $homeId ? FrontPage::class : Page::class;
+        },
+        'post'     => BlogPost::class,
+      ]);
+    });
   }
 
 
@@ -337,7 +370,7 @@ class Site extends TimberSite {
    * ]);
    */
   public function context(array $with = []) : array {
-    return array_merge(Timber::get_context(), $with);
+    return array_merge(Timber::context(), $with);
   }
 
   /**
@@ -351,7 +384,7 @@ class Site extends TimberSite {
     // @codingStandardsIgnoreStart WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
     trigger_error('get_context_with_post is deprecated. Use context instead. https://coniferplug.in/site.html#timber-context-helper', E_USER_DEPRECATED);
     // @codingStandardsIgnoreEnd
-    $context         = Timber::get_context();
+    $context         = Timber::context();
     $context['post'] = $post;
     return $context;
   }
@@ -367,7 +400,7 @@ class Site extends TimberSite {
     // @codingStandardsIgnoreStart WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
     trigger_error('get_context_with_post is deprecated. Use context instead. https://coniferplug.in/site.html#timber-context-helper', E_USER_DEPRECATED);
     // @codingStandardsIgnoreEnd
-    $context          = Timber::get_context();
+    $context          = Timber::context();
     $context['posts'] = $posts;
     return $context;
   }
@@ -380,7 +413,7 @@ class Site extends TimberSite {
    */
   public function add_to_context( array $context ) : array {
     $context['site']         = $this;
-    $context['primary_menu'] = new Menu( 'primary' );
+    $context['primary_menu'] = Timber::get_menu('primary');
     $context['body_classes'] = get_body_class();
     $context['search_query'] = get_search_query();
     return $context;
@@ -400,7 +433,7 @@ class Site extends TimberSite {
    * Twig\HelperInterface that implements the functions/filters to add
    */
   public function add_twig_helper(Twig\HelperInterface $helper) {
-    add_filter('get_twig', function(Twig_Environment $twig) use ($helper) {
+    add_filter('timber/twig', function(Environment $twig) use ($helper) {
       return $this->get_twig_with_helper($twig, $helper);
     });
   }
@@ -409,24 +442,24 @@ class Site extends TimberSite {
    * Add any filters/functions implemented by `$helper` to the Twig instance
    * `$twig`.
    *
-   * @param Twig_Environment $twig the Twig environment to add to
+   * @param Environment $twig the Twig environment to add to
    * @param Twig\HelperInterface $helper the helper instance that implements the
    * filters/functions to add
-   * @return Twig_Environment
+   * @return Environment
    */
   public function get_twig_with_helper(
-    Twig_Environment $twig,
+    Environment $twig,
     Twig\HelperInterface $helper
-  ) : Twig_Environment {
+  ) : Environment {
     // add Twig filters
     foreach ( $helper->get_filters() as $name => $callable ) {
-      $filter = new Twig_SimpleFilter( $name, $callable );
+      $filter = new TwigFilter( $name, $callable );
       $twig->addFilter( $filter );
     }
 
     // add Twig functions
     foreach ( $helper->get_functions() as $name => $callable ) {
-      $function = new Twig_SimpleFunction( $name, $callable );
+      $function = new TwigFunction( $name, $callable );
       $twig->addFunction( $function );
     }
 
@@ -439,8 +472,13 @@ class Site extends TimberSite {
    * @see set_view_directory_cascade
    */
   public function configure_twig_view_cascade() {
-    add_filter('timber/loader/paths', function($dirs) {
-      return array_merge($this->get_view_directory_cascade(), $dirs);
+    add_filter('timber/locations', function($dirs) {
+      $dirList = array_merge($this->get_view_directory_cascade(), $dirs);
+
+      // The timber/loader/paths filter wants an array of arrays
+      return array_map(function($x) {
+        return is_array($x) ? $x : [$x];
+      }, $dirList);
     });
   }
 
@@ -448,7 +486,7 @@ class Site extends TimberSite {
    * Load Twig's String Loader and Debug extensions
    */
   public function configure_default_twig_extensions() {
-    add_filter('get_twig', function(Twig_Environment $twig) {
+    add_filter('timber/twig', function(Environment $twig) {
       $loadedExtensions = array_keys($twig->getExtensions());
 
       // load default extensions unless they've been loaded already

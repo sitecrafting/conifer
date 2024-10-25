@@ -2,36 +2,12 @@
 /**
  * Conifer test suite bootstrap file; included before every unit test run
  *
- * @copyright 2018 SiteCrafting, Inc.
+ * @todo remove dependency on WP_Mock
+ * @copyright 2020 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
-define('TEST_LIB_DIR', __DIR__ . '/cases/');
-define('TEST_SUPPORT_DIR', __DIR__ . '/support/');
-
-spl_autoload_register(function(string $className) {
-  $components = explode('\\', $className);
-
-  $topNamespace = array_shift($components);
-
-  if ($topNamespace === 'ConiferTest') {
-    $file = TEST_LIB_DIR . implode('/', $components) . '.php';
-
-    if (file_exists($file)) {
-      require $file;
-    }
-  }
-
-  if ($topNamespace === 'ConiferTestSupport') {
-    $file = TEST_SUPPORT_DIR . implode('/', $components) . '.php';
-
-    if (file_exists($file)) {
-      require $file;
-    }
-  }
-});
 
 
 /*

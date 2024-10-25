@@ -23,7 +23,7 @@ function fail() {
 }
 
 function main() {
-  if ! [[ -f ./conifer.php ]] ; then
+  if ! [[ -f ./.lando.yml ]] ; then
     fail 'Error: not in root conifer directory?'
   fi
 
@@ -52,6 +52,9 @@ function main() {
       echo 'aborted.'
       exit
     fi
+
+    # create the tag
+    git tag "$RELEASE"
   fi
 
   backup_vendor
@@ -98,7 +101,11 @@ function create_github_release() {
     read -p 'Create a GitHub release? (y/N) ' create
     if [[ "$create" = "y" ]] ; then
       echo 'pushing latest changes and tags...'
-      git push origin master
+      git push
+      if ! [[ "$?" -eq 0 ]] ; then
+        echo 'failed to push current branch; cancelling'
+        exit
+      fi
       git push --tags
       hub release create --prerelease \
         --attach="$2" \
