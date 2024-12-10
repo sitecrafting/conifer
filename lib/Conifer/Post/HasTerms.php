@@ -68,9 +68,7 @@ trait HasTerms {
       // since this may be a special query, we need to check if this term is
       // actually populated/empty.
       $posts = $term->posts(
-        $postQueryArgs,
-        static::_post_type(),
-        static::class
+        $postQueryArgs
       );
       if ($posts) {
         // Group this term with its respective posts.
