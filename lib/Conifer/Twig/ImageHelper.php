@@ -32,7 +32,7 @@ class ImageHelper implements HelperInterface {
   public function get_filters() : array {
     return [
       'src_to_retina' => [$this, 'src_to_retina'],
-      'src_to_retina_at_mutiplyer' => [$this, 'src_to_retina_at_mutiplyer'],
+      'src_to_retina_at_multiplier' => [$this, 'src_to_retina_at_multiplier'],
     ];
   }
 
@@ -48,15 +48,19 @@ class ImageHelper implements HelperInterface {
   }
 
   /**
-   * Convert the image URL `$src` to its retina equivalent at given multiplyer.
+   * Convert the image URL `$src` to its retina equivalent at given multiplier.
    * Makes sure the file exists.
    *
    * @param `$src` the original src URL
-   * @param `$multiplyer` the multiplyer for the retina image
+   * @param `$multiplier` the multiplier for the retina image
    * @return string the retina src
    */
-  public function src_to_retina_at_mutiplyer(string $src, int $multiplyer = 2) : string {
+  public function src_to_retina_at_multiplier(?string $src, int $multiplier = 2) : string {
     
+    if (!$src) {
+      return '';
+    }
+
     // get the path of the original file
     $file = TimberImageHelper::get_server_location($src);
 
@@ -65,12 +69,12 @@ class ImageHelper implements HelperInterface {
       return '';
     }
 
-    // return base $src if multiplyer less than 2
-    if ($multiplyer < 2) {
+    // return base $src if multiplier less than 2
+    if ($multiplier < 2) {
       return $src;
     }
 
-    $image = preg_replace('~(\.[a-z]+)$~i', "@{$multiplyer}x$1", $src);
+    $image = preg_replace('~(\.[a-z]+)$~i', "@{$multiplier}x$1", $src);
 
     $file = TimberImageHelper::get_server_location($image);
 
@@ -88,15 +92,19 @@ class ImageHelper implements HelperInterface {
    * Will return srcset with files that exist.
    *
    * @param `$src` the original src URL
-  *  @param `$max_multiplyer` the max multiplyer for the set
+  *  @param `$max_multiplier` the max multiplier for the set
    * @return string the retina srcset
    */
-  public function generate_retina_srcset(string $src, int $max_multiplyer = 2) : string {
+  public function generate_retina_srcset(?string $src, int $max_multiplier = 2) : string {
     
+    if (!$src) {
+      return '';
+    }
+
     $set = [];
 
-    // bail if $max_multiplyer < 2. We don't need srcset.
-    if ($max_multiplyer < 2) {
+    // bail if $max_multiplier < 2. We don't need srcset.
+    if ($max_multiplier < 2) {
       return '';
     }
 
@@ -121,7 +129,7 @@ class ImageHelper implements HelperInterface {
         array_push($set, $image . " {$count}x");
       }
       $count++;
-    } while ($count <  $max_multiplyer);
+    } while ($count <  $max_multiplier);
 
     // return srcset or empty string if retina images don't exist
     return count($set)>1 ? 'srcset="'.implode(', ', $set).'"': '';
