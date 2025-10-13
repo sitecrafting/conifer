@@ -19,6 +19,7 @@
     }
   ],
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": ">=8.1",
     "timber/timber": "^2.2"
@@ -28,7 +29,6 @@
     "behat/behat": "^3.4",
     "johnpbloch/wordpress-core": "6.5.5",
     "mnsami/composer-custom-directory-installer": "^2.0",
-    "sitecrafting/groot": "^1.0",
     "squizlabs/php_codesniffer": "3.*",
     "wp-coding-standards/wpcs": "^2.3",
     "acobster/wp-cli-yaml-fixtures": "^0.5.0",
@@ -37,7 +37,8 @@
     "paulthewalton/acf-stubs": "^5.8.7",
     "johnpbloch/wordpress-core-installer": "dev-master",
     "phpunit/phpunit": "^8",
-    "10up/wp_mock": "dev-dev"
+    "10up/wp_mock": "dev-dev",
+    "sitecrafting/groot": "dev-master"
   },
   "config": {
     "platform": {
