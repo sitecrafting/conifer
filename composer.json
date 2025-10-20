@@ -44,6 +44,7 @@
     "platform": {
       "php": "8.2"
     },
+    "sort-packages": true,
     "allow-plugins": {
       "composer/installers": true,
       "mnsami/composer-custom-directory-installer": true,
@@ -89,12 +90,5 @@
       "sniff-fix": [
         "./vendor/bin/phpcbf --standard=./phpcs.xml conifer.php test lib"
       ]
-  },
-  "config": {
-    "allow-plugins": {
-      "johnpbloch/wordpress-core-installer": true,
-      "mnsami/composer-custom-directory-installer": true,
-      "composer/installers": true
-    }
   }
 }
