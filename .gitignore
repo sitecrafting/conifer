@@ -26,6 +26,8 @@ wp-cli.local.yml
 /docs/reference/*.md
 /docs/node_modules/
 
-# VS code
+# IDEs
 .vscode/*
 .idea
+
+.phpunit.result.cache
