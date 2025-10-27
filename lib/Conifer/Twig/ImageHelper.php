@@ -56,7 +56,7 @@ class ImageHelper implements HelperInterface {
    * @return string the retina src
    */
   public function src_to_retina_at_multiplier(?string $src, int $multiplier = 2) : string {
-    
+
     if (!$src) {
       return '';
     }
@@ -92,11 +92,11 @@ class ImageHelper implements HelperInterface {
    * Will return srcset with files that exist.
    *
    * @param `$src` the original src URL
-  *  @param `$max_multiplier` the max multiplier for the set
+   *  @param `$max_multiplier` the max multiplier for the set
    * @return string the retina srcset
    */
   public function generate_retina_srcset(?string $src, int $max_multiplier = 2) : string {
-    
+
     if (!$src) {
       return '';
     }
@@ -122,17 +122,17 @@ class ImageHelper implements HelperInterface {
     // add additional retna image sizes if they exist
     $count = 2;
     do {
-      $image = preg_replace('~(\.[a-z]+)$~i', '@'.$count.'x$1', $src);
-      $file = TimberImageHelper::get_server_location($image);
+      $image = preg_replace('~(\.[a-z]+)$~i', '@' . $count . 'x$1', $src);
+      $file  = TimberImageHelper::get_server_location($image);
 
       if (file_exists($file)) {
         array_push($set, $image . " {$count}x");
       }
       $count++;
-    } while ($count <  $max_multiplier);
+    } while ($count < $max_multiplier);
 
     // return srcset or empty string if retina images don't exist
-    return count($set)>1 ? 'srcset="'.implode(', ', $set).'"': '';
+    return count($set)>1 ? 'srcset="' . implode(', ', $set) . '"': '';
 
   }
 }

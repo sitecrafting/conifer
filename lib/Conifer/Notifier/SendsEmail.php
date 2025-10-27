@@ -40,7 +40,7 @@ trait SendsEmail {
     string $message,
     array $headers = []
   ) : bool {
-    return wp_mail($to, utf8_encode($subject), $message, array_merge([
+    return wp_mail($to, mb_convert_encoding($subject, 'UTF-8'), $message, array_merge([
       'Content-Type: text/html; charset=UTF-8',
     ], $headers));
   }
@@ -61,7 +61,7 @@ trait SendsEmail {
     string $message,
     array $headers = []
   ) : bool {
-    return wp_mail($to, utf8_encode($subject), $message, $headers);
+    return wp_mail($to, mb_convert_encoding($subject, 'UTF-8'), $message, $headers);
   }
 
   /**
