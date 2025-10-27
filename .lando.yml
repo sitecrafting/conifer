@@ -5,16 +5,19 @@ config:
   php: '8.1'
 
 services:
+
   node:
-    type: node:14
+    type: node:22
+    build:
+      - yarn
 
   appserver:
-    run_as_root:
+    build_as_root:
       - apt-get update
       - apt-get install zip
       - apt-get install subversion -y
 
-    run:
+    build:
       - composer install
       - ./scripts/setup-wordpress.sh
 
@@ -28,25 +31,6 @@ services:
       user: test
       password: test
       database: test
-
-  gitbook:
-    type: node:10
-
-    run:
-      - yarn
-      - ./scripts/build-docs.sh
-
-  cypress:
-    type: node:14
-
-    run:
-      - yarn cypress install
-
-    overrides:
-      image: 'sitecrafting/lando-cypress-wordpress:latest'
-
-  phpmyadmin:
-    type: phpmyadmin:5.1
 
   mailhog:
     type: mailhog:v1.0.0
@@ -133,15 +117,10 @@ tooling:
     cmd: './vendor/bin/phpstan'
     description: 'Run phpstan commands for static analysis'
 
-  docs:
-    service: gitbook
-    cmd: './scripts/build-docs.sh ./docs'
-    description: 'Build documentation in _book folder using Gitbook'
-
-  gitbook:
-    service: gitbook
-    cmd: 'yarn gitbook'
-    description: 'Run arbitrary gitbook commands'
+  yarn:
+    service: node
+    cmd: 'yarn'
+    description: 'Run yarn commands'
 
 events:
   pre-docs:
