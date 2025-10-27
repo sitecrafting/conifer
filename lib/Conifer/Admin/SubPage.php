@@ -93,10 +93,8 @@ abstract class SubPage extends Page {
 
   /**
    * The callback to the `admin_menu` action.
-   *
-   * @return Page returns this SubPage
    */
-  public function do_add() : Page {
+  public function do_add(): void {
     $renderCallback = function() {
       // NOTE: Since render() is specifically for outputting HTML in the admin
       // area, users are responsible for escaping their own output accordingly.
@@ -112,7 +110,5 @@ abstract class SubPage extends Page {
       $this->slug,
       $renderCallback
     );
-
-    return $this;
   }
 }

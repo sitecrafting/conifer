@@ -110,15 +110,13 @@ abstract class Page {
 
   /**
    * The callback to the `admin_menu` action.
-   *
-   * @return Page returns this Page
    */
-  public function do_add() : Page {
+  public function do_add(): void {
     $renderCallback = function() {
       // NOTE: Since render() is specifically for outputting HTML in the admin
       // area, users are responsible for escaping their own output accordingly.
       // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-      echo $this->render($this->slug);
+      echo $this->render((array)$this->slug);
     };
 
     add_menu_page(
@@ -129,8 +127,6 @@ abstract class Page {
       $renderCallback,
       $this->icon_url
     );
-
-    return $this;
   }
 
   /**

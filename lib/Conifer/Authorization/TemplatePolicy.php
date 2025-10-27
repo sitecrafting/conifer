@@ -24,6 +24,7 @@ abstract class TemplatePolicy extends AbstractPolicy {
   public function adopt() : PolicyInterface {
     add_filter('template_include', function(string $template) {
       $this->enforce($template, Timber::get_user());
+      return $template;
     });
 
     return $this;

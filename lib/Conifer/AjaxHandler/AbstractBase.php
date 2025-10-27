@@ -82,28 +82,20 @@ use ReflectionClass;
 abstract class AbstractBase {
   /**
    * The request array for this AJAX request (either POST or GET)
-   *
-   * @var array
    */
-  protected $request;
+  protected array $request;
   /**
    * The $_COOKIE array for this AJAX request
-   *
-   * @var array
    */
-  protected $cookie;
+  protected array $cookie;
   /**
    * The name of the AJAX action being requested
-   *
-   * @var string
    */
-  protected $action;
+  protected string $action;
   /**
    * Associative array which maps an action to the method name used to handle that action
-   *
-   * @var array
    */
-  protected $action_methods;
+  protected array $action_methods;
 
   /**
    * Abstract method used to define the functionality when handling an AJAX request.
@@ -120,10 +112,12 @@ abstract class AbstractBase {
 
   /**
    * Handle an HTTP request.
+   *
+   * @param ?array $requestData The request data (`$_GET`, `$_POST`, etc). Defaults to $_REQUEST.
    */
-  public static function handle() {
+  public static function handle(?array $requestData = null): void {
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-    $handler = new static($_REQUEST);
+    $handler = new static($requestData ?? $_REQUEST);
     $handler->set_cookie($_COOKIE);
     $handler->send_json_response($handler->execute());
   }
@@ -131,14 +125,14 @@ abstract class AbstractBase {
   /**
    * Handle an HTTP POST request.
    */
-  public static function handle_post() {
+  public static function handle_post(): void {
     static::handle($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
   }
 
   /**
    * Handle an HTTP GET request.
    */
-  public static function handle_get() {
+  public static function handle_get(): void {
     static::handle($_GET); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
   }
 
