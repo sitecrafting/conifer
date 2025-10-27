@@ -34,10 +34,9 @@
     "php-stubs/acf-pro-stubs": "^6.5",
     "phpunit/phpunit": "^9.0",
     "sitecrafting/groot": "dev-master",
-    "squizlabs/php_codesniffer": "3.*",
     "szepeviktor/phpstan-wordpress": "^2.0.3",
     "victorjonsson/markdowndocs": "dev-master",
-    "wp-coding-standards/wpcs": "^2.3"
+    "wp-coding-standards/wpcs": "^3.2.0"
   },
   "config": {
     "platform": {
@@ -46,8 +45,9 @@
     "sort-packages": true,
     "allow-plugins": {
       "composer/installers": true,
-      "mnsami/composer-custom-directory-installer": true,
-      "johnpbloch/wordpress-core-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "johnpbloch/wordpress-core-installer": true,
+      "mnsami/composer-custom-directory-installer": true
     }
   },
   "extra": {
