@@ -27,7 +27,7 @@
   "require-dev": {
     "10up/wp_mock": "dev-dev",
     "behat/behat": "^3.25.0",
-    "johnpbloch/wordpress-core": "6.5.5",
+    "johnpbloch/wordpress-core": "^6.5.5",
     "johnpbloch/wordpress-core-installer": "dev-master",
     "mikey179/vfsstream": "~1",
     "mnsami/composer-custom-directory-installer": "^2.0",
