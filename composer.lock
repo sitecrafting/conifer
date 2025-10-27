@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "abf096550de0f60a9e90ec8ab662506f",
+    "content-hash": "1a922508983e0cc2b432f8ffbf425953",
     "packages": [
         {
             "name": "symfony/deprecation-contracts",
@@ -1109,16 +1109,16 @@
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
-            "version": "dev-master",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core-installer.git",
-                "reference": "72493e339152fecd671766302c87b0b21fb6d569"
+                "reference": "237faae9a60a4a2e1d45dce1a5836ffa616de63e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core-installer/zipball/72493e339152fecd671766302c87b0b21fb6d569",
-                "reference": "72493e339152fecd671766302c87b0b21fb6d569",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core-installer/zipball/237faae9a60a4a2e1d45dce1a5836ffa616de63e",
+                "reference": "237faae9a60a4a2e1d45dce1a5836ffa616de63e",
                 "shasum": ""
             },
             "require": {
@@ -1132,7 +1132,6 @@
                 "composer/composer": "^1.0 || ^2.0",
                 "phpunit/phpunit": ">=5.7.27"
             },
-            "default-branch": true,
             "type": "composer-plugin",
             "extra": {
                 "class": "johnpbloch\\Composer\\WordPressCorePlugin"
@@ -1160,7 +1159,7 @@
                 "issues": "https://github.com/johnpbloch/wordpress-core-installer/issues",
                 "source": "https://github.com/johnpbloch/wordpress-core-installer/tree/master"
             },
-            "time": "2022-01-22T16:43:43+00:00"
+            "time": "2020-04-16T21:44:57+00:00"
         },
         {
             "name": "mikey179/vfsstream",
@@ -5052,7 +5051,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "10up/wp_mock": 20,
-        "johnpbloch/wordpress-core-installer": 20,
         "sitecrafting/groot": 20,
         "victorjonsson/markdowndocs": 20
     },
