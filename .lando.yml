@@ -6,11 +6,6 @@ config:
 
 services:
 
-  node:
-    type: node:22
-    build:
-      - yarn
-
   appserver:
     build_as_root:
       - apt-get update
@@ -20,6 +15,11 @@ services:
     build:
       - composer install
       - ./scripts/setup-wordpress.sh
+
+  node:
+    type: node:22
+    build:
+      - yarn && yarn docs:build
 
   database:
     type: mysql:5.7
@@ -40,7 +40,7 @@ services:
   docs:
     type: nginx:1.18
     ssl: true
-    webroot: docs/_book
+    webroot: docs/.vitepress/dist
 
 tooling:
   clean:
@@ -121,10 +121,6 @@ tooling:
     service: node
     cmd: 'yarn'
     description: 'Run yarn commands'
-
-events:
-  pre-docs:
-    - appserver: './scripts/build-api-md.sh'
 
 proxy:
   appserver:

@@ -35,7 +35,6 @@
     "phpunit/phpunit": "^9.0",
     "sitecrafting/groot": "dev-master",
     "szepeviktor/phpstan-wordpress": "^2.0.3",
-    "victorjonsson/markdowndocs": "dev-master",
     "wp-coding-standards/wpcs": "^3.2.0"
   },
   "config": {
