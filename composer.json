@@ -33,6 +33,7 @@
     "mnsami/composer-custom-directory-installer": "^2.0",
     "php-stubs/acf-pro-stubs": "^6.5",
     "phpunit/phpunit": "^9.0",
+    "rector/rector": "^2.2",
     "sitecrafting/groot": "dev-master",
     "szepeviktor/phpstan-wordpress": "^2.0.3",
     "wp-coding-standards/wpcs": "^3.2.0"

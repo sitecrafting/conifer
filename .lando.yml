@@ -127,6 +127,11 @@ tooling:
     cmd: 'yarn docs:build'
     description: 'Build Conifer docs'
 
+  rector:
+    service: appserver
+    cmd: 'rector'
+    description: 'Run Rector commands'
+
 proxy:
   appserver:
     - conifer.lndo.site

@@ -30,6 +30,12 @@ As of 1.0, static analysis by PHPStan is also available:
 lando analyze
 ```
 
+As of 1.0, Rector is also included:
+
+```shell
+lando rector
+```
+
 ## Writing new tests
 
 Our guidelines for how and what to test are:
