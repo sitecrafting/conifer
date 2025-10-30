@@ -122,6 +122,11 @@ tooling:
     cmd: 'yarn'
     description: 'Run yarn commands'
 
+  docs:
+    service: node
+    cmd: 'yarn docs:build'
+    description: 'Build Conifer docs'
+
 proxy:
   appserver:
     - conifer.lndo.site
