@@ -21,6 +21,8 @@ abstract class TemplatePolicy extends AbstractPolicy {
   /**
    * Adopt this policy
    *
+   * If `$this->enforce()` redirects for any reason, then the $template passed in won't be returned.
+   *
    * @return PolicyInterface fluent interface
    */
   public function adopt() : PolicyInterface {

@@ -649,7 +649,7 @@ class Site extends TimberSite {
    */
   public function get_script_uri( string $file ) : string {
     $path = $this->find_file($file, $this->script_directory_cascade);
-    if ($path !== '' && $path !== '0') {
+    if ($path !== '') {
       return URLHelper::file_system_to_url($path);
     }
 
@@ -666,7 +666,7 @@ class Site extends TimberSite {
    */
   public function get_stylesheet_uri( string $file ) : string {
     $path = $this->find_file($file, $this->style_directory_cascade);
-    if ($path !== '' && $path !== '0') {
+    if ($path !== '') {
       return URLHelper::file_system_to_url($path);
     }
 

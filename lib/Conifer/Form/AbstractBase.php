@@ -398,7 +398,7 @@ abstract class AbstractBase {
    * @return boolean
    */
   public function validate_required_field(array $field, string $value) : bool {
-    $valid = $value !== '' && $value !== '0';
+    $valid = $value !== '';
 
     if (!$valid) {
       // use field-defined message, or fallback on crunching message ourselves

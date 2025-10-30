@@ -38,12 +38,12 @@ abstract class Page {
    *
    * @var string
    */
-  protected $slug;
+  protected string $slug;
 
   /**
    * Render the content of this admin Page.
    *
-   * @param array $data optional view data for rendering in a specific context
+   * @param array<string, string> $data optional view data for rendering in a specific context
    * @return string
    */
   abstract public function render(array $data = []) : string;
@@ -91,7 +91,7 @@ abstract class Page {
       // NOTE: Since render() is specifically for outputting HTML in the admin
       // area, users are responsible for escaping their own output accordingly.
       // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-      echo $this->render((array)$this->slug);
+      echo $this->render(['slug' => $this->slug]);
     };
 
     add_menu_page(
