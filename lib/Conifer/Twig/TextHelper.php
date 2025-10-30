@@ -1,9 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Custom Twig filters for manipulating text
  */
-
 namespace Conifer\Twig;
+
+use Closure;
 
 /**
  * Twig Wrapper for helpful linguistic filters, such as pluralize
@@ -15,29 +19,29 @@ class TextHelper implements HelperInterface {
    * Plural inflections for English words
    * TODO public static function add_plurals(array $plurals)
    *
-   * @var array
+   * @var array<string, string>
    */
-  protected static $plurals = [
+  protected static array $plurals = [
     'person' => 'people',
   ];
 
   /**
    * Get the Twig functions to register
    *
-   * @return  array an associative array of callback functions, keyed by name
+   * @return array<string, Closure> an associative array of callback functions, keyed by name
    */
   public function get_filters() : array {
     return [
-      'oxford_comma'    => [$this, 'oxford_comma'],
-      'pluralize'       => [$this, 'pluralize'],
-      'capitalize_each' => [$this, 'capitalize_each'],
+      'oxford_comma'    => $this->oxford_comma(...),
+      'pluralize'       => $this->pluralize(...),
+      'capitalize_each' => $this->capitalize_each(...),
     ];
   }
 
   /**
    * Does not supply any additional Twig functions.
    *
-   * @return  array
+   * @return array{}
    */
   public function get_functions() : array {
     return [];
@@ -52,9 +56,7 @@ class TextHelper implements HelperInterface {
    */
   public function pluralize( $noun, $n ) {
     if ($n !== 1) {
-      $noun = isset(static::$plurals[$noun])
-        ? static::$plurals[$noun]
-        : $noun . 's';
+      $noun = static::$plurals[$noun] ?? $noun . 's';
     }
 
     return $noun;
@@ -64,7 +66,7 @@ class TextHelper implements HelperInterface {
    * Returns a human-readable list of things. Uses the Oxford comma convention
    * for listing three or more things.
    *
-   * @param  array  $items an array of strings
+   * @param array<int, mixed> $items an array of strings
    * @return string
    */
   public function oxford_comma( array $items ) {
@@ -94,12 +96,12 @@ class TextHelper implements HelperInterface {
    * as "a," "the," etc.
    *
    * @param string $phrase a string to capitalize each word of
-   * @param array $options an optional array of options including:
+   * @param array<string, mixed> $options an optional array of options including:
    * - `small_words`: words not to capitalize. Defaults to the normal rules
    *   of the English language.
    * - `split_by`: the delimiter for splitting out words when calling
    *   `explode()`. Defaults to a single space, i.e. `" "`.
-   * @return the capitalized string, e.g. "The Old Man and the Sea"
+   *    * @return string the capitalized string, e.g. "The Old Man and the Sea"
    */
   public function capitalize_each(string $phrase, array $options = []) : string {
     // @codingStandardsIgnoreStart WordPress.Arrays.ArrayDeclarationSpacing

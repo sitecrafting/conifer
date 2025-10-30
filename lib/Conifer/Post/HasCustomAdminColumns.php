@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Powerful utility trait for adding custom columns in the WP Admin
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Post;
 
 /**
@@ -13,46 +15,46 @@ namespace Conifer\Post;
  * the ability to declaratively add custom admin columns.
  */
 trait HasCustomAdminColumns {
-  /**
-   * Add a custom column to the admin for the given post type, with content provided
-   * through a callback.
-   *
-   * @param string   $key      the $columns array key to add
-   * @param string   $label    label for the column header
-   * @param callable $getValue (Optional) a callback to get the value to
-   * display in the custom column for. If not given, the column will
-   * display the value of the `meta` field whose `meta_key` is equal to `$key`.
-   * a given post. Takes a post ID as its sole parameter.
-   */
-  public static function add_admin_column($key, $label, callable $getValue = null) {
+    /**
+     * Add a custom column to the admin for the given post type, with content provided
+     * through a callback.
+     *
+     * @param string $key the $columns array key to add
+     * @param string $label label for the column header
+     * @param callable|null $getValue (Optional) a callback to get the value to
+     * display in the custom column for. If not given, the column will
+     * display the value of the `meta` field whose `meta_key` is equal to `$key`.
+     * a given post. Takes a post ID as its sole parameter.
+     */
+  public static function add_admin_column($key, $label, callable $getValue = null): void {
     $postType = static::_post_type();
 
     if ($postType === 'page' || $postType === 'post') {
       // e.g. manage_pages_columns
-      $addHook = "manage_{$postType}s_columns";
+      $addHook = sprintf('manage_%ss_columns', $postType);
 
       // e.g. manage_pages_custom_column
-      $displayHook = "manage_{$postType}s_custom_column";
+      $displayHook = sprintf('manage_%ss_custom_column', $postType);
 
     } else {
       // e.g. manage_my_post_type_posts_columns
-      $addHook = "manage_{$postType}_posts_columns";
+      $addHook = sprintf('manage_%s_posts_columns', $postType);
 
       // e.g. manage_my_post_type_posts_custom_column
-      $displayHook = "manage_{$postType}_posts_custom_column";
+      $displayHook = sprintf('manage_%s_posts_custom_column', $postType);
     }
 
     // Add the column to the admin
-    add_filter($addHook, function(array $columns) use ($key, $label) {
+    add_filter($addHook, function(array $columns) use ($key, $label): array {
       $columns[$key] = $label;
       return $columns;
     });
 
     // If no callback is given, infer a sensible default from the key.
-    $getValue = $getValue ?? static::value_getter($key);
+    $getValue ??= static::value_getter($key);
 
     // register a callback to display the value for this column
-    add_action($displayHook, function($column, $id) use ($key, $getValue) {
+    add_action($displayHook, function($column, $id) use ($key, $getValue): void {
       if ( $column === $key ) {
         // NOTE: THE USER IS RESPONSIBLE FOR ESCAPING USER INPUT AS NECESSARY
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -64,13 +66,12 @@ trait HasCustomAdminColumns {
   /**
    * Get a function to run based on the meta $key.
    *
-   * @param string $key the column key whose value we need to get when rendering
-   * a custom column
+   * @param string $key the column key whose value we need to get when rendering a custom column
    * @return callable
    */
   private static function value_getter($key) : callable {
     $keyToGetterMapping = [
-      '_wp_page_template' => [static::class, 'page_template_name'],
+      '_wp_page_template' => static::page_template_name(...),
     ];
 
     return $keyToGetterMapping[$key] ?? static::post_meta_getter($key);

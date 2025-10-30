@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * EmailNotifier class
  */
-
 namespace Conifer\Notifier;
 
 /**
@@ -24,5 +25,3 @@ abstract class EmailNotifier {
    */
   abstract public function to();
 }
-
-

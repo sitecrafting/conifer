@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Manage image sizes
  */
-
 namespace Conifer\Post;
 
 use Timber\Image as TimberImage;
@@ -31,7 +33,7 @@ class Image extends TimberImage {
    * @param int  $height the height to declare for this size
    * @param boolean $crop whether to create versions of newly uploaded pics cropped to this size
    */
-  public static function add_size( $name, $width, $height = false, $crop = false ) {
+  public static function add_size( $name, $width, $height = false, $crop = false ): void {
     add_image_size( $name, $width, $height, $crop );
     static::$declared_sizes[$name] = [
       'name'    => $name,
@@ -46,7 +48,7 @@ class Image extends TimberImage {
    *
    * @return array
    */
-  public static function get_sizes() {
+  public static function get_sizes(): array {
     $sizes = [
       'thumbnail' => [
         'name'    => 'thumbnail',
@@ -87,11 +89,7 @@ class Image extends TimberImage {
   public static function get_size( $size ) {
     $sizes = static::get_sizes();
 
-    if (isset($sizes[$size])) {
-      return $sizes[$size];
-    }
-
-    return [];
+    return $sizes[$size] ?? [];
   }
 
   /**
@@ -112,11 +110,7 @@ class Image extends TimberImage {
    * @return int
    */
   public function width( $customSize = false ) : int {
-    if ($customSize && static::get_size($customSize)) {
-      $width = static::get_size($customSize)['width'];
-    } else {
-      $width = parent::width();
-    }
+    $width = $customSize && static::get_size($customSize) ? static::get_size($customSize)['width'] : parent::width();
 
     return (int) $width;
   }
@@ -146,4 +140,3 @@ class Image extends TimberImage {
     return $height;
   }
 }
-

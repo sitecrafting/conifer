@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * AdminNotifier class
  */
-
 namespace Conifer\Notifier;
 
 /**
@@ -21,5 +22,3 @@ class AdminNotifier extends EmailNotifier {
     return get_option('admin_email');
   }
 }
-
-

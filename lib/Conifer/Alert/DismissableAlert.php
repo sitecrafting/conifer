@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * DismissableAlert class
  *
  * @copyright 2019 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Alert;
 
 /**
@@ -15,25 +16,11 @@ namespace Conifer\Alert;
  */
 class DismissableAlert {
   /**
-   * The Alert message
-   *
-   * @var string
-   */
-  protected $message;
-
-  /**
-   * Configurable options to the constructor
-   *
-   * @var array
-   */
-  protected $options;
-
-  /**
    * Constructor. Takes the Alert message as a string.
    * Takes an optional array of options.
    *
    * @param string $message Alert message text
-   * @param string $options an array with any of the following keys:
+   * @param array $options an array with any of the following keys:
    *
    * - 'cookies': (array) The $_COOKIE superglobal (to allow for filtering)
    * - 'cookie_prefix': (string) The prefix for the cookie that indicates
@@ -51,9 +38,11 @@ class DismissableAlert {
    *
    * @see https://pantheon.io/docs/cookies
    */
-  public function __construct(string $message, array $options = []) {
-    $this->message = $message;
-    $this->options = $options;
+  public function __construct(
+      protected string $message,
+      protected array $options = []
+  )
+  {
   }
 
   /**

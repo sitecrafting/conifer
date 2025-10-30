@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Tests for the Conifer\Admin\Notice class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Unit;
 
 use WP_Mock;
@@ -15,19 +16,19 @@ use WP_Mock\Functions;
 use Conifer\Admin\Notice;
 
 class AdminNoticeTest extends Base {
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     Notice::clear_flash_notices();
     Notice::enable_flash_notices();
   }
 
-  public function tearDown(): void {
+  protected function tearDown(): void {
     parent::tearDown();
     Notice::disable_flash_notices();
     Notice::clear_flash_notices();
   }
 
-  public function test_success() {
+  public function test_success(): void {
     $notice = new Notice('hello');
     $notice->success();
 
@@ -35,7 +36,7 @@ class AdminNoticeTest extends Base {
     $this->expect_admin_notices_action_added();
   }
 
-  public function test_info() {
+  public function test_info(): void {
     $notice = new Notice('hello');
     $notice->info();
 
@@ -43,7 +44,7 @@ class AdminNoticeTest extends Base {
     $this->expect_admin_notices_action_added();
   }
 
-  public function test_warning() {
+  public function test_warning(): void {
     $notice = new Notice('hello');
     $notice->warning();
 
@@ -51,7 +52,7 @@ class AdminNoticeTest extends Base {
     $this->expect_admin_notices_action_added();
   }
 
-  public function test_error() {
+  public function test_error(): void {
     $notice = new Notice('hello');
     $notice->error();
 
@@ -59,7 +60,7 @@ class AdminNoticeTest extends Base {
     $this->expect_admin_notices_action_added();
   }
 
-  public function test_html() {
+  public function test_html(): void {
     $notice = new Notice('message');
 
     // notices are errors by default
@@ -69,7 +70,7 @@ class AdminNoticeTest extends Base {
     );
   }
 
-  public function test_optional_constructor_arg() {
+  public function test_optional_constructor_arg(): void {
     $notice = new Notice('msg', 'example');
 
     $this->assertEquals(
@@ -78,7 +79,7 @@ class AdminNoticeTest extends Base {
     );
   }
 
-  public function test_add_class() {
+  public function test_add_class(): void {
     $notice = new Notice('msg');
     $notice->add_class('example');
 
@@ -88,7 +89,7 @@ class AdminNoticeTest extends Base {
     );
   }
 
-  public function test_add_class_with_duplicate() {
+  public function test_add_class_with_duplicate(): void {
     $notice = new Notice('msg');
     $notice->add_class('once');
     $notice->add_class('once');
@@ -99,7 +100,7 @@ class AdminNoticeTest extends Base {
     );
   }
 
-  public function test_get_flash_notices() {
+  public function test_get_flash_notices(): void {
     $_SESSION['conifer_admin_notices'] = [
       [
         'class'   => 'notice notice-success',
@@ -124,7 +125,7 @@ class AdminNoticeTest extends Base {
     );
   }
 
-  public function test_get_flash_notices_invalid() {
+  public function test_get_flash_notices_invalid(): void {
     $_SESSION['conifer_admin_notices'] = [
       false,
       'foobar',
@@ -138,7 +139,7 @@ class AdminNoticeTest extends Base {
     $this->assertEquals([], Notice::get_flash_notices());
   }
 
-  protected function expect_admin_notices_action_added() {
+  protected function expect_admin_notices_action_added(): void {
     WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));
   }
 }

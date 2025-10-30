@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Retrieve tags and categories from posts
  */
-
 namespace Conifer\Post;
 
 use Timber\Term;
@@ -49,13 +51,12 @@ trait HasTerms {
     ]);
 
     // convert each term ID/slug/obj to a Timber\Term
-    $timberTerms = array_map(function($termIdent) {
-      // Pass through already-instantiated Timber\Term objects.
-      // This allows for a polymorphic list of terms! ✨
-      return is_a($termIdent, Term::class)
-        ? $termIdent
-        : Timber::get_term($termIdent);
-    }, $terms);
+    $timberTerms = array_map(fn($termIdent) =>
+        // Pass through already-instantiated Timber\Term objects.
+        // This allows for a polymorphic list of terms! ✨
+        is_a($termIdent, Term::class)
+      ? $termIdent
+      : Timber::get_term($termIdent), $terms);
 
     // reduce each term in $taxonomy to an array containing:
     //  * the term
@@ -108,7 +109,7 @@ trait HasTerms {
    * ```
    * @param string $name the name of the taxonomy. Must be all lower-case, with
    * no spaces.
-   * @param array $options any valid array of options to `register_taxonomy()`,
+   * @param array<string, mixed> $options any valid array of options to `register_taxonomy()`,
    * plus an optional "plural_label" index. It produces a more comprehensive
    * array of labels before passing it to `register_taxonomy()`.
    * @param bool $omitPostType whether to omit the post type in the declaration.
@@ -121,16 +122,14 @@ trait HasTerms {
     string $name,
     array $options = [],
     bool $omitPostType = false
-  ) {
-    $options['labels'] = $options['labels'] ?? [];
+  ): void {
+    $options['labels'] ??= [];
 
     // For singular label, fallback on taxonomy name
     $singular = $options['labels']['singular_name']
       // convert underscore_inflection to Words Separated By Spaces
       // TODO separate this into a utility method
-      ?? implode(' ', array_map(function(string $word) {
-        return ucfirst($word);
-      }, explode('_', $name)));
+      ?? implode(' ', array_map(ucfirst(...), explode('_', $name)));
 
     // Unless there's an explicity plural_label, follow the same default logic
     // as register_post_type()
@@ -142,60 +141,45 @@ trait HasTerms {
     // this isn't meaningful to WP, just remove it
     unset($options['plural_label']);
 
-    $options['labels']['name'] = $options['labels']['name'] ?? $plural;
+    $options['labels']['name'] ??= $plural;
 
     // omit $object_type option in taxonomy declaration?
     $postType = $omitPostType ? null : self::_post_type();
 
     $options['labels']['singular_name'] = $singular;
 
-    $options['labels']['menu_name'] = $options['labels']['menu_name']
-      ?? $plural;
+    $options['labels']['menu_name'] ??= $plural;
 
-    $options['labels']['all_items'] = $options['labels']['all_items']
-      ?? "All {$plural}";
+    $options['labels']['all_items'] ??= 'All ' . $plural;
 
-    $options['labels']['edit_item'] = $options['labels']['edit_item']
-      ?? "Edit {$singular}";
+    $options['labels']['edit_item'] ??= 'Edit ' . $singular;
 
-    $options['labels']['view_item'] = $options['labels']['view_item']
-      ?? "View {$singular}";
+    $options['labels']['view_item'] ??= 'View ' . $singular;
 
-    $options['labels']['update_item'] = $options['labels']['update_item']
-      ?? "Update {$singular}";
+    $options['labels']['update_item'] ??= 'Update ' . $singular;
 
-    $options['labels']['add_new_item'] = $options['labels']['add_new_item']
-      ?? "Add New {$singular}";
+    $options['labels']['add_new_item'] ??= 'Add New ' . $singular;
 
-    $options['labels']['new_item_name'] = $options['labels']['new_item_name']
-      ?? "New {$singular} Name";
+    $options['labels']['new_item_name'] ??= sprintf('New %s Name', $singular);
 
-    $options['labels']['parent_item'] = $options['labels']['parent_item']
-      ?? "Parent {$singular}";
+    $options['labels']['parent_item'] ??= 'Parent ' . $singular;
 
-    $options['labels']['parent_item_colon'] = $options['labels']['parent_item_colon']
-      ?? "Parent {$singular}:";
+    $options['labels']['parent_item_colon'] ??= sprintf('Parent %s:', $singular);
 
-    $options['labels']['search_items'] = $options['labels']['search_items']
-      ?? "Search {$plural}";
+    $options['labels']['search_items'] ??= 'Search ' . $plural;
 
     $options['labels']['popular_items'] = $options['labels']['r_items']
-      ?? "Popular {$plural}";
+      ?? 'Popular ' . $plural;
 
-    $options['labels']['separate_items_with_commas'] = $options['labels']['separate_items_with_commas']
-      ?? "Separate {$plural} with commas";
+    $options['labels']['separate_items_with_commas'] ??= sprintf('Separate %s with commas', $plural);
 
-    $options['labels']['add_or_remove_items'] = $options['labels']['add_or_remove_items']
-      ?? "Add or remove {$plural}";
+    $options['labels']['add_or_remove_items'] ??= 'Add or remove ' . $plural;
 
-    $options['labels']['choose_from_most_used'] = $options['labels']['choose_from_most_used']
-      ?? "Choose from the most used {$plural}";
+    $options['labels']['choose_from_most_used'] ??= 'Choose from the most used ' . $plural;
 
-    $options['labels']['not_found'] = $options['labels']['not_found']
-      ?? "No {$plural} found";
+    $options['labels']['not_found'] ??= sprintf('No %s found', $plural);
 
-    $options['labels']['back_to_items'] = $options['labels']['back_to_items']
-      ?? "← Back to {$plural}";
+    $options['labels']['back_to_items'] ??= '← Back to ' . $plural;
 
     // Honor custom statuses in term counts
     if (is_array($options['statuses_toward_count'] ?? null)) {
@@ -207,9 +191,10 @@ trait HasTerms {
         // user explicitly remove publish from counted statuses
         $statuses = array_unique(array_merge(['publish'], $statuses));
       }
+
       unset($statuses['publish']);
 
-      $options['update_count_callback'] = function($terms) use ($statuses) {
+      $options['update_count_callback'] = function($terms) use ($statuses): void {
         foreach ($terms as $term) {
           static::count_statuses_toward_term_count(Timber::get_term($term), $statuses);
         }
@@ -219,13 +204,13 @@ trait HasTerms {
     register_taxonomy($name, $postType, $options);
   }
 
-  /**
-   * Keep term counts up to date, taking into account posts in $status
-   *
-   * @param Timber\Term the Term instance whose count we want to update
-   * @param string $taxonomy the taxonomy whose terms we want to affect
-   */
-  public static function count_statuses_toward_term_count(Term $term, array $statuses) {
+    /**
+     * Keep term counts up to date, taking into account posts in $status
+     *
+     * @param Term $term the Term instance whose count we want to update
+     * @param array $statuses
+     */
+  public static function count_statuses_toward_term_count(Term $term, array $statuses): void {
     global $wpdb;
 
     // Get all posts in $statuses, plus all published posts
@@ -245,4 +230,3 @@ trait HasTerms {
     }
   }
 }
-

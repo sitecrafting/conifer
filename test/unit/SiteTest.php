@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Test the Conifer\Site class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Unit;
 
 use WP_Mock;
@@ -15,9 +17,14 @@ use Conifer\Twig\HelperInterface;
 use org\bovigo\vfs\vfsStream;
 
 class SiteTest extends Base {
+  /**
+   * @var \org\bovigo\vfs\vfsStreamDirectory
+   */
+  public $file_system;
+
   const THEME_DIRECTORY = 'wp-content/themes/foo';
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
     // do a terrible amount of boilerplate to workaround Timber's decision
@@ -72,11 +79,11 @@ class SiteTest extends Base {
 
   }
 
-  public function tearDown(): void {
+  protected function tearDown(): void {
     WP_Mock::tearDown();
   }
 
-  public function test_find_file() {
+  public function test_find_file(): void {
 
     $site = new Site();
 
@@ -89,7 +96,7 @@ class SiteTest extends Base {
 
   }
 
-  public function test_find_file_without_trailing_slash() {
+  public function test_find_file_without_trailing_slash(): void {
 
     $site = new Site();
 
@@ -101,7 +108,7 @@ class SiteTest extends Base {
 
   }
 
-  public function test_find_file_fail() {
+  public function test_find_file_fail(): void {
 
     $site = new Site();
 
@@ -114,7 +121,7 @@ class SiteTest extends Base {
 
   }
 
-  public function test_get_assets_version() {
+  public function test_get_assets_version(): void {
 
     $site = new Site();
 
@@ -132,7 +139,7 @@ class SiteTest extends Base {
 
   }
 
-  public function test_get_assets_version_with_arg() {
+  public function test_get_assets_version_with_arg(): void {
 
     $site = new Site();
 
@@ -150,7 +157,7 @@ class SiteTest extends Base {
 
   }
 
-  public function test_subsequent_get_assets_version_with() {
+  public function test_subsequent_get_assets_version_with(): void {
 
     $site = new Site();
 
@@ -172,7 +179,7 @@ class SiteTest extends Base {
 
   }
 
-  public function test_get_assets_version_with_no_file() {
+  public function test_get_assets_version_with_no_file(): void {
 
     $site = new Site();
 
@@ -191,7 +198,7 @@ class SiteTest extends Base {
 
   }
 
-  public function test_get_theme_file() {
+  public function test_get_theme_file(): void {
     $site = new Site();
 
     WP_Mock::userFunction('get_stylesheet_directory', [
@@ -210,7 +217,7 @@ class SiteTest extends Base {
     );
   }
 
-  public function test_add_twig_helper() {
+  public function test_add_twig_helper(): void {
     $site = new Site();
 
     // mock HelperInterface
@@ -226,11 +233,11 @@ class SiteTest extends Base {
     $this->assertNull($site->add_twig_helper($helper));
   }
 
-  public function test_get_twig_with_helper() {
+  public function test_get_twig_with_helper(): void {
     $site = new Site();
 
     // mock Twig API
-    $twig = $this->getMockBuilder('Twig\Environment')
+    $twig = $this->getMockBuilder(\Twig\Environment::class)
       ->disableOriginalConstructor()
       ->setMethods(['addFilter', 'addFunction'])
       ->getMock();
@@ -245,10 +252,10 @@ class SiteTest extends Base {
       ->getMock();
     $helper->expects($this->once())
       ->method('get_filters')
-      ->will($this->returnValue(['foo' => function() {}]));
+      ->will($this->returnValue(['foo' => function(): void {}]));
     $helper->expects($this->once())
       ->method('get_functions')
-      ->will($this->returnValue(['bar' => function() {}]));
+      ->will($this->returnValue(['bar' => function(): void {}]));
 
     $this->assertEquals(
       $twig,

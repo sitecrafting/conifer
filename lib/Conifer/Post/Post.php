@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * High-level WP Post behavior
  */
-
 namespace Conifer\Post;
 
 use Timber\Helper;
@@ -33,7 +35,8 @@ abstract class Post extends TimberPost {
    * @var string
    * @codingStandardsIgnoreStart
    */
-  public $ImageClass = '\Conifer\Post\Image';
+  public $ImageClass = \Conifer\Post\Image::class;
+
   /* @codingStandardsIgnoreEnd non-standard var case, needed by Timber */
 
   /**
@@ -57,45 +60,40 @@ abstract class Post extends TimberPost {
    */
   protected $related_post_counts = [];
 
-  /**
-   * Register this post type given the high-level label options.
-   *
-   * @example
-   * ```php
-   * Post::register_type('person', [
-   *   'plural_label' => 'People',
-   *   'labels' => [
-   *     'add_new_item' => 'Onboard New Person'
-   *   ],
-   * ]);
-   *
-   * // equivalent to:
-   * register_post_type('person', [
-   *   'label' => 'Person', // inferred from post_type,
-   *   'labels' => [
-   *     'singular_name' => 'Person', // inferred from post_type
-   *     'add_new_item' => 'Onboard New Person', // overridden directly w/ labels.add_new_item
-   *     'view_items' => 'View People', // inferred from plural_label
-   *     // ... other singular/plural labels are inferred in the same way
-   *   ],
-   * ]);
-   * ```
-   * @param array $options any valid array of options to `register_post_type()`,
-   * plus an optional "plural_label" index. It produces a more comprehensive
-   * array of labels before passing it to `register_post_type()`.
-   */
-  public static function register_type() {
+    /**
+     * Register this post type given the high-level label options.
+     *
+     * @example
+     * ```php
+     * Post::register_type('person', [
+     *   'plural_label' => 'People',
+     *   'labels' => [
+     *     'add_new_item' => 'Onboard New Person'
+     *   ],
+     * ]);
+     *
+     * // equivalent to:
+     * register_post_type('person', [
+     *   'label' => 'Person', // inferred from post_type,
+     *   'labels' => [
+     *     'singular_name' => 'Person', // inferred from post_type
+     *     'add_new_item' => 'Onboard New Person', // overridden directly w/ labels.add_new_item
+     *     'view_items' => 'View People', // inferred from plural_label
+     *     // ... other singular/plural labels are inferred in the same way
+     *   ],
+     * ]);
+     * ```
+     */
+  public static function register_type(): void {
     $options = static::type_options();
 
-    $options['labels'] = $options['labels'] ?? [];
+    $options['labels'] ??= [];
 
     // For singular label, fallback on post type
     $singular = $options['labels']['singular_name']
       // convert underscore_inflection to Words Separated By Spaces
       // TODO separate this into a utility method
-      ?? implode(' ', array_map(function(string $word) {
-        return ucfirst($word);
-      }, explode('_', static::_post_type())));
+      ?? implode(' ', array_map(ucfirst(...), explode('_', static::_post_type())));
 
     // Unless there's an explicity plural_label, follow the same default logic
     // as register_post_type()
@@ -107,48 +105,35 @@ abstract class Post extends TimberPost {
     // this isn't meaningful to WP, just remove it
     unset($options['plural_label']);
 
-    $options['labels']['name'] = $options['labels']['name'] ?? $plural;
+    $options['labels']['name'] ??= $plural;
 
     $options['labels']['singular_name'] = $singular;
 
-    $options['labels']['add_new_item'] = $options['labels']['add_new_item']
-      ?? "Add New $singular";
+    $options['labels']['add_new_item'] ??= 'Add New ' . $singular;
 
-    $options['labels']['edit_item'] = $options['labels']['edit_item']
-      ?? "Edit $singular";
+    $options['labels']['edit_item'] ??= 'Edit ' . $singular;
 
-    $options['labels']['new_item'] = $options['labels']['new_item']
-      ?? "New $singular";
+    $options['labels']['new_item'] ??= 'New ' . $singular;
 
-    $options['labels']['view_item'] = $options['labels']['view_item']
-      ?? "View $singular";
+    $options['labels']['view_item'] ??= 'View ' . $singular;
 
-    $options['labels']['view_items'] = $options['labels']['view_items']
-      ?? "View $plural";
+    $options['labels']['view_items'] ??= 'View ' . $plural;
 
-    $options['labels']['search_items'] = $options['labels']['search_items']
-      ?? "Search $plural";
+    $options['labels']['search_items'] ??= 'Search ' . $plural;
 
-    $options['labels']['not_found'] = $options['labels']['not_found']
-      ?? "No $plural found";
+    $options['labels']['not_found'] ??= sprintf('No %s found', $plural);
 
-    $options['labels']['not_found_in_trash'] = $options['labels']['not_found_in_trash']
-      ?? "No $plural found in trash";
+    $options['labels']['not_found_in_trash'] ??= sprintf('No %s found in trash', $plural);
 
-    $options['labels']['all_items'] = $options['labels']['all_items']
-      ?? "All $plural";
+    $options['labels']['all_items'] ??= 'All ' . $plural;
 
-    $options['labels']['archives'] = $options['labels']['archives']
-      ?? "$singular Archives";
+    $options['labels']['archives'] ??= $singular . ' Archives';
 
-    $options['labels']['attributes'] = $options['labels']['attributes']
-      ?? "$singular Attributes";
+    $options['labels']['attributes'] ??= $singular . ' Attributes';
 
-    $options['labels']['insert_into_item'] = $options['labels']['insert_into_item']
-      ?? "Insert into $singular";
+    $options['labels']['insert_into_item'] ??= 'Insert into ' . $singular;
 
-    $options['labels']['uploaded_to_this_item'] = $options['labels']['uploaded_to_this_item']
-      ?? "Uploaded to this $singular";
+    $options['labels']['uploaded_to_this_item'] ??= 'Uploaded to this ' . $singular;
 
     register_post_type(static::_post_type(), $options);
   }
@@ -157,7 +142,7 @@ abstract class Post extends TimberPost {
    * Default implementation of custom post type labels,
    * for use in register_post_type().
    *
-   * @return array
+   * @return array{}
    */
   public static function type_options() : array {
     return [];
@@ -182,11 +167,12 @@ abstract class Post extends TimberPost {
     return static::POST_TYPE;
   }
 
-  /**
-   * Get the latest posts
-   *
-   * @return
-   */
+    /**
+     * Get the latest posts
+     *
+     * @param int $count
+     * @return iterable
+     */
   public static function latest(int $count = self::LATEST_POST_COUNT) : iterable {
     return Timber::get_posts([
       'posts_per_page' => $count,
@@ -274,7 +260,7 @@ abstract class Post extends TimberPost {
   /**
    * Create a new post from an array of data
    *
-   * @param array $data key/value pairs to populate the post and post meta
+   * @param array<string, mixed> $data key/value pairs to populate the post and post meta
    * tables. The following keys are special, and their corresponding values
    * will end up in the wp_posts table:
    *
@@ -307,9 +293,10 @@ abstract class Post extends TimberPost {
    * The value for "post_type" will always come from $this->get_post_type().
    *
    * All others key/value pairs are considered metadata and end up in wp_postmeta.
-   * @return \Project\Post
+   * @return int|TimberPost|\WP_Error
    */
-  public static function create(array $data) : Post {
+  public static function create(array $data)
+  {
     // blacklist ID and post_type; we get these automagically
     unset($data['ID']);
     unset($data['post_type']);
@@ -347,7 +334,7 @@ abstract class Post extends TimberPost {
     );
 
     // $data becomes post meta data
-    foreach ($postData as $key => $value) {
+    foreach (array_keys($postData) as $key) {
       unset($data[$key]);
     }
 
@@ -383,9 +370,7 @@ abstract class Post extends TimberPost {
 
     if (count($relatedPosts) < $postCount && !isset($relatedPostCount)) {
       // There may be more related posts than previously queried; look for them
-      $termIds = array_map(function(Term $term) {
-        return $term->id;
-      }, $this->terms($taxonomy));
+      $termIds = array_map(fn(Term $term) => $term->id, $this->terms($taxonomy));
 
       $this->related_by[$taxonomy] = Timber::get_posts([
         'post_type'        => static::_post_type(),
@@ -437,4 +422,3 @@ abstract class Post extends TimberPost {
     return $this->get_related_by_taxonomy('post_tag', $postCount);
   }
 }
-

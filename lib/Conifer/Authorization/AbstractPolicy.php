@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * AbstractPolicy class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Authorization;
 
 /**

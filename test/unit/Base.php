@@ -1,14 +1,17 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Base class for Conifer test cases
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Unit;
 
 use PHPUnit\Framework\TestCase;
+use Timber\Timber;
 use Timber\User;
 use WP_Mock;
 use WP_Term;
@@ -18,11 +21,11 @@ use WP_Term;
  * complain about a lack of tests defined here.
  */
 abstract class Base extends TestCase {
-  public function setUp(): void {
+  protected function setUp(): void {
     WP_Mock::setUp();
   }
 
-  public function tearDown(): void {
+  protected function tearDown(): void {
     WP_Mock::tearDown();
   }
 
@@ -30,9 +33,10 @@ abstract class Base extends TestCase {
   /**
    * Mock a call to WordPress's get_post
    *
-   * @param array $props an array of WP_Post object properties
+   * @param array<string, mixed> $props an array of WP_Post object properties
    * must include a valid (that is, a numeric) post ID
    * @throws \InvalidArgumentException if $props["ID"] is not numeric
+   * @param array<string, mixed> $options
    */
   protected function mockPost(array $props, array $options = []) {
     if (empty($props['ID']) || !is_numeric($props['ID'])) {
@@ -48,11 +52,7 @@ abstract class Base extends TestCase {
       $post->{$prop} = $value;
     }
 
-    WP_Mock::userFunction('get_post', array_merge([
-      'times'   => 1,
-      'args'  => [$props['ID']],
-      'return'  => $post,
-    ]));
+    WP_Mock::userFunction('get_post', ['times' => 1, 'args' => [$props['ID']], 'return' => $post]);
 
     return $post;
   }
@@ -60,7 +60,7 @@ abstract class Base extends TestCase {
   /**
    * Mock a call to WordPress's get_term
    *
-   * @param array $props an array of WP_Term object properties
+   * @param array<string, mixed> $props an array of WP_Term object properties
    * must include a valid (that is, a numeric) term_id, and a taxonomy string,
    * e.g.:
    *
@@ -74,6 +74,7 @@ abstract class Base extends TestCase {
     if (empty($props['term_id']) || !is_numeric($props['term_id'])) {
       throw new \InvalidArgumentException('$props["term_id"] must be numeric');
     }
+
     if (empty($props['taxonomy']) || !is_string($props['taxonomy'])) {
       throw new \InvalidArgumentException(
         '$props["taxonomy"] must be a string'
@@ -100,7 +101,6 @@ abstract class Base extends TestCase {
   protected function getProtectedProperty($object, $name) {
     $reflection = new \ReflectionClass($object);
     $property   = $reflection->getProperty($name);
-    $property->setAccessible(true);
 
     return $property->getValue($object);
   }
@@ -108,15 +108,13 @@ abstract class Base extends TestCase {
   protected function setProtectedProperty($object, $name, $value) {
     $reflection = new \ReflectionClass($object);
     $property   = $reflection->getProperty($name);
-    $property->setAccessible(true);
 
     return $property->setValue($object, $value);
   }
 
-  protected function callProtectedMethod($object, $name, $args = []) {
+  protected function callProtectedMethod($object, $name, array $args = []) {
     $reflection = new \ReflectionClass($object);
     $method     = $reflection->getMethod($name);
-    $method->setAccessible(true);
 
     return $method->invokeArgs($object, $args);
   }
@@ -138,7 +136,7 @@ abstract class Base extends TestCase {
       'return' => 'https://example.com/avatar.gif',
     ]);
 
-    return new User($id);
+    return Timber::get_user($id);
   }
 
   protected function mockCurrentUserId($id) {

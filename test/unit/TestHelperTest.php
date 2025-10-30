@@ -1,25 +1,29 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Test the Conifer\Site class
  *
  * @copyright 2020 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Unit;
 
 use Conifer\Twig\TextHelper;
 
 class TextHelperTest extends Base {
+  public $helper;
+
   const THEME_DIRECTORY = 'wp-content/themes/foo';
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->helper = new TextHelper();
   }
 
-  public function test_oxford_comma() {
+  public function test_oxford_comma(): void {
     $this->assertEquals(
       'one',
       $this->helper->oxford_comma(['one'])
@@ -38,13 +42,13 @@ class TextHelperTest extends Base {
     );
   }
 
-  public function test_pluralize() {
+  public function test_pluralize(): void {
     $this->assertEquals('person', $this->helper->pluralize('person', 1));
     $this->assertEquals('people', $this->helper->pluralize('person', 2));
     $this->assertEquals('zebras', $this->helper->pluralize('zebra', 2));
   }
 
-  public function test_capitalize_each() {
+  public function test_capitalize_each(): void {
     $this->assertEquals(
       'Three Blind Mice',
       $this->helper->capitalize_each('three blind mice')

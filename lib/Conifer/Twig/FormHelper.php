@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Custom Twig filters for front-end forms
  */
-
 namespace Conifer\Twig;
 
 use Conifer\Form\AbstractBase as Form;
@@ -21,18 +23,18 @@ class FormHelper implements HelperInterface {
    */
   public function get_filters() : array {
     return [
-      'field_class'        => [$this, 'get_field_class'],
-      'error_messages_for' => [$this, 'get_error_messages_for'],
-      'err'                => [$this, 'get_error_messages_for'],
-      'checked_attr'       => [$this, 'checked_attr'],
-      'selected_attr'      => [$this, 'selected_attr'],
+      'field_class'        => $this->get_field_class(...),
+      'error_messages_for' => $this->get_error_messages_for(...),
+      'err'                => $this->get_error_messages_for(...),
+      'checked_attr'       => $this->checked_attr(...),
+      'selected_attr'      => $this->selected_attr(...),
     ];
   }
 
   /**
    * Does not supply any additional Twig functions.
    *
-   * @return  array
+   * @return array{}
    */
   public function get_functions() : array {
     return [];
@@ -115,4 +117,3 @@ class FormHelper implements HelperInterface {
     return $form->selected($fieldName, $value) ? ' selected ' : '';
   }
 }
-

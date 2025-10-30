@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Custom Menu class extending TimberMenu.
  */
-
 namespace Conifer\Navigation;
 
 use Timber\Menu as TimberMenu;
@@ -27,9 +29,7 @@ class Menu extends TimberMenu {
         return $item;
       }
     }
+
     return null;
   }
 }
-
-
-

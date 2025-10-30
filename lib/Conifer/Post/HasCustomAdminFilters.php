@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Powerful utility trait for adding custom filters in the WP Admin
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Post;
 
 use WP_Query;
@@ -40,27 +42,20 @@ trait HasCustomAdminFilters {
     string $name,
     array $options = [],
     callable $queryModifier = null
-  ) {
+  ): void {
     // safelist $name as a query_var
-    add_filter('query_vars', function(array $vars) use ($name) {
-      return array_merge($vars, [$name]);
-    });
+    add_filter('query_vars', fn(array $vars): array => array_merge($vars, [$name]));
 
-    add_action('restrict_manage_posts', function() use ($name, $options) {
+    add_action('restrict_manage_posts', function() use ($name, $options): void {
 
-      if (empty($options) && taxonomy_exists($name)) {
+      if ($options === [] && taxonomy_exists($name)) {
         // no options specified, but this is a taxonomy filter,
         // so just use all the terms
         $label          = static::get_taxonomy_label($name);
-        $initialOptions = ['' => "Any {$label}"];
+        $initialOptions = ['' => 'Any ' . $label];
 
         $terms   = get_terms(['taxonomy' => $name]);
-        $options = array_reduce($terms, function(
-          array $options,
-          WP_Term $term
-        ) {
-          return array_merge($options, [$term->slug => $term->name]);
-        }, $initialOptions);
+        $options = array_reduce($terms, fn(array $options, WP_Term $term): array => array_merge($options, [$term->slug => $term->name]), $initialOptions);
       }
 
       // we only want to render the filter menu if we're on the
@@ -82,7 +77,7 @@ trait HasCustomAdminFilters {
       add_action('pre_get_posts', function(WP_Query $query) use (
         $name,
         $queryModifier
-      ) {
+      ): void {
         if (static::querying_by_custom_filter($name, $query)) {
           // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
           $queryModifier($query, get_query_var($name));
@@ -98,16 +93,11 @@ trait HasCustomAdminFilters {
    */
   public static function add_taxonomy_admin_filter(
     string $tax
-  ) {
+  ): void {
     $taxLabel       = static::get_taxonomy_label($tax);
-    $initialOptions = ['' => "Any {$taxLabel}"];
+    $initialOptions = ['' => 'Any ' . $taxLabel];
 
-    $options = array_reduce(get_terms($tax), function(
-      array $_options,
-      WP_Term $term
-    ) : array {
-      return array_merge($_options, [$term->slug => $term->name]);
-    }, $initialOptions);
+    $options = array_reduce(get_terms($tax), fn(array $_options, WP_Term $term): array => array_merge($_options, [$term->slug => $term->name]), $initialOptions);
 
     static::add_admin_filter($tax, $options);
   }

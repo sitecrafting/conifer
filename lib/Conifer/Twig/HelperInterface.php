@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Interface for declarative, OO Twig functions and filters
  */
-
 namespace Conifer\Twig;
 
 /**

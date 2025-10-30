@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * AdminSubPageTest class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Unit;
 
 use WP_Mock;
@@ -16,7 +17,7 @@ use Conifer\Admin\Page;
 use Conifer\Admin\SubPage;
 
 class AdminSubPageTest extends Base {
-  public function test_do_add_sub_page() {
+  public function test_do_add_sub_page(): void {
     WP_Mock::userFunction('sanitize_key', [
       'times'   => 1,
       'args'    => ['Hello'],

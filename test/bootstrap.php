@@ -22,30 +22,28 @@ define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
  * Define our own version of apply_filters_deprecated, rather than mocking,
  * so that we can raise warnings from our tests.
  */
-function apply_filters_deprecated($filter, $filterArgs) {
+function apply_filters_deprecated(string $filter, $filterArgs) {
   deprecated_hook_notice('filter', $filter);
 
   return $filterArgs[0];
 }
 
-function do_action_deprecated($action) {
+function do_action_deprecated(string $action): void {
   deprecated_hook_notice('action', $action);
 }
 
-function deprecated_hook_notice($type, $hook) {
+function deprecated_hook_notice($type, string $hook): void {
   // Do some terrible horcrux-style dark magic shit
   // @codingStandardsIgnoreStart
   $wpMock = new ReflectionClass(WP_Mock::class);
   $mgrProp = $wpMock->getProperty('event_manager');
-  $mgrProp->setAccessible(true);
   $mgr = $mgrProp->getValue();
   $mgrReflection = new ReflectionClass($mgr);
   $callbacksProp = $mgrReflection->getProperty('callbacks');
-  $callbacksProp->setAccessible(true);
   $callbacks = $callbacksProp->getValue($mgr);
 
   // were any filters added?
-  if ($callbacks && isset($callbacks["$type::$hook"])) {
-    trigger_error("{$hook} is deprecated");
+  if ($callbacks && isset($callbacks[sprintf('%s::%s', $type, $hook)])) {
+    trigger_error($hook . ' is deprecated');
   }
 }

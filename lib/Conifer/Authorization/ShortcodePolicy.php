@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * ShortcodePolicy class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Authorization;
 
 use Timber\Timber;
@@ -18,19 +20,12 @@ use Timber\User;
 abstract class ShortcodePolicy extends AbstractPolicy {
 
   /**
-   * The shortcode tag
-   *
-   * @var string
-   */
-  protected $tag;
-
-  /**
    * Sets the shortcode tag for the new shortcode policy
    *
    * @param string $tag
    */
-  public function __construct(string $tag = 'protected') {
-      $this->tag = $tag;
+  public function __construct(protected string $tag = 'protected')
+  {
   }
 
   /**
@@ -40,12 +35,7 @@ abstract class ShortcodePolicy extends AbstractPolicy {
    * @return PolicyInterface fluent interface
    */
   public function adopt() : PolicyInterface {
-    add_shortcode($this->tag(), function(
-      array $atts,
-      string $content = ''
-    ) : string {
-      return $this->enforce($atts, $content, $this->get_user());
-    });
+    add_shortcode($this->tag(), fn(array $atts, string $content = ''): string => $this->enforce($atts, $content, $this->get_user()));
 
     return $this;
   }

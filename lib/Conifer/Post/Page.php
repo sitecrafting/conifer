@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Conifer\Post\Page class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Post;
 
 use Timber\Post as TimberPost;
@@ -29,8 +31,7 @@ class Page extends Post {
    * @return string the title to display
    */
   public function get_title_from_nav_or_post( Menu $menu ) : string {
-    return $menu->get_current_top_level_item( $this )->title
-      ?? $this->title();
+    return $menu->get_current_top_level_item()->title ?? $this->title();
   }
 
   /**
@@ -48,7 +49,7 @@ class Page extends Post {
    * @param string $template
    * @param array extra query params to be merged in with the posts query
    * to be performed.
-   * @return null|Page the first page found matching the template, or null if no such page exists
+   * @return TimberPost the first page found matching the template, or null if no such page exists
    */
   public static function get_by_template(string $template, array $query = []) {
     return Timber::get_post(array_merge($query, [
@@ -62,5 +63,3 @@ class Page extends Post {
     ]));
   }
 }
-
-

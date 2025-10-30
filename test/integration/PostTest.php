@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Test the Conifer\Post class
  *
  * @copyright 2020 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Integration;
 
 use WP_Term;
@@ -17,7 +19,9 @@ use Conifer\Post\Post;
 use Conifer\Post\BlogPost;
 
 class PostTest extends Base {
-  public function test_create() {
+  public $factory;
+
+  public function test_create(): void {
     $page = Page::create([
       'post_title'   => 'Hello',
       'post_name'    => 'hello',
@@ -37,7 +41,7 @@ class PostTest extends Base {
     $this->assertEquals('page', $page->post_type);
   }
 
-  public function test_exists_on_existent_post() {
+  public function test_exists_on_existent_post(): void {
     $post = BlogPost::create([
       'post_title' => 'Cogito ergo sum',
     ]);
@@ -47,7 +51,7 @@ class PostTest extends Base {
     $this->assertFalse(Page::exists($post->ID));
   }
 
-  public function test_exists_on_existent_page() {
+  public function test_exists_on_existent_page(): void {
     $page = Page::create([
       'post_title' => 'Cogito ergo sum',
     ]);
@@ -57,11 +61,11 @@ class PostTest extends Base {
     $this->assertFalse(BlogPost::exists($page->ID));
   }
 
-  public function test_exists_on_nonexistent_post() {
+  public function test_exists_on_nonexistent_post(): void {
     $this->assertFalse(Post::exists(99999));
   }
 
-  public function test_get_blog_page() {
+  public function test_get_blog_page(): void {
     $page = Page::create([
       'post_title' => 'News',
       'post_name'  => 'news',
@@ -72,7 +76,7 @@ class PostTest extends Base {
     $this->assertEquals($page->id, Page::get_blog_page()->id);
   }
 
-  public function test_get_blog_url() {
+  public function test_get_blog_url(): void {
     $page = Page::create([
       'post_title' => 'News',
       'post_name'  => 'news',
@@ -87,7 +91,7 @@ class PostTest extends Base {
     );
   }
 
-  public function test_get_related_by_taxonomy() {
+  public function test_get_related_by_taxonomy(): void {
     $awesome = $this->factory->term->create([
       'name'     => 'Awesome',
       'taxonomy' => 'category',
@@ -116,7 +120,7 @@ class PostTest extends Base {
     $this->assertCount(2, $post->get_related_by_taxonomy('category', 2));
   }
 
-  public function test_get_by_template() {
+  public function test_get_by_template(): void {
     $id = $this->factory->post->create([
       'post_title'          => 'My Custom Page',
       'post_status'         => 'publish',
@@ -129,7 +133,7 @@ class PostTest extends Base {
     $this->assertEquals($id, Page::get_by_template('my-template.php')->id);
   }
 
-  public function test_get_by_template_with_query_params() {
+  public function test_get_by_template_with_query_params(): void {
     $id = $this->factory->post->create([
       'post_title'          => 'My Custom Page',
       'post_status'         => 'draft',
