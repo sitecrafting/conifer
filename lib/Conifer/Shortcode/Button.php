@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Custom buttons inside RTEs!
  */
-
 namespace Conifer\Shortcode;
 
 use DOMDocument;
@@ -30,7 +32,7 @@ class Button extends AbstractBase {
    * @return string the modified <a> tag HTML
    */
   public function render(array $atts = [], string $html = '') : string {
-    if ( $html ) {
+    if ( $html !== '' && $html !== '0' ) {
       $dom = new DOMDocument();
 
       // prevent doctype, html/body tags from being added

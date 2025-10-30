@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Conifer\Admin\Page class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Admin;
 
 /**
@@ -44,13 +45,6 @@ namespace Conifer\Admin;
  */
 abstract class SubPage extends Page {
   /**
-   * The parent Page
-   *
-   * @var Page
-   */
-  protected $parent;
-
-  /**
    * Constructor
    *
    * @see https://developer.wordpress.org/reference/functions/add_submenu_page/
@@ -65,18 +59,16 @@ abstract class SubPage extends Page {
    * @param string $slug the `menu_slug` for this SubPage.
    */
   public function __construct(
-    Page $parent,
-    string $title,
-    string $menuTitle = '',
-    string $capability = '',
-    string $slug = ''
+    protected Page $parent,
+    string         $title,
+    string         $menuTitle = '',
+    string         $capability = '',
+    string         $slug = ''
   ) {
-    $this->parent = $parent;
-
     parent::__construct(
       $title,
       $menuTitle,
-      $capability ?: $parent->get_capability(),
+      $capability ?: $this->parent->get_capability(),
       $slug
     );
   }
@@ -87,19 +79,19 @@ abstract class SubPage extends Page {
    * @return Page returns this SubPage
    */
   public function add() : Page {
-    add_action('admin_menu', [$this, 'do_add']);
+    add_action('admin_menu', $this->do_add(...));
     return $this;
   }
 
   /**
    * The callback to the `admin_menu` action.
    */
-  public function do_add(): void {
-    $renderCallback = function() {
+  public function do_add(): Page {
+    $renderCallback = function(): void {
       // NOTE: Since render() is specifically for outputting HTML in the admin
       // area, users are responsible for escaping their own output accordingly.
       // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-      echo $this->render($this->slug);
+      echo $this->render((array) $this->slug);
     };
 
     add_submenu_page(
@@ -110,5 +102,7 @@ abstract class SubPage extends Page {
       $this->slug,
       $renderCallback
     );
+
+    return $this;
   }
 }

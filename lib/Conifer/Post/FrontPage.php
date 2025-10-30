@@ -1,9 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Home page class
  */
-
 namespace Conifer\Post;
+
+use Timber\Timber;
 
 /**
  * Class to represent the home page.
@@ -14,10 +18,9 @@ class FrontPage extends Page {
   /**
    * Get the FrontPage instance.
    *
-   * @return \Conifer\Post\FrontPage a FrontPage object
+   * @return \Timber\Post a FrontPage object
    */
   public static function get() {
-    return new static(get_option('page_on_front'));
+    return Timber::get_post(get_option('page_on_front'));
   }
 }
-

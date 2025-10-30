@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Class to encapsulate handling AJAX calls. Handling a WP AJAX action
  * requires only implementing a child class with an execute() method,
@@ -70,7 +73,6 @@
  * @author    Coby Tamayo
  * @package   Conifer
  */
-
 namespace Conifer\AjaxHandler;
 
 use BadMethodCallException;
@@ -82,16 +84,20 @@ use ReflectionClass;
 abstract class AbstractBase {
   /**
    * The request array for this AJAX request (either POST or GET)
+   * @var mixed[]
    */
   protected array $request;
+
   /**
    * The $_COOKIE array for this AJAX request
    */
   protected array $cookie;
+
   /**
    * The name of the AJAX action being requested
    */
   protected string $action;
+
   /**
    * Associative array which maps an action to the method name used to handle that action
    */
@@ -140,12 +146,11 @@ abstract class AbstractBase {
   /*
    * Instance Methods
    */
-
   /**
    * Constructor.
    * TODO decide whether to require Monolog??
    *
-   * @param array $request the raw request params, i.e. GET/POST
+   * @param array<string, mixed> $request the raw request params, i.e. GET/POST
    * @throws LogicException If the request array doesn't contain an action
    */
   public function __construct(array $request) {
@@ -165,7 +170,7 @@ abstract class AbstractBase {
    *
    * @param array $response the response to be converted to JSON
    */
-  protected function send_json_response(array $response) {
+  protected function send_json_response(array $response): void {
     wp_send_json($response);
   }
 
@@ -175,8 +180,8 @@ abstract class AbstractBase {
    * @param mixed $name the key of the value to get from the request
    * @return mixed the value for the request param. Defaults to the empty string if not set.
    */
-  protected function param($name) {
-    return isset($this->request[$name]) ? $this->request[$name] : '';
+  protected function param(mixed $name): mixed {
+    return $this->request[$name] ?? '';
   }
 
   /**
@@ -185,8 +190,8 @@ abstract class AbstractBase {
    * @param mixed $name the key of the value to get from the cookie
    * @return mixed the value for the cookie param. Defaults to the empty string if not set.
    */
-  protected function cookie($name) {
-    return isset($this->cookie[$name]) ? $this->cookie[$name] : '';
+  protected function cookie(mixed $name): mixed {
+    return $this->cookie[$name] ?? '';
   }
 
   /**
@@ -197,22 +202,22 @@ abstract class AbstractBase {
    * @throws LogicException If the specified action doesn't exist in the action_methods array
    * @throws BadMethodCallException If the action method doesn't exist or isn't an instance method
    */
-  protected function dispatch_action() {
+  protected function dispatch_action(): mixed {
     // check that a handler is configure for the current action
     if (empty($this->action_methods[$this->action])) {
-      throw new LogicException("No handler method specified for action: {$this->action}!");
+      throw new LogicException(sprintf('No handler method specified for action: %s!', $this->action));
     }
 
     // check that the handler method has been implemented
     $method     = $this->action_methods[$this->action];
     $reflection = new ReflectionClass($this);
     if (!$reflection->hasMethod($method)) {
-      throw new BadMethodCallException("Method `{$method}` for action {$this->action} has not been implemented!");
+      throw new BadMethodCallException(sprintf('Method `%s` for action %s has not been implemented!', $method, $this->action));
     }
 
     // check that we're calling an instance method
     if ($reflection->getMethod($method)->isStatic()) {
-      throw new BadMethodCallException("Method {$method} for action {$this->action} must not be static!");
+      throw new BadMethodCallException(sprintf('Method %s for action %s must not be static!', $method, $this->action));
     }
 
     return $this->{$method}();
@@ -223,11 +228,11 @@ abstract class AbstractBase {
    * with the specified method name as the value. Used to determine the method
    * user to handle the specified action.
    *
-   * @param  string $action The name of the action to be mapper to a method name
-   * @param  string $methodName The name of a method name to be used when handling thins action
-   * @return Conifer\AjaxHandler\AbstractBase The current AbstractBase class instance
+   * @param string $action The name of the action to be mapper to a method name
+   * @param string $methodName The name of a method name to be used when handling thins action
+   * @return AbstractBase The current AbstractBase class instance
    */
-  protected function map_action($action, $methodName) {
+  protected function map_action(string $action, string $methodName): static {
     $this->action_methods[$action] = $methodName;
     return $this;
   }
@@ -237,7 +242,7 @@ abstract class AbstractBase {
    *
    * @param array $cookie The request cookie array
    */
-  private function set_cookie(array $cookie) {
+  private function set_cookie(array $cookie): void {
     $this->cookie = $cookie;
   }
 }

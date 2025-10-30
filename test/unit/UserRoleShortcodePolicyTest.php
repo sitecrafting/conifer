@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Test the UserRoleShortcodePolicy class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author Coby Tamayo
  */
-
 namespace Conifer\Unit;
 
 use WP_Mock;
@@ -13,14 +15,14 @@ use WP_Mock;
 use Conifer\Authorization\UserRoleShortcodePolicy;
 
 class UserRoleShortcodeAuthorizationPolicyTest extends Base {
-  private $policy;
+  private UserRoleShortcodePolicy $policy;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
     $this->policy = new UserRoleShortcodePolicy();
   }
 
-  public function test_decide_authorized() {
+  public function test_decide_authorized(): void {
     $this->markTestSkipped();
     $this->assertTrue($this->policy->decide(
       ['role' => 'editor'],
@@ -29,7 +31,7 @@ class UserRoleShortcodeAuthorizationPolicyTest extends Base {
     ));
   }
 
-  public function test_decide_unauthorized() {
+  public function test_decide_unauthorized(): void {
     $this->markTestSkipped();
     $this->assertFalse($this->policy->decide(
       ['role' => 'editor'],
@@ -38,7 +40,7 @@ class UserRoleShortcodeAuthorizationPolicyTest extends Base {
     ));
   }
 
-  public function test_decide_with_default_atts() {
+  public function test_decide_with_default_atts(): void {
     $this->markTestSkipped();
     $this->assertTrue($this->policy->decide(
       [], // require "administrator" role by default
@@ -47,7 +49,7 @@ class UserRoleShortcodeAuthorizationPolicyTest extends Base {
     ));
   }
 
-  public function test_decide_with_multiple_roles() {
+  public function test_decide_with_multiple_roles(): void {
     $this->markTestSkipped();
     $user = $this->mockCurrentUser(123, [], [
       'wp_capabilities' => ['editor' => true],

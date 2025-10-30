@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Test the Conifer\Alert\DismissableAlert class
  *
  * @copyright 2020 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Unit;
 
 use \DateTime;
@@ -13,7 +15,7 @@ use \DateTime;
 use Conifer\Alert\DismissableAlert;
 
 class DismissableAlertTest extends Base {
-  public function test_cookie_text() {
+  public function test_cookie_text(): void {
     $text   = 'IMPORTANT ALERT!!!';
     $cookie = 'wp-user_dismissed_alert_' . md5($text);
     $alert  = new DismissableAlert($text, [
@@ -27,7 +29,7 @@ class DismissableAlertTest extends Base {
     );
   }
 
-  public function test_cookie_text_default_expires() {
+  public function test_cookie_text_default_expires(): void {
     $text   = 'IMPORTANT ALERT!!!';
     $cookie = 'wp-user_dismissed_alert_' . md5($text);
     $alert  = new DismissableAlert($text, [
@@ -35,14 +37,14 @@ class DismissableAlertTest extends Base {
       // let the expiry default to one year from now
     ]);
     preg_match('~=1; expires=(.+); path=/$~', $alert->cookie_text(), $matches);
-    $dt = date_create_from_format('U', strtotime($matches[1]));
+    $dt = date_create_from_format('U', (string) strtotime($matches[1]));
 
     // assert that expires=(...) gets a valid formatted datetime
     $this->assertNotEmpty($matches[1]);
     $this->assertEquals($matches[1], $dt->format('r'));
   }
 
-  public function test_cooke_text_path_opt() {
+  public function test_cooke_text_path_opt(): void {
     $text   = 'THIS IS AN IMPORTANT ALERT!!!';
     $cookie = 'wp-user_dismissed_alert_' . md5($text);
     $alert  = new DismissableAlert($text, [
@@ -57,7 +59,7 @@ class DismissableAlertTest extends Base {
     );
   }
 
-  public function test_dismissed() {
+  public function test_dismissed(): void {
     $text   = 'IMPORTANT ALERT!!!';
     $cookie = 'wp-user_dismissed_alert_' . md5($text);
     $alert  = new DismissableAlert($text, [

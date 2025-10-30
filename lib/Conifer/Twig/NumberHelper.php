@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Custom Twig filters for formatting numbers
  */
-
 namespace Conifer\Twig;
 
 /**
@@ -14,18 +16,18 @@ class NumberHelper implements HelperInterface {
   /**
    * Get the Twig functions to register
    *
-   * @return  array an associative array of callback functions, keyed by name
+   * @return \Closure[] an associative array of callback functions, keyed by name
    */
   public function get_filters() : array {
     return [
-      'us_phone' => [$this, 'us_phone'],
+      'us_phone' => $this->us_phone(...),
     ];
   }
 
   /**
    * Does not supply any additional Twig functions.
    *
-   * @return  array
+   * @return array{}
    */
   public function get_functions() : array {
     return [];
@@ -45,7 +47,7 @@ class NumberHelper implements HelperInterface {
 
     // If we have the correct number of digits, format it out...
     if ( count($matches) === 4 ) {
-      $phone = "({$matches[1]}) {$matches[2]}-{$matches[3]}";
+      $phone = sprintf('(%s) %s-%s', $matches[1], $matches[2], $matches[3]);
     }
 
     // Return the phone number, formatted or not

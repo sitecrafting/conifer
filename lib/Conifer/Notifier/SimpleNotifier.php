@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * SimpleNotifier class
  *
@@ -19,7 +21,6 @@
  * $notifier->notify('you signed up!', $message);
  * ```
  */
-
 namespace Conifer\Notifier;
 
 /**
@@ -31,28 +32,22 @@ namespace Conifer\Notifier;
  */
 class SimpleNotifier extends EmailNotifier {
   /**
-   * The email address(es) to send to
-   *
-   * @var string|array
-   */
-  protected $to;
-
-  /**
    * Constructor. Pass the to email here.
    *
-   * @param string|array $o the email addresses to send to.
+   * @param array|string $to the email addresses to send to.
    * Can be a comma-separated string or an array
    */
-  public function __construct($to) {
-    $this->to = $to;
+  public function __construct(
+      protected array|string $to
+  )
+  {
   }
 
   /**
    * Get the admin email address configured in General Settings
    */
-  public function to() {
+  public function to(): array|string
+  {
     return $this->to;
   }
 }
-
-

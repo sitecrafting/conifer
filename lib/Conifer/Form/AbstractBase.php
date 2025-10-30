@@ -1,14 +1,17 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Conifer\Form\AbstractBase class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Form;
 
 use Closure;
+use InvalidArgumentException;
 
 /**
  * Abstract form base class, encapsulating the Conifer Form API
@@ -102,8 +105,11 @@ use Closure;
  */
 abstract class AbstractBase {
   const MESSAGE_FIELD_REQUIRED    = '%s is required';
+
   const MESSAGE_INVALID_MIME_TYPE = 'Wrong file type for %s';
+
   const MESSAGE_FILE_SIZE         = 'The uploaded file for %s exceeds the maximum allowed size';
+
   const MESSAGE_UPLOAD_ERROR      = 'An error occurred with the upload for %s';
 
   /**
@@ -113,33 +119,24 @@ abstract class AbstractBase {
    * represented simply as an array. Validations are declarative, in that each
    * field tells this class exactly how to validate it.
    *
-   * @var array
+   * @var mixed[]
    */
-  protected $fields;
-
-  /**
-   * The files uploaded to this form as an array of arrays. This will generally
-   * be the contents of the $_FILES superglobal.
-   *
-   * @see http://php.net/manual/en/reserved.variables.files.php
-   * @var array
-   */
-  protected $files;
+  protected array $fields = [];
 
   /**
    * The errors collected while processing this form, as arrays. Each error array
    * should have a "message" and a "field" index.
    *
-   * @var array
+   * @var mixed[]
    */
-  protected $errors;
+  protected array $errors = [];
 
   /**
    * Whether this form submission was processed successfully.
    *
    * @var boolean
    */
-  protected $success;
+  protected bool $success = false;
 
   /**
    * Process the form submission.
@@ -151,13 +148,12 @@ abstract class AbstractBase {
   /**
    * Constructor
    *
-   * @var array Uploaded files for this form, e.g. $_FILES
+   * @var ?array $files Uploaded files for this form, e.g. $_FILES
    */
-  public function __construct(array $files = null) {
-    $this->errors  = [];
-    $this->fields  = [];
-    $this->files   = $files;
-    $this->success = false;
+  public function __construct(
+      protected ?array $files = null
+  )
+  {
   }
 
   /**
@@ -166,14 +162,14 @@ abstract class AbstractBase {
    * but the first argument MUST be the submitted values, as an associative
    * array. The remaining arguments, if any, are passed to the constructor.
    *
-   * @throws \InvalidArgumentException if the first argument is not an array
-   * @return \Conifer\Form\AbstractBase the form object
+   * @return AbstractBase the form object
+   * @throws InvalidArgumentException if the first argument is not an array
    */
-  public static function create_from_submission(...$args) {
-    list($submission) = array_splice($args, 0, 1);
+  public static function create_from_submission(...$args): AbstractBase {
+    [$submission] = array_splice($args, 0, 1);
 
     if (!is_array($submission)) {
-      throw new \InvalidArgumentException(
+      throw new InvalidArgumentException(
         'First argument to create_from_submission()'
           . ' must be an array of submitted values'
       );
@@ -186,7 +182,7 @@ abstract class AbstractBase {
   /**
    * Get the fields configured for this form
    *
-   * @return array an array of form fields.
+   * @return mixed[] an array of form fields.
    */
   public function get_fields() : array {
     return $this->fields;
@@ -195,20 +191,20 @@ abstract class AbstractBase {
   /**
    * Get a field definition by its name
    *
-   * @return array|null the field, or null if it doesn't exist
+   * @return ?array the field, or null if it doesn't exist
    */
-  public function get_field(string $name) {
+  public function get_field(string $name): ?array {
     return $this->fields[$name] ?? null;
   }
 
-  /**
-   * Get the current value for the given form field.
-   *
-   * @param  string $name the name of the form field whose value you want.
-   * @return the submitted value, or the existing persisted value if no
-   * value has been submitted, or otherwise null.
-   */
-  public function get($field) {
+    /**
+     * Get the current value for the given form field.
+     *
+     * @param string $field the name of the form field whose value you want.
+     * @return mixed the submitted value, or the existing persisted value if no
+     * value has been submitted, or otherwise null.
+     */
+  public function get(string $field): mixed {
     return $this->{$field} ?? null;
   }
 
@@ -226,7 +222,7 @@ abstract class AbstractBase {
    * Set the uploaded files for this form, generally to
    * the contents of the $_FILES superglobal.
    *
-   * @return \Conifer\Form\AbstractBase This form instance
+   * @return AbstractBase This form instance
    */
   public function set_files(array $files = null) : AbstractBase {
     $this->files = $files;
@@ -257,12 +253,12 @@ abstract class AbstractBase {
    * matching on `$value` (e.g. for radio buttons).
    *
    * @param string $field the `name` of the field
-   * @param string $value (optional) the value to check against. This is
+   * @param string|null $value (optional) the value to check against. This is
    * necessary e.g. for radio inputs, where there's more than one possible
    * value.
    * @return bool true if the field was checked
    */
-  public function checked($field, $value = null) : bool {
+  public function checked(string $field, string $value = null) : bool {
     $fieldValue = $this->get($field);
 
     // at the very least, check that the field is present in the submission...
@@ -296,7 +292,7 @@ abstract class AbstractBase {
    * actual submitted value
    * @return bool
    */
-  public function selected(string $field, $optionValue) : bool {
+  public function selected(string $field, mixed $optionValue) : bool {
     $fieldValue = $this->get($field);
 
     // at the very least, check that the field is present in the submission...
@@ -314,7 +310,7 @@ abstract class AbstractBase {
   /**
    * Get the errors collected while processing this form, if any
    *
-   * @return array
+   * @return mixed[]
    */
   public function get_errors() : array {
     return $this->errors;
@@ -326,7 +322,7 @@ abstract class AbstractBase {
    * @return bool
    */
   public function has_errors() : bool {
-    return !empty($this->errors);
+    return $this->errors !== [];
   }
 
   /**
@@ -336,7 +332,7 @@ abstract class AbstractBase {
    * @return bool
    */
   public function has_errors_for(string $fieldName) : bool {
-    return !empty($this->get_errors_for($fieldName));
+    return $this->get_errors_for($fieldName) !== [];
   }
 
   /**
@@ -344,8 +340,8 @@ abstract class AbstractBase {
    *
    * @return boolean
    */
-  public function succeeded() {
-    return !!$this->success;
+  public function succeeded(): bool {
+    return $this->success;
   }
 
   /**
@@ -355,9 +351,7 @@ abstract class AbstractBase {
    * @return array
    */
   public function get_unique_error_messages() : array {
-    return array_unique(array_map(function(array $error) {
-      return $error['message'];
-    }, $this->errors));
+    return array_unique(array_map(fn(array $error) => $error['message'], $this->errors));
   }
 
   /**
@@ -367,7 +361,7 @@ abstract class AbstractBase {
    *
    * @param string $fieldName the name of the field this error is associated with
    */
-  public function add_error(string $fieldName, string $message) {
+  public function add_error(string $fieldName, string $message): void {
     $this->errors[] = [
       'field' => $fieldName,
       'message' => $message,
@@ -399,12 +393,12 @@ abstract class AbstractBase {
    * Check whether a value was submitted for the given field,
    * adding an error if not.
    *
-   * @param  array $field the field array itself
+   * @param array<string, mixed> $field the field array itself
    * @param  string $value the submitted value
    * @return boolean
    */
   public function validate_required_field(array $field, string $value) : bool {
-    $valid = !empty($value);
+    $valid = $value !== '' && $value !== '0';
 
     if (!$valid) {
       // use field-defined message, or fallback on crunching message ourselves
@@ -434,7 +428,7 @@ abstract class AbstractBase {
    * Check whether a required file upload was submitted,
    * adding an error if not.
    *
-   * @param array $field The file upload field array itself
+   * @param array<string, mixed> $field The file upload field array itself
    * @return boolean
    */
   public function validate_required_file(array $field) : bool {
@@ -451,6 +445,7 @@ abstract class AbstractBase {
       // The file exists, but let's make sure it uploaded without any errors
       $valid = $valid && $this->validate_file_upload($field);
     }
+
     return $valid;
   }
 
@@ -468,7 +463,7 @@ abstract class AbstractBase {
    * Check whether the specified file field has an upload error,
    * adding an error if so.
    *
-   * @param array $field The file upload field array itself
+   * @param array<string, mixed> $field The file upload field array itself
    * @return boolean
    */
   public function validate_file_upload(array $field) : bool {
@@ -485,6 +480,7 @@ abstract class AbstractBase {
         )
       );
     }
+
     return $valid;
   }
 
@@ -492,7 +488,7 @@ abstract class AbstractBase {
    * Check if the specified file upload field submission matches
    * an array of whitelisted mime types
    *
-   * @param array $field The file upload field array itself
+   * @param array<string, mixed> $field The file upload field array itself
    * @param string $value The submitted value
    * @param array $submission The submitted fields as key/value pairs
    * @param array $validTypes Whitelisted MIME types for the specified field
@@ -505,7 +501,7 @@ abstract class AbstractBase {
     array $validTypes = []
   ) : bool {
     $fileArr = $this->get_file($field['name']);
-    if (empty($fileArr)) {
+    if ($fileArr === []) {
       // if this is a required field, assume the user has specified
       // validate_required_file
       return true;
@@ -529,9 +525,7 @@ abstract class AbstractBase {
    * @return array            an array of error arrays
    */
   public function get_errors_for(string $fieldName) : array {
-    return array_filter( $this->get_errors(), function(array $error) use ($fieldName) {
-      return $error['field'] === $fieldName;
-    });
+    return array_filter( $this->get_errors(), fn(array $error): bool => $error['field'] === $fieldName);
   }
 
   /**
@@ -541,9 +535,7 @@ abstract class AbstractBase {
    * @return array            an array of error message strings
    */
   public function get_error_messages_for(string $fieldName) : array {
-    return array_map(function(array $field) {
-      return $field['message'];
-    }, $this->get_errors_for($fieldName));
+    return array_map(fn(array $field) => $field['message'], $this->get_errors_for($fieldName));
   }
 
   /**
@@ -551,14 +543,14 @@ abstract class AbstractBase {
    *
    * @param array $submission the current request params;
    * typically `$_POST`, `$_GET`, or `$_REQUEST`.
-   * @param array $options an options array. Supported options:
+   * @param array<string, mixed> $options an options array. Supported options:
    * - `stripslashes` or `strip_slashes`: whether to run `stripslashes()` on
    *   any string values. When `true`, recursively applies to array options
    *   as well. Default: `false`; will default to `true` in a future version
    *   of Conifer.
-   * @return \Conifer\Form\AbstractBase this form instance
+   * @return AbstractBase this form instance
    */
-  public function hydrate(array $submission, $options = []) : AbstractBase {
+  public function hydrate(array $submission, array $options = []) : AbstractBase {
     $stripslashes = $options['stripslashes']
       ?? $options['strip_slashes']
       ?? false;
@@ -568,6 +560,7 @@ abstract class AbstractBase {
         ? $this->stripslashes_deep($value)
         : $value;
     }
+
     return $this;
   }
 
@@ -578,11 +571,11 @@ abstract class AbstractBase {
    * @param array $submission the submitted fields
    * @return array the whitelisted fields
    */
-  public function get_whitelisted_fields(array $submission) {
+  public function get_whitelisted_fields(array $submission): array {
     return array_reduce(array_keys($this->fields), function(
       array $whitelist,
       string $fieldName
-    ) use ($submission) {
+    ) use ($submission): array {
       // we don't always want to return a value for a field, e.g.
       // for checkbox where null vs. empty string matters
       $whitelist[$fieldName] = $this->filter_field(
@@ -598,23 +591,16 @@ abstract class AbstractBase {
    * Returns an error message for a given file upload field,
    * based on the provided PHP upload error code.
    *
-   * @param array $field The file upload field array itself
+   * @param array<string, mixed> $field The file upload field array itself
    * @param integer $errorCode The error code specified by PHP for the file upload
    * @return string The error message, based on the specified upload error code
    */
   public function get_file_upload_error_message(array $field, int $errorCode) {
-    switch ($errorCode) {
-      case UPLOAD_ERR_INI_SIZE:
-      case UPLOAD_ERR_FORM_SIZE:
-        $errorMessage = static::MESSAGE_FILE_SIZE;
-        break;
-      case UPLOAD_ERR_NO_FILE:
-        $errorMessage = static::MESSAGE_FIELD_REQUIRED;
-        break;
-      default:
-        $errorMessage = static::MESSAGE_UPLOAD_ERROR;
-        break;
-    }
+    $errorMessage = match ($errorCode) {
+        UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE => static::MESSAGE_FILE_SIZE,
+        UPLOAD_ERR_NO_FILE => static::MESSAGE_FIELD_REQUIRED,
+        default => static::MESSAGE_UPLOAD_ERROR,
+    };
     return sprintf($errorMessage, $field['label'] ?? $field['name']);
   }
 
@@ -623,7 +609,7 @@ abstract class AbstractBase {
    * if any. If a field default is provided, the default is applied *after*
    * the filter (that is, to the result of the filter callback).
    *
-   * @param array $field the field definition
+   * @param array<string, mixed> $field the field definition
    * @param mixed $value the submitted field value
    * @return mixed the filtered value
    */
@@ -645,7 +631,7 @@ abstract class AbstractBase {
   /**
    * Validate a single field
    *
-   * @param array $field the field to validate.
+   * @param array<string, mixed> $field the field to validate.
    * MUST include at least a `name` index.
    * @param array $submission the data submitted.
    * @throws \LogicException if validators are not defined as an array
@@ -678,7 +664,7 @@ abstract class AbstractBase {
    *
    * @param mixed $validator the callback to execute, responsible for adding
    * any errors raised
-   * @param array $field the field to validate
+   * @param array<string, mixed> $field the field to validate
    * @param array $submission the submitted data
    * @throws \LogicException if validator is not callable
    * @return boolean
@@ -699,7 +685,7 @@ abstract class AbstractBase {
 
     if (!is_callable($validator)) {
       throw new \LogicException(
-        "{$field['name']} field validator must be defined as a callable,"
+        $field['name'] . ' field validator must be defined as a callable,'
           . ' or else must be the name of an instance method.'
       );
     }
@@ -729,7 +715,7 @@ abstract class AbstractBase {
    *
    * @return void
    */
-  protected function throw_files_exception_if_not_set() {
+  protected function throw_files_exception_if_not_set(): void {
     if (is_null($this->files)) {
       throw new \LogicException('The files property must be set in order to use file-related functions.');
     }
@@ -740,7 +726,7 @@ abstract class AbstractBase {
    *
    * @internal
    */
-  private function stripslashes_deep($val) {
+  private function stripslashes_deep($val): string|array {
     return is_array($val)
       ? array_map([$this, 'stripslashes_deep'], $val)
       : stripslashes((string) $val);

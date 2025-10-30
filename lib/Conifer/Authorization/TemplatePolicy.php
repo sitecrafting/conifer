@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * TemplatePolicy class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Authorization;
 
 use Timber\Timber;
@@ -22,7 +24,7 @@ abstract class TemplatePolicy extends AbstractPolicy {
    * @return PolicyInterface fluent interface
    */
   public function adopt() : PolicyInterface {
-    add_filter('template_include', function(string $template) {
+    add_filter('template_include', function(string $template): string {
       $this->enforce($template, Timber::get_user());
       return $template;
     });
@@ -34,7 +36,7 @@ abstract class TemplatePolicy extends AbstractPolicy {
    * Enforce this template-level policy
    *
    * @param string $template the template file being loaded
-   * @param \Timber\User the User whose privileges we want to check
+   * @param User $user the User whose privileges we want to check
    */
   abstract public function enforce(string $template, User $user);
 }

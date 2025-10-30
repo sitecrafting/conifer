@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Support class for testing CPT registration
  */
-
 namespace Conifer\Unit\Support;
 
 use Conifer\Post\Post;
@@ -14,6 +15,9 @@ use Conifer\Post\Post;
 class Person extends Post {
   const POST_TYPE = 'person';
 
+  /**
+   * @return array<string, array<string, string>|string>
+   */
   public static function type_options() : array {
     return [
       'plural_label' => 'People',

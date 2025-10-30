@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * UserRoleShortcodePolicy class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Authorization;
 
 use Timber\User;
@@ -27,21 +29,17 @@ class UserRoleShortcodePolicy extends ShortcodePolicy {
   ) : bool {
     // Parse the role[s] attribute to determine which roles are authorized
     $roleAttr        = $atts['role'] ?? $atts['roles'] ?? 'administrator';
-    $authorizedRoles = array_map('trim', explode(',', $roleAttr));
+    $authorizedRoles = array_map(trim(...), explode(',', $roleAttr));
 
     // Get the user's roles for comparison
     // WP returns user roles in an idiosyncratic way: role names are keys and
     // `true` values means the user has that role. We just want to flatten
     // this to a simple array of role/capability strings
     // If the user is not logged in and has no roles the users wp_capabilities returns false and we want an empty array
-    if ($user->meta('wp_capabilities') === false) {
-      $userRoles = [];
-    } else {
-      $userRoles = array_keys(array_filter($user->meta('wp_capabilities')));
-    }
+    $userRoles = $user->meta('wp_capabilities') === false ? [] : array_keys(array_filter($user->meta('wp_capabilities')));
 
     // Make sure the user has at least one authorized role
-    return !empty(array_intersect($authorizedRoles, $userRoles));
+    return array_intersect($authorizedRoles, $userRoles) !== [];
   }
 
 }

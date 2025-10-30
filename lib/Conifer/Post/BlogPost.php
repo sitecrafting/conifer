@@ -1,11 +1,13 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * BlogPost class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Post;
 
 use DateTime;
@@ -74,9 +76,7 @@ _SQL_;
   public function get_related( $numPosts = self::NUM_RELATED_POSTS ) {
     if (!isset($this->related_posts)) {
       // Get term_ids to query by
-      $categoryIds = array_map(function($cat) {
-        return $cat->id;
-      }, $this->categories());
+      $categoryIds = array_map(fn($cat) => $cat->id, $this->categories());
 
       $this->related_posts = Timber::get_posts([
         // posts of this same type only
@@ -92,7 +92,7 @@ _SQL_;
             'terms' => $categoryIds,
           ],
         ],
-      ]);
+      ])->to_array();
     }
 
     return $this->related_posts;

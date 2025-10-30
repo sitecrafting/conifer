@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * YoastIntegration class
  */
-
 namespace Conifer\Integrations;
 
 /**
@@ -15,13 +17,9 @@ class YoastIntegration {
   /**
    * Demote Yoast SEO meta box to the bottom of the post edit screen
    */
-  public static function demote_metabox() {
+  public static function demote_metabox(): void {
     if (is_admin()) {
-      add_filter('wpseo_metabox_prio', function() {
-        return 'low';
-      });
+      add_filter('wpseo_metabox_prio', fn(): string => 'low');
     }
   }
 }
-
-

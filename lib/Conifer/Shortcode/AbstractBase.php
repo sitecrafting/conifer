@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Declarative-style WP shortcodes
  */
-
 namespace Conifer\Shortcode;
 
 /**
@@ -16,10 +18,10 @@ abstract class AbstractBase {
    * Register a shortcode with the given "tag".
    * Tells WP to call render() to render the shortcode content.
    *
-   * @param  string $tag The tag to be used to write the actual shortcode
+   * @param string $tag The tag to be used to write the actual shortcode
    */
-  public static function register( $tag ) {
-    add_shortcode( $tag, function($args = [], string $html = '') {
+  public static function register(string $tag ): void {
+    add_shortcode( $tag, function($args = [], string $html = ''): string {
       $shortcode = new static();
       // coerce args to an array
       return $shortcode->render($args ?: [], $html);
@@ -36,5 +38,3 @@ abstract class AbstractBase {
     string $content = ''
   ) : string;
 }
-
-

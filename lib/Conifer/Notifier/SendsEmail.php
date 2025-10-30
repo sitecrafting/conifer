@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * SendsEmail trait for mailer classes to consume
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Notifier;
 
 /**
@@ -119,7 +120,7 @@ trait SendsEmail {
    *
    * @throws \LogicException if to() returns the wrong type
    */
-  protected function get_valid_to_address() {
+  protected function get_valid_to_address(): string|array {
     $to = $this->to();
 
     // Warn the (dev) user extending this class that they're doing it wrong
@@ -132,5 +133,3 @@ trait SendsEmail {
     return $to;
   }
 }
-
-

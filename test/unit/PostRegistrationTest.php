@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Test syntax sugar for registering custom post types
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Unit;
 
 use Conifer\Post\Post;
@@ -16,7 +17,7 @@ use WP_Mock\Functions;
 use WP_Term;
 
 class PostRegistrationTest extends Base {
-  public function test_register_type() {
+  public function test_register_type(): void {
     /* https://codex.wordpress.org/Function_Reference/register_post_type */
     WP_Mock::userFunction('register_post_type', [
       'times' => 1,
@@ -47,7 +48,7 @@ class PostRegistrationTest extends Base {
     $this->assertNull(Person::register_type());
   }
 
-  public function test_register_taxonomy() {
+  public function test_register_taxonomy(): void {
     /* https://codex.wordpress.org/Function_Reference/register_taxonomy */
     WP_Mock::userFunction('register_taxonomy', [
       'times' => 1,
@@ -85,7 +86,7 @@ class PostRegistrationTest extends Base {
     ]));
   }
 
-  public function test_register_taxonomy_without_explicit_options() {
+  public function test_register_taxonomy_without_explicit_options(): void {
     /* https://codex.wordpress.org/Function_Reference/register_taxonomy */
     WP_Mock::userFunction('register_taxonomy', [
       'times' => 1,
@@ -123,7 +124,7 @@ class PostRegistrationTest extends Base {
     ]));
   }
 
-  public function test_register_taxonomy_with_underscores() {
+  public function test_register_taxonomy_with_underscores(): void {
     /* https://codex.wordpress.org/Function_Reference/register_taxonomy */
     WP_Mock::userFunction('register_taxonomy', [
       'times' => 1,
@@ -158,7 +159,7 @@ class PostRegistrationTest extends Base {
     $this->assertNull(Person::register_taxonomy('personal_attribute'));
   }
 
-  public function test_register_taxonomy_omitting_post_type() {
+  public function test_register_taxonomy_omitting_post_type(): void {
     WP_Mock::userFunction('register_taxonomy', [
       'times' => 1,
       'args'  => [

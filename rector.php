@@ -11,11 +11,15 @@ try {
     return RectorConfig::configure()
         ->withPaths([
             __DIR__.'/lib',
-//            __DIR__.'/test',
+            __DIR__.'/test',
         ])
         // Will grab the PHP version out of the composer.json file so it doesn't need to be explicitly declared.
         ->withPhpSets()
         ->withPreparedSets(
+            codeQuality: true,
+            codingStyle: true,
+            typeDeclarations: true,
+            typeDeclarationDocblocks: true,
         )
         ->withRules([
             DeclareStrictTypesRector::class,

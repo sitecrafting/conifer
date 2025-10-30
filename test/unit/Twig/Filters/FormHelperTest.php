@@ -1,23 +1,28 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Test the FormHelper methods exposed to Twig
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author Coby Tamayo
  */
-
 namespace Conifer\Unit;
 
 use Conifer\Form\AbstractBase as Form;
 use Conifer\Twig\FormHelper;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class FormHelperTest extends Base {
-  public function setUp(): void {
+  public $wrapper;
+
+  protected function setUp(): void {
     parent::setUp();
     $this->wrapper = new FormHelper();
   }
 
-  public function test_field_class() {
+  public function test_field_class(): void {
     // mock up some form errors
     $form = $this->getMockForAbstractClass(Form::class);
     $form->add_error('foo', 'error message for foo');
@@ -33,7 +38,7 @@ class FormHelperTest extends Base {
     );
   }
 
-  public function test_get_error_messages_for() {
+  public function test_get_error_messages_for(): void {
     $form = $this->getMockForAbstractClass(Form::class);
     $form->add_error('foo', 'error message for foo');
     $form->add_error('foo', 'another error for foo');
@@ -49,7 +54,7 @@ class FormHelperTest extends Base {
     );
   }
 
-  public function test_checked_attr() {
+  public function test_checked_attr(): void {
     $form = $this->setup_form([
       // field config
       'my_checkbox' => [],
@@ -68,7 +73,7 @@ class FormHelperTest extends Base {
     );
   }
 
-  public function test_selected_attr() {
+  public function test_selected_attr(): void {
     $form = $this->setup_form([
       // field config
       'my_select' => [],
@@ -87,7 +92,11 @@ class FormHelperTest extends Base {
     );
   }
 
-  protected function setup_form(array $fields, array $values = []) {
+  /**
+   * @param array<string, array> $fields
+   * @param array<string, string> $values
+   */
+  protected function setup_form(array $fields, array $values = []): MockObject {
     $form = $this->getMockForAbstractClass(Form::class);
     $this->setProtectedProperty($form, 'fields', $fields);
     $form->hydrate($values);

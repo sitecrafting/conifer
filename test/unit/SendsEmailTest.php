@@ -1,13 +1,16 @@
 <?php
+
+declare(strict_types=1);
+
 /**
  * Test the Conifer\Notifier\SendsEmail trait
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
 namespace Conifer\Unit;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use WP_Mock;
 
 use Conifer\Notifier\SendsEmail;
@@ -17,9 +20,9 @@ class SendsEmailTest extends Base {
 
   const HTML_HEADERS = ['Content-Type: text/html; charset=UTF-8'];
 
-  protected $notifier;
+  protected MockObject $notifier;
 
-  public function setUp(): void {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->notifier = $this->getMockForTrait(SendsEmail::class);
@@ -31,7 +34,7 @@ class SendsEmailTest extends Base {
       ->will($this->returnValue(self::TO_ADDRESS));
   }
 
-  public function test_html_message() {
+  public function test_html_message(): void {
     $expectedHeaders   = self::HTML_HEADERS;
     $expectedHeaders[] = 'x-can-haz-cheezburger: yas';
 
@@ -51,7 +54,7 @@ class SendsEmailTest extends Base {
     ));
   }
 
-  public function test_notify_html() {
+  public function test_notify_html(): void {
     WP_Mock::userFunction('wp_mail', [
       'times' => 1,
       'args'  => [self::TO_ADDRESS, 'hi', 'lorem ipsum', self::HTML_HEADERS],
@@ -61,7 +64,7 @@ class SendsEmailTest extends Base {
     $this->assertTrue($this->notifier->notify('hi', 'lorem ipsum'));
   }
 
-  public function test_notify_plaintext() {
+  public function test_notify_plaintext(): void {
     WP_Mock::userFunction('wp_mail', [
       'times' => 1,
       'args'  => [self::TO_ADDRESS, 'hi', 'lorem ipsum', []],
