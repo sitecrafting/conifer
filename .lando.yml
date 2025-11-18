@@ -12,7 +12,7 @@ services:
       - apt-get install zip
       - apt-get install subversion -y
 
-    build:
+    run:
       - composer install
       - ./scripts/setup-wordpress.sh
 
