@@ -4,6 +4,8 @@
  * AdminNotifier class
  */
 
+declare(strict_types=1);
+
 namespace Conifer\Notifier;
 
 /**
@@ -14,12 +16,10 @@ namespace Conifer\Notifier;
  * @package   Conifer
  */
 class AdminNotifier extends EmailNotifier {
-  /**
-   * Get the admin email address configured in General Settings
-   */
-  public function to() {
-    return get_option('admin_email');
-  }
+    /**
+     * Get the admin email address configured in General Settings
+     */
+    public function to() {
+        return get_option('admin_email');
+    }
 }
-
-

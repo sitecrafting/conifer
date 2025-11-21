@@ -59,19 +59,12 @@ Conifer's Lando setup also provides these commands:
 * `lando debug`: `tail` the WP debug.log in real time
 * `lando yarn`: run arbitrary [yarn](https://www.npmjs.com/package/yarn) commands
 * `lando docs`: build the Conifer doc site being served from the `docs` service (https://docs.conifer.lndo.site or similar)
-* `lando gitbook`: Run arbitrary [gitbook](https://github.com/GitbookIO/gitbook) commands.
 
 #### Serving a local documentation site
 
 If you're working on docs, it's helpful to see the doc site as compiled from your exact copy of the Markdown files.
 
 To that end, you can run `lando docs` to build the docs site once.
-
-It's annoying to do that over and over, though. To rebuild the docs automatically whenever a Markdown file changes, run `lando gitbook serve`. This will start a process and block your current shell session; press `Ctrl-C` to exit the process.
-
-> #### Warning::The `localhost` URL in the output is misleading
->
-> The `gitbook serve` command starts a web server at `localhost:4000`, but this is actually the `localhost` inside the `docs` service container, meaning you can't actually view the doc site at that address. Go to the proxy URL output by `lando start` or `lando info` instead. This will be something like https://docs.conifer.lndo.site.
 
 #### Mailhog
 

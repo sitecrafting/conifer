@@ -1,10 +1,8 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress-Timber">
-    <description>A custom set of rules to check coding standards for Timber.</description>
+<ruleset name="WordPress-Conifer">
+    <description>A custom set of rules to check coding standards for Conifer.</description>
 
-    <arg name="tab-width" value="2" />
-
-		<config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+    <arg name="tab-width" value="4" />
 
     <!--
         Default settings for command line usage
@@ -33,7 +31,7 @@
         because WordPress-Extra already includes it.
     -->
     <rule ref="WordPress-Extra">
-
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
         <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
         <!-- Do not check for proper WordPress file names. -->
         <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceAfterOpen" />
@@ -68,8 +66,6 @@
         <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
         <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
         <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
-        <exclude name="WordPress.WhiteSpace.PrecisionAlignment" />
-
     </rule>
 
     <rule ref="Squiz.Commenting.ClassComment.Missing">
@@ -111,7 +107,7 @@
     <!--
         Hook Names
         While the WordPress Coding Standards state that hook names should be separated by
-        underscores, an optionated approach used by plugins like Advanced Custom Fields is to use
+        underscores, an opinionated approach used by plugins like Advanced Custom Fields is to use
         '/' to namespace hooks.
         @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties#custom-word-delimiters-in-hook-names
     -->
@@ -130,10 +126,14 @@
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
       <properties>
-        <property name="exact" value="false"/>
-        <property name="indent" value="2"/>
+        <property name="exact" value="true"/>
+        <property name="indent" value="4"/>
         <property name="tabIndent" value="false"/>
-        <property name="ignoreIndentationTokens" type="array" value="T_HEREDOC,T_NOWDOC,T_INLINE_HTML"/>
+        <property name="ignoreIndentationTokens" type="array">
+          <element value="T_HEREDOC"/>
+          <element value="T_NOWDOC"/>
+          <element value="T_INLINE_HTML"/>
+        </property>
       </properties>
     </rule>
 

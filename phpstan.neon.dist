@@ -10,7 +10,7 @@ parameters:
     bootstrapFiles:
         - phpstan/bootstrap.php
     scanFiles:
-        - vendor/paulthewalton/acf-stubs/acf-stubs.php
+        - vendor/php-stubs/acf-pro-stubs/acf-pro-stubs.php
     paths:
         - lib/
     ignoreErrors:
