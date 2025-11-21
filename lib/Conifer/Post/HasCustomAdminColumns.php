@@ -1,13 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Powerful utility trait for adding custom columns in the WP Admin
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
+
+declare(strict_types=1);
+
 namespace Conifer\Post;
 
 /**
@@ -26,84 +27,84 @@ trait HasCustomAdminColumns {
      * display the value of the `meta` field whose `meta_key` is equal to `$key`.
      * a given post. Takes a post ID as its sole parameter.
      */
-  public static function add_admin_column($key, $label, callable $getValue = null): void {
-    $postType = static::_post_type();
+    public static function add_admin_column($key, $label, callable $getValue = null ): void {
+        $postType = static::_post_type();
 
-    if ($postType === 'page' || $postType === 'post') {
-      // e.g. manage_pages_columns
-      $addHook = sprintf('manage_%ss_columns', $postType);
+        if ($postType === 'page' || $postType === 'post') {
+            // e.g. manage_pages_columns
+            $addHook = sprintf('manage_%ss_columns', $postType);
 
-      // e.g. manage_pages_custom_column
-      $displayHook = sprintf('manage_%ss_custom_column', $postType);
+            // e.g. manage_pages_custom_column
+            $displayHook = sprintf('manage_%ss_custom_column', $postType);
 
-    } else {
-      // e.g. manage_my_post_type_posts_columns
-      $addHook = sprintf('manage_%s_posts_columns', $postType);
+        } else {
+            // e.g. manage_my_post_type_posts_columns
+            $addHook = sprintf('manage_%s_posts_columns', $postType);
 
-      // e.g. manage_my_post_type_posts_custom_column
-      $displayHook = sprintf('manage_%s_posts_custom_column', $postType);
+            // e.g. manage_my_post_type_posts_custom_column
+            $displayHook = sprintf('manage_%s_posts_custom_column', $postType);
+        }
+
+        // Add the column to the admin
+        add_filter($addHook, function (array $columns ) use ($key, $label ): array {
+            $columns[$key] = $label;
+            return $columns;
+        });
+
+        // If no callback is given, infer a sensible default from the key.
+        $getValue ??= static::value_getter($key);
+
+        // register a callback to display the value for this column
+        add_action($displayHook, function ($column, $id ) use ($key, $getValue ): void {
+            if ( $column === $key ) {
+                // NOTE: THE USER IS RESPONSIBLE FOR ESCAPING USER INPUT AS NECESSARY
+            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo $getValue( (int) $id);
+            }
+        }, 10, 2);
     }
 
-    // Add the column to the admin
-    add_filter($addHook, function(array $columns) use ($key, $label): array {
-      $columns[$key] = $label;
-      return $columns;
-    });
+    /**
+     * Get a function to run based on the meta $key.
+     *
+     * @param string $key the column key whose value we need to get when rendering a custom column
+     * @return callable
+     */
+    private static function value_getter($key ): callable {
+        $keyToGetterMapping = [
+        '_wp_page_template' => static::page_template_name(...),
+        ];
 
-    // If no callback is given, infer a sensible default from the key.
-    $getValue ??= static::value_getter($key);
+        return $keyToGetterMapping[$key] ?? static::post_meta_getter($key);
+    }
 
-    // register a callback to display the value for this column
-    add_action($displayHook, function($column, $id) use ($key, $getValue): void {
-      if ( $column === $key ) {
-        // NOTE: THE USER IS RESPONSIBLE FOR ESCAPING USER INPUT AS NECESSARY
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        echo $getValue( (int) $id);
-      }
-    }, 10, 2);
-  }
+    /**
+     * Basic get_post_meta-like fallback
+     *
+     * @param string $key the column key
+     */
+    private static function post_meta_getter($key ) {
+        return function (int $id ) use ($key ) {
+            $post = new static($id);
+            return $post->meta($key);
+        };
+    }
 
-  /**
-   * Get a function to run based on the meta $key.
-   *
-   * @param string $key the column key whose value we need to get when rendering a custom column
-   * @return callable
-   */
-  private static function value_getter($key) : callable {
-    $keyToGetterMapping = [
-      '_wp_page_template' => static::page_template_name(...),
-    ];
+    /**
+     * Get the page template given a post ID
+     *
+     * @param int $id the post ID
+     * @return string the page template name, as declared in the template header comment, or "Default Template"
+     */
+    private static function page_template_name(int $id ): string {
+        // get mapping of Template File => Template Name
+        static $templates = null;
+        $templates        = $templates !== null ? $templates : array_flip(get_page_templates());
 
-    return $keyToGetterMapping[$key] ?? static::post_meta_getter($key);
-  }
+        // get the template file for this page
+        $templateFile = get_post_meta($id, '_wp_page_template', true) !== null ? get_post_meta($id, '_wp_page_template', true) : '';
 
-  /**
-   * Basic get_post_meta-like fallback
-   *
-   * @param string $key the column key
-   */
-  private static function post_meta_getter($key) {
-    return function(int $id) use ($key) {
-      $post = new static($id);
-      return $post->meta($key);
-    };
-  }
-
-  /**
-   * Get the page template given a post ID
-   *
-   * @param int $id the post ID
-   * @return string the page template name, as declared in the template header comment, or "Default Template"
-   */
-  private static function page_template_name(int $id) : string {
-    // get mapping of Template File => Template Name
-    static $templates = null;
-    $templates        = $templates ?: array_flip(get_page_templates());
-
-    // get the template file for this page
-    $templateFile = get_post_meta($id, '_wp_page_template', true) ?: '';
-
-    // return the template name for this page
-    return $templates[$templateFile] ?? 'Default Template';
-  }
+        // return the template name for this page
+        return $templates[$templateFile] ?? 'Default Template';
+    }
 }

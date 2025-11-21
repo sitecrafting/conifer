@@ -2,7 +2,7 @@
 <ruleset name="WordPress-Conifer">
     <description>A custom set of rules to check coding standards for Conifer.</description>
 
-    <arg name="tab-width" value="2" />
+    <arg name="tab-width" value="4" />
 
     <!--
         Default settings for command line usage
@@ -126,8 +126,8 @@
 
     <rule ref="Generic.WhiteSpace.ScopeIndent">
       <properties>
-        <property name="exact" value="false"/>
-        <property name="indent" value="2"/>
+        <property name="exact" value="true"/>
+        <property name="indent" value="4"/>
         <property name="tabIndent" value="false"/>
         <property name="ignoreIndentationTokens" type="array">
           <element value="T_HEREDOC"/>

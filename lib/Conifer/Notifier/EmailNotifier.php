@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * EmailNotifier class
  */
+
+declare(strict_types=1);
+
 namespace Conifer\Notifier;
 
 /**
@@ -15,13 +16,13 @@ namespace Conifer\Notifier;
  * @package   Conifer
  */
 abstract class EmailNotifier {
-  use SendsEmail;
+    use SendsEmail;
 
-  /**
-   * Get the destination email address(es)
-   *
-   * @return mixed the email(s) to send to, as a comma-separated string
-   * or array
-   */
-  abstract public function to();
+    /**
+     * Get the destination email address(es)
+     *
+     * @return mixed the email(s) to send to, as a comma-separated string
+     * or array
+     */
+    abstract public function to();
 }
