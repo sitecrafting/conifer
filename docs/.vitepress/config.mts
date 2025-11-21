@@ -50,7 +50,9 @@ export default defineConfig({
                 },
                 {
                     text: 'Testing',
-                    items: [{ text: 'Testing', link: '/testing' }],
+                    items: [
+                        { text: 'Testing', link: '/testing' }
+                    ],
                 },
                 {
                     text: 'Contributing',
@@ -72,10 +74,6 @@ export default defineConfig({
                 icon: 'instagram',
                 link: 'https://www.instagram.com/sitecrafting/',
             },
-            {
-                icon: 'x',
-                link: 'https://x.com/sitecrafting',
-            }
         ],
     },
 })
