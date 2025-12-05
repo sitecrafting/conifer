@@ -36,7 +36,7 @@ class MyForm extends AbstractBase {
     ];
   }
 
-  // Process an incoming form submission 
+  // Process an incoming form submission
   public function process(array $request) {
     $valid = $this->validate($request);
     if ($valid) {
@@ -71,7 +71,6 @@ Timber::render('my-form-page.twig', ['myForm' => $form]);
 
 Displaying validation errors and submitted values is just as simple:
 
-<a name="frontEndFormExample"></a>
 ```twig
 {% if myForm.has_errors %}
   <p>Danger, Will Robinson! Your form has the following errors: {{ myForm.get_unique_error_messages|join(', ') }}</p>
@@ -331,6 +330,6 @@ Typical WordPress form plugins are useful for allowing site content admins to ge
 2. They're often opinionated on form styles and markup, requiring developers to jump through extra hoops to integrate a form's look and feel into your site design.
 3. They open up the possibility of critical fields or even entire forms being removed by an over-eager admin.
 
-By contrast, [extending Conifer's base Form class](#extendBaseClassExample) is all you need to do to get started with custom forms, and while our API has tons of functionality which will [help you render a form](#frontEndFormExample) on the front end of your site, you're free to define your own markup and styles. In other words:
+By contrast, [extending Conifer's base Form class](#extendBaseClassExample) is all you need to do to get started with custom forms, and while our API has tons of functionality which will [help you render a form](#getting-started) on the front end of your site, you're free to define your own markup and styles. In other words:
 
 ![The power is yours!](https://i.giphy.com/fWfCYufxVgthCxLIHv.gif "The power is yours!")

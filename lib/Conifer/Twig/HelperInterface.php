@@ -1,7 +1,10 @@
 <?php
+
 /**
  * Interface for declarative, OO Twig functions and filters
  */
+
+declare(strict_types=1);
 
 namespace Conifer\Twig;
 
@@ -74,19 +77,19 @@ namespace Conifer\Twig;
  * @author Coby Tamayo
  */
 interface HelperInterface {
-  /**
-   * Get the Twig functions implemented by this helper, keyed by the function
-   * name to call from Twig views
-   *
-   * @return array
-   */
-  public function get_functions() : array;
+    /**
+     * Get the Twig functions implemented by this helper, keyed by the function
+     * name to call from Twig views
+     *
+     * @return array
+     */
+    public function get_functions(): array;
 
-  /**
-   * Get the Twig filters implemented by this helper, keyed by the filter
-   * name to call from Twig views
-   *
-   * @return array
-   */
-  public function get_filters() : array;
+    /**
+     * Get the Twig filters implemented by this helper, keyed by the filter
+     * name to call from Twig views
+     *
+     * @return array
+     */
+    public function get_filters(): array;
 }
