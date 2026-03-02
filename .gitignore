@@ -2,13 +2,9 @@
 /wp/
 /wp-content/
 /node_modules/
+/_book/
 /database-backups/
 /conifer
-
-# Docs
-/_book/
-docs/.vitepress/dist
-docs/.vitepress/cache
 
 # test artifacts
 /test/wp/
@@ -30,8 +26,6 @@ wp-cli.local.yml
 /docs/reference/*.md
 /docs/node_modules/
 
-# IDEs
+# VS code
 .vscode/*
 .idea
-
-.phpunit.result.cache

@@ -1,13 +1,10 @@
 <?php
-
 /**
  * AbstractPolicy class
  *
  * @copyright 2018 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
-
-declare(strict_types=1);
 
 namespace Conifer\Authorization;
 
@@ -16,10 +13,10 @@ namespace Conifer\Authorization;
  * authorization logic
  */
 abstract class AbstractPolicy implements PolicyInterface {
-    /**
-     * Create and adopt a new instance
-     */
-    public static function register(): PolicyInterface {
-        return (new static())->adopt();
-    }
+  /**
+   * Create and adopt a new instance
+   */
+  public static function register() : PolicyInterface {
+    return (new static())->adopt();
+  }
 }

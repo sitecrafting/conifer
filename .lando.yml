@@ -2,12 +2,14 @@ name: conifer
 recipe: wordpress
 config:
   webroot: wp
-  php: '8.1'
+  php: '8.2'
 
 services:
+  node:
+    type: node:14
 
   appserver:
-    build_as_root:
+    run_as_root:
       - apt-get update
       - apt-get install zip
       - apt-get install subversion -y
@@ -15,11 +17,6 @@ services:
     run:
       - composer install
       - ./scripts/setup-wordpress.sh
-
-  node:
-    type: node:22
-    build:
-      - yarn && yarn docs:build
 
   database:
     type: mysql:5.7
@@ -32,6 +29,25 @@ services:
       password: test
       database: test
 
+  gitbook:
+    type: node:10
+
+    run:
+      - yarn
+      - ./scripts/build-docs.sh
+
+  cypress:
+    type: node:14
+
+    run:
+      - yarn cypress install
+
+    overrides:
+      image: 'sitecrafting/lando-cypress-wordpress:latest'
+
+  phpmyadmin:
+    type: phpmyadmin:5.1
+
   mailhog:
     type: mailhog:v1.0.0
     hogfrom:
@@ -40,7 +56,7 @@ services:
   docs:
     type: nginx:1.18
     ssl: true
-    webroot: docs/.vitepress/dist
+    webroot: docs/_book
 
 tooling:
   clean:
@@ -117,20 +133,19 @@ tooling:
     cmd: './vendor/bin/phpstan'
     description: 'Run phpstan commands for static analysis'
 
-  yarn:
-    service: node
-    cmd: 'yarn'
-    description: 'Run yarn commands'
-
   docs:
-    service: node
-    cmd: 'yarn docs:build'
-    description: 'Build Conifer docs'
+    service: gitbook
+    cmd: './scripts/build-docs.sh ./docs'
+    description: 'Build documentation in _book folder using Gitbook'
 
-  rector:
-    service: appserver
-    cmd: 'rector'
-    description: 'Run Rector commands'
+  gitbook:
+    service: gitbook
+    cmd: 'yarn gitbook'
+    description: 'Run arbitrary gitbook commands'
+
+events:
+  pre-docs:
+    - appserver: './scripts/build-api-md.sh'
 
 proxy:
   appserver:

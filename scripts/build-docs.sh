@@ -2,4 +2,7 @@
 
 echo "Building documentation..."
 
-yarn docs:build
+DOCS_DIR=${1:-'./docs'}
+
+yarn gitbook install $DOCS_DIR
+yarn gitbook build $DOCS_DIR
