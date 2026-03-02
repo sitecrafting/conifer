@@ -40,7 +40,7 @@ class SimpleNotifier extends EmailNotifier {
   /**
    * Constructor. Pass the to email here.
    *
-   * @param string|array $o the email addresses to send to.
+   * @param string|array $to the email addresses to send to.
    * Can be a comma-separated string or an array
    */
   public function __construct($to) {

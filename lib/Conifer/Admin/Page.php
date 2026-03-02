@@ -116,7 +116,7 @@ abstract class Page {
       // NOTE: Since render() is specifically for outputting HTML in the admin
       // area, users are responsible for escaping their own output accordingly.
       // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-      echo $this->render($this->slug);
+      echo $this->render([ 'slug' => $this->slug ]);
     };
 
     add_menu_page(

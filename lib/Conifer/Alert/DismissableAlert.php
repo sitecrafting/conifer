@@ -33,7 +33,7 @@ class DismissableAlert {
    * Takes an optional array of options.
    *
    * @param string $message Alert message text
-   * @param string $options an array with any of the following keys:
+   * @param array $options an array with any of the following keys:
    *
    * - 'cookies': (array) The $_COOKIE superglobal (to allow for filtering)
    * - 'cookie_prefix': (string) The prefix for the cookie that indicates
