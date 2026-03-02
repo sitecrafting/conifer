@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b316d878a06a517e514296b8a79222c",
+    "content-hash": "ffdb9236f5cc2e26b517c69e07fba0fd",
     "packages": [
         {
             "name": "symfony/deprecation-contracts",
@@ -4692,55 +4692,6 @@
             "time": "2025-11-17T20:03:58+00:00"
         },
         {
-            "name": "victorjonsson/markdowndocs",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/victorjonsson/PHP-Markdown-Documentation-Generator.git",
-                "reference": "71461bc425114a1116dcc76e43563d27c5594b2d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/victorjonsson/PHP-Markdown-Documentation-Generator/zipball/71461bc425114a1116dcc76e43563d27c5594b2d",
-                "reference": "71461bc425114a1116dcc76e43563d27c5594b2d",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0",
-                "symfony/console": ">=2.6"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "9.5"
-            },
-            "default-branch": true,
-            "bin": [
-                "bin/phpdoc-md"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PHPDocsMD": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Victor Jonsson",
-                    "email": "kontakt@victorjonsson.se"
-                }
-            ],
-            "description": "Command line tool for generating markdown-formatted class documentation",
-            "homepage": "https://github.com/victorjonsson/PHP-Markdown-Documentation-Generator",
-            "support": {
-                "issues": "https://github.com/victorjonsson/PHP-Markdown-Documentation-Generator/issues",
-                "source": "https://github.com/victorjonsson/PHP-Markdown-Documentation-Generator/tree/master"
-            },
-            "time": "2022-06-27T06:22:24+00:00"
-        },
-        {
             "name": "wp-coding-standards/wpcs",
             "version": "2.3.0",
             "source": {
@@ -4795,8 +4746,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "10up/wp_mock": 20,
-        "victorjonsson/markdowndocs": 20
+        "10up/wp_mock": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -121,10 +121,6 @@ tooling:
     cmd: 'yarn'
     description: 'Run yarn commands'
 
-events:
-  pre-docs:
-    - appserver: './scripts/build-api-md.sh'
-
 proxy:
   appserver:
     - conifer.lndo.site
