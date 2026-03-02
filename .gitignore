@@ -9,6 +9,7 @@
 # test artifacts
 /test/wp/
 /test/wp-tests-lib/
+.phpunit.result.cache
 
 # build artifacts
 /conifer-*.tar.gz
@@ -26,6 +27,6 @@ wp-cli.local.yml
 /docs/reference/*.md
 /docs/node_modules/
 
-# VS code
+# IDEs
 .vscode/*
-.idea
+.idea/
