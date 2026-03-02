@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress-Timber">
-    <description>A custom set of rules to check coding standards for Timber.</description>
+<ruleset name="WordPress-Conifer">
+    <description>A custom set of rules to check coding standards for Conifer.</description>
 
     <arg name="tab-width" value="2" />
 
