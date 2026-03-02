@@ -8,7 +8,7 @@ services:
   node:
     type: node:24
     run:
-      - yarn
+      - yarn && yarn docs:build
 
   appserver:
     run_as_root:
@@ -39,7 +39,7 @@ services:
   docs:
     type: nginx:1.18
     ssl: true
-    webroot: docs/_book
+    webroot: docs/.vitepress/dist
 
 tooling:
   clean:

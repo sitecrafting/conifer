@@ -19,7 +19,7 @@ $notifier->notify_html(
 // send a plaintext message with URL
 $notifier->notify_plaintext(
 	'A Funny Thing Happened on the Internet',
-  "O joy of joy! O dream of dreams!\n\nhttp://example.com/cat.gif"
+  "O joy of joy! O dream of dreams!\n\nhttps://example.com/cat.gif"
 );
 ```
 

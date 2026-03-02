@@ -2,9 +2,12 @@
 /wp/
 /wp-content/
 /node_modules/
-/_book/
 /database-backups/
 /conifer
+
+# Docs
+docs/.vitepress/cache
+docs/.vitepress/dist
 
 # test artifacts
 /test/wp/
