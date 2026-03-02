@@ -121,9 +121,9 @@ abstract class AbstractBase {
   /**
    * Handle an HTTP request.
    */
-  public static function handle() {
+  public static function handle(?array $requestData = null) {
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-    $handler = new static($_REQUEST);
+    $handler = new static($requestData ?? $_REQUEST);
     $handler->set_cookie($_COOKIE);
     $handler->send_json_response($handler->execute());
   }
