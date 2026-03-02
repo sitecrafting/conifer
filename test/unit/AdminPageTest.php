@@ -70,8 +70,8 @@ class AdminPageTest extends Base {
       ],
     ]);
 
-    // fluid interface
-    $this->assertEquals($this->page, $this->page->do_add());
+    // The filter shouldn't return anything, so if it does we know something broke.
+    $this->assertNull($this->page->do_add());
   }
 
   // TODO test ::render() in an integration test

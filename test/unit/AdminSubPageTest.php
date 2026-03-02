@@ -45,7 +45,8 @@ class AdminSubPageTest extends Base {
       $page,
       'Hello Again',
     ]);
-    // assert fluent interface
-    $this->assertEquals($subPage, $subPage->do_add());
+
+    // The filter shouldn't return anything, so if it does we know something broke.
+    $this->assertNull($subPage->do_add());
   }
 }
