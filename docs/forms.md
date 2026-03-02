@@ -3,7 +3,6 @@
 ## Getting Started
 Conifer's Form API allows you to represent your custom forms as first-class OO citizens and helps to streamline validation, entry processing, and front-end output. To get started, extend the `Conifer\Form\AbstractBase` class and add your custom fields, validators, and processing logic:
 
-<a name="extendBaseClassExample"></a>
 ```php
 use Conifer\Form\AbstractBase;
 
@@ -331,6 +330,6 @@ Typical WordPress form plugins are useful for allowing site content admins to ge
 2. They're often opinionated on form styles and markup, requiring developers to jump through extra hoops to integrate a form's look and feel into your site design.
 3. They open up the possibility of critical fields or even entire forms being removed by an over-eager admin.
 
-By contrast, [extending Conifer's base Form class](#extendBaseClassExample) is all you need to do to get started with custom forms, and while our API has tons of functionality which will [help you render a form](#frontEndFormExample) on the front end of your site, you're free to define your own markup and styles. In other words:
+By contrast, [extending Conifer's base Form class](#extendBaseClassExample) is all you need to do to get started with custom forms, and while our API has tons of functionality which will [help you render a form](#getting-started) on the front end of your site, you're free to define your own markup and styles. In other words:
 
 ![The power is yours!](https://i.giphy.com/fWfCYufxVgthCxLIHv.gif "The power is yours!")
