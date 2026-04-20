@@ -6,13 +6,13 @@
 /conifer
 
 # Docs
-/_book/
-docs/.vitepress/dist
 docs/.vitepress/cache
+docs/.vitepress/dist
 
 # test artifacts
 /test/wp/
 /test/wp-tests-lib/
+.phpunit.result.cache
 
 # build artifacts
 /conifer-*.tar.gz
@@ -32,6 +32,4 @@ wp-cli.local.yml
 
 # IDEs
 .vscode/*
-.idea
-
-.phpunit.result.cache
+.idea/

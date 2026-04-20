@@ -45,7 +45,7 @@ export default defineConfig({
                         { text: 'Forms', link: '/forms' },
                         { text: 'Notifiers', link: '/notifiers' },
                         { text: 'Shortcodes', link: '/shortcodes' },
-                        { text: 'Twig', link: '/twig' },
+                        { text: 'Twig Helpers', link: '/twig' },
                     ],
                 },
                 {

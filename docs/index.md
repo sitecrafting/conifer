@@ -22,4 +22,3 @@ features:
   - title: Custom admin columns and filters
     details: Easily add custom admin columns and filters to your admin screens, without having to remember all the arguments to the manage_*_columns hooks.
 ---
-

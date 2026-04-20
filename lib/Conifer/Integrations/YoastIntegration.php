@@ -1,10 +1,7 @@
 <?php
-
 /**
  * YoastIntegration class
  */
-
-declare(strict_types=1);
 
 namespace Conifer\Integrations;
 
@@ -15,12 +12,16 @@ namespace Conifer\Integrations;
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 class YoastIntegration {
-    /**
-     * Demote Yoast SEO meta box to the bottom of the post edit screen
-     */
-    public static function demote_metabox(): void {
-        if (is_admin()) {
-            add_filter('wpseo_metabox_prio', fn(): string => 'low');
-        }
+  /**
+   * Demote Yoast SEO meta box to the bottom of the post edit screen
+   */
+  public static function demote_metabox() {
+    if (is_admin()) {
+      add_filter('wpseo_metabox_prio', function() {
+        return 'low';
+      });
     }
+  }
 }
+
+

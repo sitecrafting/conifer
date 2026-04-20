@@ -3,7 +3,6 @@
 ## Getting Started
 Conifer's Form API allows you to represent your custom forms as first-class OO citizens and helps to streamline validation, entry processing, and front-end output. To get started, extend the `Conifer\Form\AbstractBase` class and add your custom fields, validators, and processing logic:
 
-<a name="extendBaseClassExample"></a>
 ```php
 use Conifer\Form\AbstractBase;
 
@@ -36,7 +35,7 @@ class MyForm extends AbstractBase {
     ];
   }
 
-  // Process an incoming form submission
+  // Process an incoming form submission 
   public function process(array $request) {
     $valid = $this->validate($request);
     if ($valid) {
@@ -71,6 +70,7 @@ Timber::render('my-form-page.twig', ['myForm' => $form]);
 
 Displaying validation errors and submitted values is just as simple:
 
+<a name="frontEndFormExample"></a>
 ```twig
 {% if myForm.has_errors %}
   <p>Danger, Will Robinson! Your form has the following errors: {{ myForm.get_unique_error_messages|join(', ') }}</p>

@@ -20,8 +20,6 @@
  * ```
  */
 
-declare(strict_types=1);
-
 namespace Conifer\Notifier;
 
 /**
@@ -32,21 +30,29 @@ namespace Conifer\Notifier;
  * @package   Conifer
  */
 class SimpleNotifier extends EmailNotifier {
-    /**
-     * Constructor. Pass the to email here.
-     *
-     * @param array|string $to the email addresses to send to.
-     * Can be a comma-separated string or an array
-     */
-    public function __construct(
-        protected array|string $to
-    ) {
-    }
+  /**
+   * The email address(es) to send to
+   *
+   * @var string|array
+   */
+  protected $to;
 
-    /**
-     * Get the admin email address configured in General Settings
-     */
-    public function to(): array|string {
-        return $this->to;
-    }
+  /**
+   * Constructor. Pass the to email here.
+   *
+   * @param string|array $to the email addresses to send to.
+   * Can be a comma-separated string or an array
+   */
+  public function __construct($to) {
+    $this->to = $to;
+  }
+
+  /**
+   * Get the admin email address configured in General Settings
+   */
+  public function to() {
+    return $this->to;
+  }
 }
+
+

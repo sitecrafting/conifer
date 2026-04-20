@@ -5,9 +5,13 @@ config:
   php: '8.1'
 
 services:
+  node:
+    type: node:24
+    run:
+      - yarn && yarn docs:build
 
   appserver:
-    build_as_root:
+    run_as_root:
       - apt-get update
       - apt-get install zip
       - apt-get install subversion -y
@@ -15,11 +19,6 @@ services:
     run:
       - composer install
       - ./scripts/setup-wordpress.sh
-
-  node:
-    type: node:22
-    build:
-      - yarn && yarn docs:build
 
   database:
     type: mysql:5.7
@@ -126,11 +125,6 @@ tooling:
     service: node
     cmd: 'yarn docs:build'
     description: 'Build Conifer docs'
-
-  rector:
-    service: appserver
-    cmd: 'rector'
-    description: 'Run Rector commands'
 
 proxy:
   appserver:

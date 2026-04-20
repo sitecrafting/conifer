@@ -6,5 +6,5 @@
  */
 
 if (!defined('WP_PLUGIN_DIR')) {
-    define( 'WP_PLUGIN_DIR', '/app/wp/wp-content/plugins' );
+    define('WP_PLUGIN_DIR', '/app/wp/wp-content/plugins');
 }

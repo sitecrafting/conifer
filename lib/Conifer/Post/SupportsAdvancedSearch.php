@@ -1,18 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
 /* @codingStandardsIgnoreFile */
 namespace Conifer\Post;
 
 use Conifer\Query\ClauseGenerator;
 
 trait SupportsAdvancedSearch {
-  /**
-   * @param array[] $config
-   */
-  public static function configure_advanced_search(array $config): void {
-    add_filter('posts_clauses', function(array $clauses, $query) use($config): array {
+  public static function configure_advanced_search(array $config) {
+    //$modifier  = new QueryModifier($GLOBALS['wpdb']);
+
+    add_filter('posts_clauses', function(array $clauses, $query) use($config) {
       global $wpdb;
 
       //debug($query->meta_query->queries);
@@ -30,12 +27,14 @@ trait SupportsAdvancedSearch {
       // customize only queries for post_types that appear in config
       $searchCustomizations = array_filter(
         $config,
-        fn(array $searchConfig): bool => array_intersect(
-          $queryingPostTypes,
-          $searchConfig['post_type']
-        ) !== []);
+        function($searchConfig) use($queryingPostTypes) {
+          return !empty(array_intersect(
+            $queryingPostTypes,
+            $searchConfig['post_type']
+          ));
+        });
 
-      if ($searchCustomizations === []) {
+      if (empty($searchCustomizations)) {
         // no advanced search customizations apply to this query
         return $clauses;
       }
@@ -45,20 +44,28 @@ trait SupportsAdvancedSearch {
 
       // ->add_join('postmeta', 'posts.ID = postmeta.post_id')
       $clauses['join'] .=
-        sprintf(' LEFT JOIN %s meta_search', $wpdb->postmeta)
-        . sprintf(' ON ( %s.ID = meta_search.post_id ) ', $wpdb->posts);
+        " LEFT JOIN {$wpdb->postmeta} meta_search"
+        . " ON ( {$wpdb->posts}.ID = meta_search.post_id ) ";
 
       // map -> wildcard
-      $terms = array_map(fn(string $term): string => sprintf('%%%s%%', $term), $query->query_vars['search_terms']);
+      $terms = array_map(function(string $term) : string {
+        return "%{$term}%";
+      }, $query->query_vars['search_terms']);
 
-      $whereClauses = array_map(function(array $postTypeSearch) use($wpdb, $terms, $query): string {
-        $titleComparisons = array_map(fn(string $term): string => $wpdb->prepare(sprintf('%s.post_title LIKE %%s', $wpdb->posts), $term), $terms);
+      $whereClauses = array_map(function(array $postTypeSearch) use($wpdb, $terms, $query) {
+        $titleComparisons = array_map(function(string $term) use($wpdb) : string {
+          return $wpdb->prepare("{$wpdb->posts}.post_title LIKE %s", $term);
+        }, $terms);
         $titleClause = '(' . implode(' OR ', $titleComparisons) . ')';
 
-        $excerptComparisons = array_map(fn(string $term): string => $wpdb->prepare(sprintf('%s.post_excerpt LIKE %%s', $wpdb->posts), $term), $terms);
+        $excerptComparisons = array_map(function(string $term) use($wpdb) : string {
+          return $wpdb->prepare("{$wpdb->posts}.post_excerpt LIKE %s", $term);
+        }, $terms);
         $excerptClause = '(' . implode(' OR ', $excerptComparisons) . ')';
 
-        $contentComparisons = array_map(fn(string $term): string => $wpdb->prepare(sprintf('%s.post_content LIKE %%s', $wpdb->posts), $term), $terms);
+        $contentComparisons = array_map(function(string $term) use($wpdb) : string {
+          return $wpdb->prepare("{$wpdb->posts}.post_content LIKE %s", $term);
+        }, $terms);
         $contentClause = '(' . implode(' OR ', $contentComparisons) . ')';
 
         $metaKeyComparisons = array_map(function($key) use($wpdb) : string {
@@ -74,7 +81,7 @@ trait SupportsAdvancedSearch {
               $op = '=';
             }
 
-            return $wpdb->prepare(sprintf('(meta_search.meta_key %s %%s)', $op), $key['key']);
+            return $wpdb->prepare("(meta_search.meta_key {$op} %s)", $key['key']);
           }
 
           return '';
@@ -82,7 +89,9 @@ trait SupportsAdvancedSearch {
 
         $metaKeyClause = '(' . implode(' OR ', $metaKeyComparisons) . ')';
 
-        $metaValueComparisons = array_map(fn(string $term) => $wpdb->prepare('(meta_value LIKE %s)', $term), $terms);
+        $metaValueComparisons = array_map(function(string $term) use($wpdb) {
+          return $wpdb->prepare('(meta_value LIKE %s)', $term);
+        }, $terms);
         $metaValueClause = '(' . implode(' OR ', $metaValueComparisons) . ')';
 
         $metaClause = ' (' . implode(' AND ', [$metaKeyClause, $metaValueClause]) . ')';
@@ -102,7 +111,9 @@ trait SupportsAdvancedSearch {
         $postTypes     = is_array($queryPostType)
           ? $queryPostType
           : [$queryPostType];
-        $postTypeCriteria = array_map(fn(string $type) => $wpdb->prepare('%s', $type), $postTypes);
+        $postTypeCriteria = array_map(function(string $type) use($wpdb) {
+          return $wpdb->prepare('%s', $type);
+        }, $postTypes);
 
         // get post status from current query
         $queryStatuses = $postTypeSearch['post_status'] ?? ['publish'];
@@ -112,7 +123,9 @@ trait SupportsAdvancedSearch {
           $postStatuses = is_array($queryStatuses)
             ? $queryStatuses
             : [$queryStatuses];
-          $postStatusCriteria = array_map(fn(string $type) => $wpdb->prepare('%s', $type), $postStatuses);
+          $postStatusCriteria = array_map(function(string $type) use($wpdb) {
+            return $wpdb->prepare('%s', $type);
+          }, $postStatuses);
 
           $queryStatusClause = ' AND wp_posts.post_status IN ('
             . implode(', ', $postStatusCriteria)

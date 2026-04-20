@@ -4,21 +4,20 @@
 
 This is the recommended route for most use-cases.
 
-```
+```bash
 composer require --save sitecrafting/conifer
 ```
 
-In order to put Conifer in the wp-content/plugins directory
-automatically, we recommend [composer-custom-directory-installer](https://github.com/mnsami/composer-custom-directory-installer):
+To put Conifer in the wp-content/plugins directory automatically, we recommend [composer-custom-directory-installer](https://github.com/mnsami/composer-custom-directory-installer):
 
 ```json
 {
-  "require": {
-    "sitecrafting/conifer": "dev-master"
-  },
-  "require-dev": {
-    "mnsami/composer-custom-directory-installer": "^1.1"
-  }
+    "require": {
+        "sitecrafting/conifer": "^1.0.0"
+    },
+    "require-dev": {
+        "mnsami/composer-custom-directory-installer": "^1.1"
+    }
 }
 ```
 
@@ -30,7 +29,7 @@ automatically, we recommend [composer-custom-directory-installer](https://github
 
 ## From source
 
-```
+```bash
 git clone https://github.com/sitecrafting/conifer /path/to/wp-content/plugins/conifer
 cd /path/to/wp-content/plugins/conifer
 composer install

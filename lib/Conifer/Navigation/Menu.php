@@ -1,10 +1,7 @@
 <?php
-
 /**
  * Custom Menu class extending TimberMenu.
  */
-
-declare(strict_types=1);
 
 namespace Conifer\Navigation;
 
@@ -18,19 +15,21 @@ use Timber\Menu as TimberMenu;
  */
 class Menu extends TimberMenu {
 
-    /**
-     * Get the top-level nav item that points, or whose ancestor points,
-     * to the current post
-     *
-     * @return ?Conifer\MenuItem the current top-level MenuItem
-     */
-    public function get_current_top_level_item() {
-        foreach ( $this->get_items() as $item ) {
-            if ( $item->points_to_current_post_or_ancestor() ) {
-                return $item;
-            }
-        }
-
-        return null;
+  /**
+   * Get the top-level nav item that points, or whose ancestor points,
+   * to the current post
+   *
+   * @return ?Conifer\MenuItem the current top-level MenuItem
+   */
+  public function get_current_top_level_item() {
+    foreach ( $this->get_items() as $item ) {
+      if ( $item->points_to_current_post_or_ancestor() ) {
+        return $item;
+      }
     }
+    return null;
+  }
 }
+
+
+
