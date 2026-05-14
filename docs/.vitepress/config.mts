@@ -1,10 +1,15 @@
-import { defineConfig } from 'vitepress'
+import {defineConfig} from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
     title: 'Conifer',
     description: 'Powerful abstractions for serious WordPress theme development',
     base: '/',
+    head: [
+        [
+            'link', {rel: 'icon', href: '/favicon.ico'}
+        ]
+    ],
     themeConfig: {
         search: {
             provider: 'local'
@@ -14,52 +19,52 @@ export default defineConfig({
             text: 'Edit this page on GitHub'
         },
         nav: [
-            { text: 'Guide', link: '/what-is-conifer' },
+            {text: 'Guide', link: '/what-is-conifer'},
         ],
         sidebar: {
             '/': [
                 {
                     text: 'Getting Started',
                     items: [
-                        { text: 'What is Conifer?', link: '/what-is-conifer' },
-                        { text: 'Installation', link: '/installation' },
-                        { text: 'Requirements', link: '/requirements' },
-                        { text: 'Developer Setup', link: '/dev-setup' },
+                        {text: 'What is Conifer?', link: '/what-is-conifer'},
+                        {text: 'Installation', link: '/installation'},
+                        {text: 'Requirements', link: '/requirements'},
+                        {text: 'Developer Setup', link: '/dev-setup'},
                     ],
                 },
                 {
                     text: 'Core Concepts',
                     items: [
-                        { text: 'Basics', link: '/basics' },
-                        { text: 'The Site Object', link: '/site' },
-                        { text: 'Working with Posts', link: '/posts' },
+                        {text: 'Basics', link: '/basics'},
+                        {text: 'The Site Object', link: '/site'},
+                        {text: 'Working with Posts', link: '/posts'},
                     ],
                 },
                 {
                     text: 'Features',
                     items: [
-                        { text: 'Admin Functionality', link: '/admin' },
-                        { text: 'AJAX Handlers', link: '/ajax-handlers' },
-                        { text: 'Alerts', link: '/alerts' },
-                        { text: 'Authorization', link: '/authorization' },
-                        { text: 'Forms', link: '/forms' },
-                        { text: 'Notifiers', link: '/notifiers' },
-                        { text: 'Shortcodes', link: '/shortcodes' },
-                        { text: 'Twig Helpers', link: '/twig-helpers' },
+                        {text: 'Admin Functionality', link: '/admin'},
+                        {text: 'AJAX Handlers', link: '/ajax-handlers'},
+                        {text: 'Alerts', link: '/alerts'},
+                        {text: 'Authorization', link: '/authorization'},
+                        {text: 'Forms', link: '/forms'},
+                        {text: 'Notifiers', link: '/notifiers'},
+                        {text: 'Shortcodes', link: '/shortcodes'},
+                        {text: 'Twig Helpers', link: '/twig-helpers'},
                     ],
                 },
                 {
                     text: 'Testing',
                     items: [
-                        { text: 'Testing', link: '/testing' }
+                        {text: 'Testing', link: '/testing'}
                     ],
                 },
                 {
                     text: 'Contributing',
                     items: [
-                        { text: 'How to Contribute', link: '/how-to-contribute' },
-                        { text: 'Governance', link: '/governance' },
-                        { text: 'Code of Conduct', link: '/code-of-conduct' },
+                        {text: 'How to Contribute', link: '/how-to-contribute'},
+                        {text: 'Governance', link: '/governance'},
+                        {text: 'Code of Conduct', link: '/code-of-conduct'},
                     ],
                 },
             ],
