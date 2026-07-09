@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base class for Conifer test cases
  *
@@ -16,7 +17,8 @@ use Conifer\Site;
  * Base test class for the plugin. Declared abstract so that PHPUnit doesn't
  * complain about a lack of tests defined here.
  */
-abstract class Base extends WP_UnitTestCase {
+abstract class Base extends WP_UnitTestCase
+{
   /**
    * The Site instance representing the WP install we are testing
    *
@@ -24,7 +26,8 @@ abstract class Base extends WP_UnitTestCase {
    */
   protected $site;
 
-  public function setUp() {
+  public function setUp(): void
+  {
     $this->site = new Site();
     $this->site->configure_defaults();
   }

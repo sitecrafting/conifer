@@ -37,7 +37,8 @@ DB_PASS=${DB_PASS:-'test'}
 
 WP_TESTS_DIR=test/wp-tests-lib
 WP_CORE_DIR=test/wp
-WP_TESTS_TAG='tags/5.5.1'
+WP_TESTS_TAG='tags/6.5'
+WP_TESTS_PHPUNIT_POLYFILLS_PATH='vendor/yoast/phpunit-polyfills/phpunitpolyfills-autoload.php'
 
 # deletes the entire tmp dir so we can reinstall test suite
 cleanup() {
