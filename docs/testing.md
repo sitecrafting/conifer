@@ -7,6 +7,18 @@ Conifer uses [Lando](https://docs.devwithlando.io/) as its official dev
 environment, you can leverage both testing tools without having to install
 them directly on your machine:
 
+## Setup
+
+Before you can run the included tests, you will first need to install the WP Unit Test suite. A command for this is included in `.lando.yml`
+
+```sh
+lando install-tests
+```
+
+## Running tests
+
+After installing the WP Unit Test suite, you can run the unit or integration test suite:
+
 ```sh
 lando unit
 lando integration
