@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test the ShortcodePolicy class
  *
@@ -13,16 +14,20 @@ use WP_Mock;
 use Timber\User;
 
 use Conifer\Authorization\ShortcodePolicy;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class ShortcodeAuthorizationPolicyTest extends Base {
-  private $policy;
+class ShortcodeAuthorizationPolicyTest extends Base
+{
+  private null|ShortcodePolicy|MockObject $policy;
 
-  public function setUp(): void {
+  public function setUp(): void
+  {
     parent::setUp();
-    $this->policy = $this->getMockBuilder(ShortcodePolicy::class)->setMethods(['tag'])->getMockForAbstractClass();
+    $this->policy = $this->getMockBuilder(ShortcodePolicy::class)->onlyMethods(['tag'])->getMockForAbstractClass();
   }
 
-  public function test_adopt() {
+  public function test_adopt()
+  {
     $this->policy->expects($this->once())
       ->method('tag')
       ->will($this->returnValue('foobar'));
@@ -40,7 +45,8 @@ class ShortcodeAuthorizationPolicyTest extends Base {
     $this->assertEquals($policy, $this->policy);
   }
 
-  public function test_enforce_when_unauthorized() {
+  public function test_enforce_when_unauthorized()
+  {
     $this->markTestSkipped();
     $user = $this->mockCurrentUser(123);
 
@@ -55,7 +61,8 @@ class ShortcodeAuthorizationPolicyTest extends Base {
     ));
   }
 
-  public function test_enforce_when_authorized() {
+  public function test_enforce_when_authorized()
+  {
     $this->markTestSkipped();
     $user = $this->mockCurrentUser(123);
 
