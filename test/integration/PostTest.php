@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test the Conifer\Post class
  *
@@ -16,8 +17,10 @@ use Conifer\Post\Page;
 use Conifer\Post\Post;
 use Conifer\Post\BlogPost;
 
-class PostTest extends Base {
-  public function test_create() {
+class PostTest extends Base
+{
+  public function test_create()
+  {
     $page = Page::create([
       'post_title'   => 'Hello',
       'post_name'    => 'hello',
@@ -37,7 +40,8 @@ class PostTest extends Base {
     $this->assertEquals('page', $page->post_type);
   }
 
-  public function test_exists_on_existent_post() {
+  public function test_exists_on_existent_post()
+  {
     $post = BlogPost::create([
       'post_title' => 'Cogito ergo sum',
     ]);
@@ -47,7 +51,8 @@ class PostTest extends Base {
     $this->assertFalse(Page::exists($post->ID));
   }
 
-  public function test_exists_on_existent_page() {
+  public function test_exists_on_existent_page()
+  {
     $page = Page::create([
       'post_title' => 'Cogito ergo sum',
     ]);
@@ -57,11 +62,13 @@ class PostTest extends Base {
     $this->assertFalse(BlogPost::exists($page->ID));
   }
 
-  public function test_exists_on_nonexistent_post() {
+  public function test_exists_on_nonexistent_post()
+  {
     $this->assertFalse(Post::exists(99999));
   }
 
-  public function test_get_blog_page() {
+  public function test_get_blog_page()
+  {
     $page = Page::create([
       'post_title' => 'News',
       'post_name'  => 'news',
@@ -72,7 +79,8 @@ class PostTest extends Base {
     $this->assertEquals($page->id, Page::get_blog_page()->id);
   }
 
-  public function test_get_blog_url() {
+  public function test_get_blog_url()
+  {
     $page = Page::create([
       'post_title' => 'News',
       'post_name'  => 'news',
@@ -87,8 +95,9 @@ class PostTest extends Base {
     );
   }
 
-  public function test_get_related_by_taxonomy() {
-    $awesome = $this->factory->term->create([
+  public function test_get_related_by_taxonomy()
+  {
+    $awesome = Base::factory()->term->create([
       'name'     => 'Awesome',
       'taxonomy' => 'category',
     ]);
@@ -99,7 +108,7 @@ class PostTest extends Base {
 
     wp_set_object_terms($post->id, [$awesome], 'category');
 
-    $ids = $this->factory->post->create_many(3, [
+    $ids = Base::factory()->post->create_many(3, [
       'post_type'  => 'post',
     ]);
     foreach ($ids as $id) {
@@ -107,7 +116,7 @@ class PostTest extends Base {
     }
 
     // Create uncategorized posts
-    $this->factory->post->create_many(2, [
+    Base::factory()->post->create_many(2, [
       'post_type'  => 'post',
     ]);
 
@@ -116,8 +125,9 @@ class PostTest extends Base {
     $this->assertCount(2, $post->get_related_by_taxonomy('category', 2));
   }
 
-  public function test_get_by_template() {
-    $id = $this->factory->post->create([
+  public function test_get_by_template()
+  {
+    $id = Base::factory()->post->create([
       'post_title'          => 'My Custom Page',
       'post_status'         => 'publish',
       'post_type'           => 'page',
@@ -129,8 +139,9 @@ class PostTest extends Base {
     $this->assertEquals($id, Page::get_by_template('my-template.php')->id);
   }
 
-  public function test_get_by_template_with_query_params() {
-    $id = $this->factory->post->create([
+  public function test_get_by_template_with_query_params()
+  {
+    $id = Base::factory()->post->create([
       'post_title'          => 'My Custom Page',
       'post_status'         => 'draft',
       'post_type'           => 'page',
