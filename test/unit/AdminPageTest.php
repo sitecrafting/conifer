@@ -14,11 +14,14 @@ use WP_Mock\Functions;
 
 use Conifer\Admin\Page;
 use Conifer\Admin\SubPage;
+use PHPUnit\Framework\MockObject\MockObject;
 
-class AdminPageTest extends Base {
-  private $page;
+class AdminPageTest extends Base
+{
+  private ?Page $page = null;
 
-  public function setUp(): void {
+  public function setUp(): void
+  {
     parent::setUp();
 
     WP_Mock::userFunction('sanitize_key', [
@@ -30,14 +33,16 @@ class AdminPageTest extends Base {
     $this->page = $this->getMockForAbstractClass(Page::class, ['Hello']);
   }
 
-  public function test_add() {
+  public function test_add()
+  {
     WP_Mock::expectActionAdded('admin_menu', Functions::type('callable'));
 
     // fluid interface
     $this->assertEquals($this->page, $this->page->add());
   }
 
-  public function test_add_sub_page() {
+  public function test_add_sub_page()
+  {
     WP_Mock::userFunction('sanitize_key', [
       'times'  => 1,
       'args'   => 'Hello Again',
@@ -57,7 +62,8 @@ class AdminPageTest extends Base {
     ));
   }
 
-  public function test_do_add() {
+  public function test_do_add()
+  {
     WP_Mock::userFunction('add_menu_page', [
       'times'  => 1,
       'args'   => [
