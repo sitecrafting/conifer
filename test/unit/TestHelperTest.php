@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test the Conifer\Site class
  *
@@ -10,16 +11,21 @@ namespace Conifer\Unit;
 
 use Conifer\Twig\TextHelper;
 
-class TextHelperTest extends Base {
+class TextHelperTest extends Base
+{
   const THEME_DIRECTORY = 'wp-content/themes/foo';
 
-  public function setUp(): void {
+  protected ?TextHelper $helper = null;
+
+  public function setUp(): void
+  {
     parent::setUp();
 
     $this->helper = new TextHelper();
   }
 
-  public function test_oxford_comma() {
+  public function test_oxford_comma()
+  {
     $this->assertEquals(
       'one',
       $this->helper->oxford_comma(['one'])
@@ -38,13 +44,15 @@ class TextHelperTest extends Base {
     );
   }
 
-  public function test_pluralize() {
+  public function test_pluralize()
+  {
     $this->assertEquals('person', $this->helper->pluralize('person', 1));
     $this->assertEquals('people', $this->helper->pluralize('person', 2));
     $this->assertEquals('zebras', $this->helper->pluralize('zebra', 2));
   }
 
-  public function test_capitalize_each() {
+  public function test_capitalize_each()
+  {
     $this->assertEquals(
       'Three Blind Mice',
       $this->helper->capitalize_each('three blind mice')
