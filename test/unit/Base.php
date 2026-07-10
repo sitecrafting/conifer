@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Base class for Conifer test cases
  *
@@ -17,12 +18,15 @@ use WP_Term;
  * Base test class for the plugin. Declared abstract so that PHPUnit doesn't
  * complain about a lack of tests defined here.
  */
-abstract class Base extends TestCase {
-  public function setUp(): void {
+abstract class Base extends TestCase
+{
+  public function setUp(): void
+  {
     WP_Mock::setUp();
   }
 
-  public function tearDown(): void {
+  public function tearDown(): void
+  {
     WP_Mock::tearDown();
   }
 
@@ -34,7 +38,8 @@ abstract class Base extends TestCase {
    * must include a valid (that is, a numeric) post ID
    * @throws \InvalidArgumentException if $props["ID"] is not numeric
    */
-  protected function mockPost(array $props, array $options = []) {
+  protected function mockPost(array $props, array $options = [])
+  {
     if (empty($props['ID']) || !is_numeric($props['ID'])) {
       throw new \InvalidArgumentException('$props["ID"] must be numeric');
     }
@@ -67,10 +72,11 @@ abstract class Base extends TestCase {
    * ```
    * $props = ['term_id' => 123, 'taxonomy' => 'yeah-im-the-taxmaaaan'];
    * ```
-   * @param additional WP_Mock::userFunction objects to merge in.
+   * @param array $options additional WP_Mock::userFunction objects to merge in.
    * @throws \InvalidArgumentException if $props["ID"] is not numeric
    */
-  protected function mockTerm(array $props, array $options = []) {
+  protected function mockTerm(array $props, array $options = [])
+  {
     if (empty($props['term_id']) || !is_numeric($props['term_id'])) {
       throw new \InvalidArgumentException('$props["term_id"] must be numeric');
     }
@@ -97,33 +103,34 @@ abstract class Base extends TestCase {
     return $term;
   }
 
-  protected function getProtectedProperty($object, $name) {
+  protected function getProtectedProperty(mixed $object, string $name)
+  {
     $reflection = new \ReflectionClass($object);
     $property   = $reflection->getProperty($name);
-    $property->setAccessible(true);
 
     return $property->getValue($object);
   }
 
-  protected function setProtectedProperty($object, $name, $value) {
+  protected function setProtectedProperty(mixed $object, string $name, mixed $value)
+  {
     $reflection = new \ReflectionClass($object);
     $property   = $reflection->getProperty($name);
-    $property->setAccessible(true);
 
     return $property->setValue($object, $value);
   }
 
-  protected function callProtectedMethod($object, $name, $args = []) {
+  protected function callProtectedMethod(mixed $object, string $name, array $args = [])
+  {
     $reflection = new \ReflectionClass($object);
     $method     = $reflection->getMethod($name);
-    $method->setAccessible(true);
 
     return $method->invokeArgs($object, $args);
   }
 
-  protected function mockCurrentUser($id, $data = [], $meta = []) {
-    $this->mockCurrentUserId($id);
-    $this->mockCurrentUserData($data);
+  protected function mockCurrentUser(mixed $id, array $data = [], array $meta = [])
+  {
+    $userId = is_numeric($id) ? (int)$id : $id;
+    $this->mockCurrentUserId($userId);
 
     if ($meta) {
       foreach ($meta as $key => $value) {
@@ -138,16 +145,38 @@ abstract class Base extends TestCase {
       'return' => 'https://example.com/avatar.gif',
     ]);
 
-    return new User($id);
+    $this->mockCurrentUserData($data);
+
+    $wpUser = $this->getMockBuilder(\WP_User::class)
+      ->disableOriginalConstructor()
+      ->getMock();
+    $wpUser->ID = $userId;
+
+    $roles = [];
+    if (isset($meta['wp_capabilities']) && is_array($meta['wp_capabilities'])) {
+      $roles = array_keys(array_filter($meta['wp_capabilities']));
+    }
+
+    WP_Mock::userFunction('get_userdata', [
+      'args' => [$userId],
+      'return' => (object) [
+        'data' => (object) array_merge(['ID' => $userId], $data),
+        'roles' => $roles,
+      ],
+    ]);
+
+    return User::build($wpUser);
   }
 
-  protected function mockCurrentUserId($id) {
+  protected function mockCurrentUserId(mixed $id)
+  {
     WP_Mock::userFunction('get_current_user_id', [
       'return' => $id,
     ]);
   }
 
-  protected function mockCurrentUserData($data = []) {
+  protected function mockCurrentUserData(array $data = [])
+  {
     WP_Mock::userFunction('get_userdata', [
       'return' => $data,
     ]);
