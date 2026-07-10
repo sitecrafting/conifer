@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test the Conifer\AjaxHandler\AbstractBase class
  *
@@ -12,14 +13,16 @@ use WP_Mock;
 
 use Conifer\AjaxHandler\AbstractBase;
 
-class AjaxHandlerTest extends Base {
+class AjaxHandlerTest extends Base
+{
 
   // Best or GREATEST?
   const BEST_BAND = 'Creed';
 
-  protected $handler;
+  protected ?AbstractBase $handler = null;
 
-  public function setUp(): void {
+  public function setUp(): void
+  {
     parent::setUp();
 
     // Mock the abstract base AJAX handler class so we can test against it
@@ -35,7 +38,8 @@ class AjaxHandlerTest extends Base {
     $this->handler = $ajaxHanderStub;
   }
 
-  public function test_send_json_response() {
+  public function test_send_json_response()
+  {
     // Tell PHPUnit to expect the following string to be
     // output, proclaiming what should be obvious to all
     $this->expectOutputString('{"best_band":"' . self::BEST_BAND . '"}');
@@ -53,7 +57,7 @@ class AjaxHandlerTest extends Base {
     // version of the response from above
     WP_Mock::userFunction('wp_send_json', [
       'times' => 1,
-      'return' => function($response) {
+      'return' => function ($response) {
         echo json_encode($response); // phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
       },
     ]);
@@ -67,7 +71,8 @@ class AjaxHandlerTest extends Base {
     );
   }
 
-  private function get_request_array() {
+  private function get_request_array()
+  {
     // AJAX handler classes require an action to be included
     // with each request to be considered valid
     return ['action' => 'best_band'];
