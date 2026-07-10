@@ -32,10 +32,11 @@
     "mikey179/vfsstream": "~1",
     "mnsami/composer-custom-directory-installer": "^2.0",
     "php-stubs/acf-pro-stubs": "^6.5",
+    "phpcsstandards/phpcsutils": "^1.0",
     "phpunit/phpunit": "^9",
     "sitecrafting/groot": "^1.0",
     "szepeviktor/phpstan-wordpress": "^v2.0.3",
-    "wp-coding-standards/wpcs": "^2.3",
+    "wp-coding-standards/wpcs": "^3",
     "yoast/phpunit-polyfills": "^4.0"
   },
   "config": {

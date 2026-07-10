@@ -1,31 +1,22 @@
 <?xml version="1.0"?>
 <ruleset name="WordPress-Conifer">
     <description>A custom set of rules to check coding standards for Conifer.</description>
-
     <arg name="tab-width" value="2" />
-
-		<config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
-
     <!--
         Default settings for command line usage
     -->
-
     <!-- Exclude folders and files from being checked. -->
     <exclude-pattern>wp-content/</exclude-pattern>
     <exclude-pattern>wp/</exclude-pattern>
     <exclude-pattern>vendor/*</exclude-pattern>
     <exclude-pattern>test/wp-tests-lib</exclude-pattern>
     <exclude-pattern>test/wp</exclude-pattern>
-
     <!-- If no files or directories are specified on the command line, check all relevant files. -->
     <file>./lib</file>
-
     <!-- Use colors in output. -->
     <arg name="colors"/>
-
     <!-- Show sniff names and progress. -->
     <arg value="sp"/>
-
     <!--
         WordPress-Extra
         Best practices beyond core WordPress Coding Standards.
@@ -33,22 +24,18 @@
         because WordPress-Extra already includes it.
     -->
     <rule ref="WordPress-Extra">
-
         <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
         <!-- Do not check for proper WordPress file names. -->
         <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceAfterOpen" />
         <exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing.SpaceBeforeClose" />
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
-
         <exclude name="PEAR.Functions.FunctionCallSignature" />
         <exclude name="PSR2.ControlStructures.SwitchDeclaration.BreakIndent" />
-
         <exclude name="Squiz.Commenting.FileComment.MissingPackageTag" />
         <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar" />
         <exclude name="Squiz.Commenting.InlineComment.SpacingBefore" />
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpen" />
         <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpenHint" />
-
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
         <exclude name="WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned" />
         <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener" />
@@ -68,34 +55,25 @@
         <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeCloseParenthesis" />
         <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
         <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
-        <exclude name="WordPress.WhiteSpace.PrecisionAlignment" />
-
     </rule>
-
     <rule ref="Squiz.Commenting.ClassComment.Missing">
-      <exclude-pattern>/test/</exclude-pattern>
+        <exclude-pattern>/test/</exclude-pattern>
     </rule>
-
     <rule ref="Squiz.Commenting.FunctionComment.Missing">
-      <exclude-pattern>/test/</exclude-pattern>
+        <exclude-pattern>/test/</exclude-pattern>
     </rule>
-
     <rule ref="Squiz.Commenting.VariableComment.Missing">
-      <exclude-pattern>/test/</exclude-pattern>
+        <exclude-pattern>/test/</exclude-pattern>
     </rule>
-
     <rule ref="Squiz.Commenting.FileComment.Missing">
-      <exclude-pattern>/test/bootstrap.php</exclude-pattern>
+        <exclude-pattern>/test/bootstrap.php</exclude-pattern>
     </rule>
-
     <rule ref="Generic.WhiteSpace.DisallowTabIndent" />
-
     <!--
         WordPress-Docs
         WordPress Coding Standards for Inline Documentation and Comments.
     -->
     <rule ref="WordPress-Docs" />
-
     <!--
         File Names
         The WordPress Coding Standards state that all class files should start with 'class-'. Timber
@@ -107,7 +85,6 @@
             <property name="strict_class_file_names" value="false" />
         </properties>
     </rule>
-
     <!--
         Hook Names
         While the WordPress Coding Standards state that hook names should be separated by
@@ -120,21 +97,18 @@
             <property name="additionalWordDelimiters" value="/"/>
         </properties>
     </rule>
-
     <rule ref="PEAR.Functions.FunctionCallSignature">
         <properties>
             <property name="requiredSpacesAfterOpen" value="0" />
             <property name="requiredSpacesBeforeClose" value="0"/>
         </properties>
     </rule>
-
     <rule ref="Generic.WhiteSpace.ScopeIndent">
-      <properties>
-        <property name="exact" value="false"/>
-        <property name="indent" value="2"/>
-        <property name="tabIndent" value="false"/>
-        <property name="ignoreIndentationTokens" type="array" value="T_HEREDOC,T_NOWDOC,T_INLINE_HTML"/>
-      </properties>
+        <properties>
+            <property name="exact" value="false"/>
+            <property name="indent" value="2"/>
+            <property name="tabIndent" value="false"/>
+            <property name="ignoreIndentationTokens" type="array" value="T_HEREDOC,T_NOWDOC,T_INLINE_HTML"/>
+        </properties>
     </rule>
-
 </ruleset>
