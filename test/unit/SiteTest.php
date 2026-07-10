@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test the Conifer\Site class
  *
@@ -13,27 +14,52 @@ use WP_Mock;
 use Conifer\Site;
 use Conifer\Twig\HelperInterface;
 use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 
-class SiteTest extends Base {
+class SiteTest extends Base
+{
   const THEME_DIRECTORY = 'wp-content/themes/foo';
 
-  public function setUp(): void {
+  protected ?vfsStreamDirectory $file_system = null;
+
+  public function setUp(): void
+  {
     parent::setUp();
 
     // do a terrible amount of boilerplate to workaround Timber's decision
     // to put a ton of stuff in the constructor
-    $theme = $this->getMockBuilder('\WP_Theme')
-      ->setMethods([
-        'get',
-        'get_stylesheet',
-        'get_template_directory_uri',
-        'parent',
-        '__toString',
-      ])
-      ->getMock();
-    $theme->expects($this->any())
-      ->method('__toString')
-      ->will($this->returnValue(''));
+    // NOTE: due to a deprecation in setMethods, the following is broken. Equivalent functionality has been implemented in the form of creating a new anonymous class and adding the methods to it
+    // $theme = $this->getMockBuilder('\WP_Theme')
+    //   ->setMethods([
+    //     'get',
+    //     'get_stylesheet',
+    //     'get_template_directory_uri',
+    //     'parent',
+    //     '__toString',
+    //   ])
+    //   ->getMock();
+    $theme = new class {
+      public function get($key = null)
+      {
+        return '';
+      }
+      public function get_stylesheet()
+      {
+        return '';
+      }
+      public function get_template_directory_uri()
+      {
+        return '';
+      }
+      public function parent()
+      {
+        return null;
+      }
+      public function __toString()
+      {
+        return '';
+      }
+    };
 
     WP_Mock::userFunction('is_multisite', [
       'return' => false,
@@ -62,21 +88,22 @@ class SiteTest extends Base {
     // Set up a new virtual file system to test some of the site functions
     $structure         = [
       'theme-dir' => [
-          'test.php'    => 'some text content',
-          'assets.version' =>'1',
-          'custom-assets.version' => 'CUSTOM',
+        'test.php'    => 'some text content',
+        'assets.version' => '1',
+        'custom-assets.version' => 'CUSTOM',
       ],
       'an_empty_folder' => [],
     ];
     $this->file_system = vfsStream::setup('root', null, $structure);
-
   }
 
-  public function tearDown(): void {
+  public function tearDown(): void
+  {
     WP_Mock::tearDown();
   }
 
-  public function test_find_file() {
+  public function test_find_file()
+  {
 
     $site = new Site();
 
@@ -86,10 +113,10 @@ class SiteTest extends Base {
     ]);
 
     $this->assertEquals('vfs://root/theme-dir/test.php', $fileURL);
-
   }
 
-  public function test_find_file_without_trailing_slash() {
+  public function test_find_file_without_trailing_slash()
+  {
 
     $site = new Site();
 
@@ -98,10 +125,10 @@ class SiteTest extends Base {
     ]);
 
     $this->assertEquals('vfs://root/theme-dir/test.php', $fileURL);
-
   }
 
-  public function test_find_file_fail() {
+  public function test_find_file_fail()
+  {
 
     $site = new Site();
 
@@ -111,10 +138,10 @@ class SiteTest extends Base {
     ]);
 
     $this->assertEquals('', $fileURL);
-
   }
 
-  public function test_get_assets_version() {
+  public function test_get_assets_version()
+  {
 
     $site = new Site();
 
@@ -129,10 +156,10 @@ class SiteTest extends Base {
       '1',
       $site->get_assets_version()
     );
-
   }
 
-  public function test_get_assets_version_with_arg() {
+  public function test_get_assets_version_with_arg()
+  {
 
     $site = new Site();
 
@@ -147,10 +174,10 @@ class SiteTest extends Base {
       'CUSTOM',
       $site->get_assets_version('custom-assets.version')
     );
-
   }
 
-  public function test_subsequent_get_assets_version_with() {
+  public function test_subsequent_get_assets_version_with()
+  {
 
     $site = new Site();
 
@@ -169,10 +196,10 @@ class SiteTest extends Base {
       '1',
       $site->get_assets_version('assets.version')
     );
-
   }
 
-  public function test_get_assets_version_with_no_file() {
+  public function test_get_assets_version_with_no_file()
+  {
 
     $site = new Site();
 
@@ -188,10 +215,10 @@ class SiteTest extends Base {
 
     // read the file value from our file in the virtual file system directory
     $this->assertEquals('', $site->get_assets_version());
-
   }
 
-  public function test_get_theme_file() {
+  public function test_get_theme_file()
+  {
     $site = new Site();
 
     WP_Mock::userFunction('get_stylesheet_directory', [
@@ -210,7 +237,8 @@ class SiteTest extends Base {
     );
   }
 
-  public function test_add_twig_helper() {
+  public function test_add_twig_helper()
+  {
     $site = new Site();
 
     // mock HelperInterface
@@ -226,7 +254,8 @@ class SiteTest extends Base {
     $this->assertNull($site->add_twig_helper($helper));
   }
 
-  public function test_get_twig_with_helper() {
+  public function test_get_twig_with_helper()
+  {
     $site = new Site();
 
     // mock Twig API
@@ -245,10 +274,10 @@ class SiteTest extends Base {
       ->getMock();
     $helper->expects($this->once())
       ->method('get_filters')
-      ->will($this->returnValue(['foo' => function() {}]));
+      ->will($this->returnValue(['foo' => function () {}]));
     $helper->expects($this->once())
       ->method('get_functions')
-      ->will($this->returnValue(['bar' => function() {}]));
+      ->will($this->returnValue(['bar' => function () {}]));
 
     $this->assertEquals(
       $twig,
