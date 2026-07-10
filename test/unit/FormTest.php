@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Test the Conifer\Form\AbstractBase class
  *
@@ -8,14 +9,14 @@
 
 namespace Conifer\Unit;
 
-use WP_Mock;
-
 use Conifer\Form\AbstractBase;
 
-class FormTest extends Base {
-  protected $form;
+class FormTest extends Base
+{
+  protected ?AbstractBase $form = null;
 
-  public function setUp(): void {
+  public function setUp(): void
+  {
     parent::setUp();
 
     $this->form = $this->getMockForAbstractClass(AbstractBase::class);
@@ -23,7 +24,8 @@ class FormTest extends Base {
     $this->setFiles($this->getDefaultFiles());
   }
 
-  public function test_hydrate_stripslashes() {
+  public function test_hydrate_stripslashes()
+  {
     $this->setFields([
       'first_name'      => [],
       'last_name'       => [],
@@ -46,7 +48,8 @@ class FormTest extends Base {
     $this->assertNull($this->form->get('yes_or_no'));
   }
 
-  public function test_hydrate() {
+  public function test_hydrate()
+  {
     $this->setFields([
       'first_name'      => [],
       'last_name'       => [],
@@ -68,7 +71,8 @@ class FormTest extends Base {
     $this->assertNull($this->form->get('yes_or_no'));
   }
 
-  public function test_checked_with_single_value() {
+  public function test_checked_with_single_value()
+  {
     $this->setFields([
       'highest_award' => [],
     ]);
@@ -80,7 +84,8 @@ class FormTest extends Base {
     $this->assertFalse($this->form->checked('highest_award', 'a blue ribbon'));
   }
 
-  public function test_checked_with_multiple_values() {
+  public function test_checked_with_multiple_values()
+  {
     $this->setFields([
       'favorite_things' => [],
     ]);
@@ -94,14 +99,16 @@ class FormTest extends Base {
     $this->assertTrue($this->form->checked('favorite_things', 'mittens'));
   }
 
-  public function test_checked_with_nonsense() {
+  public function test_checked_with_nonsense()
+  {
     $this->setFields([]);
     $this->form->hydrate([]);
 
     $this->assertFalse($this->form->checked('nonsense'));
   }
 
-  public function test_selected_with_single_option() {
+  public function test_selected_with_single_option()
+  {
     $this->setFields([
       'favorite_thing' => [],
     ]);
@@ -113,7 +120,8 @@ class FormTest extends Base {
     $this->assertFalse($this->form->selected('favorite_thing', 'kittens'));
   }
 
-  public function test_selected_with_multiple_options() {
+  public function test_selected_with_multiple_options()
+  {
     $this->setFields([
       'favorite_thing' => [],
     ]);
@@ -127,7 +135,8 @@ class FormTest extends Base {
   }
 
   // @see https://github.com/sitecrafting/conifer/issues/129
-  public function test_get_falsey_value() {
+  public function test_get_falsey_value()
+  {
     $this->setFields([
       'empty_array'   => [],
       'falsey_string' => [],
@@ -146,7 +155,8 @@ class FormTest extends Base {
     $this->assertNull($this->form->get('null_field'));
   }
 
-  public function test_get_errors_for() {
+  public function test_get_errors_for()
+  {
     $this->form->add_error('nationality', 'INVALID NATIONALITY');
 
     $this->assertEquals([
@@ -157,7 +167,8 @@ class FormTest extends Base {
     ], array_values($this->form->get_errors_for('nationality')));
   }
 
-  public function test_get_error_messages_for() {
+  public function test_get_error_messages_for()
+  {
     $this->form->add_error('nationality', 'INVALID NATIONALITY');
 
     $this->assertEquals(
@@ -166,8 +177,9 @@ class FormTest extends Base {
     );
   }
 
-  public function test_validate_valid_submission() {
-    $isMaryPoppins = function(array $_, string $value) {
+  public function test_validate_valid_submission()
+  {
+    $isMaryPoppins = function (array $_, string $value) {
       return $value === 'Mary Poppins';
     };
 
@@ -186,7 +198,8 @@ class FormTest extends Base {
     $this->assertEmpty($this->form->get_errors());
   }
 
-  public function test_validate_shorthand() {
+  public function test_validate_shorthand()
+  {
     $this->setFields([
       'best_band' => [
         'validators' => ['require'],
@@ -199,7 +212,8 @@ class FormTest extends Base {
     $this->assertEquals(1, count($this->form->get_errors()));
   }
 
-  public function test_require_with_empty_value() {
+  public function test_require_with_empty_value()
+  {
     $bestBand = [
       'name' => 'best_band',
       'required_message' => 'You have to put somethin here broh.',
@@ -213,7 +227,8 @@ class FormTest extends Base {
     );
   }
 
-  public function test_require_with_value() {
+  public function test_require_with_value()
+  {
     $bestBand = [
       'name' => 'best_band',
       'validators' => [[$this->form, 'require']],
@@ -223,10 +238,11 @@ class FormTest extends Base {
     $this->assertEmpty($this->form->get_error_messages_for('best_band'));
   }
 
-  public function test_get_whitelisted_fields_with_filter() {
+  public function test_get_whitelisted_fields_with_filter()
+  {
     $this->setFields([
       'activity'        => [
-        'filter'        => function($val) {
+        'filter'        => function ($val) {
           return "FILTERED->$val<-FILTERED";
         },
       ],
@@ -242,7 +258,8 @@ class FormTest extends Base {
     );
   }
 
-  public function test_get_whitelisted_fields_with_default() {
+  public function test_get_whitelisted_fields_with_default()
+  {
     $this->setFields([
       'adjective'       => [
         'default'       => 'supercalifragilisticexpialidocious',
@@ -256,11 +273,13 @@ class FormTest extends Base {
     );
   }
 
-  public function test_get_file() {
+  public function test_get_file()
+  {
     $this->assertNotEmpty($this->form->get_file('favoriteThings'));
   }
 
-  public function test_required_file_missing() {
+  public function test_required_file_missing()
+  {
     $this->setFields([
       'leastFavoriteThings' => [
         'validators' => [[$this->form, 'require_file']],
@@ -271,7 +290,8 @@ class FormTest extends Base {
     $this->assertNotEmpty($this->form->get_error_messages_for('leastFavoriteThings'));
   }
 
-  public function test_file_mime_type_valid() {
+  public function test_file_mime_type_valid()
+  {
     $this->setFields([
       'favoriteThings' => [
         'validators' => [[$this->form, 'validate_file_mime_type', ['text/plain']]],
@@ -282,7 +302,8 @@ class FormTest extends Base {
     $this->assertEmpty($this->form->get_errors());
   }
 
-  public function test_file_mime_type_invalid() {
+  public function test_file_mime_type_invalid()
+  {
     $this->setFields([
       'favoriteThings' => [
         'validators' => [[$this->form, 'validate_file_mime_type', ['application/pdf']]],
@@ -297,7 +318,8 @@ class FormTest extends Base {
     );
   }
 
-  public function test_file_upload_error_ini_size() {
+  public function test_file_upload_error_ini_size()
+  {
     $this->setFields([
       'uploadErrorSizeIni' => [
         'validators' => [[$this->form, 'require_file']],
@@ -312,7 +334,8 @@ class FormTest extends Base {
     );
   }
 
-  public function test_file_upload_error_form_size() {
+  public function test_file_upload_error_form_size()
+  {
     $this->setFields([
       'uploadErrorSizeForm' => [
         'validators' => [[$this->form, 'require_file']],
@@ -327,7 +350,8 @@ class FormTest extends Base {
     );
   }
 
-  public function test_file_upload_error_partial() {
+  public function test_file_upload_error_partial()
+  {
     $this->setFields([
       'uploadErrorPartialFile' => [
         'validators' => [[$this->form, 'require_file']],
@@ -342,7 +366,8 @@ class FormTest extends Base {
     );
   }
 
-  public function test_file_upload_error_no_file() {
+  public function test_file_upload_error_no_file()
+  {
     $this->setFields([
       'austrianAbbeyMembership' => [
         'validators' => [[$this->form, 'require_file']],
@@ -357,21 +382,24 @@ class FormTest extends Base {
     );
   }
 
-  public function test_no_files_exception_get_files() {
+  public function test_no_files_exception_get_files()
+  {
     $this->setFiles(null);
     $this->expectException(\LogicException::class);
 
     $this->form->get_files();
   }
 
-  public function test_no_files_exception_get_file() {
+  public function test_no_files_exception_get_file()
+  {
     $this->setFiles(null);
     $this->expectException(\LogicException::class);
 
     $this->form->get_file('favoriteThings');
   }
 
-  public function test_no_files_exception_require_file() {
+  public function test_no_files_exception_require_file()
+  {
     $this->setFiles(null);
     $this->setFields([
       'austrianAbbeyMembership' => [
@@ -384,15 +412,18 @@ class FormTest extends Base {
     $this->form->validate([]);
   }
 
-  protected function setFields(array $fields) {
+  protected function setFields(array $fields)
+  {
     $this->setProtectedProperty($this->form, 'fields', $fields);
   }
 
-  protected function setFiles(array $files = null) {
+  protected function setFiles(array $files = null)
+  {
     $this->setProtectedProperty($this->form, 'files', $files);
   }
 
-  protected function getDefaultFields() {
+  protected function getDefaultFields()
+  {
     return [
       'first_name'      => [
         'validators'        => [[$this->form, 'require']],
@@ -413,7 +444,8 @@ class FormTest extends Base {
     ];
   }
 
-  protected function getDefaultFiles() {
+  protected function getDefaultFiles()
+  {
     return [
       'favoriteThings' => [
         'name' => 'My%20Favorite%20Things.txt',
