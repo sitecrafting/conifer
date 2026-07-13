@@ -13,21 +13,6 @@
  * @author    Alex Merk <amerk@sitecrafting.com>
  */
 
-/*
-Test cases
-    points_to_current_post_or_ancestor
-        - returns true if CLASS_CURRENT is in classes
-        - returns true if CLASS_CURRENT_ANCESTOR is in classes
-        - returns false if neither CLASS_CURRENT nor CLASS_CURRENT_ANCESTOR is in classes
-    has_children
-        - returns true if CLASS_HAS_CHILDREN is in classes
-        - returns false if CLASS_HAS_CHILDREN is not in classes
-    display_children
-        - returns true if has_children() is true and points_to_current_post_or_ancestor() is true
-        - returns false if has_children() is false
-        - returns false if points_to_current_post_or_ancestor() is false
-*/
-
 namespace Conifer\Unit;
 
 use Conifer\Navigation\MenuItem;

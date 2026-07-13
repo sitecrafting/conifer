@@ -29,7 +29,8 @@ namespace Conifer\Notifier;
  * @author    Coby Tamayo
  * @package   Conifer
  */
-class SimpleNotifier extends EmailNotifier {
+class SimpleNotifier extends EmailNotifier
+{
   /**
    * The email address(es) to send to
    *
@@ -43,16 +44,17 @@ class SimpleNotifier extends EmailNotifier {
    * @param string|array $to the email addresses to send to.
    * Can be a comma-separated string or an array
    */
-  public function __construct($to) {
+  public function __construct($to)
+  {
+    // TODO should valid $to is an email address, a comma separated list of email addresses, or an array of email addresses
     $this->to = $to;
   }
 
   /**
    * Get the admin email address configured in General Settings
    */
-  public function to() {
+  public function to()
+  {
     return $this->to;
   }
 }
-
-
