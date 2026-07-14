@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Manage image sizes
  */
@@ -13,7 +14,8 @@ use Timber\Image as TimberImage;
  *
  * @package Conifer
  */
-class Image extends TimberImage {
+class Image extends TimberImage
+{
   /**
    * Image sizes declared to WordPress, including default ones
    *
@@ -31,8 +33,9 @@ class Image extends TimberImage {
    * @param int  $height the height to declare for this size
    * @param boolean $crop whether to create versions of newly uploaded pics cropped to this size
    */
-  public static function add_size( $name, $width, $height = false, $crop = false ) {
-    add_image_size( $name, $width, $height, $crop );
+  public static function add_size($name, $width, $height = false, $crop = false)
+  {
+    add_image_size($name, $width, $height, $crop);
     static::$declared_sizes[$name] = [
       'name'    => $name,
       'width'   => $width,
@@ -46,7 +49,8 @@ class Image extends TimberImage {
    *
    * @return array
    */
-  public static function get_sizes() {
+  public static function get_sizes()
+  {
     $sizes = [
       'thumbnail' => [
         'name'    => 'thumbnail',
@@ -84,9 +88,11 @@ class Image extends TimberImage {
    * @param  array $size an array containing at least: "name", "width", and "height".
    * @return array
    */
-  public static function get_size( $size ) {
+  public static function get_size($size)
+  {
     $sizes = static::get_sizes();
 
+    // TODO $size is typehinted as array
     if (isset($sizes[$size])) {
       return $sizes[$size];
     }
@@ -99,7 +105,8 @@ class Image extends TimberImage {
    *
    * @return mixed image aspect ratio as a float, or null if the image does not exist
    */
-  public function aspect() {
+  public function aspect()
+  {
     if (file_exists($this->file_loc)) {
       return parent::aspect();
     }
@@ -111,7 +118,8 @@ class Image extends TimberImage {
    * @param  string $customSize if specified
    * @return int
    */
-  public function width( $customSize = false ) : int {
+  public function width($customSize = false): int
+  {
     if ($customSize && static::get_size($customSize)) {
       $width = static::get_size($customSize)['width'];
     } else {
@@ -127,7 +135,8 @@ class Image extends TimberImage {
    * @param  string $customSize if specified
    * @return int
    */
-  public function height( $customSize = false ) {
+  public function height($customSize = false)
+  {
     if (!file_exists($this->file_loc)) {
       return null;
     }
@@ -137,7 +146,7 @@ class Image extends TimberImage {
 
     if ($width !== $originalWidth) {
       // distinct custom dimensions; calculate new based on aspect ratio
-      $height = floor( $width / $this->aspect() );
+      $height = floor($width / $this->aspect());
     } else {
       // not a custom size; just return the original height
       $height = (int) parent::height();
@@ -146,4 +155,3 @@ class Image extends TimberImage {
     return $height;
   }
 }
-
