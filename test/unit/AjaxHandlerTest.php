@@ -16,6 +16,7 @@ use Conifer\AjaxHandler\AbstractBase;
 class AjaxHandlerTest extends Base
 {
 
+  // Creed is the best band? Uh huh, uh huh, suuuuure
   // Best or GREATEST?
   const BEST_BAND = 'Creed';
 
