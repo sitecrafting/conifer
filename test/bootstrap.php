@@ -51,3 +51,10 @@ function deprecated_hook_notice(mixed $type, mixed $hook)
     trigger_error("{$hook} is deprecated");
   }
 }
+
+if (!function_exists('is_admin')) {
+  function is_admin(): bool
+  {
+    return $GLOBALS['is_admin'] ?? true;
+  }
+}
