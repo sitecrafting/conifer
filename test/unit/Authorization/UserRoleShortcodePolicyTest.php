@@ -11,6 +11,7 @@ namespace Conifer\Unit\Authorization;
 
 use Conifer\Authorization\UserRoleShortcodePolicy;
 use Conifer\Unit\Base;
+use Timber\User;
 
 class UserRoleShortcodeAuthorizationPolicyTest extends Base
 {
@@ -22,43 +23,53 @@ class UserRoleShortcodeAuthorizationPolicyTest extends Base
     $this->policy = new UserRoleShortcodePolicy();
   }
 
+  private function createUserWithCapabilities(array $capabilities): User
+  {
+    $user = $this->getMockBuilder(User::class)
+      ->disableOriginalConstructor()
+      ->onlyMethods(['meta'])
+      ->getMock();
+
+    $user->method('meta')
+      ->with('wp_capabilities')
+      ->willReturn($capabilities);
+
+    return $user;
+  }
+
   public function test_decide_authorized()
   {
-    $this->markTestSkipped();
+    $user = $this->createUserWithCapabilities(['editor' => true]);
     $this->assertTrue($this->policy->decide(
       ['role' => 'editor'],
       'some content',
-      $this->mockCurrentUser(123, [], ['wp_capabilities' => ['editor' => true]])
+      $user
     ));
   }
 
   public function test_decide_unauthorized()
   {
-    $this->markTestSkipped();
+    $user = $this->createUserWithCapabilities(['subscriber' => true]);
     $this->assertFalse($this->policy->decide(
       ['role' => 'editor'],
       'some content',
-      $this->mockCurrentUser(123, [], ['wp_capabilities' => ['subscriber' => true]])
+      $user
     ));
   }
 
   public function test_decide_with_default_atts()
   {
-    $this->markTestSkipped();
+    $user = $this->createUserWithCapabilities(['administrator' => true]);
     $this->assertTrue($this->policy->decide(
       [], // require "administrator" role by default
       'some content',
-      $this->mockCurrentUser(123, [], ['wp_capabilities' => ['administrator' => true]])
+      $user
     ));
   }
 
   public function test_decide_with_multiple_roles()
   {
-    $this->markTestSkipped();
-    $user = $this->mockCurrentUser(123, [], [
-      'wp_capabilities' => ['editor' => true],
-    ]);
-
+    $user = $this->createUserWithCapabilities(['editor' => true]);
     $this->assertTrue($this->policy->decide(
       ['role' => ' editor, administrator'],
       'some content',
