@@ -8,7 +8,7 @@ services:
   node:
     type: node:24
     run:
-      - yarn && yarn docs:build
+      - npm i && npm docs:build
 
   appserver:
     run_as_root:
@@ -116,14 +116,14 @@ tooling:
     cmd: './vendor/bin/phpstan'
     description: 'Run phpstan commands for static analysis'
 
-  yarn:
+  npm:
     service: node
-    cmd: 'yarn'
-    description: 'Run yarn commands'
+    cmd: 'npm'
+    description: 'Run npm commands'
 
   docs:
     service: node
-    cmd: 'yarn docs:build'
+    cmd: 'npm run docs:build'
     description: 'Build Conifer docs'
 
 proxy:
