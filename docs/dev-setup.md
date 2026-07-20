@@ -55,8 +55,7 @@ Conifer's Lando setup also provides these commands:
 
 * `lando unit`: run Conifer's PHPUnit unit tests
 * `lando integration`: run Conifer's integration tests
-* `lando test`: run Conifer's PHPUnit test suit (unit + integration)
-* `lando sniff`: run [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) on the Conifer codebase
+* `lando test`: run Conifer's PHPUnit test suite (unit + integration)
 * `lando analyze`: run [PHPStan](https://phpstan.com) static analysis on the Conifer codebase
 * `lando debug`: `tail` the WP debug.log in real time
 * `lando yarn`: run arbitrary [yarn](https://www.npmjs.com/package/yarn) commands
