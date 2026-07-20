@@ -42,7 +42,8 @@ class AdminNotifierTest extends Base
         $this->assertEquals($this->adminEmail, $this->notifier->to());
     }
 
-    public function test_to_returns_comma_separated_admin_emails()
+    public function test_to_returns_comma_separated_admin_emails()
+
         \WP_Mock::userFunction('get_option', [
             'args' => ['admin_email'],
             'return' => $this->adminEmailCommanSeparated,
@@ -60,8 +61,7 @@ class AdminNotifierTest extends Base
 
         $this->assertEquals($this->adminEmailArray, $this->notifier->to());
     }
-
-    public function test_admin_notifiter_should_extend_email_notifier()
+    public function test_admin_notifier_should_extend_email_notifier()
     {
         $this->assertInstanceOf(\Conifer\Notifier\EmailNotifier::class, $this->notifier);
     }
