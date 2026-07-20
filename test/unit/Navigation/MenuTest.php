@@ -156,8 +156,7 @@ class MenuTest extends Base
         $this->mockGrandchildSlug      = 'grandchild-' . $suffix;
         $this->mockOtherGrandchildSlug = 'other-grandchild-' . $suffix;
 
-        // First, build our mock menu. This will be added to later, but can safely be created first
-        $mockMenu = self::getMockBuilder(Menu::class)
+        $mockMenu = $this->getMockBuilder(Menu::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['get_items'])
             ->getMock();
