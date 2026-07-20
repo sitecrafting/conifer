@@ -136,18 +136,11 @@ class PostTest extends Base
         // Create a partial mock that keeps real methods but disable constructor
         $person = $this->getMockBuilder(Person::class)
             ->disableOriginalConstructor()
+            ->onlyMethods([])
             ->getMock();
 
-        // Make sure type() calls the real implementation
-        $person->method('type')->willReturnCallback(
-            function () {
-                // Manually call the parent type() logic
-                return Person::class === Person::class ? 'person' : '';
-            }
-        );
-
         // Person::POST_TYPE = 'person'
-        $this->assertEquals('person', $person->type());
+        $this->assertSame('person', $person->type());
     }
 
     public function test_get_related_by_taxonomy_respects_limit()
