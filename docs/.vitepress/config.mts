@@ -48,6 +48,7 @@ export default defineConfig({
                         {text: 'Alerts', link: '/alerts'},
                         {text: 'Authorization', link: '/authorization'},
                         {text: 'Forms', link: '/forms'},
+                        {text: 'Images', link: '/images'},
                         {text: 'Notifiers', link: '/notifiers'},
                         {text: 'Shortcodes', link: '/shortcodes'},
                         {text: 'Twig Helpers', link: '/twig-helpers'},
