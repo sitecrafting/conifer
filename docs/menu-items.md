@@ -1,66 +1,54 @@
 # MenuItem
 
-Conifer extends the functionality of the [MenuItem](https://timber.github.io/docs/v2/reference/timber-menuitem/) class. These functions are helpful when rendering large side navigation menus with a complicated hierarchy.
+Conifer extends Timber's [MenuItem](https://timber.github.io/docs/v2/reference/timber-menuitem/) class with helpers for rendering hierarchical navigation.
 
 ## Registering MenuItem
 
-Like in Timber, you must add the MenuItem to the classmap in order for Timber to know which class to use when calling `Timber::get_menu()`
+As with Timber, register your custom MenuItem class in the class map so Timber knows which class to use when fetching MenuItems
 
 ```php
-// In functions.php
-<?php>
+<?php
 
-use Conifer\Site;
-use Conifer\Navigation\Menu;
 use Conifer\Navigation\MenuItem;
+use Conifer\Site;
 
 $site = new Site();
-$site->configure(function() {
-    //... rest of configure function
-
-    // Add MenuItem to classmap
-    add_filter('timber/menuitem/classmap', function ($classmap) {
-        $custom_classmap = [
+$site->configure(function () {
+    add_filter('timber/menuitem/classmap', function (array $classmap): array {
+        return array_merge($classmap, [
             'primary' => MenuItem::class,
-        ];
-    
-        return array_merge($classmap, $custom_classmap);
+            'footer'  => MenuItem::class,
+        ]);
     });
+});
 ```
 
-## Determining current post
+## Determining the current post
 
-Conifer includes a helper function `points_to_current_post_or_ancestor()` which determines if a MenuItem points to the current post, or an ancestor of the current post
+Use `points_to_current_post_or_ancestor()` to determine whether a menu item points to the current post or one of its ancestors.
 
 ```twig
-{% if menuItem.points_to_current_post_or_ancestor %}
-    <p>This MenuItem points to the current post, or an ancestor of the current post!</p>
+{% if item.points_to_current_post_or_ancestor %}
+    <p>This item points to the current post (or one of its ancestors).</p>
 {% endif %}
 ```
 
-## Children
+## Rendering children
 
-Conifer includes two utility functions for rendering child MenuItems, `has_children()` and `display_children()`
+Conifer provides two related helpers:
+
+- `has_children()` checks whether the item has child menu items.
+- `display_children()` returns `true` only when the item has children and points to the current post (or an ancestor).
 
 ```twig
-<!-- Check if this MenuItem has child MenuItems -->
-{% if menuItem.has_children %}
-    <!-- This MenuItem has children. You can also check if those child MenuItems should be rendered -->
-
-    <!-- Check if those menu items should be rendered -->
-    {% if menuItem.display_children %}
-        <!-- Render child MenuItems -->
-        {% for child in menuItem.children %}
+{% if item.has_children %}
+    {% if item.display_children %}
+        {% for child in item.children %}
             <li class="nav-child-item">
-                <a
-                    class="nav-child-link"
-                    href="{{ child.link }}"
-                >{{ child.title }}</a>
+                <a class="nav-child-link" href="{{ child.link }}">{{ child.title }}</a>
             </li>
         {% endfor %}
     {% endif %}
-{% else %}
-    <!-- This MenuItem does not have any children -->
 {% endif %}
 ```
 

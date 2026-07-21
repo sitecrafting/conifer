@@ -1,69 +1,60 @@
 # Menu
 
-Conifer extends the functionality of the [Menu](https://timber.github.io/docs/v2/reference/timber-menu/) class.
+Conifer extends Timber's [Menu](https://timber.github.io/docs/v2/reference/timber-menu/) class.
 
 ## Registering Menu
 
-Like in Timber, you must add the Menu to the classmap before it can be added to the Site's context. Additionally, you must also register the nav menu and add it to the Site's context.
+Before using Conifer's `Menu` class, register it in Timber's menu class map. In most cases, you will also register your menu locations and add menu instances to the Timber context.
 
 ```php
-// In functions.php
-<?php>
+<?php
 
-use Conifer\Site;
 use Conifer\Navigation\Menu;
-use Conifer\Navigation\MenuItem;
+use Conifer\Site;
+use Timber\Timber;
 
 $site = new Site();
-$site->configure(function() {
-    //... rest of configure function
-
-    // Add Menu to classmap
-    add_filter('timber/menu/classmap', function ($classmap) {
-        $custom_classmap = [
+$site->configure(function () {
+    add_filter('timber/menu/classmap', function (array $classmap): array {
+        return array_merge($classmap, [
             'primary' => Menu::class,
-            'footer' => Menu::class,
-        ];
-        return array_merge($classmap, $custom_classmap);
-    }, 10);
+            'footer'  => Menu::class,
+        ]);
+    });
 
-    // Register navigation
     register_nav_menus([
-        'primary' => 'Main Navigation', // main page/nav structure
-        'footer' => 'Footer Navigation', // footer nav
+        'primary' => 'Main Navigation',
+        'footer'  => 'Footer Navigation',
     ]);
 
-    add_filter('timber/context', function(array $context) : array {
-
-        $context['primary_menu']    = Timber::get_menu('primary');
-        $context['footer_menu']    = Timber::get_menu('footer');
+    add_filter('timber/context', function (array $context): array {
+        $context['primary_menu'] = Timber::get_menu('primary');
+        $context['footer_menu']  = Timber::get_menu('footer');
 
         return $context;
     });
-
-    //... remainder of configure function
+});
 ```
 
-After your menu is registered, you can use it in your Twig files and it will automatically be fetched from the context
+After registration, these menu variables are available in Twig.
 
 ```twig
-<!-- \app\themes\{your_theme}\views\parials\blocks\header.twig -->
-
-<!-- primary_menu is available to use because it was registered in functions.php -->
+{# views/partials/blocks/header.twig #}
 {% include 'partials/blocks/nav.twig' with { menu: primary_menu } only %}
 ```
 
-## Getting the top level MenuItem
+## Getting the top-level MenuItem
 
-Conifer adds a utility function to get the top level MenuItem when viewing a Post, `get_current_top_level_item()`
+Use `get_current_top_level_item()` to retrieve the top-level menu item that points to the current post (or to an ancestor of the current post).
 
 ```twig
+{% set top_level_item = menu.get_current_top_level_item() %}
 
-{% set topLevelMenuItem = menu.get_current_top_level_item() %}
+{% if top_level_item %}
+    <a href="{{ top_level_item.link }}">{{ top_level_item.title }}</a>
 
-<a href="{{ menu.get_current_top_level_item().get_path }}">{{ menu.get_current_top_level_item().title }}</a>
-
-{% for item in menu.get_current_top_level_item().get_children() %}
-    <!-- Render children MenuItems -->
-{% endfor %}
+    {% for item in top_level_item.children %}
+        {# Render child menu items #}
+    {% endfor %}
+{% endif %}
 ```

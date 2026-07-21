@@ -1,28 +1,23 @@
 # Images
 
-Conifer extends the functionality of the [Timber2 Image](https://timber.github.io/docs/v2/reference/timber-image/) class in a few ways. It includes default Image sizes, wrapper functions for getting configured Image sizes, and wrapper functions for getting the height/width/aspect of an Image.
+Conifer extends Timber's [Image](https://timber.github.io/docs/v2/reference/timber-image/) class with helpers for managing registered image sizes and reading image dimensions.
 
 ## Image Sizes
 
-### Default Image sizes
+### Default Image Sizes
 
-Conifer includes the following image sizes by default
-  - `thumbnail`
-    - width: 150px
-    - height: 150px
-  - `medium`    
-    - width: 300px
-    - height: 300px
-  - `medium_large`
-    - width: 768px
-    - height: 768px
-  - `large`
-    - width: 1024px
-    - height: 1024px
+Conifer includes the standard WordPress size names by default:
 
-### Getting Image sizes
+- `thumbnail`
+- `medium`
+- `medium_large`
+- `large`
 
-Conifer includes two functions for fetching image sizes, `get_sizes` and `get_size`
+Conifer reads each size's dimensions from WordPress options (for example, `thumbnail_size_w` and `thumbnail_size_h`), so the actual values reflect your site's Media settings.
+
+### Getting Image Sizes
+
+Use `get_sizes()` to fetch all configured sizes, or `get_size()` to fetch a single size by name.
 
 ```php
 <?php
@@ -31,82 +26,68 @@ declare(strict_types=1);
 
 use Conifer\Post\Image;
 
-// Get all of the configured sizes
+// Get all configured sizes.
 $sizes = Image::get_sizes();
 
-// Get a single configured size
+// Get one configured size.
 $size = Image::get_size('medium');
 ```
 
-### Adding a new Image size
+### Adding a New Image Size
 
-Conifer includes a wrapper around `add_image_size()` to allow you to easily add new sizes for Images
+Use Conifer's wrapper around `add_image_size()` to register custom sizes.
 
 ```php
+
 <?php
 
-declare(strict_types=1);
+use Conifer\Navigation\MenuItem;
+use Conifer\Site;
 
-namespace Project;
-
-use Conifer\Post\Image;
-use Conifer\Site as ConiferSite;
-
-class Site extends ConiferSite
-{
-    public function configure(?callable $userDefinedConfig = null, bool $configureDefaults = true): ConiferSite
-	{
-        //...
-
-        // Add custom image sizes
-        Image::add_size('home-hero', 1440, 790, true);
-		Image::add_size('interior-hero', 1440, 400, true);
-		Image::add_size('interior-fullbleed', 1440, 530, true);
-        // etc..
-    }
-}
+$site = new Site();
+$site->configure(function () {
+    Image::add_size('home-hero', 1440, 790, true);
+    Image::add_size('interior-hero', 1440, 400, true);
+    Image::add_size('interior-fullbleed', 1440, 530, true);
+});
 ```
 
 ## Image dimensions
 
-When working with Images, Conifer includes some utility functions to get the dimensions of your image: `height()`, `width()`, and `aspect()`
+Use `height()`, `width()`, and `aspect()` on a Conifer image instance.
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-use Conifer\Post\Image;
-
-private Image $image;
+use Timber\Timber;
 
 $context = Timber::context();
 
 $cover_image_id = $context['post']->cover_image;
-$image = Timber::get_post($cover_image_id);
+$image = Timber::get_image($cover_image_id);
 
-// Get the height of an Image
-$height = $image->height();
+if ($image) {
+  // Original image dimensions.
+  $height = $image->height();
+  $width = $image->width();
 
-// Or, if your Image is using a custom size
-$height = $image->height( true );
+  // Dimensions for a specific registered size.
+  $custom_height = $image->height('home-hero');
+  $custom_width = $image->width('home-hero');
 
-// Get the width of an Image
-$width = $image->width();
-
-// Or, if your Image is using a custom size
-$width = $image->width( true );
-
-// Get the aspect ratio for an underlying image
-$aspect = $image->aspect();
+  // Underlying file aspect ratio.
+  $aspect = $image->aspect();
+}
 ```
 
-You can also use the same functions in Twig templates
+You can also use these methods directly in Twig templates:
 
 ```twig
-<img 
-    src="{{ image.src }}" 
-    height="{{ image.height }}" 
-    width="{{ image.width }}"
+<img
+  src="{{ image.src }}"
+  height="{{ image.height }}"
+  width="{{ image.width }}"
 />
 ```
