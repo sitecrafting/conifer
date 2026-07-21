@@ -38,6 +38,9 @@ export default defineConfig({
                         {text: 'Basics', link: '/basics'},
                         {text: 'The Site Object', link: '/site'},
                         {text: 'Working with Posts', link: '/posts'},
+                        {text: 'Working with Menus', link: '/menus'},
+                        {text: 'Working with Menu Items', link: '/menu-items'},
+                        {text: 'Working with Images', link: '/images'},
                     ],
                 },
                 {
@@ -48,7 +51,6 @@ export default defineConfig({
                         {text: 'Alerts', link: '/alerts'},
                         {text: 'Authorization', link: '/authorization'},
                         {text: 'Forms', link: '/forms'},
-                        {text: 'Images', link: '/images'},
                         {text: 'Notifiers', link: '/notifiers'},
                         {text: 'Shortcodes', link: '/shortcodes'},
                         {text: 'Twig Helpers', link: '/twig-helpers'},
