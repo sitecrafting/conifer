@@ -76,7 +76,7 @@ Here's a brief overview of Conifer's biggest features.
 
 ### The Site Class
 
-[The `Site` class](/site.md) is a concept inherited [from Timber](https://timber.github.io/docs/reference/timber-site/). As in the example above, the Site class `configure()` callback is where your site-wide config code goes in a conventional Conifer-style architecture. This class provides a number of helper methods for:
+[The `Site` class](/site.md) is a concept inherited [from Timber](https://timber.github.io/docs/v2/reference/timber-site/). As in the example above, the Site class `configure()` callback is where your site-wide config code goes in a conventional Conifer-style architecture. This class provides a number of helper methods for:
 
 * setting up sensible site-wide defaults
 * enqueueing scripts and styles

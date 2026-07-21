@@ -77,7 +77,7 @@ Now, instantiate and register your helper:
 $site->add_twig_helper(new ThemeTwigHelper());
 ```
 
-The text being filtered is always the first argument to the callback, just like when you register a callback directly with `Twig_SimpleFilter`.
+The text being filtered is always the first argument to the callback, just like when you register a callback directly with `Twig\TwigFilter`.
 
 Note that in this example, we didn't define any Twig functions, but to keep PHP happy, we still have to implement both public methods, where one simply returns an empty array.
 
