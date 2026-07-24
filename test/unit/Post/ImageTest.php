@@ -235,11 +235,8 @@ class ImageTest extends Base
     public function test_width_with_nonexistent_size()
     {
         // Test that calling width() with a non-existent size throws an exception
-        try {
-            $width = $this->image->width('non-existent-size');
-        } catch (\Error $e) {
-            $this->assertInstanceOf(\Error::class, $e);
-        }
+        $this->expectException(\Error::class);
+        $this->image->width('non-existent-size');
     }
 
     public function test_width_with_default_size()
