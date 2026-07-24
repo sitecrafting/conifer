@@ -11,5 +11,6 @@ class MenuItemDouble extends MenuItem
     public function __construct(?\WP_Post $wp_object, $menu = null)
     {
         parent::__construct($wp_object, $menu);
+
     }
 }
