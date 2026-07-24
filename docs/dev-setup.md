@@ -46,6 +46,7 @@ Conifer's Lando environment comes with several goodies for making local developm
 Along with the [universal Lando commands](https://docs.devwithlando.io/cli/usage.html), we get these commands for free from Lando's built-in [WordPress recipe](https://docs.devwithlando.io/tutorials/wordpress.html):
 
 * `lando wp`: run [WP-CLI](https://wp-cli.org/) commands
+* `lando sniff`: run [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) on the Conifer codebase
 * `lando composer`: run composer commands
 * `lando db-import <file>`: Import a WordPress database from a .sql or .sql.gz file. **The file must be inside your Conifer directory tree!**
 * `lando php`: run arbitrary PHP commands
