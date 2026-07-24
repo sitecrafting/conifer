@@ -157,6 +157,7 @@ class MenuTest extends Base
         $this->mockOtherGrandchildSlug = 'other-grandchild-' . $suffix;
 
         $mockMenu = $this->getMockBuilder(Menu::class)
+
             ->disableOriginalConstructor()
             ->onlyMethods(['get_items'])
             ->getMock();
