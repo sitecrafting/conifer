@@ -41,7 +41,8 @@ Use Conifer's wrapper around `add_image_size()` to register custom sizes.
 
 <?php
 
-use Conifer\Post\Image;
+use Conifer\Post\Image;
+
 use Conifer\Site;
 
 $site = new Site();
@@ -85,6 +86,9 @@ if ($image) {
 You can also use these methods directly in Twig templates:
 
 ```twig
+<!-- Images are not global variables, they must be fetched first -->
+{% set image = get_image($some_id) %}
+
 <img
   src="{{ image.src }}"
   height="{{ image.height }}"
