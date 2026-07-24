@@ -13,8 +13,7 @@ services:
     appserver:
         run_as_root:
             - apt-get update
-            - apt-get install zip
-            - apt-get install subversion -y
+            - apt-get install -y zip subversion
 
         run:
             - composer install
