@@ -46,7 +46,7 @@ class SimpleNotifier extends EmailNotifier
    */
   public function __construct($to)
   {
-    // TODO should valid $to is an email address, a comma separated list of email addresses, or an array of email addresses
+    // TODO validate that $to is an email address, a comma-separated list of email addresses, or an array of email addresses
     $this->to = $to;
   }
 
