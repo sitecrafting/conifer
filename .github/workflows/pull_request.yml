@@ -19,6 +19,8 @@ jobs:
                     MYSQL_USER: test
                     MYSQL_PASSWORD: test
                     MYSQL_ROOT_PASSWORD: root
+                ports:
+                    - 3306:3306
                 options: >-
                     --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot"
                     --health-interval=10s
@@ -44,7 +46,7 @@ jobs:
 
             - name: Install WordPress test suite
               env:
-                  DB_HOST: testdb
+                  DB_HOST: 127.0.0.1
                   DB_NAME: test
                   DB_USER: test
                   DB_PASS: test
