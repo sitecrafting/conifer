@@ -41,7 +41,7 @@ Use Conifer's wrapper around `add_image_size()` to register custom sizes.
 
 <?php
 
-use Conifer\Navigation\MenuItem;
+use Conifer\Post\Image;
 use Conifer\Site;
 
 $site = new Site();
