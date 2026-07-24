@@ -322,8 +322,7 @@ class PostTest extends Base
             ->onlyMethods([])
             ->getMock();
 
-        // Person::POST_TYPE = 'person'
-        $this->assertSame('person', $person->type());
+        $this->assertSame(Person::POST_TYPE, $person->type());
     }
 
     public function test_get_related_by_taxonomy_respects_limit()
