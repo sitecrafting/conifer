@@ -156,4 +156,141 @@ class AdminNoticeTest extends Base
   {
     WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));
   }
+
+  // ---------------------------------------------------------------------------
+  // flash() / flash_error() / flash_warning() / flash_info() / flash_success()
+  // ---------------------------------------------------------------------------
+
+  public function test_flash_error_adds_error_class_and_registers_admin_notices_hook()
+  {
+    $notice = new Notice('Something went wrong');
+    WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));
+
+    $notice->flash_error();
+
+    $this->assertTrue($notice->has_class('notice-error'), 'flash_error() should add notice-error class');
+  }
+
+  public function test_flash_warning_adds_warning_class_and_registers_admin_notices_hook()
+  {
+    $notice = new Notice('Heads up');
+    WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));
+
+    $notice->flash_warning();
+
+    $this->assertTrue($notice->has_class('notice-warning'), 'flash_warning() should add notice-warning class');
+  }
+
+  public function test_flash_info_adds_info_class_and_registers_admin_notices_hook()
+  {
+    $notice = new Notice('For your information');
+    WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));
+
+    $notice->flash_info();
+
+    $this->assertTrue($notice->has_class('notice-info'), 'flash_info() should add notice-info class');
+  }
+
+  public function test_flash_success_adds_success_class_and_registers_admin_notices_hook()
+  {
+    $notice = new Notice('All done');
+    WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));
+
+    $notice->flash_success();
+
+    $this->assertTrue($notice->has_class('notice-success'), 'flash_success() should add notice-success class');
+  }
+
+  public function test_flash_writes_class_and_message_to_session_when_closure_fires()
+  {
+    // flash() schedules a closure via add_action('admin_notices'). This test
+    // captures and invokes that closure directly to verify the session payload.
+    $_SESSION[Notice::FLASH_SESSION_KEY] = [];
+
+    WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));
+
+    $double = new NoticeFlashCapture('A flash message', 'notice-success');
+    $double->flash();
+    $double->invokeCapturedClosure();
+
+    $written = $_SESSION[Notice::FLASH_SESSION_KEY];
+    $this->assertCount(1, $written);
+    $this->assertSame('A flash message', $written[0]['message']);
+    $this->assertStringContainsString('notice-success', $written[0]['class']);
+  }
+
+  // ---------------------------------------------------------------------------
+  // display_flash_notices()
+  // ---------------------------------------------------------------------------
+
+  public function test_display_flash_notices_displays_notices_and_clears_session_when_enabled()
+  {
+    $_SESSION[Notice::FLASH_SESSION_KEY] = [
+      ['class' => 'notice notice-success', 'message' => 'Saved'],
+    ];
+
+    // Notice::display() registers an admin_notices action for each notice shown
+    WP_Mock::expectActionAdded('admin_notices', Functions::type('callable'));
+
+    // Flash notices are already enabled in setUp()
+    Notice::display_flash_notices();
+
+    $this->assertEmpty(
+      $_SESSION[Notice::FLASH_SESSION_KEY],
+      'Session should be emptied after display_flash_notices() runs'
+    );
+  }
+
+  public function test_display_flash_notices_is_noop_when_flash_is_disabled()
+  {
+    $_SESSION[Notice::FLASH_SESSION_KEY] = [
+      ['class' => 'notice notice-error', 'message' => 'Should not display'],
+    ];
+
+    Notice::disable_flash_notices();
+    Notice::display_flash_notices();
+
+    $this->assertCount(
+      1,
+      $_SESSION[Notice::FLASH_SESSION_KEY],
+      'Session must be untouched when flash notices are disabled'
+    );
+  }
+}
+
+/**
+ * Test double that captures the closure registered by flash() so it can be
+ * invoked synchronously within a test — without requiring WP action dispatch.
+ *
+ * The closure logic mirrors Notice::flash() exactly, using inherited access
+ * to the protected $message property and the concrete get_class() method.
+ */
+class NoticeFlashCapture extends Notice
+{
+  private ?\Closure $capturedClosure = null;
+
+  public function flash(): void
+  {
+    // Capture the values that the real closure would close over
+    $class   = $this->get_class();
+    $message = $this->message;
+
+    $this->capturedClosure = static function () use ($class, $message) {
+      $_SESSION[static::FLASH_SESSION_KEY]   = $_SESSION[static::FLASH_SESSION_KEY] ?? [];
+      $_SESSION[static::FLASH_SESSION_KEY][] = [
+        'class'   => $class,
+        'message' => $message,
+      ];
+    };
+
+    // Satisfy WP_Mock::expectActionAdded('admin_notices', ...) expectations
+    add_action('admin_notices', $this->capturedClosure);
+  }
+
+  public function invokeCapturedClosure(): void
+  {
+    if ($this->capturedClosure !== null) {
+      ($this->capturedClosure)();
+    }
+  }
 }

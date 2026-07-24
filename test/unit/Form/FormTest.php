@@ -485,4 +485,131 @@ class FormTest extends Base
       ],
     ];
   }
+
+  // ---------------------------------------------------------------------------
+  // create_from_submission()
+  // ---------------------------------------------------------------------------
+
+  public function test_create_from_submission_returns_hydrated_instance_of_calling_class()
+  {
+    $form = FormSubmissionDouble::create_from_submission([
+      'first_name' => 'Ada',
+      'last_name'  => 'Lovelace',
+    ]);
+
+    $this->assertInstanceOf(FormSubmissionDouble::class, $form);
+    $this->assertSame('Ada', $form->get('first_name'));
+    $this->assertSame('Lovelace', $form->get('last_name'));
+  }
+
+  public function test_create_from_submission_ignores_fields_not_declared_on_form()
+  {
+    // Fields not in $this->fields should not be hydrated (whitelist behaviour)
+    $form = FormSubmissionDouble::create_from_submission([
+      'first_name'     => 'Grace',
+      'undeclared_key' => 'should be ignored',
+    ]);
+
+    $this->assertNull($form->get('undeclared_key'));
+  }
+
+  public function test_create_from_submission_throws_when_first_arg_is_not_an_array()
+  {
+    $this->expectException(\InvalidArgumentException::class);
+
+    FormSubmissionDouble::create_from_submission('not-an-array');
+  }
+
+  // ---------------------------------------------------------------------------
+  // has_errors()
+  // ---------------------------------------------------------------------------
+
+  public function test_has_errors_returns_false_when_no_errors_have_been_added()
+  {
+    $this->assertFalse($this->form->has_errors());
+  }
+
+  public function test_has_errors_returns_true_after_an_error_is_added()
+  {
+    $this->form->add_error('email', 'Invalid email address');
+
+    $this->assertTrue($this->form->has_errors());
+  }
+
+  // ---------------------------------------------------------------------------
+  // has_errors_for()
+  // ---------------------------------------------------------------------------
+
+  public function test_has_errors_for_returns_false_for_field_with_no_errors()
+  {
+    $this->form->add_error('email', 'Invalid');
+
+    $this->assertFalse($this->form->has_errors_for('username'));
+  }
+
+  public function test_has_errors_for_returns_true_for_field_that_has_errors()
+  {
+    $this->form->add_error('email', 'Invalid email address');
+
+    $this->assertTrue($this->form->has_errors_for('email'));
+  }
+
+  // ---------------------------------------------------------------------------
+  // succeeded()
+  // ---------------------------------------------------------------------------
+
+  public function test_succeeded_returns_false_by_default()
+  {
+    $this->assertFalse($this->form->succeeded());
+  }
+
+  public function test_succeeded_returns_true_when_internal_success_flag_is_set()
+  {
+    $this->setProtectedProperty($this->form, 'success', true);
+
+    $this->assertTrue($this->form->succeeded());
+  }
+
+  // ---------------------------------------------------------------------------
+  // get_unique_error_messages()
+  // ---------------------------------------------------------------------------
+
+  public function test_get_unique_error_messages_returns_empty_array_when_no_errors()
+  {
+    $this->assertSame([], $this->form->get_unique_error_messages());
+  }
+
+  public function test_get_unique_error_messages_deduplicates_identical_messages_across_fields()
+  {
+    // "Required" appears twice (for two different fields) but must only appear once in the output
+    $this->form->add_error('first_name', 'Required');
+    $this->form->add_error('last_name',  'Required');
+    $this->form->add_error('email',      'Must be a valid email address');
+
+    $unique = array_values($this->form->get_unique_error_messages());
+
+    $this->assertEquals(['Required', 'Must be a valid email address'], $unique);
+  }
+}
+
+/**
+ * Minimal concrete subclass of AbstractBase used to test create_from_submission()
+ * and other methods that depend on a concrete class being instantiated.
+ */
+class FormSubmissionDouble extends AbstractBase
+{
+  public function __construct()
+  {
+    parent::__construct();
+
+    $this->fields = [
+      'first_name' => [],
+      'last_name'  => [],
+    ];
+  }
+
+  public function process(array $request): void
+  {
+    // test double — no-op implementation of required abstract method
+  }
 }
