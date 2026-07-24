@@ -14,5 +14,6 @@ class MenuDouble extends Menu
     public function __construct(?\WP_Term $term = null)
     {
         parent::__construct($term);
+
     }
 }
