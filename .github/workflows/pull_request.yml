@@ -1,0 +1,60 @@
+name: Pull Request
+
+on:
+    pull_request:
+
+permissions:
+    contents: read
+
+jobs:
+    tests:
+        name: PHPUnit
+        runs-on: ubuntu-latest
+
+        services:
+            testdb:
+                image: mysql:8.0
+                env:
+                    MYSQL_DATABASE: test
+                    MYSQL_USER: test
+                    MYSQL_PASSWORD: test
+                    MYSQL_ROOT_PASSWORD: root
+                options: >-
+                    --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -proot"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=10
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.1'
+                  extensions: mysqli
+                  tools: composer:v2
+
+            - name: Install Subversion
+              run: sudo apt-get update && sudo apt-get install -y subversion
+
+            - name: Install Composer dependencies
+              run: composer install --no-interaction --no-progress --prefer-dist
+
+            - name: Install WordPress test suite
+              env:
+                  DB_HOST: testdb
+                  DB_NAME: test
+                  DB_USER: test
+                  DB_PASS: test
+              run: bash scripts/install-wp-tests.sh
+
+            - name: Run unit tests
+              run: ./vendor/bin/phpunit --configuration phpunit.xml.dist
+
+            - name: Run integration tests
+              run: ./vendor/bin/phpunit --configuration phpunit-integration.xml.dist
+
+            # - name: Run code sniffing
+            #   run: composer sniff
