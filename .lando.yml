@@ -1,137 +1,136 @@
 name: conifer
 recipe: wordpress
 config:
-  webroot: wp
-  php: '8.1'
+    webroot: wp
+    php: '8.1'
 
 services:
-  node:
-    type: node:24
-    run:
-      - npm i && npm docs:build
+    node:
+        type: node:24
+        run:
+            - npm i && npm run docs:build
 
-  appserver:
-    run_as_root:
-      - apt-get update
-      - apt-get install zip
-      - apt-get install subversion -y
+    appserver:
+        run_as_root:
+            - apt-get update
+            - apt-get install -y zip subversion
 
-    run:
-      - composer install
-      - ./scripts/setup-wordpress.sh
+        run:
+            - composer install
+            - ./scripts/setup-wordpress.sh
 
-  database:
-    type: mysql:5.7
+    database:
+        type: mysql:8.0
 
-  testdb:
-    type: mysql:5.7
-    portforward: true
-    creds:
-      user: test
-      password: test
-      database: test
+    testdb:
+        type: mysql:8.0
+        portforward: true
+        creds:
+            user: test
+            password: test
+            database: test
 
-  mailhog:
-    type: mailhog:v1.0.0
-    hogfrom:
-      - appserver
+    mailhog:
+        type: mailhog:v1.0.0
+        hogfrom:
+            - appserver
 
-  docs:
-    type: nginx:1.18
-    ssl: true
-    webroot: docs/.vitepress/dist
+    docs:
+        type: nginx:1.18
+        ssl: true
+        webroot: docs/.vitepress/dist
 
 tooling:
-  clean:
-    service: appserver
-    cmd: 'rm -rf node_modules vendor *.tar.gz *.zip wp'
+    clean:
+        service: appserver
+        cmd: 'rm -rf node_modules vendor *.tar.gz *.zip wp'
 
-  install:
-    service: appserver
-    cmd: './scripts/setup-wordpress.sh'
-    description: 'Install and configure WordPress for custom plugin dev'
+    install:
+        service: appserver
+        cmd: './scripts/setup-wordpress.sh'
+        description: 'Install and configure WordPress for custom plugin dev'
 
-  debug:
-    service: appserver
-    cmd: 'tail -f ./wp/wp-content/debug.log'
-    description: 'Get real-time WP debug log output'
+    debug:
+        service: appserver
+        cmd: 'tail -f ./wp/wp-content/debug.log'
+        description: 'Get real-time WP debug log output'
 
-  unit:
-    service: appserver
-    cmd: './vendor/bin/phpunit --config phpunit.xml.dist'
-    description: 'Run unit tests'
+    unit:
+        service: appserver
+        cmd: './vendor/bin/phpunit --config phpunit.xml.dist'
+        description: 'Run unit tests'
 
-  integration:
-    service: appserver
-    cmd: './vendor/bin/phpunit --config phpunit-integration.xml.dist'
-    description: 'Run integration tests'
+    integration:
+        service: appserver
+        cmd: './vendor/bin/phpunit --config phpunit-integration.xml.dist'
+        description: 'Run integration tests'
 
-  test:
-    service: appserver
-    cmd:
-      - vendor/bin/phpunit --config phpunit.xml.dist
-      - vendor/bin/phpunit --config phpunit-integration.xml.dist
-    description: 'Run all unit and integration tests'
+    test:
+        service: appserver
+        cmd:
+            - vendor/bin/phpunit --config phpunit.xml.dist
+            - vendor/bin/phpunit --config phpunit-integration.xml.dist
+        description: 'Run all unit and integration tests'
 
-  install-tests:
-    service: appserver
-    cmd: './scripts/install-wp-tests.sh'
-    description: 'Install the WP Unit Test suite'
+    install-tests:
+        service: appserver
+        cmd: './scripts/install-wp-tests.sh'
+        description: 'Install the WP Unit Test suite'
 
-  sniff-summary:
-    service: appserver
-    cmd: './vendor/bin/phpcs --report=summary --standard=./phpcs.xml test lib'
-    description: 'Summarize PHPCS code sniffer findings'
+    sniff-summary:
+        service: appserver
+        cmd: './vendor/bin/phpcs --report=summary --standard=./phpcs.xml test lib'
+        description: 'Summarize PHPCS code sniffer findings'
 
-  sniff:
-    service: appserver
-    cmd: './vendor/bin/phpcs --standard=./phpcs.xml test lib'
-    description: 'Run PHPCS code sniffer on all test and production code'
+    sniff:
+        service: appserver
+        cmd: './vendor/bin/phpcs --standard=./phpcs.xml test lib'
+        description: 'Run PHPCS code sniffer on all test and production code'
 
-  sniff-fix:
-    service: appserver
-    cmd: './vendor/bin/phpcbf --standard=./phpcs.xml test lib'
-    description: 'Fix all automatically fixable issues found by PHPCS'
+    sniff-fix:
+        service: appserver
+        cmd: './vendor/bin/phpcbf --standard=./phpcs.xml test lib'
+        description: 'Fix all automatically fixable issues found by PHPCS'
 
-  analyze:
-    service: appserver
-    cmd: './vendor/bin/phpstan analyse'
-    description: 'Run phpstan coding standards (level 1)'
+    analyze:
+        service: appserver
+        cmd: './vendor/bin/phpstan analyse'
+        description: 'Run phpstan coding standards (level 1)'
 
-  analyse:
-    service: appserver
-    cmd: './vendor/bin/phpstan analyse'
-    description: 'Run phpstan coding standards (level 1)'
+    analyse:
+        service: appserver
+        cmd: './vendor/bin/phpstan analyse'
+        description: 'Run phpstan coding standards (level 1)'
 
-  ci:
-    service: appserver
-    cmd:
-      - vendor/bin/phpunit --config phpunit.xml.dist
-      - vendor/bin/phpunit --config phpunit-integration.xml.dist
-      - vendor/bin/phpcs --standard=phpcs.xml test lib
-      - vendor/bin/phpstan analyze
+    ci:
+        service: appserver
+        cmd:
+            - vendor/bin/phpunit --config phpunit.xml.dist
+            - vendor/bin/phpunit --config phpunit-integration.xml.dist
+            - vendor/bin/phpcs --standard=phpcs.xml test lib
+            - vendor/bin/phpstan analyze
 
-  phpstan:
-    service: appserver
-    cmd: './vendor/bin/phpstan'
-    description: 'Run phpstan commands for static analysis'
+    phpstan:
+        service: appserver
+        cmd: './vendor/bin/phpstan'
+        description: 'Run phpstan commands for static analysis'
 
-  npm:
-    service: node
-    cmd: 'npm'
-    description: 'Run npm commands'
+    npm:
+        service: node
+        cmd: 'npm'
+        description: 'Run npm commands'
 
-  docs:
-    service: node
-    cmd: 'npm run docs:build'
-    description: 'Build Conifer docs'
+    docs:
+        service: node
+        cmd: 'npm run docs:build'
+        description: 'Build Conifer docs'
 
 proxy:
-  appserver:
-    - conifer.lndo.site
+    appserver:
+        - conifer.lndo.site
 
-  mailhog:
-    - mail.conifer.lndo.site
+    mailhog:
+        - mail.conifer.lndo.site
 
-  docs:
-    - docs.conifer.lndo.site
+    docs:
+        - docs.conifer.lndo.site
