@@ -113,9 +113,11 @@ class AjaxHandlerTest extends Base
     $_COOKIE     = ['session_token' => 'abc123'];
     AjaxHandlerInspectable::$lastResponse = null;
 
-    AjaxHandlerInspectable::handle(['action' => 'inspect']);
-
-    $_COOKIE = $savedCookie;
+    try {
+      AjaxHandlerInspectable::handle(['action' => 'inspect']);
+    } finally {
+      $_COOKIE = $savedCookie;
+    }
 
     $response = AjaxHandlerInspectable::$lastResponse;
     $this->assertIsArray($response);
@@ -128,9 +130,11 @@ class AjaxHandlerTest extends Base
     $_REQUEST     = ['action' => 'from_request', 'key' => 'val'];
     AjaxHandlerInspectable::$lastResponse = null;
 
-    AjaxHandlerInspectable::handle();
-
-    $_REQUEST = $savedRequest;
+    try {
+      AjaxHandlerInspectable::handle();
+    } finally {
+      $_REQUEST = $savedRequest;
+    }
 
     $response = AjaxHandlerInspectable::$lastResponse;
     $this->assertIsArray($response, 'handle() with no args should populate $lastResponse from $_REQUEST');
@@ -144,9 +148,11 @@ class AjaxHandlerTest extends Base
     $_POST     = ['action' => 'post_action', 'data' => 'posted'];
     AjaxHandlerInspectable::$lastResponse = null;
 
-    AjaxHandlerInspectable::handle_post();
-
-    $_POST = $savedPost;
+    try {
+      AjaxHandlerInspectable::handle_post();
+    } finally {
+      $_POST = $savedPost;
+    }
 
     $response = AjaxHandlerInspectable::$lastResponse;
     $this->assertIsArray($response);
