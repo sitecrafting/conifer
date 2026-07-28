@@ -6,7 +6,7 @@ View the docs for [Conifer 1.0](https://coniferplug.in).
 
 ## What is Conifer?
 
-Conifer is a library plugin for creating WordPress plugins and themes using an opinionated object-oriented architecture, built on top of the amazing [Timber](https://timber.github.io/docs/) plugin.
+Conifer is a library plugin for creating WordPress plugins and themes using an opinionated object-oriented architecture, built on top of the amazing [Timber](https://timber.github.io/docs/v2/) plugin.
 
 [Read more about Conifer and its goals](/what-is-conifer.md).
 

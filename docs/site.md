@@ -1,6 +1,6 @@
 # The Site Class
 
-As the Conifer Basics page illustrates, the `Site` class is a concept [inherited from Timber](https://timber.github.io/docs/reference/timber-site/) that gives you a single place to put all your site-wide configuration code.
+As the Conifer Basics page illustrates, the `Site` class is a concept [inherited from Timber](https://timber.github.io/docs/v2/reference/timber-site/) that gives you a single place to put all your site-wide configuration code.
 
 ## Basic Usage
 
