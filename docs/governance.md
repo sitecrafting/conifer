@@ -21,4 +21,4 @@ The team consists of:
 - [Phil Price](https://github.com/philmprice)
 - [Reena Hensley](https://github.com/rbhensley)
 - [Ryan Hendrickson](https://github.com/rhendrickson-sc)
-
+- [Alex Merk](https://github.com/amerk-sitecrafting)
