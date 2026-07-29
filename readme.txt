@@ -44,14 +44,14 @@ Now let's set up a template that actually uses Conifer's API!
 ```
 // front-page.php
 
-use Conifer\Post\FrontPage;
+use Timber\Timber;
 
 // Create an object specifically for representing the homepage
 $page = Timber::get_post();
 
 // Call helper for getting the Timber context,
 // and set the "post" within that context
-$data = $Timber::context();
+$data = Timber::context();
 
 // You can update the context in $data with custom data
 $data['my_custom_field'] = $page;

@@ -310,7 +310,7 @@ $posts = Timber::get_posts([
   'post_type'    => BlogPost::POST_TYPE,
   'paged'        => get_query_var('paged'),
   'category__in' => get_query_var('cat'),
-])
+]);
 ```
 
 This will compose the default pagination and category parameters transparently, so using the core [`paginate_links()`](https://developer.wordpress.org/reference/functions/paginate_links/) core function will work transparently.
@@ -320,7 +320,7 @@ This will compose the default pagination and category parameters transparently, 
 Because we added our Robot Custom Post Type to the class map earlier, we can easily query for posts using Timber's [`::get_posts()`](https://timber.github.io/docs/v2/reference/timber-timber/#get_posts) method. 
 
 ```php
-// You can specificy the post type as the second argument
+// You can specify the post type as the second argument
 $posts = Timber::get_posts(['posts_per_page' => 3], Robot::class);
 ```
 
