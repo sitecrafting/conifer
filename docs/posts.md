@@ -306,10 +306,11 @@ Conifer supports all arguments to [`WP_Query::construct()`](https://developer.wo
 ```php
 use Conifer\Post\BlogPost;
 
-$posts = BlogPost::get_all([
+$posts = Timber::get_posts([
+  'post_type'    => BlogPost::POST_TYPE,
   'paged'        => get_query_var('paged'),
   'category__in' => get_query_var('cat'),
-]);
+])
 ```
 
 This will compose the default pagination and category parameters transparently, so using the core [`paginate_links()`](https://developer.wordpress.org/reference/functions/paginate_links/) core function will work transparently.
@@ -319,6 +320,7 @@ This will compose the default pagination and category parameters transparently, 
 Because we added our Robot Custom Post Type to the class map earlier, we can easily query for posts using Timber's [`::get_posts()`](https://timber.github.io/docs/v2/reference/timber-timber/#get_posts) method. 
 
 ```php
+// You can specificy the post type as the second argument
 $posts = Timber::get_posts(['posts_per_page' => 3], Robot::class);
 ```
 
@@ -592,8 +594,10 @@ The `Conifer\Post\HasTerms` trait, included in `Conifer\Post\Post`, defines the 
 ```php
 // page-robots-by-eeriness-level.php
 
+use Timber\Timber;
+
 // set up Timber context with the current page
-$data = $site->get_context_with_post(new Page());
+$data = Timber::context();
 
 $data['robots_by_eeriness_level'] = Robot::get_all_grouped_by_term('eeriness_level');
 
