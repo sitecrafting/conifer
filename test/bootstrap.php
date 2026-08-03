@@ -3,7 +3,7 @@
 /**
  * Conifer test suite bootstrap file; included before every unit test run
  *
- * @todo remove dependency on WP_Mock
+ * @todo remove dependency on \WP_Mock
  * @copyright 2020 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
@@ -18,6 +18,33 @@ define('ABSPATH', realpath(__DIR__ . '/../'));
 define('WP_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
 define('WP_CONTENT_URL', 'http://appserver/wp-content');
 define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
+
+if (!isset($GLOBALS['conifer_deprecated_hook_registry'])) {
+  $GLOBALS['conifer_deprecated_hook_registry'] = [
+    'filter' => [],
+    'action' => [],
+  ];
+}
+
+if (!function_exists('add_filter')) {
+  function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1)
+  {
+    $GLOBALS['conifer_deprecated_hook_registry']['filter'][$tag] = true;
+    \WP_Mock::onFilterAdded($tag)->react($function_to_add, (int) $priority, (int) $accepted_args);
+
+    return true;
+  }
+}
+
+if (!function_exists('add_action')) {
+  function add_action($tag, $function_to_add, $priority = 10, $accepted_args = 1)
+  {
+    $GLOBALS['conifer_deprecated_hook_registry']['action'][$tag] = true;
+    \WP_Mock::onActionAdded($tag)->react($function_to_add, (int) $priority, (int) $accepted_args);
+
+    return true;
+  }
+}
 
 /**
  * Define our own version of apply_filters_deprecated, rather than mocking,
@@ -37,17 +64,9 @@ function do_action_deprecated(mixed $action)
 
 function deprecated_hook_notice(mixed $type, mixed $hook)
 {
-  // Do some terrible horcrux-style dark magic shit
-  // @codingStandardsIgnoreStart
-  $wpMock = new ReflectionClass(WP_Mock::class);
-  $mgrProp = $wpMock->getProperty('event_manager');
-  $mgr = $mgrProp->getValue();
-  $mgrReflection = new ReflectionClass($mgr);
-  $callbacksProp = $mgrReflection->getProperty('callbacks');
-  $callbacks = $callbacksProp->getValue($mgr);
+  $listeners = $GLOBALS['conifer_deprecated_hook_registry'][$type][$hook] ?? false;
 
-  // were any filters added?
-  if ($callbacks && isset($callbacks["$type::$hook"])) {
+  if ($listeners) {
     trigger_error("{$hook} is deprecated");
   }
 }
