@@ -1,7 +1,7 @@
 name: Travis Parity CI
 
 on:
-	  pull_request:
+    pull_request:
 
 jobs:
     php-ci:
@@ -11,7 +11,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-              php-version: ['8.1']
+                php-version: ['8.1']
 
         steps:
             - name: Checkout
@@ -33,7 +33,7 @@ jobs:
                   path: ~/.composer/cache
                   key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
                   restore-keys: |
-                    ${{ runner.os }}-composer-
+                      ${{ runner.os }}-composer-
 
             - name: Install PHP dependencies
               run: composer install --no-interaction --prefer-dist
@@ -55,8 +55,8 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with:
-                node-version: '24'
-                cache: yarn
+                  node-version: '24'
+                  cache: yarn
 
             - name: Install JS dependencies
               run: yarn install --frozen-lockfile
