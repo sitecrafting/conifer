@@ -92,11 +92,31 @@ EOF
     twentyseventeen \
     twentytwentytwo \
     twentytwentythree \
-    twentytwentyfour
+    twentytwentyfour \
+    twentytwentyone \
+    twentytwentyfive \
+    twentytwentysix
 
 
   wp option set permalink_structure '/%postname%/'
-  wp rewrite flush
+
+  HTACCESS_PATH="$WP_DIR/.htaccess"
+  if [[ ! -f "$HTACCESS_PATH" ]] ; then
+    cat > "$HTACCESS_PATH" <<'EOF'
+# BEGIN WordPress
+
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+
+# END WordPress
+EOF
+  fi
+
+  wp rewrite flush --hard
 
   echo
   echo 'Done setting up!'
