@@ -63,30 +63,29 @@ function main() {
   zip_name="conifer-${RELEASE}.zip"
   composer install --no-dev --prefer-dist
 
-  # hackishly create a symlink conifer directory, so that when extracted, the
-  # archives we create have a top-level directory
-  ln -sfn . conifer
+  # stage release contents in a temp directory so archives have a top-level
+  # conifer/ folder without creating symlinks in the repo root.
+  staging_dir=$(mktemp -d)
+  package_root="$staging_dir/conifer"
+  trap 'rm -rf "$staging_dir"' EXIT
 
-  # archive plugins distro files inside a top-level conifer/ dir
-  tar -cvzf "$tar_name" \
-    conifer/conifer.php \
-    conifer/lib \
-    conifer/vendor \
-    conifer/views \
-    conifer/LICENSE.txt \
-    conifer/README.md
+  mkdir -p "$package_root"
+  cp ./conifer.php "$package_root/"
+  cp ./LICENSE.txt "$package_root/"
+  cp ./README.md "$package_root/"
+  cp -R ./lib "$package_root/"
+  cp -R ./vendor "$package_root/"
+  cp -R ./views "$package_root/"
 
-  # ditto for zip
-  zip -r "${zip_name}" \
-    conifer/conifer.php \
-    conifer/lib \
-    conifer/vendor \
-    conifer/views \
-    conifer/LICENSE.txt \
-    conifer/README.md
+  # archive plugin distro files inside the staged top-level conifer/ dir
+  (
+    cd "$staging_dir" || exit 1
+    tar -cvzf "$OLDPWD/$tar_name" conifer
+    zip -r "$OLDPWD/$zip_name" conifer
+  )
 
-  # remove hackish symlink
-  rm ./conifer
+  rm -rf "$staging_dir"
+  trap - EXIT
 
   restore_vendor
 
