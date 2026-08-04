@@ -56,10 +56,10 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: '24'
-                  cache: yarn
+                  cache: npm
 
             - name: Install JS dependencies
-              run: yarn install --frozen-lockfile
+              run: npm ci
 
             - name: Build docs
               run: ./scripts/build-docs.sh
