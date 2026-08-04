@@ -58,9 +58,13 @@ EOF
   if wp_installed ; then
     echo 'WordPress is installed'
   else
+    APP_URL=$(php -r '
+      $info = json_decode(getenv("LANDO_INFO"), true);
+      echo $info["appserver"]["urls"][0] ?? "";
+    ')
     # install WordPress
     wp core install \
-      --url='http://conifer.lndo.site' \
+      --url="$APP_URL" \
       --title='Conifer' \
       --admin_user='conifer' \
       --admin_password='conifer' \
