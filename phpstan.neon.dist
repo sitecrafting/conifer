@@ -14,5 +14,4 @@ parameters:
     paths:
         - lib/
     ignoreErrors:
-        # TODO
         - '#^Unsafe usage of new static\(\)\.$#'
