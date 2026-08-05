@@ -389,6 +389,14 @@ $relatedPosts = $post->get_related_by_category();
 $relatedPostsByTag = $post->get_related_by_tag();
 ```
 
+Assuming you have multiple posts setup, you can also query for all related BlogPosts. This will fetch all posts that share a category with `$post`. 
+
+```php
+// single.php
+$post = new BlogPost();
+$relatedPosts = $post->get_related();
+```
+
 ## Customizing Post Admin Columns
 
 Conifer lets you easily add custom admin columns to your WP Admin post listing screen:

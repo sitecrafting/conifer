@@ -121,6 +121,16 @@ $page = new HelloPage('Hello');
 $page->add();
 ```
 
+Once your page is added, use Conifer's built in helper methods to get the `title` and `slug` for the page
+
+```php
+$page = new HelloPage('Hello');
+$page->add();
+
+$pageTitle = $page->get_title();
+$pageSlug = $page->get_slug();
+```
+
 Or, you can specify individual parameters using a fluent interface:
 
 ```php
@@ -180,7 +190,8 @@ $parent->add()
 
 `SubPage` is a subclass of `AdminPage` and therefore inherits the same fluent interface. Instances of `SubPage` inherit their required capability from their parent page.
 
-## Hotkeys
+<!-- Disabling the following documentation until it is decided what is happening with hotkeys -->
+<!-- ## Hotkeys
 
 Admin hotkeys are a special feature of Conifer and one of the few things it does out of the box. These hotkeys allow you type, for example, `gd` to go to the Dashboard from any page in the WP Admin.
 
@@ -229,7 +240,7 @@ You can disable admin hotkeys from your config callback by calling:
 
 ```php
 $this->disable_admin_hotkeys();
-```
+``` -->
 
 ## The Conifer help widget
 
