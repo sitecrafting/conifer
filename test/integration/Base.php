@@ -31,4 +31,10 @@ abstract class Base extends WP_UnitTestCase
     $this->site = new Site();
     $this->site->configure_defaults();
   }
+
+  public function test_is_multisite()
+  {
+    $isMultisite = defined('MULTISITE') && MULTISITE;
+    $this->assertEquals(getenv('WP_MULTISITE') ? true : false, $isMultisite);
+  }
 }

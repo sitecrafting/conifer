@@ -181,4 +181,10 @@ abstract class Base extends TestCase
       'return' => $data,
     ]);
   }
+
+  public function test_multisite_mode()
+  {
+    $isMultisite = defined('MULTISITE') && MULTISITE;
+    $this->assertEquals(getenv('WP_MULTISITE') ? true : false, $isMultisite);
+  }
 }

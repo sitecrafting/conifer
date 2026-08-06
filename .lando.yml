@@ -65,6 +65,16 @@ tooling:
         cmd: './vendor/bin/phpunit --config phpunit-integration.xml.dist'
         description: 'Run integration tests'
 
+    unit-multisite:
+        service: appserver
+        cmd: './vendor/bin/phpunit --config phpunit-multisite.xml.dist'
+        description: 'Run unit tests for multisite'
+
+    integration-multisite:
+        service: appserver
+        cmd: './vendor/bin/phpunit --config phpunit-integration-multisite.xml.dist'
+        description: 'Run integration tests for multisite'
+
     test:
         service: appserver
         cmd:

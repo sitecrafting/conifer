@@ -58,5 +58,11 @@ jobs:
             - name: Run integration tests
               run: ./vendor/bin/phpunit --configuration phpunit-integration.xml.dist
 
+            - name: Run unit tests in multisite mode
+              run: ./vendor/bin/phpunit --configuration phpunit-multisite.xml.dist
+
+            - name: Run integration tests in multisite mode
+              run: ./vendor/bin/phpunit --configuration phpunit-integration-multisite.xml.dist
+
             # - name: Run code sniffing
             #   run: composer sniff
