@@ -82,6 +82,13 @@ tooling:
             - vendor/bin/phpunit --config phpunit-integration.xml.dist
         description: 'Run all unit and integration tests'
 
+    test-multisite:
+        service: appserver
+        cmd:
+            - vendor/bin/phpunit --config phpunit-multisite.xml.dist
+            - vendor/bin/phpunit --config phpunit-integration-multisite.xml.dist
+        description: 'Run all unit and integration tests in multisite mode'
+
     install-tests:
         service: appserver
         cmd: './scripts/install-wp-tests.sh'
