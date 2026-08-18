@@ -62,6 +62,11 @@ EOF
       $info = json_decode(getenv("LANDO_INFO"), true);
       echo $info["appserver"]["urls"][0] ?? "";
     ')
+
+    # Fallback, in case the above fails to get the URL
+    if [[ ! "$APP_URL" ]] ; then
+      APP_URL="http://conifer.lndo.site"
+    fi
     # install WordPress
     wp core install \
       --url="$APP_URL" \
