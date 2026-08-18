@@ -43,23 +43,3 @@ jobs:
 
             - name: PHPStan
               run: vendor/bin/phpstan analyse
-
-    docs:
-        name: Building docs
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: '24'
-                  cache: npm
-
-            - name: Install JS dependencies
-              run: npm ci
-
-            - name: Build docs
-              run: ./scripts/build-docs.sh
