@@ -45,6 +45,14 @@ jobs:
             - name: Install Subversion
               run: sudo apt-get update && sudo apt-get install -y subversion
 
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.composer/cache
+                  key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-
+
             - name: Install Composer dependencies
               run: composer install --no-interaction --no-progress --prefer-dist
 
@@ -55,6 +63,12 @@ jobs:
                   DB_USER: test
                   DB_PASS: test
               run: bash scripts/install-wp-tests.sh
+
+            - name: PHPCS
+              run: vendor/bin/phpcs --standard=./phpcs.xml test lib
+
+            - name: PHPStan
+              run: vendor/bin/phpstan analyse
 
             - name: Run unit tests
               run: ./vendor/bin/phpunit --configuration phpunit.xml.dist
