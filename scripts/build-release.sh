@@ -67,7 +67,6 @@ function main() {
   # conifer/ folder without creating symlinks in the repo root.
   staging_dir=$(mktemp -d)
   package_root="$staging_dir/conifer"
-  trap 'rm -rf "$staging_dir"' EXIT
 
   mkdir -p "$package_root"
   cp ./conifer.php "$package_root/"
@@ -85,7 +84,6 @@ function main() {
   )
 
   rm -rf "$staging_dir"
-  trap - EXIT
 
   restore_vendor
 
