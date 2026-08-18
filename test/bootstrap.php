@@ -17,7 +17,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 define('ABSPATH', realpath(__DIR__ . '/../'));
 define('WP_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
 define('WP_CONTENT_URL', 'http://appserver/wp-content');
-define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/plugins');
+define('WPMU_PLUGIN_DIR', ABSPATH . '/wp-content/mu-plugins');
 
 if (!isset($GLOBALS['conifer_deprecated_hook_registry'])) {
   $GLOBALS['conifer_deprecated_hook_registry'] = [
