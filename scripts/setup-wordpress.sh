@@ -108,10 +108,6 @@ EOF
 
 
   wp option set permalink_structure '/%postname%/'
-
-  HTACCESS_PATH="$WP_DIR/.htaccess"
-  if [[ ! -f "$HTACCESS_PATH" ]] ; then
-    cat > "$HTACCESS_PATH" <<'EOF'
 # BEGIN WordPress
 
 RewriteEngine On
@@ -125,7 +121,7 @@ RewriteRule . /index.php [L]
 EOF
   fi
 
-  wp rewrite flush --hard
+  wp rewrite flush
 
   echo
   echo 'Done setting up!'
