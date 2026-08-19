@@ -3,13 +3,11 @@
 /**
  * Conifer test suite bootstrap file; included before every unit test run
  *
- * @todo remove dependency on \WP_Mock
  * @copyright 2020 SiteCrafting, Inc.
  * @author    Coby Tamayo <ctamayo@sitecrafting.com>
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
 
 /*
  * Define some WP constants that are referenced directly in Conifer
@@ -44,6 +42,12 @@ if (!function_exists('add_action')) {
 
     return true;
   }
+}
+
+// Check for multisite mode
+if (getenv('WP_MULTISITE')) {
+  define('MULTISITE', true);
+  define('SUBDOMAIN_INSTALL', false);
 }
 
 /**
