@@ -7,8 +7,8 @@ Conifer provides an elegant and flexible abstraction of the standard [WordPress 
 use Conifer\AjaxHandler\AbstractBase;
 
 class MyAjaxHandler extends AbstractBase {
-  protected function execute() : array {
-    /* 
+  protected function execute(): array {
+    /*
     * Your custom logic goes here
     * Request data is accessible via $this->request
     * Return an array with the appropriate response data
@@ -45,7 +45,7 @@ use Conifer\AjaxHandler\AbstractBase;
   
 class RobotAjaxHandler extends AbstractBase {
   // Implement the abstract execute method
-  protected function execute() {
+  protected function execute(): array {
     // Map actions to instance methods dynamically
     $this->map_action('talk_to_robot', 'talk_to_robot');
     $this->map_action('ask_robot_to_dance', 'robot_dance');
@@ -87,23 +87,60 @@ add_action('wp_ajax_ask_robot_to_dance', [RobotAjaxHandler::class, 'handle']);
 add_action('wp_ajax_buy_robot_insurance', [RobotAjaxHandler::class, 'handle']);
 ```
 
+## Logging
+
+`AbstractBase` accepts an optional [PSR-3](https://www.php-fig.org/psr/psr-3/) `LoggerInterface` when it is constructed. Once configured, call `log()` from your handler to write messages at any supported PSR-3 log level.
+
+Pass the logger as the second argument when constructing a handler directly. The static `handle()` method creates the handler with only the request data, so subclasses that use it must obtain their logger before calling the parent constructor.
+
+```PHP
+declare(strict_types=1)
+
+use Conifer\AjaxHandler\AbstractBase;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+
+class RobotAjaxHandler extends AbstractBase {
+
+  public function __construct(array $request, ?LoggerInterface $logger = null) {
+    parent::__construct($request, $logger);
+  }
+
+  protected function execute(): array {
+    try {
+      $this->doNotDoTheThing();
+    } catch (\Exception $e) {
+      // log() defaults to the debug log level.
+      self::log($e->getMessage());
+
+      // Pass a log level as the second argument when needed.
+      self::log($e->getMessage(), LogLevel::CRITICAL);
+    }
+
+    return [];
+  }
+}
+```
+
+Calling `log()` without a configured logger throws a `RuntimeException`. Passing a value other than a [PSR-3 log level](https://www.php-fig.org/psr/psr-3/#5-psrlogloglevel) throws an `InvalidArgumentException`.
+
 ## API
 The AjaxHandler class provides a relatively thin layer of abstraction, but there are a handful of available methods you should be aware of:
 
 
-### `handle(array $data)`
+### `handle(?array $requestData = null)`
 
-The method which is called when AJAX requests and received. Utilizes data from the [$_REQUEST](http://php.net/manual/en/reserved.variables.request.php) suberglobal, which will include data from both POST and GET requests.
+The method called when an AJAX request is received. When no request data is passed, it uses data from the [$_REQUEST](http://php.net/manual/en/reserved.variables.request.php) superglobal, which includes data from both POST and GET requests.
 
 
 ### `handle_post()`
 
-Can be used in place of the `handle` method when adding your AJAX action. Only utilizes data from the [$_POST](http://php.net/manual/en/reserved.variables.post.php) suberglobal, which limits your AJAX handler to only accepting POST requests.
+Can be used in place of the `handle` method when adding your AJAX action. Uses data only from the [$_POST](http://php.net/manual/en/reserved.variables.post.php) superglobal, which limits your AJAX handler to accepting only POST requests.
 
 
 ### `handle_get()`
 
-Can be used in place of the `handle` method when adding your AJAX action. Only utilizes data from the [$_GET](http://php.net/manual/en/reserved.variables.get.php) suberglobal, which limits your AJAX handler to only accepting GET requests.
+Can be used in place of the `handle` method when adding your AJAX action. Uses data only from the [$_GET](http://php.net/manual/en/reserved.variables.get.php) superglobal, which limits your AJAX handler to accepting only GET requests.
 
 
 ### `param(mixed $name)`
