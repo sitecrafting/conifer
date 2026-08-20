@@ -62,16 +62,9 @@ class SimpleNotifier extends EmailNotifier
       // Check if this is a comma-separated list of emails, or just a single email address
       $toCopy = array_map('trim', explode(',', $to));
 
-      // If our array is not empty, loop through and validate all of the emails
-      if (!empty($toCopy)) {
-        foreach ($toCopy as $email) {
-          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
-          }
-        }
-        // We are likely working with a single email address, so we will just validate that one
-      } else {
-        if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+      // Loop through and validate all of the emails
+      foreach ($toCopy as $email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
           throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
         }
       }
