@@ -9,6 +9,8 @@
 
 namespace Conifer\Unit\AjaxHandler;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use WP_Mock;
 
 use Conifer\AjaxHandler\AbstractBase;
@@ -225,6 +227,78 @@ class AjaxHandlerTest extends Base
     $returned = $handler->exposeMap('my_action', 'anInstanceMethod');
 
     $this->assertSame($handler, $returned, 'map_action() should return $this for chaining');
+  }
+
+  // ---------------------------------------------------------------------------
+  // log()
+  // ---------------------------------------------------------------------------
+
+  /**
+   * @dataProvider valid_log_levels
+   */
+  public function test_log_delegates_message_to_configured_logger(string $level)
+  {
+    $logger = $this->createMock(LoggerInterface::class);
+    $logger
+      ->expects($this->once())
+      ->method($level)
+      ->with(self::BEST_BAND);
+
+    new AjaxHandlerInspectable($this->get_request_array(), $logger);
+
+    AjaxHandlerInspectable::log(self::BEST_BAND, $level);
+  }
+
+  public function test_log_converts_stringable_message_before_delegating()
+  {
+    $message = new class implements \Stringable {
+      public function __toString(): string
+      {
+        return AjaxHandlerTest::BEST_BAND;
+      }
+    };
+    $logger = $this->createMock(LoggerInterface::class);
+    $logger
+      ->expects($this->once())
+      ->method(LogLevel::DEBUG)
+      ->with(self::BEST_BAND);
+
+    new AjaxHandlerInspectable($this->get_request_array(), $logger);
+
+    AjaxHandlerInspectable::log($message);
+  }
+
+  public function test_log_throws_when_logger_is_not_configured()
+  {
+    $this->expectException(\RuntimeException::class);
+    $this->expectExceptionMessage('Logger is not set. Cannot log message.');
+
+    AjaxHandlerInspectable::log(self::BEST_BAND);
+  }
+
+  public function test_log_throws_when_level_is_invalid()
+  {
+    $logger = $this->createMock(LoggerInterface::class);
+    new AjaxHandlerInspectable($this->get_request_array(), $logger);
+
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Invalid log level: verbose');
+
+    AjaxHandlerInspectable::log(self::BEST_BAND, 'verbose');
+  }
+
+  public function valid_log_levels(): array
+  {
+    return [
+      'emergency' => [LogLevel::EMERGENCY],
+      'alert'     => [LogLevel::ALERT],
+      'critical'  => [LogLevel::CRITICAL],
+      'error'     => [LogLevel::ERROR],
+      'warning'   => [LogLevel::WARNING],
+      'notice'    => [LogLevel::NOTICE],
+      'info'      => [LogLevel::INFO],
+      'debug'     => [LogLevel::DEBUG],
+    ];
   }
 }
 
