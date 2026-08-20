@@ -119,6 +119,13 @@ abstract class AbstractBase
   protected static ?LoggerInterface $logger = null;
 
   /**
+   * Registered AJAX actions, keyed by handler class and action name.
+   *
+   * @var array<string, array<string, array{include_priv: bool, include_no_priv: bool}>>
+   */
+  protected static array $registered_actions = [];
+
+  /**
    * Abstract method used to define the functionality when handling an AJAX request.
    * Should return an array to be encoded in the response.
    *
@@ -198,6 +205,52 @@ abstract class AbstractBase
       default:
         throw new \InvalidArgumentException("Invalid log level: {$level}");
     }
+  }
+
+  /**
+   * Register an AJAX action for this handler class.
+   *
+   * Call add_actions() in the site's configuration callback to add the registered hooks.
+   *
+   * @param string $action The AJAX action name.
+   * @param bool $include_priv Whether to handle requests from authenticated users.
+   * @param bool $include_no_priv Whether to handle requests from unauthenticated users.
+   * @return void
+   */
+  public static function register_action(string $action, bool $include_priv = true, bool $include_no_priv = false): void
+  {
+    static::$registered_actions[static::class][$action] = [
+      'include_priv'    => $include_priv,
+      'include_no_priv' => $include_no_priv,
+    ];
+  }
+
+  /**
+   * Add WordPress hooks for all actions registered by this handler class.
+   *
+   * @return void
+   */
+  public static function add_actions(): void
+  {
+    foreach (static::$registered_actions[static::class] ?? [] as $action => $options) {
+      if ($options['include_priv']) {
+        add_action("wp_ajax_{$action}", [static::class, 'handle']);
+      }
+
+      if ($options['include_no_priv']) {
+        add_action("wp_ajax_nopriv_{$action}", [static::class, 'handle']);
+      }
+    }
+  }
+
+  /**
+   * Return the actions registered to this AjaxHandler
+   *
+   * @return array The array of registered actions.
+   */
+  public static function get_registered_actions(): array
+  {
+    return static::$registered_actions[static::class] ?? [];
   }
 
   /*

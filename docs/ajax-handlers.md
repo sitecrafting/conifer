@@ -18,10 +18,13 @@ class MyAjaxHandler extends AbstractBase {
 }
 ```
 
-From here, all you need to do is add the appropriate `wp_ajax_{action}` and/or `wp_ajax_nopriv_{action}` actions in your site's [config callback](/site.md#simple-configuration):
+Register the action in the handler class, then add all registered actions in your site's [config callback](/site.md#simple-configuration):
 
 ```PHP
-add_action('wp_ajax_my_action', [MyAjaxHandler::class, 'handle']);
+MyAjaxHandler::register_action('my_action');
+
+// In your config callback:
+MyAjaxHandler::add_actions();
 ```
 
 > ### Info::Use handle(), not execute()
@@ -79,12 +82,15 @@ class RobotAjaxHandler extends AbstractBase {
 }
 ```
 
-Now we add our actions like before, and we're ready to interact with our robot overlords via AJAX calls:
+Register each action in the handler class, then add the hooks in your config callback:
 
 ```PHP
-add_action('wp_ajax_talk_to_robot', [RobotAjaxHandler::class, 'handle']);
-add_action('wp_ajax_ask_robot_to_dance', [RobotAjaxHandler::class, 'handle']);
-add_action('wp_ajax_buy_robot_insurance', [RobotAjaxHandler::class, 'handle']);
+RobotAjaxHandler::register_action('talk_to_robot');
+RobotAjaxHandler::register_action('ask_robot_to_dance');
+RobotAjaxHandler::register_action('buy_robot_insurance');
+
+// In your config callback:
+RobotAjaxHandler::add_actions();
 ```
 
 ## Logging
@@ -141,6 +147,16 @@ Can be used in place of the `handle` method when adding your AJAX action. Uses d
 ### `handle_get()`
 
 Can be used in place of the `handle` method when adding your AJAX action. Uses data only from the [$_GET](http://php.net/manual/en/reserved.variables.get.php) superglobal, which limits your AJAX handler to accepting only GET requests.
+
+
+### `register_action(string $action, bool $include_priv = true, bool $include_no_priv = false)`
+
+Registers an action for this handler class. By default, the action is available only to authenticated users. Set `$include_no_priv` to `true` to also handle unauthenticated requests, or set `$include_priv` to `false` to handle only unauthenticated requests. Call `add_actions()` in your config callback to add the registered hooks.
+
+
+### `add_actions()`
+
+Adds the WordPress AJAX hooks for actions registered by this handler class.
 
 
 ### `param(mixed $name)`

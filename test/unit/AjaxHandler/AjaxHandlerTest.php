@@ -230,6 +230,82 @@ class AjaxHandlerTest extends Base
   }
 
   // ---------------------------------------------------------------------------
+  // register_action() / add_actions()
+  // ---------------------------------------------------------------------------
+
+  public function test_add_actions_registers_authenticated_hook_by_default()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect');
+
+    WP_Mock::expectActionAdded('wp_ajax_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_registered_actions());
+    $this->assertTrue(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_priv']);
+    $this->assertFalse(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_no_priv']);
+  }
+
+  public function test_add_actions_registers_both_hooks_when_requested()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect', true, true);
+
+    WP_Mock::expectActionAdded('wp_ajax_inspect', [AjaxHandlerInspectable::class, 'handle']);
+    WP_Mock::expectActionAdded('wp_ajax_nopriv_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_registered_actions());
+    $this->assertTrue(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_priv']);
+    $this->assertTrue(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_no_priv']);
+  }
+
+  public function test_add_actions_can_register_unauthenticated_hook_only()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect', false, true);
+
+    WP_Mock::expectActionAdded('wp_ajax_nopriv_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_registered_actions());
+    $this->assertFalse(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_priv']);
+  }
+
+  public function test_register_action_replaces_existing_privilege_options()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect');
+    AjaxHandlerInspectable::register_action('inspect', false, true);
+
+    WP_Mock::expectActionAdded('wp_ajax_nopriv_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_registered_actions());
+    $this->assertFalse(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_priv']);
+  }
+
+  public function test_add_actions_only_uses_actions_registered_by_its_class()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AlternateAjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect');
+    AlternateAjaxHandlerInspectable::register_action('alternate');
+
+    WP_Mock::expectActionAdded('wp_ajax_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('alternate', AlternateAjaxHandlerInspectable::get_registered_actions());
+    $this->assertTrue(AlternateAjaxHandlerInspectable::get_registered_actions()['alternate']['include_priv']);
+    $this->assertFalse(AlternateAjaxHandlerInspectable::get_registered_actions()['alternate']['include_no_priv']);
+  }
+
+  // ---------------------------------------------------------------------------
   // log()
   // ---------------------------------------------------------------------------
 
@@ -347,6 +423,11 @@ class AjaxHandlerInspectable extends AbstractBase
     return $this;
   }
 
+  public static function clearRegisteredActions(): void
+  {
+    unset(self::$registered_actions[static::class]);
+  }
+
   /** Used to verify the success-path of dispatch_action(). */
   protected function anInstanceMethod(): array
   {
@@ -359,3 +440,5 @@ class AjaxHandlerInspectable extends AbstractBase
     return ['dispatched_by' => 'aStaticMethod'];
   }
 }
+
+class AlternateAjaxHandlerInspectable extends AjaxHandlerInspectable {}
