@@ -44,9 +44,46 @@ class SimpleNotifier extends EmailNotifier
    * @param string|array $to the email addresses to send to.
    * Can be a comma-separated string or an array
    */
-  public function __construct($to)
+  public function __construct(string|array $to)
   {
-    // TODO validate that $to is an email address, a comma-separated list of email addresses, or an array of email addresses
+    // Save a copy to validate, since we may need to convert a string to an array
+    $toCopy = $to;
+
+    if (empty($to)) {
+      throw new \InvalidArgumentException('The $to argument must be a valid email address, a comma-separated list of valid email addresses, or an array of valid email addresses');
+    }
+
+    if (gettype($to) === 'string') {
+      // Check if this is a comma-separated list of emails, or just a single email address
+      $toCopy = array_map('trim', explode(',', $to));
+
+      // If our array is not empty, loop through and validate all of the emails
+      if (!empty($toCopy)) {
+        foreach ($toCopy as $email) {
+          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new \InvalidArgumentException('The $to argument must be a valid email address, a comma-separated list of valid email addresses, or an array of valid email addresses');
+          }
+        }
+        // We are likely working with a single email address, so we will just validate that one
+      } else {
+        if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+          throw new \InvalidArgumentException('The $to argument must be a valid email address, a comma-separated list of valid email addresses, or an array of valid email addresses');
+        }
+      }
+    } else if (gettype($to) !== 'array') {
+      throw new \InvalidArgumentException('The $to argument must be a valid email address, a comma-separated list of valid email addresses, or an array of valid email addresses');
+    }
+
+    // If we have reached this point, we have an array of some sort, so we need to validate all of the emails in the array.
+    // We will still check the type for sanity
+    if (gettype($toCopy) === 'array') {
+      foreach ($toCopy as $email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          throw new \InvalidArgumentException('The $to argument must be a valid email address, a comma-separated list of valid email addresses, or an array of valid email addresses');
+        }
+      }
+    }
+
     $this->to = $to;
   }
 
