@@ -39,7 +39,7 @@ class SimpleNotifier extends EmailNotifier
    *
    * @var string|array
    */
-  protected $to;
+  protected string|array $to;
 
   /**
    * Constructor. Pass the to email here.
@@ -58,7 +58,7 @@ class SimpleNotifier extends EmailNotifier
       throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
     }
 
-    if (gettype($to) === 'string') {
+    if (is_string($to)) {
       // Check if this is a comma-separated list of emails, or just a single email address
       $toCopy = array_map('trim', explode(',', $to));
 
@@ -68,13 +68,13 @@ class SimpleNotifier extends EmailNotifier
           throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
         }
       }
-    } else if (gettype($to) !== 'array') {
+    } else if (!is_array($to)) {
       throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
     }
 
     // If we have reached this point, we have an array of some sort, so we need to validate all of the emails in the array.
     // We will still check the type for sanity
-    if (gettype($toCopy) === 'array') {
+    if (is_array($toCopy)) {
       foreach ($toCopy as $email) {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
           throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
