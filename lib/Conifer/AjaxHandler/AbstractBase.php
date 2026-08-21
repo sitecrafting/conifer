@@ -235,10 +235,16 @@ abstract class AbstractBase
   {
     foreach (static::$registered_actions[static::class] ?? [] as $action => $options) {
       if ($options['include_priv']) {
+        if (false !== has_action("wp_ajax_{$action}")) {
+          throw new \LogicException("Action '{$action}' is already registered with WordPress. Cannot register it again for handler class " . static::class);
+        }
         add_action("wp_ajax_{$action}", [static::class, 'handle']);
       }
 
       if ($options['include_no_priv']) {
+        if (false !== has_action("wp_ajax_nopriv_{$action}")) {
+          throw new \LogicException("Action '{$action}' is already registered with WordPress. Cannot register it again for handler class " . static::class);
+        }
         add_action("wp_ajax_nopriv_{$action}", [static::class, 'handle']);
       }
     }

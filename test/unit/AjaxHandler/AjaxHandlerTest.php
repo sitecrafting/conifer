@@ -29,6 +29,10 @@ class AjaxHandlerTest extends Base
   {
     parent::setUp();
 
+    WP_Mock::userFunction('has_action', [
+      'return' => false,
+    ]);
+
     // Mock the abstract base AJAX handler class so we can test against it
     $ajaxHanderStub = $this->getMockForAbstractClass(AbstractBase::class, [$this->get_request_array()]);
 
