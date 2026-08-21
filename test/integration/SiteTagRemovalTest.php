@@ -70,7 +70,9 @@ class SiteTagRemovalTest extends Base
 
     public function test_disable_tags_excludes_tribe_events_by_default()
     {
-        $this->site->disable_tags();
+        $this->site->configure(function () {
+            $this->disable_tags();
+        }, false);
 
         $this->assertFalse(is_object_in_taxonomy(self::POST_TYPE_ONE, 'post_tag'));
         $this->assertTrue(is_object_in_taxonomy(self::EXCLUDED_POST_TYPE, 'post_tag'));
@@ -78,7 +80,10 @@ class SiteTagRemovalTest extends Base
 
     public function test_disable_tags_honors_custom_excluded_post_types()
     {
-        $this->site->disable_tags([self::POST_TYPE_ONE]);
+        $excludedPostTypes = [self::POST_TYPE_ONE];
+        $this->site->configure(function () use ($excludedPostTypes) {
+            $this->disable_tags($excludedPostTypes);
+        }, false);
 
         $this->assertTrue(is_object_in_taxonomy(self::POST_TYPE_ONE, 'post_tag'));
         $this->assertFalse(is_object_in_taxonomy(self::POST_TYPE_TWO, 'post_tag'));
