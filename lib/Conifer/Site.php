@@ -887,7 +887,8 @@ class Site extends TimberSite
    */
   private function disable_tags_for_post_type(string $postType): bool
   {
-    remove_post_type_support($postType, 'post_tag');
+    // Apparently this is a no-op
+    // remove_post_type_support($postType, 'post_tag');
 
     return unregister_taxonomy_for_object_type('post_tag', $postType);
   }
