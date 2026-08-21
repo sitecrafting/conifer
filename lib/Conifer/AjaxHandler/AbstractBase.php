@@ -75,13 +75,10 @@
 namespace Conifer\AjaxHandler;
 
 use BadMethodCallException;
-use InvalidArgumentException;
 use LogicException;
 use ReflectionClass;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use RuntimeException;
-use Stringable;
 
 // TODO: Need to add nonce verification to this class and update any related documentation to reflect this requirement
 abstract class AbstractBase
@@ -171,14 +168,14 @@ abstract class AbstractBase
    * This is not a 100% accurate implementation of the LoggerInterface log() function, but it
    * should be good enough to suit our needs
    *
-   * @param string|Stringable $message The message to log
+   * @param string|\Stringable $message The message to log
    * @param string $level The log level to use. Defaults to LogLevel::DEBUG
    * @return void
    *
-   * @throws RuntimeException If the logger is not configured via __construct
-   * @throws InvalidArgumentException If the provided $level is not one of PSR-3's LogLevels
+   * @throws \RuntimeException If the logger is not configured via __construct
+   * @throws \InvalidArgumentException If the provided $level is not one of PSR-3's LogLevels
    */
-  public static function log(string|Stringable $message, string $level = LogLevel::DEBUG): void
+  public static function log(string|\Stringable $message, string $level = LogLevel::DEBUG): void
   {
     // If the logger is not set, we cannot log the message. We should throw a runtime exception.
     if (static::$logger === null) {
@@ -186,7 +183,7 @@ abstract class AbstractBase
     }
 
     // If the message is a Stringable object, we need to convert it to a string.
-    if ($message instanceof Stringable) {
+    if ($message instanceof \Stringable) {
       $message = (string) $message;
     }
 
@@ -219,6 +216,10 @@ abstract class AbstractBase
    */
   public static function register_action(string $action, bool $include_priv = true, bool $include_no_priv = false): void
   {
+    if (empty($action)) {
+      throw new \InvalidArgumentException('Action name cannot be empty.');
+    }
+
     static::$registered_actions[static::class][$action] = [
       'include_priv'    => $include_priv,
       'include_no_priv' => $include_no_priv,
