@@ -68,7 +68,7 @@ $site->configure(function() {
 });
 ```
 
-This approach of passing a function to `conifigure()` has a couple advantages:
+This approach of passing a function to `configure()` has a couple advantages:
 
 - You don't have to define your own `Site` subclass.
 - Wrapping your config code in a closure avoids polluting the global namespace, but also allows it to remain in the familiar functions.php rather than in a random library class, where newcomers to your codebase may not know to look.
@@ -101,7 +101,7 @@ $site->configure();
 
 ## Disabling defaults
 
-If you want to *only* run your custom config callback without funning Conifer's default config code, you can pass `false` as the second argument to `configure()`, which tells Conifer to disable its defaults:
+If you want to *only* run your custom config callback without running Conifer's default configuration code, pass `false` as the second argument to `configure()`:
 
 ```php
 $site->configure(function() { /* ... */ }, false);
@@ -118,6 +118,20 @@ $site->configure(function() {
 ```
 
 This closes all comments on the frontend, hides all existing comments on all posts on the frontend and within WP Admin, and removes comment management pages from WP Admin.
+
+## Disabling Tags
+
+Many sites do not need tag support on every post type. Use `disable_tags_for_post_types()` to remove the built-in tag taxonomy from the post types you specify:
+
+```php
+$site->configure(function() {
+  $postTypes = ['robot', 'android', 'cyborg'];
+
+  $this->disable_tags_for_post_types($postTypes);
+});
+```
+
+This removes tag support and the `post_tag` taxonomy association only from the listed post types. Tags remain available on all other post types.
 
 ## Directory Cascades
 
@@ -158,7 +172,7 @@ $site->configure(function() {
 
 ### Finding generic file paths
 
-Under the hood, the script and style cascades call the generic `file_file()` method, which simply traverses a list of directories looking for a relative file path within each. It returns the full path of the first existing file it finds:
+Under the hood, the script and style cascades call the generic `find_file()` method, which traverses a list of directories looking for a relative file path within each. It returns the full path of the first existing file it finds:
 
 ```php
 // directory tree:
