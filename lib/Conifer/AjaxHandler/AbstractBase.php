@@ -255,7 +255,7 @@ abstract class AbstractBase
    *
    * @return array The array of registered actions.
    */
-  public static function get_registered_actions(): array
+  public static function get_actions(): array
   {
     return static::$registered_actions[static::class] ?? [];
   }

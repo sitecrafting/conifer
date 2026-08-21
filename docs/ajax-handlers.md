@@ -158,6 +158,9 @@ Registers an action for this handler class. By default, the action is available 
 
 Adds the WordPress AJAX hooks for actions registered by this handler class.
 
+### `get_actions()`
+
+Returns the actions registered for this AjaxHandler.
 
 ### `param(mixed $name)`
 

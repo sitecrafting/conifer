@@ -246,9 +246,9 @@ class AjaxHandlerTest extends Base
 
     AjaxHandlerInspectable::add_actions();
 
-    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_registered_actions());
-    $this->assertTrue(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_priv']);
-    $this->assertFalse(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_no_priv']);
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_actions());
+    $this->assertTrue(AjaxHandlerInspectable::get_actions()['inspect']['include_priv']);
+    $this->assertFalse(AjaxHandlerInspectable::get_actions()['inspect']['include_no_priv']);
   }
 
   public function test_add_actions_registers_both_hooks_when_requested()
@@ -261,9 +261,9 @@ class AjaxHandlerTest extends Base
 
     AjaxHandlerInspectable::add_actions();
 
-    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_registered_actions());
-    $this->assertTrue(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_priv']);
-    $this->assertTrue(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_no_priv']);
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_actions());
+    $this->assertTrue(AjaxHandlerInspectable::get_actions()['inspect']['include_priv']);
+    $this->assertTrue(AjaxHandlerInspectable::get_actions()['inspect']['include_no_priv']);
   }
 
   public function test_add_actions_can_register_unauthenticated_hook_only()
@@ -275,8 +275,8 @@ class AjaxHandlerTest extends Base
 
     AjaxHandlerInspectable::add_actions();
 
-    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_registered_actions());
-    $this->assertFalse(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_priv']);
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_actions());
+    $this->assertFalse(AjaxHandlerInspectable::get_actions()['inspect']['include_priv']);
   }
 
   public function test_register_action_replaces_existing_privilege_options()
@@ -289,8 +289,8 @@ class AjaxHandlerTest extends Base
 
     AjaxHandlerInspectable::add_actions();
 
-    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_registered_actions());
-    $this->assertFalse(AjaxHandlerInspectable::get_registered_actions()['inspect']['include_priv']);
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_actions());
+    $this->assertFalse(AjaxHandlerInspectable::get_actions()['inspect']['include_priv']);
   }
 
   public function test_add_actions_only_uses_actions_registered_by_its_class()
@@ -304,9 +304,9 @@ class AjaxHandlerTest extends Base
 
     AjaxHandlerInspectable::add_actions();
 
-    $this->assertArrayHasKey('alternate', AlternateAjaxHandlerInspectable::get_registered_actions());
-    $this->assertTrue(AlternateAjaxHandlerInspectable::get_registered_actions()['alternate']['include_priv']);
-    $this->assertFalse(AlternateAjaxHandlerInspectable::get_registered_actions()['alternate']['include_no_priv']);
+    $this->assertArrayHasKey('alternate', AlternateAjaxHandlerInspectable::get_actions());
+    $this->assertTrue(AlternateAjaxHandlerInspectable::get_actions()['alternate']['include_priv']);
+    $this->assertFalse(AlternateAjaxHandlerInspectable::get_actions()['alternate']['include_no_priv']);
   }
 
   // ---------------------------------------------------------------------------
