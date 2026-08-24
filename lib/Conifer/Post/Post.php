@@ -1,4 +1,5 @@
 <?php
+
 /**
  * High-level WP Post behavior
  */
@@ -15,7 +16,8 @@ use Conifer\Post\Image;
 /**
  * High-level behavior for WP Posts, on top of TimberPost class
  */
-abstract class Post extends TimberPost {
+abstract class Post extends TimberPost
+{
   use HasTerms;
   use HasCustomAdminColumns;
   use HasCustomAdminFilters;
@@ -84,7 +86,8 @@ abstract class Post extends TimberPost {
    * plus an optional "plural_label" index. It produces a more comprehensive
    * array of labels before passing it to `register_post_type()`.
    */
-  public static function register_type() {
+  public static function register_type()
+  {
     $options = static::type_options();
 
     $options['labels'] = $options['labels'] ?? [];
@@ -93,7 +96,7 @@ abstract class Post extends TimberPost {
     $singular = $options['labels']['singular_name']
       // convert underscore_inflection to Words Separated By Spaces
       // TODO separate this into a utility method
-      ?? implode(' ', array_map(function(string $word) {
+      ?? implode(' ', array_map(function (string $word) {
         return ucfirst($word);
       }, explode('_', static::_post_type())));
 
@@ -159,7 +162,8 @@ abstract class Post extends TimberPost {
    *
    * @return array
    */
-  public static function type_options() : array {
+  public static function type_options(): array
+  {
     return [];
   }
 
@@ -170,12 +174,13 @@ abstract class Post extends TimberPost {
    * @return string
    * @codingStandardsIgnoreStart PSR2.Methods.MethodDeclaration.Underscore
    */
-  protected static function _post_type() : string {
+  protected static function _post_type(): string
+  {
     // @codingStandardsIgnoreEnd
     if (empty(static::POST_TYPE)) {
       throw new \RuntimeException(
         'For some static methods to work correctly, you must define the '
-        . static::class . '::POST_TYPE constant'
+          . static::class . '::POST_TYPE constant'
       );
     }
 
@@ -187,7 +192,8 @@ abstract class Post extends TimberPost {
    *
    * @return
    */
-  public static function latest(int $count = self::LATEST_POST_COUNT) : iterable {
+  public static function latest(int $count = self::LATEST_POST_COUNT): iterable
+  {
     return Timber::get_posts([
       'posts_per_page' => $count,
     ]);
@@ -204,10 +210,12 @@ abstract class Post extends TimberPost {
    * Place tighter restrictions on post types than Timber,
    * forcing all concrete subclasses to implement this method.
    */
-  public function type() : string {
+  public function type(): string
+  {
     return static::_post_type();
   }
 
+  // TODO REMOVE
   /**
    * Get all the posts matching the given query
    * (defaults to the current/global WP query constraints)
@@ -215,15 +223,15 @@ abstract class Post extends TimberPost {
    * @param  array|string $query any valid Timber query
    * @return array         an array of all matching post objects
    */
-  public static function get_all(array $query = []) : iterable {
+  public static function get_all(array $query = []): iterable
+  {
     // phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
     // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-    trigger_error( '[ Conifer ] Post::get_all() is deprecated in Conifer 1.0.0. Use Timber::get_posts() with Class Maps instead. https://timber.github.io/docs/v2/guides/class-maps' );
+    trigger_error('[ Conifer ] Post::get_all() is deprecated in Conifer 1.0.0. Use Timber::get_posts() with Class Maps instead. https://timber.github.io/docs/v2/guides/class-maps');
 
     $class = static::class;
 
     // Avoid instantiating this (abstract) class, causing a Fatal Error.
-    // TODO figure out a more elegant way to do this??
     // Might have to rework this at the Timber level
     // @see https://github.com/timber/timber/pull/1218
     if ($class === self::class) {
@@ -242,8 +250,9 @@ abstract class Post extends TimberPost {
    *
    * @return string the URL
    */
-  public static function get_blog_url() {
-    if ( ! static::$blog_url ) {
+  public static function get_blog_url()
+  {
+    if (! static::$blog_url) {
       // haven't fetched the URL yet...go get it
       $page = Page::get_blog_page();
 
@@ -260,7 +269,8 @@ abstract class Post extends TimberPost {
    * @param  int $id the post ID to check for
    * @return boolean     true if the post exists, false otherwise
    */
-  public static function exists( $id ) {
+  public static function exists($id)
+  {
     $post = get_post($id);
 
     // support calling Post::exists() directly (not on subclasses)
@@ -309,7 +319,8 @@ abstract class Post extends TimberPost {
    * All others key/value pairs are considered metadata and end up in wp_postmeta.
    * @return \Project\Post
    */
-  public static function create(array $data) : Post {
+  public static function create(array $data): Post
+  {
     // blacklist ID and post_type; we get these automagically
     unset($data['ID']);
     unset($data['post_type']);
@@ -376,14 +387,14 @@ abstract class Post extends TimberPost {
   public function get_related_by_taxonomy(
     string $taxonomy,
     int $postCount = self::RELATED_POST_COUNT
-  ) : iterable {
+  ): iterable {
     // Get any previously queried related posts
     $relatedPosts     = $this->related_by[$taxonomy] ?? [];
     $relatedPostCount = $this->related_post_counts[$taxonomy] ?? null;
 
     if (count($relatedPosts) < $postCount && !isset($relatedPostCount)) {
       // There may be more related posts than previously queried; look for them
-      $termIds = array_map(function(Term $term) {
+      $termIds = array_map(function (Term $term) {
         return $term->id;
       }, $this->terms($taxonomy));
 
@@ -420,7 +431,7 @@ abstract class Post extends TimberPost {
    */
   public function get_related_by_category(
     int $postCount = self::RELATED_POST_COUNT
-  ) : iterable {
+  ): iterable {
     return $this->get_related_by_taxonomy('category', $postCount);
   }
 
@@ -433,8 +444,7 @@ abstract class Post extends TimberPost {
    */
   public function get_related_by_tag(
     int $postCount = self::RELATED_POST_COUNT
-  ) : iterable {
+  ): iterable {
     return $this->get_related_by_taxonomy('post_tag', $postCount);
   }
 }
-
