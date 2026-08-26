@@ -157,7 +157,6 @@ class Site extends TimberSite
     Button::register('button');
 
     Integrations\YoastIntegration::demote_metabox();
-    // TODO moar integrations!
   }
 
   /**

@@ -39,7 +39,12 @@ To make this easier, Conifer offers a higher-level `Post::register_type()` metho
 ```php
 $site = new Conifer\Site();
 $site->configure(function() {
-	add_action('init', [Robot::class, 'register_type']);
+  // ...
+
+  // Register post type via static function
+  Robot::register_type();
+  
+  // ...
 });
 ```
 
@@ -48,6 +53,33 @@ Calling `Robot::register_type()` *with no arguments* will result in labels like 
 How? Conifer uses the `POST_TYPE` class constant along with any passed `$options` to produce a comprehensive set of `labels` to pass to `register_post_type()`. By default, plural labels are just singular labels with an "s" appended, to capture most cases in English. But you can also specify a `plural_label` inside your `$options` array to override this, and any plural labels will be interpolated accordingly.
 
 If your `POST_TYPE` class constant is in snake_case (which is the recommended style), `Post::register_type()` will convert it to Space Separated Capitalized Words. For example, a `POST_TYPE` definition of `special_post`  translates into singular and plural labels `Special Post` and `Special Posts`, respectively.
+
+### Adding your Custom Post Type to the class map
+
+As with Timber, register your Custom Post Type in the class map so Timber knows which class to use when fetching posts
+
+```php
+$site = new Conifer\Site();
+$site->configure(function() {
+  // ...
+
+  // Configure Timber post class mappings
+  add_filter('timber/post/classmap', function ($classmap) {
+    $custom_classmap = [
+      'page' => Page::class,
+      'post' => BlogPost::class,
+
+      // Register your Custom Post Types
+      Robot::POST_TYPE => Robot::class,
+    ];
+
+    return array_merge($classmap, $custom_classmap);
+  });
+
+  // ...
+});
+```
+
 
 #### Customizing post type options
 
@@ -274,7 +306,8 @@ Conifer supports all arguments to [`WP_Query::construct()`](https://developer.wo
 ```php
 use Conifer\Post\BlogPost;
 
-$posts = BlogPost::get_all([
+$posts = Timber::get_posts([
+  'post_type'    => BlogPost::POST_TYPE,
   'paged'        => get_query_var('paged'),
   'category__in' => get_query_var('cat'),
 ]);
@@ -282,22 +315,36 @@ $posts = BlogPost::get_all([
 
 This will compose the default pagination and category parameters transparently, so using the core [`paginate_links()`](https://developer.wordpress.org/reference/functions/paginate_links/) core function will work transparently.
 
-## Querying for custom post types
+## Querying for Custom Post Types
 
-Conifer Post classes know how to instantiate themselves in query results. The static `get_all()` method will return an array of whichever subclass of `Post` was called, whether that's `BlogPost`, `Page`, or a CPT:
-
-```php
-$robots = Robot::get_all(['posts_per_page' => 3]);
-// -> array of Robot instances
-```
-
-Contrast this to the `Timber::get_posts()` method, which we'd have to tell to return `Robot`s:
+Because we added our Robot Custom Post Type to the class map earlier, we can easily query for posts using Timber's [`::get_posts()`](https://timber.github.io/docs/v2/reference/timber-timber/#get_posts) method. 
 
 ```php
-$robots = Timber::get_posts(['posts_per_page' => 3], Robot::class);
+// You can specify the post type as the second argument
+$posts = Timber::get_posts(['posts_per_page' => 3], Robot::class);
 ```
 
-Thanks to Conifer's use of [late static binding](https://secure.php.net/manual/en/language.oop5.late-static-bindings.php), we can omit this argument to `get_all()`.
+This function is highly flexible and can be called in a number of ways
+
+```php
+// No arguments, use the global query.
+$posts = Timber::get_posts();
+
+// Using the WP_Query argument format.
+$posts = Timber::get_posts( [
+    'post_type'     => 'robot',
+    // OR
+    'post_type'     => Robot::POST_TYPE,
+    'category_name' => 'sports',
+    //...
+] );
+
+// Using a WP_Query instance.
+$posts = Timber::get_posts( new WP_Query( [ 'post_type' => 'any' ) );
+
+// Using an array of post IDs.
+$posts = Timber::get_posts( [ 47, 543, 3220 ] );
+```
 
 ## Getting Related Posts
 
@@ -340,6 +387,14 @@ WordPress's built-in `category` and `post_tag` taxonomies get their own helpers 
 $post = new BlogPost();
 $relatedPosts = $post->get_related_by_category();
 $relatedPostsByTag = $post->get_related_by_tag();
+```
+
+Assuming you have multiple posts setup, you can also query for all related BlogPosts. This will fetch all posts that share a category with `$post`. 
+
+```php
+// single.php
+$post = new BlogPost();
+$relatedPosts = $post->get_related();
 ```
 
 ## Customizing Post Admin Columns
@@ -547,8 +602,10 @@ The `Conifer\Post\HasTerms` trait, included in `Conifer\Post\Post`, defines the 
 ```php
 // page-robots-by-eeriness-level.php
 
+use Timber\Timber;
+
 // set up Timber context with the current page
-$data = $site->get_context_with_post(new Page());
+$data = Timber::context();
 
 $data['robots_by_eeriness_level'] = Robot::get_all_grouped_by_term('eeriness_level');
 

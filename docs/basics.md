@@ -48,8 +48,8 @@ In your WP templates, for example `front-page.php`, stick the home page into Tim
 use Conifer\Post\FrontPage;
 use Timber\Timber;
 
-// get the Timber context, setting the `post` Twig variable to the FrontPage instance
-$data = $site->get_context_with_post(FrontPage::get());
+// Get the Timber context. Timber will automatically populate the $data['post'] field with the currently viewed post
+$data = Timber::context();
 
 // render the home page view
 Timber::render('front-page.twig', $data);

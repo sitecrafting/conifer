@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Retrieve tags and categories from posts
  */
@@ -14,7 +15,8 @@ use Timber\Timber;
  *
  * @package Conifer
  */
-trait HasTerms {
+trait HasTerms
+{
   /**
    * Get all published posts of this type, grouped by terms of $taxonomy
    *
@@ -41,7 +43,7 @@ trait HasTerms {
     string $taxonomy,
     array $terms = [],
     array $postQueryArgs = []
-  ) : array {
+  ): array {
     // ensure we have a list of taxonomy terms
     $terms = $terms ?: Timber::get_terms([
       'taxonomy'   => $taxonomy,
@@ -49,7 +51,7 @@ trait HasTerms {
     ]);
 
     // convert each term ID/slug/obj to a Timber\Term
-    $timberTerms = array_map(function($termIdent) {
+    $timberTerms = array_map(function ($termIdent) {
       // Pass through already-instantiated Timber\Term objects.
       // This allows for a polymorphic list of terms! ✨
       return is_a($termIdent, Term::class)
@@ -60,10 +62,10 @@ trait HasTerms {
     // reduce each term in $taxonomy to an array containing:
     //  * the term
     //  * the term's corresponding posts
-    return array_reduce($timberTerms, function(
+    return array_reduce($timberTerms, function (
       array $grouped,
       Term $term
-    ) use ($postQueryArgs) : array {
+    ) use ($postQueryArgs): array {
       // Because the count may be different from the denormalized term count,
       // since this may be a special query, we need to check if this term is
       // actually populated/empty.
@@ -127,8 +129,7 @@ trait HasTerms {
     // For singular label, fallback on taxonomy name
     $singular = $options['labels']['singular_name']
       // convert underscore_inflection to Words Separated By Spaces
-      // TODO separate this into a utility method
-      ?? implode(' ', array_map(function(string $word) {
+      ?? implode(' ', array_map(function (string $word) {
         return ucfirst($word);
       }, explode('_', $name)));
 
@@ -209,7 +210,7 @@ trait HasTerms {
       }
       unset($statuses['publish']);
 
-      $options['update_count_callback'] = function($terms) use ($statuses) {
+      $options['update_count_callback'] = function ($terms) use ($statuses) {
         foreach ($terms as $term) {
           static::count_statuses_toward_term_count(Timber::get_term($term), $statuses);
         }
@@ -225,7 +226,8 @@ trait HasTerms {
    * @param Timber\Term the Term instance whose count we want to update
    * @param string $taxonomy the taxonomy whose terms we want to affect
    */
-  public static function count_statuses_toward_term_count(Term $term, array $statuses) {
+  public static function count_statuses_toward_term_count(Term $term, array $statuses)
+  {
     global $wpdb;
 
     // Get all posts in $statuses, plus all published posts
@@ -245,4 +247,3 @@ trait HasTerms {
     }
   }
 }
-
