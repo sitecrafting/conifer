@@ -22,6 +22,8 @@
 
 namespace Conifer\Notifier;
 
+use InvalidArgumentException;
+
 /**
  * Class for emailing arbitrary email addresses
  *
@@ -31,22 +33,55 @@ namespace Conifer\Notifier;
  */
 class SimpleNotifier extends EmailNotifier
 {
+  const DEFAULT_EXCEPTION_MESSAGE = 'The $to argument must be a valid email address, a comma-separated list of valid email addresses, or an array of valid email addresses';
   /**
    * The email address(es) to send to
    *
    * @var string|array
    */
-  protected $to;
+  protected string|array $to;
 
   /**
    * Constructor. Pass the to email here.
    *
    * @param string|array $to the email addresses to send to.
    * Can be a comma-separated string or an array
+   * 
+   * @throws InvalidArgumentException if $to is not a valid single email address, a comma-separated list of valid email addresses, or an array of valid email addresses.
    */
-  public function __construct($to)
+  public function __construct(string|array $to)
   {
-    // TODO validate that $to is an email address, a comma-separated list of email addresses, or an array of email addresses
+    // Save a copy to validate, since we may need to convert a string to an array
+    $toCopy = $to;
+
+    if (empty($to)) {
+      throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
+    }
+
+    if (is_string($to)) {
+      // Check if this is a comma-separated list of emails, or just a single email address
+      $toCopy = array_map('trim', explode(',', $to));
+
+      // Loop through and validate all of the emails
+      foreach ($toCopy as $email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
+        }
+      }
+    } else if (!is_array($to)) {
+      throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
+    }
+
+    // If we have reached this point, we have an array of some sort, so we need to validate all of the emails in the array.
+    // We will still check the type for sanity
+    if (is_array($toCopy)) {
+      foreach ($toCopy as $email) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          throw new \InvalidArgumentException(self::DEFAULT_EXCEPTION_MESSAGE);
+        }
+      }
+    }
+
     $this->to = $to;
   }
 

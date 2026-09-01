@@ -33,6 +33,12 @@ export default defineConfig({
                     ],
                 },
                 {
+                    text: 'Upgrading',
+                    items: [
+                        {text: 'Upgrading to V2', link: '/v2-upgrade'},
+                    ],
+                },
+                {
                     text: 'Core Concepts',
                     items: [
                         {text: 'Basics', link: '/basics'},
@@ -70,6 +76,16 @@ export default defineConfig({
                         {text: 'Code of Conduct', link: '/code-of-conduct'},
                     ],
                 },
+                {
+                    text: 'Changelog',
+                    items: [
+                        {text: '2018', link: '/changelog/2018'},
+                        {text: '2019', link: '/changelog/2019'},
+                        {text: '2020', link: '/changelog/2020'},   
+                        {text: '2024', link: '/changelog/2024'},
+                        {text: '2026', link: '/changelog/2026'},
+                    ],
+                }
             ],
         },
         // https://vitepress.dev/reference/default-theme-config#sociallinks

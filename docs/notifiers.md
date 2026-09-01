@@ -162,6 +162,27 @@ $notifier = new Conifer\Notifier\SimpleNotifier([
   'someone_else@example.com'
 ]);
 $notifier->notify('Hello from Dr. Nick', 'Hi, everybody!');
+
+// a comma-separated string of addresses also works
+$notifier = new Conifer\Notifier\SimpleNotifier('someone@example.com, someone_else@example.com');
+$notifier->notify('Hello from Dr. Nick', 'Hi, everybody!');
+```
+
+Because `SimpleNotifier` deals in arbitrary, often user-supplied addresses, its constructor validates the `$to` argument for you. It accepts:
+
+* a single valid email address, e.g. `'someone@example.com'`
+* a comma-separated string of valid email addresses, e.g. `'someone@example.com, someone_else@example.com'`
+* an array of valid email addresses, e.g. `['someone@example.com', 'someone_else@example.com']`
+
+If `$to` is empty, or contains anything that isn't a valid email address, the constructor throws an `InvalidArgumentException`. This means you should always be prepared to catch this exception when building a `SimpleNotifier` from untrusted input, such as a form submission:
+
+```php
+try {
+  $notifier = new Conifer\Notifier\SimpleNotifier($_POST['reply_to']);
+} catch (\InvalidArgumentException $e) {
+  // $_POST['reply_to'] wasn't a valid email address (or addresses); bail out
+  // or fall back to a known-good notifier, e.g. AdminNotifier
+}
 ```
 
 ## Building custom Notifiers
