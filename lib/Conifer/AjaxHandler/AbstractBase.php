@@ -75,13 +75,10 @@
 namespace Conifer\AjaxHandler;
 
 use BadMethodCallException;
-use InvalidArgumentException;
 use LogicException;
 use ReflectionClass;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use RuntimeException;
-use Stringable;
 
 // TODO: Need to add nonce verification to this class and update any related documentation to reflect this requirement
 abstract class AbstractBase
@@ -117,6 +114,13 @@ abstract class AbstractBase
    * @var LoggerInterface|null
    */
   protected static ?LoggerInterface $logger = null;
+
+  /**
+   * Registered AJAX actions, keyed by handler class and action name.
+   *
+   * @var array<string, array<string, array{include_priv: bool, include_no_priv: bool}>>
+   */
+  protected static array $registered_actions = [];
 
   /**
    * Abstract method used to define the functionality when handling an AJAX request.
@@ -164,14 +168,14 @@ abstract class AbstractBase
    * This is not a 100% accurate implementation of the LoggerInterface log() function, but it
    * should be good enough to suit our needs
    *
-   * @param string|Stringable $message The message to log
+   * @param string|\Stringable $message The message to log
    * @param string $level The log level to use. Defaults to LogLevel::DEBUG
    * @return void
    *
-   * @throws RuntimeException If the logger is not configured via __construct
-   * @throws InvalidArgumentException If the provided $level is not one of PSR-3's LogLevels
+   * @throws \RuntimeException If the logger is not configured via __construct
+   * @throws \InvalidArgumentException If the provided $level is not one of PSR-3's LogLevels
    */
-  public static function log(string|Stringable $message, string $level = LogLevel::DEBUG): void
+  public static function log(string|\Stringable $message, string $level = LogLevel::DEBUG): void
   {
     // If the logger is not set, we cannot log the message. We should throw a runtime exception.
     if (static::$logger === null) {
@@ -179,7 +183,7 @@ abstract class AbstractBase
     }
 
     // If the message is a Stringable object, we need to convert it to a string.
-    if ($message instanceof Stringable) {
+    if ($message instanceof \Stringable) {
       $message = (string) $message;
     }
 
@@ -198,6 +202,62 @@ abstract class AbstractBase
       default:
         throw new \InvalidArgumentException("Invalid log level: {$level}");
     }
+  }
+
+  /**
+   * Register an AJAX action for this handler class.
+   *
+   * Call add_actions() in the site's configuration callback to add the registered hooks.
+   *
+   * @param string $action The AJAX action name.
+   * @param bool $include_priv Whether to handle requests from authenticated users.
+   * @param bool $include_no_priv Whether to handle requests from unauthenticated users.
+   * @return void
+   */
+  public static function register_action(string $action, bool $include_priv = true, bool $include_no_priv = false): void
+  {
+    if (empty($action)) {
+      throw new \InvalidArgumentException('Action name cannot be empty.');
+    }
+
+    static::$registered_actions[static::class][$action] = [
+      'include_priv'    => $include_priv,
+      'include_no_priv' => $include_no_priv,
+    ];
+  }
+
+  /**
+   * Add WordPress hooks for all actions registered by this handler class.
+   *
+   * @return void
+   */
+  public static function add_actions(): void
+  {
+    foreach (static::$registered_actions[static::class] ?? [] as $action => $options) {
+      if ($options['include_priv']) {
+        if (false !== has_action("wp_ajax_{$action}")) {
+          throw new \LogicException("Action '{$action}' is already registered with WordPress. Cannot register it again for handler class " . static::class);
+        }
+        add_action("wp_ajax_{$action}", [static::class, 'handle']);
+      }
+
+      if ($options['include_no_priv']) {
+        if (false !== has_action("wp_ajax_nopriv_{$action}")) {
+          throw new \LogicException("Action '{$action}' is already registered with WordPress. Cannot register it again for handler class " . static::class);
+        }
+        add_action("wp_ajax_nopriv_{$action}", [static::class, 'handle']);
+      }
+    }
+  }
+
+  /**
+   * Return the actions registered to this AjaxHandler
+   *
+   * @return array The array of registered actions.
+   */
+  public static function get_actions(): array
+  {
+    return static::$registered_actions[static::class] ?? [];
   }
 
   /*
