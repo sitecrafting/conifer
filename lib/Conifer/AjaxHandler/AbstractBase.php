@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class to encapsulate handling AJAX calls. Handling a WP AJAX action
  * requires only implementing a child class with an execute() method,
@@ -76,10 +77,12 @@ namespace Conifer\AjaxHandler;
 use BadMethodCallException;
 use LogicException;
 use ReflectionClass;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
-// TODO: Need to address logging for AJAX requests. Stripped logging out for now. See #25
 // TODO: Need to add nonce verification to this class and update any related documentation to reflect this requirement
-abstract class AbstractBase {
+abstract class AbstractBase
+{
   /**
    * The request array for this AJAX request (either POST or GET)
    *
@@ -106,12 +109,26 @@ abstract class AbstractBase {
   protected $action_methods;
 
   /**
+   * Logger for logging information about Ajax Requests
+   *
+   * @var LoggerInterface|null
+   */
+  protected static ?LoggerInterface $logger = null;
+
+  /**
+   * Registered AJAX actions, keyed by handler class and action name.
+   *
+   * @var array<string, array<string, array{include_priv: bool, include_no_priv: bool}>>
+   */
+  protected static array $registered_actions = [];
+
+  /**
    * Abstract method used to define the functionality when handling an AJAX request.
    * Should return an array to be encoded in the response.
    *
    * @return array The response after handling the request
    */
-  abstract protected function execute() : array;
+  abstract protected function execute(): array;
 
 
   /*
@@ -121,7 +138,8 @@ abstract class AbstractBase {
   /**
    * Handle an HTTP request.
    */
-  public static function handle(?array $requestData = null) {
+  public static function handle(?array $requestData = null)
+  {
     // phpcs:ignore WordPress.Security.NonceVerification.Recommended
     $handler = new static($requestData ?? $_REQUEST);
     $handler->set_cookie($_COOKIE);
@@ -131,30 +149,129 @@ abstract class AbstractBase {
   /**
    * Handle an HTTP POST request.
    */
-  public static function handle_post() {
+  public static function handle_post()
+  {
     static::handle($_POST); // phpcs:ignore WordPress.Security.NonceVerification.Missing
   }
 
   /**
    * Handle an HTTP GET request.
    */
-  public static function handle_get() {
+  public static function handle_get()
+  {
     static::handle($_GET); // phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification
   }
 
+  /**
+   * Log a provided string message to the configured log file.
+   *
+   * This is not a 100% accurate implementation of the LoggerInterface log() function, but it
+   * should be good enough to suit our needs
+   *
+   * @param string|\Stringable $message The message to log
+   * @param string $level The log level to use. Defaults to LogLevel::DEBUG
+   * @return void
+   *
+   * @throws \RuntimeException If the logger is not configured via __construct
+   * @throws \InvalidArgumentException If the provided $level is not one of PSR-3's LogLevels
+   */
+  public static function log(string|\Stringable $message, string $level = LogLevel::DEBUG): void
+  {
+    // If the logger is not set, we cannot log the message. We should throw a runtime exception.
+    if (static::$logger === null) {
+      throw new \RuntimeException('Logger is not set. Cannot log message.');
+    }
+
+    // If the message is a Stringable object, we need to convert it to a string.
+    if ($message instanceof \Stringable) {
+      $message = (string) $message;
+    }
+
+    // Check to make sure the level is valid. If not, throw an InvalidArgumentException.
+    switch ($level) {
+      case LogLevel::EMERGENCY:
+      case LogLevel::ALERT:
+      case LogLevel::CRITICAL:
+      case LogLevel::ERROR:
+      case LogLevel::WARNING:
+      case LogLevel::NOTICE:
+      case LogLevel::INFO:
+      case LogLevel::DEBUG:
+        static::$logger->{$level}($message);
+        break;
+      default:
+        throw new \InvalidArgumentException("Invalid log level: {$level}");
+    }
+  }
+
+  /**
+   * Register an AJAX action for this handler class.
+   *
+   * Call add_actions() in the site's configuration callback to add the registered hooks.
+   *
+   * @param string $action The AJAX action name.
+   * @param bool $include_priv Whether to handle requests from authenticated users.
+   * @param bool $include_no_priv Whether to handle requests from unauthenticated users.
+   * @return void
+   */
+  public static function register_action(string $action, bool $include_priv = true, bool $include_no_priv = false): void
+  {
+    if (empty($action)) {
+      throw new \InvalidArgumentException('Action name cannot be empty.');
+    }
+
+    static::$registered_actions[static::class][$action] = [
+      'include_priv'    => $include_priv,
+      'include_no_priv' => $include_no_priv,
+    ];
+  }
+
+  /**
+   * Add WordPress hooks for all actions registered by this handler class.
+   *
+   * @return void
+   */
+  public static function add_actions(): void
+  {
+    foreach (static::$registered_actions[static::class] ?? [] as $action => $options) {
+      if ($options['include_priv']) {
+        if (false !== has_action("wp_ajax_{$action}")) {
+          throw new \LogicException("Action '{$action}' is already registered with WordPress. Cannot register it again for handler class " . static::class);
+        }
+        add_action("wp_ajax_{$action}", [static::class, 'handle']);
+      }
+
+      if ($options['include_no_priv']) {
+        if (false !== has_action("wp_ajax_nopriv_{$action}")) {
+          throw new \LogicException("Action '{$action}' is already registered with WordPress. Cannot register it again for handler class " . static::class);
+        }
+        add_action("wp_ajax_nopriv_{$action}", [static::class, 'handle']);
+      }
+    }
+  }
+
+  /**
+   * Return the actions registered to this AjaxHandler
+   *
+   * @return array The array of registered actions.
+   */
+  public static function get_actions(): array
+  {
+    return static::$registered_actions[static::class] ?? [];
+  }
 
   /*
    * Instance Methods
    */
 
   /**
-   * Constructor.
-   * TODO decide whether to require Monolog??
+   * Constructor
    *
    * @param array $request the raw request params, i.e. GET/POST
    * @throws LogicException If the request array doesn't contain an action
    */
-  public function __construct(array $request) {
+  public function __construct(array $request, ?LoggerInterface $logger = null)
+  {
     if (empty($request['action'])) {
       throw new LogicException(
         'Trying to handle an AJAX call without an action! The "action" request parameter is required.'
@@ -164,6 +281,7 @@ abstract class AbstractBase {
     $this->action         = $request['action'];
     $this->request        = $request;
     $this->action_methods = [];
+    static::$logger       = $logger;
   }
 
   /**
@@ -171,7 +289,8 @@ abstract class AbstractBase {
    *
    * @param array $response the response to be converted to JSON
    */
-  protected function send_json_response(array $response) {
+  protected function send_json_response(array $response)
+  {
     wp_send_json($response);
   }
 
@@ -181,7 +300,8 @@ abstract class AbstractBase {
    * @param mixed $name the key of the value to get from the request
    * @return mixed the value for the request param. Defaults to the empty string if not set.
    */
-  protected function param($name) {
+  protected function param($name)
+  {
     return isset($this->request[$name]) ? $this->request[$name] : '';
   }
 
@@ -191,7 +311,8 @@ abstract class AbstractBase {
    * @param mixed $name the key of the value to get from the cookie
    * @return mixed the value for the cookie param. Defaults to the empty string if not set.
    */
-  protected function cookie($name) {
+  protected function cookie($name)
+  {
     return isset($this->cookie[$name]) ? $this->cookie[$name] : '';
   }
 
@@ -203,7 +324,8 @@ abstract class AbstractBase {
    * @throws LogicException If the specified action doesn't exist in the action_methods array
    * @throws BadMethodCallException If the action method doesn't exist or isn't an instance method
    */
-  protected function dispatch_action() {
+  protected function dispatch_action()
+  {
     // check that a handler is configure for the current action
     if (empty($this->action_methods[$this->action])) {
       throw new LogicException("No handler method specified for action: {$this->action}!");
@@ -231,9 +353,10 @@ abstract class AbstractBase {
    *
    * @param  string $action The name of the action to be mapper to a method name
    * @param  string $methodName The name of a method name to be used when handling thins action
-   * @return Conifer\AjaxHandler\AbstractBase The current AbstractBase class instance
+   * @return AbstractBase The current AbstractBase class instance
    */
-  protected function map_action($action, $methodName) {
+  protected function map_action($action, $methodName)
+  {
     $this->action_methods[$action] = $methodName;
     return $this;
   }
@@ -243,7 +366,8 @@ abstract class AbstractBase {
    *
    * @param array $cookie The request cookie array
    */
-  private function set_cookie(array $cookie) {
+  private function set_cookie(array $cookie)
+  {
     $this->cookie = $cookie;
   }
 }
