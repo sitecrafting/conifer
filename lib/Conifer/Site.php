@@ -96,7 +96,6 @@ class Site extends TimberSite
     $this->script_directory_cascade = [
       get_stylesheet_directory() . '/js/',
       get_stylesheet_directory() . '/dist/',
-      // TODO set up a bootstrap file for symbol discovery
       // https://phpstan.org/user-guide/discovering-symbols
       WP_PLUGIN_DIR . '/conifer/assets/js/',
       WPMU_PLUGIN_DIR . '/conifer/assets/js/',
@@ -162,8 +161,6 @@ class Site extends TimberSite
 
   /**
    * Register default Post Class Maps for default Conifer classes
-   *
-   * @todo Terms/Users
    */
   public function configure_default_classmaps()
   {
@@ -533,7 +530,6 @@ class Site extends TimberSite
   public function configure_default_admin_dashboard_widgets()
   {
     add_action('wp_dashboard_setup', function () {
-      // TODO widget API?
       wp_add_dashboard_widget(
         'conifer_guide',
         __('Welcome to Conifer'),
@@ -550,7 +546,6 @@ class Site extends TimberSite
   public function remove_conifer_widget()
   {
     add_action('wp_dashboard_setup', function () {
-      // TODO widget API?
       remove_meta_box('conifer_guide', 'dashboard', 'normal');
     });
   }

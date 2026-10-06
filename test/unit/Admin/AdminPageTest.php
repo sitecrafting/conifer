@@ -80,6 +80,4 @@ class AdminPageTest extends Base
     // The filter shouldn't return anything, so if it does we know something broke.
     $this->assertNull($this->page->do_add());
   }
-
-  // TODO test ::render() in an integration test
 }

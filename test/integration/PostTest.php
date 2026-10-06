@@ -88,7 +88,6 @@ class PostTest extends Base
 
     update_option('page_for_posts', $page->id);
 
-    // TODO figure out how to get permalinks working in the test env
     $this->assertEquals(
       sprintf('http://example.org/?page_id=%d', $page->id),
       Page::get_blog_url()

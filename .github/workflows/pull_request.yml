@@ -11,6 +11,10 @@ jobs:
         name: PHPUnit
         runs-on: ubuntu-latest
 
+        strategy:
+            matrix:
+                php-version: ['8.1']
+
         services:
             testdb:
                 image: mysql:8.0
@@ -34,12 +38,20 @@ jobs:
             - name: Set up PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.1'
+                  php-version: ${{ matrix.php-version }}
                   extensions: mysqli
                   tools: composer:v2
 
             - name: Install Subversion
               run: sudo apt-get update && sudo apt-get install -y subversion
+
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                  path: ~/.composer/cache
+                  key: ${{ runner.os }}-php-${{ matrix.php-version }}-composer-${{ hashFiles('composer.lock') }}
+                  restore-keys: |
+                      ${{ runner.os }}-php-${{ matrix.php-version }}-composer-
 
             - name: Install Composer dependencies
               run: composer install --no-interaction --no-progress --prefer-dist
@@ -52,11 +64,23 @@ jobs:
                   DB_PASS: test
               run: bash scripts/install-wp-tests.sh
 
+            - name: PHPCS
+              run: vendor/bin/phpcs --standard=./phpcs.xml test lib
+
+            - name: PHPStan
+              run: vendor/bin/phpstan analyse
+
             - name: Run unit tests
               run: ./vendor/bin/phpunit --configuration phpunit.xml.dist
 
             - name: Run integration tests
               run: ./vendor/bin/phpunit --configuration phpunit-integration.xml.dist
+
+            - name: Run unit tests in multisite mode
+              run: ./vendor/bin/phpunit --configuration phpunit-multisite.xml.dist
+
+            - name: Run integration tests in multisite mode
+              run: ./vendor/bin/phpunit --configuration phpunit-integration-multisite.xml.dist
 
             # - name: Run code sniffing
             #   run: composer sniff

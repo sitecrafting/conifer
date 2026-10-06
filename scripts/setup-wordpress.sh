@@ -58,9 +58,18 @@ EOF
   if wp_installed ; then
     echo 'WordPress is installed'
   else
+    APP_URL=$(php -r '
+      $info = json_decode(getenv("LANDO_INFO"), true);
+      echo $info["appserver"]["urls"][0] ?? "";
+    ')
+
+    # Fallback, in case the above fails to get the URL
+    if [[ ! "$APP_URL" ]] ; then
+      APP_URL="http://conifer.lndo.site"
+    fi
     # install WordPress
     wp core install \
-      --url='http://conifer.lndo.site' \
+      --url="$APP_URL" \
       --title='Conifer' \
       --admin_user='conifer' \
       --admin_password='conifer' \
@@ -92,10 +101,24 @@ EOF
     twentyseventeen \
     twentytwentytwo \
     twentytwentythree \
-    twentytwentyfour
+    twentytwentyfour \
+    twentytwentyone \
+    twentytwentyfive \
+    twentytwentysix
 
 
   wp option set permalink_structure '/%postname%/'
+# BEGIN WordPress
+
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+
+# END WordPress
+EOF
   wp rewrite flush
 
   echo

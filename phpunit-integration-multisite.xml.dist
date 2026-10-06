@@ -1,0 +1,18 @@
+<phpunit
+    bootstrap="./test/bootstrap-integration.php"
+    backupGlobals="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+>
+    <php>
+		<env name="WP_MULTISITE" value="1"/>
+	</php>
+    <testsuites>
+        <testsuite name="integration (multisite)">
+            <directory suffix=".php">./test/integration</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

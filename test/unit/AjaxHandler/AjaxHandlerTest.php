@@ -9,6 +9,8 @@
 
 namespace Conifer\Unit\AjaxHandler;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use WP_Mock;
 
 use Conifer\AjaxHandler\AbstractBase;
@@ -26,6 +28,10 @@ class AjaxHandlerTest extends Base
   public function setUp(): void
   {
     parent::setUp();
+
+    WP_Mock::userFunction('has_action', [
+      'return' => false,
+    ]);
 
     // Mock the abstract base AJAX handler class so we can test against it
     $ajaxHanderStub = $this->getMockForAbstractClass(AbstractBase::class, [$this->get_request_array()]);
@@ -226,6 +232,154 @@ class AjaxHandlerTest extends Base
 
     $this->assertSame($handler, $returned, 'map_action() should return $this for chaining');
   }
+
+  // ---------------------------------------------------------------------------
+  // register_action() / add_actions()
+  // ---------------------------------------------------------------------------
+
+  public function test_add_actions_registers_authenticated_hook_by_default()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect');
+
+    WP_Mock::expectActionAdded('wp_ajax_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_actions());
+    $this->assertTrue(AjaxHandlerInspectable::get_actions()['inspect']['include_priv']);
+    $this->assertFalse(AjaxHandlerInspectable::get_actions()['inspect']['include_no_priv']);
+  }
+
+  public function test_add_actions_registers_both_hooks_when_requested()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect', true, true);
+
+    WP_Mock::expectActionAdded('wp_ajax_inspect', [AjaxHandlerInspectable::class, 'handle']);
+    WP_Mock::expectActionAdded('wp_ajax_nopriv_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_actions());
+    $this->assertTrue(AjaxHandlerInspectable::get_actions()['inspect']['include_priv']);
+    $this->assertTrue(AjaxHandlerInspectable::get_actions()['inspect']['include_no_priv']);
+  }
+
+  public function test_add_actions_can_register_unauthenticated_hook_only()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect', false, true);
+
+    WP_Mock::expectActionAdded('wp_ajax_nopriv_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_actions());
+    $this->assertFalse(AjaxHandlerInspectable::get_actions()['inspect']['include_priv']);
+  }
+
+  public function test_register_action_replaces_existing_privilege_options()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect');
+    AjaxHandlerInspectable::register_action('inspect', false, true);
+
+    WP_Mock::expectActionAdded('wp_ajax_nopriv_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('inspect', AjaxHandlerInspectable::get_actions());
+    $this->assertFalse(AjaxHandlerInspectable::get_actions()['inspect']['include_priv']);
+  }
+
+  public function test_add_actions_only_uses_actions_registered_by_its_class()
+  {
+    AjaxHandlerInspectable::clearRegisteredActions();
+    AlternateAjaxHandlerInspectable::clearRegisteredActions();
+    AjaxHandlerInspectable::register_action('inspect');
+    AlternateAjaxHandlerInspectable::register_action('alternate');
+
+    WP_Mock::expectActionAdded('wp_ajax_inspect', [AjaxHandlerInspectable::class, 'handle']);
+
+    AjaxHandlerInspectable::add_actions();
+
+    $this->assertArrayHasKey('alternate', AlternateAjaxHandlerInspectable::get_actions());
+    $this->assertTrue(AlternateAjaxHandlerInspectable::get_actions()['alternate']['include_priv']);
+    $this->assertFalse(AlternateAjaxHandlerInspectable::get_actions()['alternate']['include_no_priv']);
+  }
+
+  // ---------------------------------------------------------------------------
+  // log()
+  // ---------------------------------------------------------------------------
+
+  /**
+   * @dataProvider valid_log_levels
+   */
+  public function test_log_delegates_message_to_configured_logger(string $level)
+  {
+    $logger = $this->createMock(LoggerInterface::class);
+    $logger
+      ->expects($this->once())
+      ->method($level)
+      ->with(self::BEST_BAND);
+
+    new AjaxHandlerInspectable($this->get_request_array(), $logger);
+
+    AjaxHandlerInspectable::log(self::BEST_BAND, $level);
+  }
+
+  public function test_log_converts_stringable_message_before_delegating()
+  {
+    $message = new class implements \Stringable {
+      public function __toString(): string
+      {
+        return AjaxHandlerTest::BEST_BAND;
+      }
+    };
+    $logger = $this->createMock(LoggerInterface::class);
+    $logger
+      ->expects($this->once())
+      ->method(LogLevel::DEBUG)
+      ->with(self::BEST_BAND);
+
+    new AjaxHandlerInspectable($this->get_request_array(), $logger);
+
+    AjaxHandlerInspectable::log($message);
+  }
+
+  public function test_log_throws_when_logger_is_not_configured()
+  {
+    $this->expectException(\RuntimeException::class);
+    $this->expectExceptionMessage('Logger is not set. Cannot log message.');
+
+    AjaxHandlerInspectable::log(self::BEST_BAND);
+  }
+
+  public function test_log_throws_when_level_is_invalid()
+  {
+    $logger = $this->createMock(LoggerInterface::class);
+    new AjaxHandlerInspectable($this->get_request_array(), $logger);
+
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Invalid log level: verbose');
+
+    AjaxHandlerInspectable::log(self::BEST_BAND, 'verbose');
+  }
+
+  public function valid_log_levels(): array
+  {
+    return [
+      'emergency' => [LogLevel::EMERGENCY],
+      'alert'     => [LogLevel::ALERT],
+      'critical'  => [LogLevel::CRITICAL],
+      'error'     => [LogLevel::ERROR],
+      'warning'   => [LogLevel::WARNING],
+      'notice'    => [LogLevel::NOTICE],
+      'info'      => [LogLevel::INFO],
+      'debug'     => [LogLevel::DEBUG],
+    ];
+  }
 }
 
 /**
@@ -273,6 +427,11 @@ class AjaxHandlerInspectable extends AbstractBase
     return $this;
   }
 
+  public static function clearRegisteredActions(): void
+  {
+    unset(self::$registered_actions[static::class]);
+  }
+
   /** Used to verify the success-path of dispatch_action(). */
   protected function anInstanceMethod(): array
   {
@@ -285,3 +444,5 @@ class AjaxHandlerInspectable extends AbstractBase
     return ['dispatched_by' => 'aStaticMethod'];
   }
 }
+
+class AlternateAjaxHandlerInspectable extends AjaxHandlerInspectable {}
