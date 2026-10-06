@@ -157,13 +157,10 @@ class Site extends TimberSite
     Button::register('button');
 
     Integrations\YoastIntegration::demote_metabox();
-    // TODO moar integrations!
   }
 
   /**
    * Register default Post Class Maps for default Conifer classes
-   *
-   * @todo Terms/Users
    */
   public function configure_default_classmaps()
   {
@@ -533,7 +530,6 @@ class Site extends TimberSite
   public function configure_default_admin_dashboard_widgets()
   {
     add_action('wp_dashboard_setup', function () {
-      // TODO widget API?
       wp_add_dashboard_widget(
         'conifer_guide',
         __('Welcome to Conifer'),
@@ -550,7 +546,6 @@ class Site extends TimberSite
   public function remove_conifer_widget()
   {
     add_action('wp_dashboard_setup', function () {
-      // TODO widget API?
       remove_meta_box('conifer_guide', 'dashboard', 'normal');
     });
   }

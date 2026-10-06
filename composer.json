@@ -27,8 +27,8 @@
   "require-dev": {
     "10up/wp_mock": "dev-dev",
     "behat/behat": "^v3.29.0",
-    "johnpbloch/wordpress-core": "^6.5.5",
-    "johnpbloch/wordpress-core-installer": "^2.0.0",
+    "roots/wordpress": "^7.1.1",
+    "roots/wordpress-core-installer": "^4.0.0",
     "mikey179/vfsstream": "~1",
     "mnsami/composer-custom-directory-installer": "^2.0",
     "php-stubs/acf-pro-stubs": "^6.5",
@@ -47,14 +47,12 @@
     "allow-plugins": {
       "composer/installers": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "johnpbloch/wordpress-core-installer": true,
+      "roots/wordpress-core-installer": true,
       "mnsami/composer-custom-directory-installer": true
     }
   },
   "extra": {
-    "wordpress-install-dir": {
-      "johnpbloch/wordpress-core": "wp"
-    },
+    "wordpress-install-dir": "wp",
     "installer-paths": {
       "wp/wp-content/themes/groot": [
         "sitecrafting/groot"

@@ -119,8 +119,6 @@ RewriteRule . /index.php [L]
 
 # END WordPress
 EOF
-  fi
-
   wp rewrite flush
 
   echo

@@ -440,7 +440,6 @@ class FormTest extends Base
       'highest_award'   => [],
       'favorite_things' => [
         'options'       => ['raindrops', 'whiskers', 'kettles', 'mittens'],
-        // TODO validate at_least
       ],
     ];
   }

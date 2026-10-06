@@ -5,11 +5,11 @@ Conifer provides a high-level API for defining authorization policies that decla
 Implementing a custom authorization policy is as simple as implementing the abstract `adopt()` method:
 
 ```php
-// SoupNaziPolicy.php
+// SoupPolicy.php
 use Conifer\Authorization\AbstractPolicy;
 use Timber\User;
 
-class SoupNaziPolicy extends AbstractPolicy {
+class SoupPolicy extends AbstractPolicy {
   public function adopt() : PolicyInterface {
     if ($this->user_is_named_jerry()) {
       die('no soup for you!');
@@ -25,7 +25,7 @@ class SoupNaziPolicy extends AbstractPolicy {
 }
 
 // functions.php
-$policy = new SoupNaziPolicy();
+$policy = new SoupPolicy();
 $policy->adopt();
 ```
 
