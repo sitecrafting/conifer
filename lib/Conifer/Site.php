@@ -846,7 +846,7 @@ class Site extends TimberSite
     }
 
     // If called before init, core taxonomies may not be registered yet; retry after init.
-    if (did_action('init') || doing_action('init')) {
+    if (did_action('init') && !doing_action('init')) {
       return;
     }
 
@@ -854,7 +854,7 @@ class Site extends TimberSite
       foreach ($postTypes as $postType) {
         $this->disable_tags_for_post_type($postType);
       }
-    });
+    }, PHP_INT_MAX);
   }
 
   /**
