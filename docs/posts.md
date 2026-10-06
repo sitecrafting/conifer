@@ -56,20 +56,6 @@ If your `POST_TYPE` class constant is in snake_case (which is the recommended st
 
 You can override the default `labels` Conifer generates by declaring a `type_options` function in your CPT.
 
-```php
-use Conifer\Post\Post;
-
-class Robot extends Post {
-      public static function type_options() : array {
-        return [
-            'singular_name' => 'Robot',
-            'plural_label' => 'Robotzzz', // Admin center will now show 'View Robotzzz' instead of default plural
-            // ...
-        ];
-	}
-}
-```
-
 ### Adding your Custom Post Type to the class map
 
 As with Timber, register your Custom Post Type in the class map so Timber knows which class to use when fetching posts
