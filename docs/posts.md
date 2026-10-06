@@ -34,25 +34,41 @@ Failing to define this constant may result in a `RuntimeException` being thrown 
 
 Just like in vanilla WP, you need to register your CPT using `register_post_type`.
 
-To make this easier, Conifer offers a higher-level `Post::register_type()` method.
+To make this easier, Conifer offers a higher-level `Post::register_type()` method. This method should be called via `add_action` on the `init` hook
 
 ```php
 $site = new Conifer\Site();
 $site->configure(function() {
   // ...
 
-  // Register post type via static function
-  Robot::register_type();
+  // Register CPTs
+  add_action('init', [Robot::class, 'register_type']);
   
   // ...
 });
 ```
 
-Calling `Robot::register_type()` *with no arguments* will result in labels like **Add New Robot** and **View All Robots**.
+Calling `register_type` will result in labels like **Add New Robot** and **View All Robots**.
 
-How? Conifer uses the `POST_TYPE` class constant along with any passed `$options` to produce a comprehensive set of `labels` to pass to `register_post_type()`. By default, plural labels are just singular labels with an "s" appended, to capture most cases in English. But you can also specify a `plural_label` inside your `$options` array to override this, and any plural labels will be interpolated accordingly.
+How? Conifer uses the `POST_TYPE` class constant to produce a comprehensive set of `labels` to pass to `register_post_type()`. By default, plural labels are just singular labels with an "s" appended, to capture most cases in English. 
 
 If your `POST_TYPE` class constant is in snake_case (which is the recommended style), `Post::register_type()` will convert it to Space Separated Capitalized Words. For example, a `POST_TYPE` definition of `special_post`  translates into singular and plural labels `Special Post` and `Special Posts`, respectively.
+
+You can override the default `labels` Conifer generates by declaring a `type_options` function in your CPT.
+
+```php
+use Conifer\Post\Post;
+
+class Robot extends Post {
+      public static function type_options() : array {
+        return [
+            'singular_name' => 'Robot',
+            'plural_label' => 'Robotzzz', // Admin center will now show 'View Robotzzz' instead of default plural
+            // ...
+        ];
+	}
+}
+```
 
 ### Adding your Custom Post Type to the class map
 
