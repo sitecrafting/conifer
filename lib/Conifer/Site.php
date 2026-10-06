@@ -157,10 +157,13 @@ class Site extends TimberSite
     Button::register('button');
 
     Integrations\YoastIntegration::demote_metabox();
+    // TODO moar integrations!
   }
 
   /**
    * Register default Post Class Maps for default Conifer classes
+   *
+   * @todo Terms/Users
    */
   public function configure_default_classmaps()
   {
@@ -530,6 +533,7 @@ class Site extends TimberSite
   public function configure_default_admin_dashboard_widgets()
   {
     add_action('wp_dashboard_setup', function () {
+      // TODO widget API?
       wp_add_dashboard_widget(
         'conifer_guide',
         __('Welcome to Conifer'),
@@ -546,6 +550,7 @@ class Site extends TimberSite
   public function remove_conifer_widget()
   {
     add_action('wp_dashboard_setup', function () {
+      // TODO widget API?
       remove_meta_box('conifer_guide', 'dashboard', 'normal');
     });
   }
@@ -825,5 +830,75 @@ class Site extends TimberSite
     // Close comments on the frontend
     add_filter('comments_open', '__return_false', 20);
     add_filter('pings_open', '__return_false', 20);
+  }
+
+  /**
+   * Removes the tag taxonomy from the specified post types.
+   *
+   * @param array $postTypes Post types to remove the tag taxonomy from.
+   * @return void
+   */
+  public function disable_tags_for_post_types(array $postTypes): void
+  {
+    // Attempt to disable tags for already registered taxonomies.
+    foreach ($postTypes as $postType) {
+      $this->disable_tags_for_post_type($postType);
+    }
+
+    // If called before init, core taxonomies may not be registered yet; retry after init.
+    if (did_action('init') && !doing_action('init')) {
+      return;
+    }
+
+    add_action('init', function () use ($postTypes) {
+      foreach ($postTypes as $postType) {
+        $this->disable_tags_for_post_type($postType);
+      }
+    }, PHP_INT_MAX);
+  }
+
+  /**
+   * Removes the tag taxonomy from all post types except the provided post types.
+   *
+   * @param array $excludedPostTypes Post types to exclude from tag removal.
+   *                                  Defaults to ['tribe_events'].
+   * @return void
+   */
+  private function disable_tags(array $excludedPostTypes = ['tribe_events']): void
+  {
+    $types = get_post_types([], 'names');
+
+    $filteredPostTypes = array_filter($types, function ($type) use ($excludedPostTypes) {
+      return !in_array($type, $excludedPostTypes, true);
+    });
+
+    // Hide Tags from the admin menu.
+    // ? This is intended to be a universal solution, but if we provide a public facing function to disable tag support for specific post types, we should
+    // ? probably reconsider globally removing the tags menu item. If downstream someone explicitly calls disable_tags_for_post_types(['post'])
+    // ? they may not expect the menu item to be removed for all post types.
+    add_action('admin_menu', function () {
+      remove_submenu_page('edit.php', 'edit-tags.php?taxonomy=post_tag');
+    });
+
+    // Taxonomies are registered during init, so remove associations after it runs.
+    if (did_action('init')) {
+      $this->disable_tags_for_post_types($filteredPostTypes);
+      return;
+    }
+
+    add_action('init', function () use ($filteredPostTypes) {
+      $this->disable_tags_for_post_types($filteredPostTypes);
+    });
+  }
+
+  /**
+   * Removes the tag taxonomy from a single post type.
+   *
+   * @param string $postType Post type to remove the tag taxonomy from.
+   * @return bool True if the taxonomy association was removed, false otherwise.
+   */
+  private function disable_tags_for_post_type(string $postType): bool
+  {
+    return unregister_taxonomy_for_object_type('post_tag', $postType);
   }
 }
