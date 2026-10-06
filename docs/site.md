@@ -133,6 +133,18 @@ $site->configure(function() {
 
 This removes tag support and the `post_tag` taxonomy association only from the listed post types. Tags remain available on all other post types.
 
+You can also remove tags for all post types using the included `disable_tags` function.
+
+```php
+$site->configure(function() {
+  //...
+
+  // Tags will be disabled for all registered post types
+  $this->disable_tags();
+
+  //...
+});
+
 ## Directory Cascades
 
 A **Directory Cascade** is an ordered list of directories where Conifer looks for Twig views (`*.twig` files), JS files, or stylesheets. Each type of asset (views, JS, CSS) has its own set of directories - its own *cascade* - where Conifer looks for that type of file. Each cascade has its own getter and setter on the `Site` class:

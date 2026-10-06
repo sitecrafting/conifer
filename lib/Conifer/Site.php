@@ -157,10 +157,13 @@ class Site extends TimberSite
     Button::register('button');
 
     Integrations\YoastIntegration::demote_metabox();
+    // TODO moar integrations!
   }
 
   /**
    * Register default Post Class Maps for default Conifer classes
+   *
+   * @todo Terms/Users
    */
   public function configure_default_classmaps()
   {
@@ -530,6 +533,7 @@ class Site extends TimberSite
   public function configure_default_admin_dashboard_widgets()
   {
     add_action('wp_dashboard_setup', function () {
+      // TODO widget API?
       wp_add_dashboard_widget(
         'conifer_guide',
         __('Welcome to Conifer'),
@@ -546,6 +550,7 @@ class Site extends TimberSite
   public function remove_conifer_widget()
   {
     add_action('wp_dashboard_setup', function () {
+      // TODO widget API?
       remove_meta_box('conifer_guide', 'dashboard', 'normal');
     });
   }
@@ -835,9 +840,21 @@ class Site extends TimberSite
    */
   public function disable_tags_for_post_types(array $postTypes): void
   {
+    // Attempt to disable tags for already registered taxonomies.
     foreach ($postTypes as $postType) {
       $this->disable_tags_for_post_type($postType);
     }
+
+    // If called before init, core taxonomies may not be registered yet; retry after init.
+    if (did_action('init') || doing_action('init')) {
+      return;
+    }
+
+    add_action('init', function () use ($postTypes) {
+      foreach ($postTypes as $postType) {
+        $this->disable_tags_for_post_type($postType);
+      }
+    });
   }
 
   /**
@@ -882,9 +899,6 @@ class Site extends TimberSite
    */
   private function disable_tags_for_post_type(string $postType): bool
   {
-    // Apparently this is a no-op
-    // remove_post_type_support($postType, 'post_tag');
-
     return unregister_taxonomy_for_object_type('post_tag', $postType);
   }
 }
